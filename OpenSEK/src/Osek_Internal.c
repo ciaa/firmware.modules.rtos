@@ -1,0 +1,161 @@
+/* Copyright 2008, Mariano Cerdeiro
+ *
+ * This file is part of OpenSEK.
+ *
+ * OpenSEK is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenSEK is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/** \brief OpenSEK Internal Implementation File
+ **
+ ** \file Osek_Internal.c
+ **/
+
+/** \addtogroup OpenSEK
+ ** @{ */
+/** \addtogroup Internal
+ ** @{ */
+
+/*
+ * Initials     Name
+ * ---------------------------
+ * MaCe         Mariano Cerdeiro
+ */
+
+/*
+ * modification history (new versions first)
+ * -----------------------------------------------------------
+ * 20080713 v0.1.0 MaCe       - initial version
+ */
+
+/*==================[inclusions]=============================================*/
+#include "Osek_Internal.h"
+
+/*==================[macros and definitions]=================================*/
+
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+TaskType RunningTask;
+
+ContextType ActualContext;
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+void AddReady(TaskType TaskID)
+{
+	TaskPriorityType priority;
+	TaskRefType readylist;
+	TaskTotalType maxtasks;
+	TaskTotalType position;
+
+	/* get task priority */
+	priority = TasksConst[TaskID].StaticPriority;
+	/* conver the priority to the array index */
+	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+	 * the valida entries for this array are between 0 and 3, so the -1 is needed
+	 * since the lower priority is 0.
+	 */
+	priority = (READYLISTS_COUNT-1)-priority;
+	
+	/* get ready list */
+	readylist = ReadyConst[priority].TaskRef;
+	/* get max number of entries */
+	maxtasks = ReadyConst[priority].ListLength;
+
+	/* get pincrementtion */
+	position = ( ReadyVar[priority].ListStart + ReadyVar[priority].ListCount ) % maxtasks;
+	/* set the task id in ready the list */
+	readylist[position] = TaskID;
+	/* increment the list counter */
+	ReadyVar[priority].ListCount++;
+}
+
+void RemoveTask
+(
+	TaskType TaskID
+)
+{
+	TaskPriorityType priority;
+	TaskRefType readylist;
+	TaskTotalType maxtasks;
+
+	/* get task priority */
+	priority = TasksConst[TaskID].StaticPriority;
+	/* conver the priority to the array index */
+	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+	 * the valida entries for this array are between 0 and 3, so the -1 is needed
+	 * since the lower priority is 0.
+	 */
+	priority = (READYLISTS_COUNT-1)-priority;
+
+	/* get ready list */
+	readylist = ReadyConst[priority].TaskRef;
+	/* get max number of entries */
+	maxtasks = ReadyConst[priority].ListLength;
+	/* increment the ListStart */
+	ReadyVar[priority].ListStart= ( ReadyVar[priority].ListStart + 1 )  % maxtasks;
+	/* decrement the count of ready tasks */
+	ReadyVar[priority].ListCount--;
+}
+
+TaskType GetNextTask
+(
+	void
+)
+{
+	uint8_least loopi;
+	flag found = FALSE;
+	TaskType ret = INVALID_TASK;
+
+	/* check in all ready lists */
+	for (loopi = 0; ( loopi < READYLISTS_COUNT ) && (!found) ; loopi++)
+	{
+		/* if one or more tasks are ready */
+		if (ReadyVar[loopi].ListCount > 0)
+		{
+			/* return the first ready task */
+			ret = ReadyConst[loopi].TaskRef[ReadyVar[loopi].ListStart];
+
+			/* set found true */
+			found = TRUE;
+		}
+	}
+
+	return ret;
+}
+
+TickType GetCounter(CounterType CounterID)
+{
+	TickType ret;
+
+	ret = CounterID;
+
+	return ret;
+}
+
+void OSEK_ISR_NoHandler(void)
+{
+	while(1);
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/*==================[end of file]============================================*/
+

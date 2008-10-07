@@ -1,0 +1,73 @@
+OpenSEK - Copyright 2008, Mariano Cerdeiro
+mcerdeiro@gmail.com - http://www.openosek.com.ar
+
+This file is part of OpenSEK.
+
+OpenSEK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OpenSEK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+
+IMPORTANT: Please read the RELEASENOTES. Only in valid releases
+the RELEASENOTES are complete.
+
+INDEX:
+
+0. What is OpenSEK?
+1. What do I need to use OpenSEK?
+2. How to compile and run the demo?
+3. How to port OpenSEK to an other architecture?
+4. To be involved
+
+CONTENT:
+
+0. What is OpenSEK?
+
+	OpenSEK is an OpenSource implementation of the the RTOS
+	specified by OSEK-VDX. You can download the OSEK-VDX specification
+	from http://www.osek-vdx.org/.
+
+1. What do I need to use OpenSEK?
+
+	OpenSEK is developed and tested in Linux but it can be generated
+	and used in others architectures. At the moment OpenSEK only runs
+	in POSIX architectures, no embedded system.
+
+	To generate OpenSEK you will need:
+		- php 5.2.1
+
+	To compile OpenSEK you will need:
+		- gcc 4.1.2
+
+
+2. How to compile and run the demo?
+
+	from the root directory execute:
+	make clean
+	make generate
+	make
+	./bin/OpenSEK
+
+	and if you want to generate the doxygen documentation
+
+	make doc
+
+3. How to port OpenSEK to an other architecture?
+
+	First of all we will finish the first version of OpenSEK for posix
+	system. After that we will start porting OpenSEK to at least one
+	microcontroller. If you want to participate please contact us.
+
+4. To be involved
+
+	Do you want to participate on the development of OpenSEK,
+	please contact me at mcerdeiro@gmail.com.
+

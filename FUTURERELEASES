@@ -1,0 +1,33 @@
+OpenSEK - Copyright 2008, Mariano Cerdeiro
+mcerdeiro@gmail.com - http://www.openosek.com.ar
+
+This file is part of OpenSEK.
+
+OpenSEK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OpenSEK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+
+FUTURE RELEASES:
+
+v1.0.0 planned for Q4 2009
+	- port OpenSEK to one Architecture
+	- requirements have to be completed
+	- tests have to be completed.
+
+v0.4.0 planned for Q1 2009
+   - start tracing the requirements on the code
+	- start testing the requirements and the code
+	- sure some bugfixing
+	- many optimization on time and size.	
+
+v0.3.0 planned for Q4 2008
+	- implement all OSEK-VDX classes

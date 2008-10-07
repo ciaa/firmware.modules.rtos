@@ -1,0 +1,53 @@
+OpenSEK - Copyright 2008, Mariano Cerdeiro
+mcerdeiro@gmail.com - http://www.openosek.com.ar
+
+This file is part of OpenSEK.
+
+OpenSEK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OpenSEK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+
+RELEASENOTES:
+v0.2.2	OpenSEK Beta Release 20091015
+	
+v0.2.1	OpenSEK Beta Release 20090926
+	- add splint checks
+	- add requirements tracing on the code
+	- avoid reentrance of the error hook
+	- add the followings hooks
+		- startuphook
+		- shutdownhook
+	- some order was performed on the c and h files
+	- update all disable/enable algorithm, a counter is used insted of stack
+v0.2.0	OpenSEK Pre Beta Release 2 20090922
+	- Complete GetAlarm/SetRelAlarm/SetAbsAlarm/CancelAlarm interfaces
+	- Complete Resume/SuspendAllInterrupts interfaces 
+	- Complete Enable/DisableAllInterrupts interfaces
+	- Complete Resume/SuspendOSInterrupts interfaces
+	- Add Counters simulators for posix
+	- Complete some testcases
+v0.1.0	First OpenSEK Pre Beta Release 20090917
+	- OpenSEK was only tested with the moduletest01 example.
+	- OpenSEK tests are not complet.
+	- The following apis are not finished:
+		- Resume/SuspendAllInterrupts
+		- Enable/DisableAllInterrupts
+		- Resume/SuspendOSInterrupts
+		- GetAlarm/SetRelAlarm/SetAbsAlarm/CancelAlarm
+	- make depend is not yet implemented
+	- compilation and link is always performed from scratch
+	- generation is not automatic, it has to be invoked with make generate
+	- oil file parser is not finished.
+		- /* */ are not implemented and can not be used in the .oil file	
+		- oil format may be not oil conform.
+	- ISR are not yet tested
+	- this is only a PRE BETE Release
