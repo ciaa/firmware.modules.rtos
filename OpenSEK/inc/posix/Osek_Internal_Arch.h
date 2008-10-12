@@ -21,7 +21,7 @@
 #define _OSEK_INTERNAL_ARCH_H_
 /** \brief OpenSEK Internal Architecture Dependent Header File
  **
- ** \file Osek_Internal_Arch.h
+ ** \file posix/Osek_Internal_Arch.h
  ** \arch posix
  **/
 

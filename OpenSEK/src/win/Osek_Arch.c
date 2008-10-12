@@ -19,7 +19,8 @@
 
 /** \brief OpenSEK Arch Implementation File
  **
- ** \file Osek_Arch.c
+ ** \file win/Osek_Arch.c
+ ** \arch win
  **/
 
 /** \addtogroup OpenSEK

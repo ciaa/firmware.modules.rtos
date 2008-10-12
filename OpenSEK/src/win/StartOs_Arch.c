@@ -21,7 +21,8 @@
  **
  ** This file implements the StartOs Arch API
  **
- ** \file StartOs_Arch.c
+ ** \file win/StartOs_Arch.c
+ ** \arch win
  **/
 
 /** \addtogroup OpenSEK

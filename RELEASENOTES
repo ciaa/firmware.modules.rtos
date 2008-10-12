@@ -17,9 +17,11 @@ You should have received a copy of the GNU General Public License
 along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
 
 RELEASENOTES:
-v0.2.2	OpenSEK Beta Release 20091015
-	
-v0.2.1	OpenSEK Beta Release 20090926
+v0.2.2	OpenSEK Beta Release 20081012
+	- add support for windows (cygwin)
+	- generic os file were checked with splint
+	- extend the documentation a little bit
+v0.2.1	OpenSEK Beta Release 20080926
 	- add splint checks
 	- add requirements tracing on the code
 	- avoid reentrance of the error hook
@@ -28,14 +30,14 @@ v0.2.1	OpenSEK Beta Release 20090926
 		- shutdownhook
 	- some order was performed on the c and h files
 	- update all disable/enable algorithm, a counter is used insted of stack
-v0.2.0	OpenSEK Pre Beta Release 2 20090922
+v0.2.0	OpenSEK Pre Beta Release 2 20080922
 	- Complete GetAlarm/SetRelAlarm/SetAbsAlarm/CancelAlarm interfaces
 	- Complete Resume/SuspendAllInterrupts interfaces 
 	- Complete Enable/DisableAllInterrupts interfaces
 	- Complete Resume/SuspendOSInterrupts interfaces
 	- Add Counters simulators for posix
 	- Complete some testcases
-v0.1.0	First OpenSEK Pre Beta Release 20090917
+v0.1.0	First OpenSEK Pre Beta Release 20080917
 	- OpenSEK was only tested with the moduletest01 example.
 	- OpenSEK tests are not complet.
 	- The following apis are not finished:

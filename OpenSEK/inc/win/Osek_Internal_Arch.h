@@ -21,8 +21,8 @@
 #define _OSEK_INTERNAL_ARCH_H_
 /** \brief OpenSEK Internal Architecture Dependent Header File
  **
- ** \file Osek_Internal_Arch.h
- ** \arch posix
+ ** \file win/Osek_Internal_Arch.h
+ ** \arch win 
  **/
 
 /** \addtogroup OpenSEK
@@ -218,10 +218,6 @@ extern void CallTask(TaskType NewTask);
 
 extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
 
-/** \brief Posix Interrupt Handler
- **
- ** This function is called every time when a interrupt message is received.
- **/
 extern void PosixInterruptHandler(int status);
 
 extern void HWTimerFork(uint8 timer);

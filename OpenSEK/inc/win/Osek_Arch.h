@@ -24,7 +24,7 @@
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file Osek_Arch.h
+ ** \file win/Osek_Arch.h
  ** \arch posix
  **
  **/

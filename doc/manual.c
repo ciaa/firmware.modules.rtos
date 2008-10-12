@@ -215,4 +215,8 @@
  * The POSIX variant has two simulated HW timers which have an interrupt every 10ms. Anyway
  * alarms are not working on the prebeta release.
  *
+ * \subsection archwin Support for Windows
+ *
+ * take a look on this page \ref Windows
+ *
  */

@@ -19,7 +19,8 @@
 
 /** \brief OpenSEK Internal Arch Implementation File
  **
- ** \file Osek_Internal_Arch.c
+ ** \file posix/Osek_Internal_Arch.c
+ ** \arch posix
  **/
 
 /** \addtogroup OpenSEK
