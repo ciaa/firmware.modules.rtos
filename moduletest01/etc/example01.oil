@@ -19,7 +19,7 @@ TASK InitTask {
       };
 	RESOURCE = Resource1;
 	EVENT = Event1;
-   STACK = 10240;
+   STACK = 50240;
    TYPE = EXTENDED;
 };
 
@@ -52,7 +52,7 @@ TASK TaskC {
 	AUTOSTART = FALSE;
 	RESOURCE = Resource2;
 	TYPE = BASIC;
-	STACK = 1024;
+	STACK = 10024;
 }
 
 TASK TaskD {
@@ -62,7 +62,7 @@ TASK TaskD {
 	AUTOSTART = FALSE;
 	RESOURCE = Resource2;
 	EVENT = Event2;
-	STACK = 1024;
+	STACK = 10024;
 	TYPE = BASIC;
 }
 
@@ -73,7 +73,7 @@ TASK TaskE {
    AUTOSTART = FALSE;
    RESOURCE = Resource3;
    EVENT = Event2;
-   STACK = 1024;
+   STACK = 10024;
    TYPE = BASIC;
 }
 
