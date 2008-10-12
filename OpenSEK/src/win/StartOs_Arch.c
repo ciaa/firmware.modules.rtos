@@ -60,19 +60,40 @@
 void StartOs_Arch(void)
 {
 	uint8_least loopi;
-
+	   
 	/* init every task */
 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
 	{
 		/* init stack */
 		ResetStack(loopi);
 
-		/* create task context */
-		/* (void)getcontext(TasksConst[loopi].TaskContext);	*/ /* get actual context as start point */
+		/* set entry point */
+      SetEntryPoint(loopi)
 	}
 
-	/* set message queue attributes */
-	/* TODO */
+	/* set event */
+	MessageSignal.sa_handler = PosixInterruptHandler;
+	(void)sigemptyset(&MessageSignal.sa_mask);
+	MessageSignal.sa_flags = 0;
+
+	if (sigaction(SIGUSR1, &MessageSignal, NULL) == -1)
+	{
+		printf("Error: SIGUSR1 can not be configured, error number: %d\n", errno);
+	}
+	
+	/* create shared memory */
+   if ((SharedMemory = shmget(1, sizeof(MessageQueueType), IPC_CREAT | 0666)) < 0) {
+      printf("shmget error\n");
+      exit(1);
+   }
+    
+   /* atach to the segment */
+   MessageQueue = (MessageQueueType*) shmat(SharedMemory, NULL, 0);
+   if (MessageQueue == (MessageQueueType *) -1)
+   {
+      printf("shmat error\n");
+      exit(1);
+   }
 
 	if (fork() == 0)
 	{

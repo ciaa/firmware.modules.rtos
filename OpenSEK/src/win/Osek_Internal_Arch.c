@@ -45,20 +45,19 @@
 
 /*==================[macros and definitions]=================================*/
 
+/*==================[typedef]================================================*/
+
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
+MessageQueueType *MessageQueue;
 
 /*==================[external data definition]===============================*/
 uint8	InterruptState;
 
-/* mqd_t MessageQueue; */
-
-/* struct mq_attr MessageQueueAttr; */
-
-/* struct sigaction MessageSignal; */
+struct sigaction MessageSignal;
 
 /* struct sigaction KillSignal; */
 
@@ -70,9 +69,125 @@ uint32 OsekHWTimer0;
 
 InterruptFlagsType InterruptFlag;
 
+int SharedMemory;
+
 /*==================[internal functions definition]==========================*/
+/** \brief SendMessage
+ **
+ ** This function transmit a message to the indicated
+ ** message queue.
+ **
+ ** \param[in] Msg pointer to the Message Queue
+ ** \param[in] Val value to be transmiteed
+ ** \return 0 if error occurs
+ **         1 if no error
+ **/
+uint8 SendMessage(MessageQueueType *Msg, uint8 Val)
+{
+   uint8 ret = 1;
+   
+   if (Msg == NULL)
+   {
+      ret = 0;
+   }
+   else
+   {
+   
+      Msg->Lock++;
+      while(Msg->Lock != 1)
+      {
+         Msg->Lock--;
+         osekpause();
+         Msg->Lock++;
+      }
+      
+      if (Msg->Count >= MESSAGE_QUEUE_LENGTH)
+      {
+         ret = 0;
+      }
+      else
+      {
+         Msg->Buffer[Msg->Last] = Val;
+         Msg->Last = (Msg->Last + 1) % MESSAGE_QUEUE_LENGTH;
+         Msg->Count++;
+      }
+      
+      Msg->Lock--;
+   }
+   
+   return ret;
+}
+
+/** \brief ReceiveMessage
+ **
+ ** This function receive a message from the indicated message
+ ** queue.
+ **
+ ** \param[in] Msg pointer to the Message Queue
+ ** \param[in] Val variabel where the received message shall be stored
+ ** \return 0 if an error occurs
+ **         1 if no errors.
+ **/
+uint8 ReceiveMessage(MessageQueueType *Msg, uint8 *Val)
+{
+   uint8 ret = 1;
+   
+   if (Msg == NULL)
+   {
+      ret = 0;
+   }
+   else
+   {
+
+      Msg->Lock++;
+      while(Msg->Lock != 1)
+      {
+         Msg->Lock--;
+         osekpause();
+         Msg->Lock++;
+      }
+   
+      if (Msg->Count == 0)
+      {
+         ret = 0;
+      }
+      else
+      {
+         *Val = Msg->Buffer[Msg->First];
+         Msg->First = (Msg->First + 1) % MESSAGE_QUEUE_LENGTH;
+         Msg->Count--;
+      }
+      
+      Msg->Lock--;
+      
+   }
+   
+   return ret;
+}
 
 /*==================[external functions definition]==========================*/
+void CallTask(TaskType NewTask)
+{
+   /* save actual esp */
+   __asm__ __volatile__ ("movl %%esp, %%eax; addl $12, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(GetRunningTask())].TaskContext->tss_esp) : : "%eax" );
+  
+   /* save actual ebp */ 
+   __asm__ __volatile__ ("movl %%ebp, %%eax; addl $16, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(GetRunningTask())].TaskContext->tss_ebp) : : "%eax" );
+   
+   /* save return eip */
+   __asm__ __volatile__ ("movl 4(%%ebp), %%eax; movl %%eax, %0" : "=g" (TasksConst[(GetRunningTask())].TaskContext->tss_eip) : : "%eax");
+   
+   SetRunningTask(NewTask);
+   
+   /* load new stack pointer */
+   __asm__ __volatile__ ("movl %0, %%esp;" : :  "g" (TasksConst[(NewTask)].TaskContext->tss_esp));
+   
+   /* load new ebp and jmp to the new task */
+   __asm__ __volatile__ ("movl %0, %%ebx;" \
+                         "movl %1, %%ebp;" \
+                         "jmp *%%ebx;" : :  "g" (TasksConst[(NewTask)].TaskContext->tss_eip), "g" (TasksConst[(NewTask)].TaskContext->tss_ebp));   
+}
+
 void CounterInterrupt(CounterType CounterID)
 {
 	uint8_least loopi;
@@ -151,23 +266,23 @@ void OSEK_ISR_HWTimer1(void)
 
 void PosixInterruptHandler(int status)
 {
-	uint8 msg[10];
-	ssize_t mq_ret;
+	uint8 Msg;
+	sint8 ret;
 
-	/* mq_ret = mq_receive(MessageQueue, (char*)msg, sizeof(msg), NULL); */
-	if (mq_ret > 0)
+	ret = ReceiveMessage(MessageQueue, &Msg);
+	if (ret)
 	{
-		if (msg[0] < 32)
+		if (Msg < 32)
 		{
 			/* printf("Interrupt: %d\n",msg[0]); */
 			if ( (InterruptState) &&
-				  ( (InterruptMask & (1 << msg[0] ) )  == 0 ) )
+				  ( (InterruptMask & (1 << Msg ) )  == 0 ) )
 			{
-				InterruptTable[msg[0]]();
+				InterruptTable[Msg]();
 			}
 			else
 			{
-				InterruptFlag |= 1 << msg[0];
+				InterruptFlag |= 1 << Msg;
 			}
 		}
 
@@ -176,20 +291,26 @@ void PosixInterruptHandler(int status)
 
 void HWTimerFork(uint8 timer)
 {
-	int mq_ret;
-	char msg;
+	char Msg;
 	struct timespec rqtp;
+	pid_t ppid;
+	
+	ppid = getppid();
+	MessageQueueType *MessageQueue;
+	
+	MessageQueue = (MessageQueueType*) shmat(SharedMemory, NULL, 0);
 
 	if (timer <= 2)
 	{
-		msg = timer + 4;
+		Msg = timer + 4;
 
 		rqtp.tv_sec=0;
    	rqtp.tv_nsec=1000000;
 
 		while(1)
 		{
-			/* mq_ret = mq_send(MessageQueue, &msg, sizeof(msg), 0); */
+			SendMessage(MessageQueue, Msg);
+			kill(ppid, SIGUSR1);
 			nanosleep(&rqtp,NULL);
 		}
 	}

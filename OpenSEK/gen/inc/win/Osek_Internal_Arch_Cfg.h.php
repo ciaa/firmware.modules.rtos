@@ -56,6 +56,7 @@
 /*==================[typedef]================================================*/
 /** \brief Task Context Type */
 typedef struct {
+	uint32 tss_esp;
 	uint32 tss_ebp;
    uint32 tss_eip;
 } TaskContextType;

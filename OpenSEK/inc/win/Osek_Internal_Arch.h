@@ -44,10 +44,20 @@
  */  
 
 /*==================[inclusions]=============================================*/
+#include "sys/types.h"
+#include "sys/ipc.h"
+#include "sys/shm.h"
 #include "unistd.h"
+#include "signal.h"
 #include "time.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "errno.h"
 
 /*==================[macros]=================================================*/
+/** \brief Lenght of the Message Queue */
+#define MESSAGE_QUEUE_LENGTH  32
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro shall be used to disable the interrupts
@@ -65,52 +75,53 @@
  **/
 #define osekpause()	{ (void)usleep(1); }
 
-/** \brief Call to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-#define CallTask(task)															\
-	{																					\
-		uint8 jmp = 1;																\
-		SaveContext(GetRunningTask());                              \
-		jmp--;																		\
-		if (jmp == 0)																\
-		{																				\
-			/* set as running task */											\
-			SetRunningTask(task);												\
-			/* (void)setcontext(TasksConst[(task)].TaskContext);	*/		\
-		}																				\
-	}
-
 /** \brief Jmp to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define JmpTask(task)   {  }
+#define JmpTask(task) \
+   {                                                                                            \
+      __asm__ __volatile__ ("movl %0, %%esp;" \
+         "movl %2, %%eax;" \
+         "movl %1, %%ebp;" \
+         "jmp *%%eax;" \
+         : :  "g" (TasksConst[(task)].TaskContext->tss_esp), "g" (TasksConst[(task)].TaskContext->tss_ebp) , "g" (TasksConst[(task)].TaskContext->tss_eip) : "%eax"); \
+   }
+
+/** \brief Call to an other Task
+ **
+ ** This function jmps to the indicated task.
+ **/
+/* #define CallTask(task)															\
+	{																					\
+		SaveContext(GetRunningTask());                              \
+      *//* set as running task *//*											   \
+		SetRunningTask(task);												   \
+	   JmpTask(task);                                              \
+		RestoreContext();                                           \
+	}*/
 
 /** \brief Save context */
 #define SaveContext(task) \
    {                                   \
-      __asm("pushl %ebp");             \
-      __asm("pushl %esi");             \
-      __asm("pushl %edi");             \
-      __asm("pushl %edx");             \
-      __asm("pushl %ecx");             \
-      __asm("pushl %ebx");             \
-      __asm("pushl %eax");             \
-      __asm("pushw %ds");              \
-      __asm("pushw %es");              \
-      __asm("pushw %fs");              \
-      __asm("pushw %gs");              \
+      /* save actual esp */            \
+      __asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(task)].TaskContext->tss_esp) : : "%eax" ); \
+                                       \
+      /* save actual ebp */            \
+      __asm__ __volatile__ ("movl %%ebp, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(task)].TaskContext->tss_ebp) : : "%eax" );  \
+                                       \
+      /* save return eip */            \
+      __asm__ __volatile__ ("movl $_next, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(task)].TaskContext->tss_eip) : : "%eax"); \
+      __asm__ __volatile__ ("_next:"); \
    }
 
 /** \brief Set the entry point for a task */
 #define SetEntryPoint(task)   { TasksConst[(task)].TaskContext->tss_eip = (uint32)TasksConst[(task)].EntryPoint; }
 
 /** \brief */
-#define ResetStack(task)																													\
-	{																																				\
-		TasksConst[loopi].TaskContext->tss_esp = ( TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize);    \
+#define ResetStack(task)																													      \
+	{																																				      \
+		TasksConst[loopi].TaskContext->tss_esp = (uint32)( TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize - 4);  \
    }
 
 #define ISR_NMI      0
@@ -168,6 +179,15 @@ typedef signed int sint32_least;
 /** \brief falg type definition */
 typedef unsigned char flag;
 
+/** \brief Message Queue type definition */
+typedef struct {
+   uint8 Lock;
+   uint8 Buffer[MESSAGE_QUEUE_LENGTH];
+   uint8 Last;
+   uint8 First;
+   uint8 Count;
+} MessageQueueType;
+
 /*==================[external data declaration]==============================*/
 /** \brief Interrupt Falg
  **
@@ -179,7 +199,7 @@ extern InterruptFlagsType InterruptFlag;
 
 /** \brief Message Signal
  **/
-/* extern struct sigaction MessageSignal; */
+extern struct sigaction MessageSignal;
 
 /** \brief Signal Event
  **/
@@ -189,7 +209,13 @@ extern InterruptFlagsType InterruptFlag;
  **/
 /* extern uint32 OsekHWTimer0; */
 
+extern MessageQueueType *MessageQueue;
+
+extern int SharedMemory;
+
 /*==================[external functions declaration]=========================*/
+extern void CallTask(TaskType NewTask);
+
 extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
 
 /** \brief Posix Interrupt Handler
