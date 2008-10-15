@@ -132,6 +132,18 @@
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
 
+/** \brief Pre ISR Macro
+ **
+ ** This macro is called every time that an ISR Cat 2 is started
+ **/
+#define PreIsr2_Arch(isr)
+
+/** \brief Post ISR Macro
+ **
+ ** This macro is called every time that an ISR Cat 2 is finished
+ **/
+#define PostIsr2_Arch(isr)
+
 /*==================[typedef]================================================*/
 /** \brief uint8 type definition */
 typedef unsigned char uint8;

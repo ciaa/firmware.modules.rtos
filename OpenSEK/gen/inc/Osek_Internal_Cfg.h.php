@@ -531,6 +531,22 @@ print "extern const CounterConstType CountersConst[" . count($counters) . "];\n"
 
 ?>
 /*==================[external functions declaration]=========================*/
+<?php
+$intnames = $config->getList("/OSEK","ISR");
+foreach ($intnames as $int)
+{
+   $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+
+   if ($intcat == 2)
+   {
+      print "/** \\brief Interrupt Cat 2 $int\n";
+      print " **/\n";
+      print "extern void OSEK_ISR2_$int(void);\n";
+   }
+
+}
+?>
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

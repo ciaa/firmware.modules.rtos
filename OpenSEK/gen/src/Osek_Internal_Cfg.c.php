@@ -430,6 +430,25 @@ uint8 ErrorHookRunning;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+<?php
+$intnames = $config->getList("/OSEK","ISR");
+foreach ($intnames as $int)
+{
+	$inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+	$intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+
+	if ($intcat == 2)
+	{
+		print "void OSEK_ISR2_$int(void)\n";
+		print "{\n";
+		print "	PreIsr2($int);\n";
+		print "	OSEK_ISR_$int()\n";
+		print "	PostIsr2($int);\n";
+		print "}\n";
+	}
+	
+}
+?>
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

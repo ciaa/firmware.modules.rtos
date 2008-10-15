@@ -7,7 +7,7 @@ VPATH += moduletest01$(DIR)src
 
 INCLUDE += -Imoduletest01$(DIR)inc
 
-CFGFILES += moduletest01$(DIR)etc$(DIR)example01.oil			\
+CFGFILES += moduletest01$(DIR)etc$(DIR)moduletest01.oil			\
 				moduletest01$(DIR)etc$(DIR)testsuite.oil
 
 CLEAN += moduletest01clean
