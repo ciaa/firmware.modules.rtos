@@ -100,10 +100,6 @@ for ($loopi = 0; $loopi < 32; $loopi++)
 		{
 			$inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
 			$intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-			if($intcat == "2")
-			{
-				error("Interrupts Category 2 are not yet supported: Interrupt: $int, Type: $inttype, Cat: $intcat");
-			}
 			switch($inttype)
 			{
 				case "INT_CANRX":
@@ -116,6 +112,8 @@ for ($loopi = 0; $loopi < 32; $loopi++)
 						}
 						elseif($intcat == "2")
 						{
+							print "	OSEK_ISR2_$int, /* interrupt handler $loopi */\n";
+							$flag = true;
 						}
 						else
 						{
@@ -133,6 +131,8 @@ for ($loopi = 0; $loopi < 32; $loopi++)
 						}
 						elseif($intcat == "2")
 						{
+							print "	OSEK_ISR2_$int, /* interrupt handler $loopi */\n";
+							$flag = true;
 						}
 						else
 						{

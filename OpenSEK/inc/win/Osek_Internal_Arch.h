@@ -73,7 +73,14 @@
 /** \brief osekpause
  **
  **/
-#define osekpause()	{ (void)usleep(1); }
+#define osekpause()  \
+   {                 \
+      /* get win stack and save the osek stack */     \
+/*      __asm__ __volatile__ ("movl %%esp, %%ebx; movl %0, %%esp; pushl %%ebx" : : "g" (WinStack) : "ebx"); */\
+      (void)usleep(1);                                \
+      /* get old stack back */                        \
+/*      __asm__ __volatile__ ("popl %esp;");            */\
+   }
 
 /** \brief Jmp to an other Task
  **
@@ -114,6 +121,12 @@
       __asm__ __volatile__ ("movl $_next, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(task)].TaskContext->tss_eip) : : "%eax"); \
       __asm__ __volatile__ ("_next:"); \
    }
+   
+#define SaveWinStack() \
+   {                                   \
+      /* save actual win esp */        \
+      __asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (WinStack)); \
+   }
 
 /** \brief Set the entry point for a task */
 #define SetEntryPoint(task)   { TasksConst[(task)].TaskContext->tss_eip = (uint32)TasksConst[(task)].EntryPoint; }
@@ -147,6 +160,18 @@
  ** \return Actual value of the counter
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
+
+/** \brief Pre ISR Macro
+ **
+ ** This macro is called every time that an ISR Cat 2 is started
+ **/
+#define PreIsr2_Arch(isr)
+
+/** \brief Post ISR Macro
+ **
+ ** This macro is called every time that an ISR Cat 2 is finished
+ **/
+#define PostIsr2_Arch(isr)
 
 /*==================[typedef]================================================*/
 /** \brief uint8 type definition */
@@ -221,6 +246,8 @@ extern struct sigaction MessageSignal;
 extern MessageQueueType *MessageQueue;
 
 extern int SharedMemory;
+
+extern uint32 WinStack;
 
 /*==================[external functions declaration]=========================*/
 extern void CallTask(TaskType NewTask);

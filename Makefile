@@ -7,7 +7,7 @@
 # at the moment the followings archictectures are supported:
 #	- posix
 #  - win
-ARCH = posix
+ARCH = win
 
 # DERIVATE
 # defines the derivate. For each architecture none, one or more derivates can be

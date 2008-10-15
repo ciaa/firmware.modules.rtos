@@ -72,6 +72,8 @@ InterruptFlagsType InterruptFlag;
 
 int SharedMemory;
 
+uint32 WinStack;
+
 /*==================[internal functions definition]==========================*/
 /** \brief SendMessage
  **

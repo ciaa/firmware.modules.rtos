@@ -110,7 +110,9 @@ void StartOs_Arch(void)
 	InterruptState = 1;
 
 	/* enable timer interrupt */
-	InterruptMask = 16;	
+	InterruptMask = 16;
+	
+	SaveWinStack();
 }
 
 /** @} doxygen end group definition */
