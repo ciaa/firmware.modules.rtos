@@ -139,6 +139,15 @@
  **/
 #define SetRunningTask(newtask)  (RunningTask = (newtask) )
 
+/** \brief Get Counter Actual Value
+ **
+ ** This macro returns the actual value of the counter
+ **
+ ** \param[in] CounterID id of the counter to be readed
+ ** \return Actual value of the counter
+ **/
+#define GetCounter(CounterID) GetCounter_Arch(CounterID)
+
 /*==================[typedef]================================================*/
 /** \brief ContextType
  **
@@ -162,15 +171,6 @@ extern TaskType RunningTask;
  ** This function is called from the StartOs function
  **/
 extern void StartOs_Arch(void);
-
-/** \brief Get Counter Actual Value
- **
- ** This function returns the actual value of the counter
- **
- ** \param[in] CounterID id of the counter to be readed
- ** \return Actual value of the counter
- **/
-extern TickType GetCounter(CounterType CounterID);
 
 /** \brief Get Next Task
  **

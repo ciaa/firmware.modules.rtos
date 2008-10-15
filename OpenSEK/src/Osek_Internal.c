@@ -141,15 +141,6 @@ TaskType GetNextTask
 	return ret;
 }
 
-TickType GetCounter(CounterType CounterID)
-{
-	TickType ret;
-
-	ret = CounterID;
-
-	return ret;
-}
-
 void OSEK_ISR_NoHandler(void)
 {
 	while(1);

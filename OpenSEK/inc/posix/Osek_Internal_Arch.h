@@ -123,6 +123,15 @@
 		InterruptState = 1;		\
 	}
 
+/** \brief Get Counter Actual Value
+ **
+ ** This macro returns the actual value of the counter
+ **
+ ** \param[in] CounterID id of the counter to be readed
+ ** \return Actual value of the counter
+ **/
+#define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
+
 /*==================[typedef]================================================*/
 /** \brief uint8 type definition */
 typedef unsigned char uint8;
