@@ -1,57 +1,124 @@
-/** \mainpage
+/* 
+ * Copyright 2008, Mariano Cerdeiro
+ *
+ * This file is part of OpenSEK.
+ *
+ * OpenSEK is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenSEK is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/** 
+ * \page OpenSEK OpenSEK Documentation
+ *
  * \authors Mariano Cerdeiro (mcerdeiro@gmail.com)
  * \authors http://www.openosek.com.ar/
  *
- * \section intro Inroduction
+ * \section OpenSEK_Introduction Inroduction
  *
- * \subsection About OpenSEK
+ * \subsection OpenSEK_Introduction_About About OpenSEK
  *
- * OpenSEK is an Open Source Implementation of the RTOS specified by OSEK-VDX. You can get the
- * OSEK-VDX specification under http://www.osek-vdx.org/.
+ * OpenSEK is an Open Source Implementation resleased under the terms of GPL of
+ * the RTOS specified by OSEK-VDX. You can get the OSEK-VDX specification under
+ * http://www.osek-vdx.org/.
  *
- * \subsection forwhat For what can I use OpenSEK?
+ * \subsection OpenSEK_Introduction_Why Why OpenSEK?
  *
- * At the moment OpenSEK is still in beta version, so you can use it if you are new with OSEK 
- * to win some know how. OpenSEK runs today only under posix system and it was tested only under
- * Linux. If you want to port it to a new architecture you are welcome.
+ * The project started as an idea many years ago. At that moment (2005) I
+ * had only few knowledge of embedded systems and no idea how to create a
+ * code generator which is an indispensable part for an OSEK implementation.
  *
- * \subsection whatneed What do I need to run OpenSEK?
+ * First in Juli 2008 I had the idea to use php as generator and I started
+ * programming the first OpenSEK version which was available in September 2008
+ * for posix arhcitectures simulating the needed hardware of an embedded
+ * system.
  *
- * To generate the system and to run it you will ned:
+ * At this moment OpenSEK is still under development. The goals of OpenSEK
+ * is to be used for educational propuses, for any type of demostrator or for
+ * small projects.
+ *
+ * OpenSEK is not designed to be used on a real car and or any
+ * other application where human lives were under risk. Take into account that
+ * OpenSEK is released under the terms of GPL. OpenSEK Team will not
+ * take ANY responsability of what you do with this software and what it may
+ * happens. Please refer you to the GPL License for more information.
+ *
+ * \subsection OpenSEK_Introduction_System What do I need to run OpenSEK?
+ *
+ * To generate the system and to run it you will need:
  *
  *  - php version 5.2.x (for the generation)
  *  - make
  *  - gcc
  * 
- * There are some other used tools that you are going to need if you want to have others 
- * features, like:*
+ * There are some other tools that you are going to need to take advantage of
+ * some extra features:
  * 
  *  - SVN if you want to check it out from SVN server.
  *  - splint if you want to check the code
  *  - doxygen to generate the documentation
+ *  - gcov to maeasure the test coverage
  * 
- * \subsection compiling Compiling OpenSEK for the first time
+ * \subsection OpenSEK_Introduction_Installing Installing OpenSEK
  *
- * If this is your fist time with OpenSEK I recomend you to download the last version
- * (at the moment the pre beta releas) as .tar.gz and to run followings commands:
+ * You can download OpenSEK from the project page in SourceForge.net:
  *
- * - tar -xzf OpenSEK_release_vx_x_x_YYYYMMDD_name
- * - cd OpenSEK_release_vx_x_x_YYYYMMDD_name
- * - make generate
- * - make
- * - make doc (only to generate the documentation)
- * - ./out/bin/OpenSEK
+ *  - https://sourceforge.net/projects/opensek/
  *
- * If you dont change the original makefile you will generate and compile the module test, 
- * so if you run the executable after compiling it you are going to see the test cases and
- * OK, FAILED or NOTRUN.
- * If one or more of the test cases results are other than OK you are having problems, the code
- * is not running correctly.
+ * or you can get the trunk from SVN
  *
- * \subsection compilingyourown Compiling my own program with OpenSEK
+ *  - http://opensek.svn.sourceforge.net/viewvc/opensek/trunk/
  *
- * If you run the moduletests01 without problems you can try to run the example01 and start
- * changing the code. For that I recomend you to read the followings chapters
+ * \subsection OpenSEK_Introduction_Compiling Compiling OpenSEK for the first time
+ *
+ * If this is your fist time with using OpenSEK we recomend you to download
+ * the last version from sourceforge.
+ *
+ * First of all you have to decompress the package:
+ *
+ *  - tar -xzf OpenSEK_release_vx_x_x_YYYYMMDD_name
+ *  - cd OpenSEK_release_vx_x_x_YYYYMMDD_name
+ *
+ * After this you have to configure the architecture in which you want to
+ * compule the software. Edit the Makefile on the root directory and set 
+ * the make variable ARCH to the arh that you want to compile for.
+ *
+ * ARCH = posix
+ *
+ * in the comment before the ARCH declaration you shall find a list of all
+ * supported architectures.
+ *
+ * After selecting the right architecture you can execute the followings
+ * commands:
+ *
+ *  - make generate
+ *  - make
+ *  - make doc (only to generate the documentation)
+ *  - ./out/bin/OpenSEK
+ *
+ * If you dont change the original makefile you will generate and compile the
+ * module test. If you execute the executable after compiling it you are
+ * going to see the test cases and OK, FAILED or NOTRUN on the display.
+ * If one or more of the test cases results are other than OK you are
+ * having problems, the code system is not running correctly.
+ *
+ * \subsection OpenSEK_Introduction_FirstProject Compiling your first OpenSEK project
+ *
+ * If you run the moduletests01 without problems you can try to run the
+ * example01 and base your project on this example.
+ *
+ * The example today is almost empty, one task planed for the next release is
+ * to provide a good and well documented example.
  *
  * \section directory OpenSEK Directory Three
  *
