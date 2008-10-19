@@ -1,5 +1,44 @@
-/** \page OilFormat Oil File Format Documentation
+/** \page OilFormat Oil File Format and Configuration Documentation
  *
- * This page shall content an introduction to the Oil File Format
+ * \section OilFormat_Configuration Configuration
+ *
+ * As you know the OpenSEK is a static configured operating system. For example the count
+ * and types of task is defined at generation time. For that you have to write your own
+ * configuration in oil format. The example01 contains a configuration under
+ * example01/etc/example01.oil. If you need more information about the oil format take a
+ * look on the OSEK-VDX page: http://www.osek-vdx.org
+ *
+ * Take into account that the oil format used on OpenSEK is still under development and
+ * is in pre beta release, so do not surprise you if many thinks are not working as you want.
+ *
+ * \section OilFormat_Generation Generation
+ *
+ * After you have wrote your configuration you can generate your osek for that you have to run:
+ *
+ * make generate.
+ *
+ * The generator is a program who parse the oil file and generate the configuration for
+ * the operating system in function from what you need, for example count of tasks, name
+ * of the events, priority etc etc etc.
+ *
+ * The generator is written in php and the files to be generated too.
+ *
+ * \subsection OilFormat_Genration_Internal Generation Structure
+ *
+ * For the generation the Makefile calls the script generator.php, this script has to be
+ * called with some options that you can see editing the file.
+ *
+ * The generator file will call the config.php script to load the configuration and this
+ * one calls the oilparser.php to parse the oilfiles given as input.
+ *
+ * The files to be generated are given as parameter too.
+ *
+ * If you want to write your file to be generated is easy, take as example some of the
+ * OpenOSEK/etc/src/\* to start.
+ *
+ * The generation process has to be optimized but is working.
+ * Dependencis to each architecture
+ *
+ * At the moment OpenSEK is only available for POSIX.
  *
  */

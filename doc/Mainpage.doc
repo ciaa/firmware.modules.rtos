@@ -5,7 +5,13 @@
  *
  * \section mainpage_links Module Documentation
  *
- * On this section you can find the links to the documentation of every module.
+ * If this is your first time with OpenSEK environment we recommend you to start
+ * reading the introduction:
+ *
+ * - \ref Introduction
+ *
+ * After reading the introduction on the following chapters you can find more
+ * detailed information of every module.
  *
  * - \ref Modules
  * - \ref OilFormat
