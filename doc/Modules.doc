@@ -1,0 +1,6 @@
+/** \page Modules Introduction to OpenSEK Module Format
+ *
+ * This page shall content how to create a new Module compatible
+ * to the OpenSEK make environment.
+ *
+ */

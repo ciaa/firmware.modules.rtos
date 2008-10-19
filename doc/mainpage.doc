@@ -1,0 +1,20 @@
+/** \mainpage Project Documentation
+ *
+ * This is the Documentation Main Page. You can use it to write your own
+ * specific documentation.
+ *
+ * \section mainpage_links Module Documentation
+ *
+ * On this section you can find the links to the documentation of every module.
+ *
+ * - \ref Modules
+ * - \ref OilFormat
+ * - \ref OpenSEK
+ * - \ref OpenTIME
+ * - \ref OpenLCD
+ * - \ref OpenCOM
+ * - \ref OpenKEY
+ * - \ref OpenGEN
+ * - \ref OpenDRV
+ * - \ref OpenMAKE
+ */
