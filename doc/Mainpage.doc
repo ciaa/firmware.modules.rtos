@@ -3,7 +3,14 @@
  * This is the Documentation Main Page. You can use it to write your own
  * specific documentation.
  *
- * \section mainpage_links Module Documentation
+ * \section Mainpage_Basics Basic Documentation
+ *
+ * - \ref CREDITS
+ * - \ref RELEASENOTES
+ * - \ref FUTURERELEASES
+ * - \ref README
+ *
+ * \section Mainpage_Links Module Documentation
  *
  * If this is your first time with OpenSEK environment we recommend you to start
  * reading the introduction:
@@ -23,4 +30,5 @@
  * - \ref OpenGEN
  * - \ref OpenDRV
  * - \ref OpenMAKE
+ *
  */

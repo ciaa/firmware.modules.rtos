@@ -1,0 +1,15 @@
+/**
+ * \page OpenSEK_Posix OpenSEK for Poisx
+ *
+ * OpenSEK uses some posix services to simulate the hardware like interrupts and timers.
+ * For the interrupt mechanisms a message queue with signal is used. Every time that you
+ * send a message of only one byte to the message queue /dev/mqueue/BINNAME where BINNAME
+ * is the binary name of the project defined in the Makefile with the PROJECT variable.
+ * As defualt /dev/mqueue/OpenSEK. The received byte in this queue is interprated as an interrupt.
+ *
+ * \section OpenSEK_Posix_Timers Timers Simulations
+ *
+ * The POSIX variant has two simulated HW timers which have an interrupt every 10ms. Anyway
+ * alarms are not working on the prebeta release.
+ *
+ */
