@@ -23,7 +23,9 @@
  **/
 
 /** \addtogroup TestSuite
- ** @{ */ 
+ ** @{ */
+/** \addtogroup TestSuite_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -87,6 +89,7 @@ TS_ResultType TS_GetTestResult(TS_TestIDType TestID)
 	return ( (TS_TestResults[(TestID/sizeof(TS_TestResults))] >> (TestID % 4) ) & 0x3);
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

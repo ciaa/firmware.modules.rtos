@@ -26,7 +26,9 @@
  **/
 
 /** \addtogroup OpenSEK
- *  *  ** @{ */
+ ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -61,10 +63,10 @@ void StartOs
 	AppModeType Mode
 )
 {
-	/** \req OSEK_SYS_3.25 The system service void
+	/* \req OSEK_SYS_3.25 The system service void
 	 ** StartOS ( AppModeType Mode ) shall be defined */
 
-	/** \req OSEK_SYS_3.25.1 This system service shall starts the operating
+	/* \req OSEK_SYS_3.25.1 This system service shall starts the operating
 	 ** system */
 	uint8_least loopi;
 
@@ -80,7 +82,7 @@ void StartOs
 	/* init every task */
    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
 	{
-		/** \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
+		/* \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
 		 ** code is being executed from the first statement. */
 		SetEntryPoint(loopi); /* set task entry point */
 	}
@@ -129,5 +131,6 @@ void StartOs
 }
 
 /** @} doxygen end group definition */
+/** @} doxygen endVar group definition */
 /*==================[end of file]============================================*/
 

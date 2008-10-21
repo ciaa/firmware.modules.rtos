@@ -27,6 +27,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -61,23 +63,23 @@ StatusType GetResource
 	ResourceType ResID
 )
 {
-	/** \req OSEK_SYS_3.13 The system service StatusType
+	/* \req OSEK_SYS_3.13 The system service StatusType
 	 ** GetResource ( ResourceType ResID ) shall be defined */
 
-	/** \req OSEK_SYS_3.13.2: Possible return values in Standard mode is E_OK */
+	/* \req OSEK_SYS_3.13.2: Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	if (ResID > RESOURCES_COUNT)
 	{
-		/** \req OSEK_SYS_3.13.3-1/2 Extra possible return values in Extended mode are
+		/* \req OSEK_SYS_3.13.3-1/2 Extra possible return values in Extended mode are
 		 ** E_OS_ID, E_OS_ACCESS */
 		ret = E_OS_ID;
 	}
 	else if ( ( TasksVar[GetRunningTask()].Resources & ( 1 << ResID ) ) ||
 				 ( ( TasksConst[GetRunningTask()].ResourcesMask & ( 1 << ResID ) ) == 0 ) )
 	{
-		/** \req OSEK_SYS_3.13.3-2/2 Extra possible return values in Extended mode are
+		/* \req OSEK_SYS_3.13.3-2/2 Extra possible return values in Extended mode are
 		 ** E_OS_ID, E_OS_ACCESS */
 		ret = E_OS_ACCESS;
 	}
@@ -87,7 +89,7 @@ StatusType GetResource
 
 		IntSecure_Start();
 
-		/** \req OSEK_SYS_3.13.1 This call serves to enter critical sections in
+		/* \req OSEK_SYS_3.13.1 This call serves to enter critical sections in
 		 ** the code that are assigned to the resource referenced by ResID */
 		if ( TasksVar[GetRunningTask()].ActualPriority < ResourcesPriority[ResID])
 		{
@@ -103,9 +105,9 @@ StatusType GetResource
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 		(HOOK_ERRORHOOK == ENABLE) )
-	/** \req OSEK_ERR_1.3-6/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-6/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-6/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-6/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
@@ -120,6 +122,7 @@ StatusType GetResource
 	return ret;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

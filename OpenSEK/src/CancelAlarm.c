@@ -27,7 +27,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Global 
+/** \addtogroup OpenSEK_Global 
  ** @{ */
 
 
@@ -64,10 +64,10 @@ StatusType CancelAlarm
 	AlarmType AlarmID
 )
 {
-	/** \req OSEK_SYS_3.23 The system service StatusType
+	/* \req OSEK_SYS_3.23 The system service StatusType
 	 ** CancelAlarm ( AlarmType AlarmID ) shall be defined */
 
-	/** \req OSEK_SYS_3.23.2-1/2 Possible return values in Standard mode are
+	/* \req OSEK_SYS_3.23.2-1/2 Possible return values in Standard mode are
 	 ** E_OK, E_OS_NOFUNC */
 	StatusType ret = E_OK;
 
@@ -75,7 +75,7 @@ StatusType CancelAlarm
 	/* check if alarm id is in the valid range */
 	if(AlarmID >= ALARMS_COUNT)
 	{
-		/** \req SEK_SYS_3.23.3: Extra possible return values in Extended mode ar
+		/* \req SEK_SYS_3.23.3: Extra possible return values in Extended mode ar
 		 **  E_OS_ID */
 		ret = E_OS_ID;
 	}
@@ -83,20 +83,20 @@ StatusType CancelAlarm
 #endif
 	if(AlarmsVar[AlarmID].AlarmState == 0)
 	{
-		/** \req OSEK_SYS_3.23.2-2/2 Possible return values in Standard mode are
+		/* \req OSEK_SYS_3.23.2-2/2 Possible return values in Standard mode are
 		 ** E_OK, E_OS_NOFUNC */
 		ret = E_OS_NOFUNC;
 	}
 	else
 	{
-		/** \req OSEK_SYS_3.23.1 The system service shall cancel the alarm AlarmID */
+		/* \req OSEK_SYS_3.23.1 The system service shall cancel the alarm AlarmID */
 		AlarmsVar[AlarmID].AlarmState = 0;
 	}
 
 #if (HOOK_ERRORHOOK == ENABLE)
-	/** \req OSEK_ERR_1.3-15/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-15/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-15/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-15/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{

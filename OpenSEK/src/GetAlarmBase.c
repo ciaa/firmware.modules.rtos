@@ -27,7 +27,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Global 
+/** \addtogroup OpenSEK_Global 
  ** @{ */
 
 
@@ -65,11 +65,11 @@ StatusType GetAlarmBase
 	AlarmBaseRefType Info
 )
 {
-	/** \req OSEK_SYS_3.19 The system service StatusType
+	/* \req OSEK_SYS_3.19 The system service StatusType
 	 ** GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 	 ** shall be defined. */
 
-	/** \req OSEK_SYS_3.19.2 Possible return values in Standard mode is E_OK */
+	/* \req OSEK_SYS_3.19.2 Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 
 	CounterType counter;
@@ -78,7 +78,7 @@ StatusType GetAlarmBase
 	/* check that the AlarmID is in range */
 	if(AlarmID >= ALARMS_COUNT)
 	{
-		/** \req OSEK_SYS_3.19.: Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.19.: Extra possible return values in Extended mode
 		 ** is E_OS_ID */
 		ret = E_OS_ID;
 	}
@@ -88,7 +88,7 @@ StatusType GetAlarmBase
 		/* get counter of this alarm */
 		counter = AlarmsConst[AlarmID].Counter;
 
-		/** \req OSEK_SYS_3.19.1 The system service GetAlarmBase reads the alarm base
+		/* \req OSEK_SYS_3.19.1 The system service GetAlarmBase reads the alarm base
 		 ** characteristics. The return value Info is a structure in which the
 		 ** information of data type AlarmBaseType is stored */
 		Info->MaxAllowedValue = CountersConst[counter].MaxAllowedValue;
@@ -98,9 +98,9 @@ StatusType GetAlarmBase
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 	 	(HOOK_ERRORHOOK == ENABLE) )
-	/** \req OSEK_ERR_1.3-12/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-12/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-12/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-12/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{

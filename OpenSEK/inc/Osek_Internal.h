@@ -28,7 +28,10 @@
  **/
 
 /** \addtogroup OpenSEK
- ** @{ */ 
+ ** @{ */
+/** \addtogroup OpenSEK_Internal OpenSEK Internal
+ ** @{ */
+
 
 /*
  * Initials     Name
@@ -218,6 +221,7 @@ extern void AddReady(TaskType TaskID);
  **/ 
 extern void OSEK_ISR_NoHandler(void);
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OSEK_INTERNAL_H_ */

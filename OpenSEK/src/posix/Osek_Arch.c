@@ -25,6 +25,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -80,6 +82,7 @@ void ScheduleInterrupts(void)
 	}
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

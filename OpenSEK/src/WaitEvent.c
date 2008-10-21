@@ -27,6 +27,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -61,30 +63,30 @@ StatusType WaitEvent
 	EventMaskType Mask
 )
 {
-	/** \req OSEK_SYS_3.18: The system service StatusType
+	/* \req OSEK_SYS_3.18: The system service StatusType
 	 ** WaitEvent ( EventMaskType Mask ) shall be defined */
 
 	uint8	flag = 1;
 
-	/** \req OSEK_SYS_3.18.3 Possible return values in Standard mode is E_OK */
+	/* \req OSEK_SYS_3.18.3 Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	if ( !TasksConst[GetRunningTask()].ConstFlags.Extended )
 	{
-		/** \req OSEK_SYS_3.18.4-1/3 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.18.4-1/3 Extra possible return values in Extended mode
 		 ** are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_ACCESS;
 	}
 	else if ( GetCallingContext() != CONTEXT_TASK )
 	{
-		/** \req OSEK_SYS_3.18.4-2/3 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.18.4-2/3 Extra possible return values in Extended mode
 		 ** are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_CALLEVEL;
 	}
 	else if ( TasksVar[GetRunningTask()].Resources != 0 )
 	{
-		/** \req OSEK_SYS_3.18.4-3/3 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.18.4-3/3 Extra possible return values in Extended mode
 		 ** are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_RESOURCE;
 	}
@@ -101,7 +103,7 @@ StatusType WaitEvent
 		}
 		else
 		{
-			/** \req OSEK_SYS_3.18.1 The state of the calling task is set to waiting,
+			/* \req OSEK_SYS_3.18.1 The state of the calling task is set to waiting,
 			 ** unless at least one of the events specified in Mask has already been
 			 ** set */
 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_WAITING;
@@ -142,9 +144,9 @@ StatusType WaitEvent
 	}
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-	/** \req OSEK_ERR_1.3-11/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-11/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-11/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-11/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
@@ -159,6 +161,7 @@ StatusType WaitEvent
 	return ret;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

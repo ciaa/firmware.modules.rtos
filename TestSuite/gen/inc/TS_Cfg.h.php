@@ -29,7 +29,9 @@
  **/
 
 /** \addtogroup TestSuite
- ** @{ */ 
+ ** @{ */
+/** \addtogroup TestSuite_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -81,6 +83,7 @@ foreach ($testnames as $name)
 }
 ?>
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _TS_CFG_H_ */

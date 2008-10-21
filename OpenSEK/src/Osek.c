@@ -24,6 +24,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -59,6 +61,7 @@ InterruptCounterType SuspendAllInterrupts_Counter;
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

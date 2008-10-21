@@ -25,7 +25,9 @@
  **/
 
 /** \addtogroup TestSuite
- ** @{ */ 
+ ** @{ */
+/** \addtogroup TestSuite_Global TestSuite Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -87,6 +89,7 @@ extern void TS_RunTestSuite(void);
 
 extern TS_ResultType TS_GetTestResult(TS_TestIDType TestID);
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_H_ */

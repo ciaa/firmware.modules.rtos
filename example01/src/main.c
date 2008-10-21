@@ -25,9 +25,9 @@
  **
  **/
 
-/** \addtogroup Examples
+/** \addtogroup Examples Examples
  ** @{ */
-/** \addtogroup Example01
+/** \addtogroup Example1 Example 1
  ** @{ */
 
 /*

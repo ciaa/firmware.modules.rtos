@@ -24,6 +24,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -58,20 +60,20 @@ StatusType Schedule
 	void
 )
 {
-	/** \req OSEK_SYS_3.4 The system service StatusType Schedule ( void ) shall
+	/* \req OSEK_SYS_3.4 The system service StatusType Schedule ( void ) shall
 	 ** be defined */
 
-	/** \req OSEK_SYS_3.4.4 Possible return values in Standard mode is E_OK */
+	/* \req OSEK_SYS_3.4.4 Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 	TaskType nexttask;
 	TaskType actualtask;
 
-	/** \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode are E_OS
+	/* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode are E_OS
 	 ** CALLEVEL, E_OS_RESOURCE  */
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    if ( GetCallingContext() != CONTEXT_TASK )
    {
-		/** \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
 		 ** are E_OS_CALLEVEL, E_OS_RESOURCE */
       ret = E_OS_CALLEVEL;
    }
@@ -79,7 +81,7 @@ StatusType Schedule
 	{
 		if ( TasksVar[GetRunningTask()].Resources != 0 )
       {
-					/** \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
+					/* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
 					 ** are E_OS_CALLEVEL, E_OS_RESOURCE */
                ret = E_OS_RESOURCE;
 		}
@@ -122,37 +124,37 @@ StatusType Schedule
 		else
 		{
 			/* check priorities */
-			/** \req OSEK_SYS_3.4.1 If a task with a lower or equal priority than the
+			/* \req OSEK_SYS_3.4.1 If a task with a lower or equal priority than the
 			 ** ceiling priority of the internal resource and higher priority than
 			 ** the priority of the calling task is ready */
 			if ( TasksConst[nexttask].StaticPriority > TasksVar[actualtask].ActualPriority )
 			{
-				/** \req OSEK_SYS_3.4.1.1 the internal resource of the task shall be
+				/* \req OSEK_SYS_3.4.1.1 the internal resource of the task shall be
 				 ** released */
 
 				ReleaseInternalResources();
-				/** \req OSEK_SYS_3.4.1.2 the current task is put into the ready state */
+				/* \req OSEK_SYS_3.4.1.2 the current task is put into the ready state */
 				TasksVar[actualtask].Flags.State = TASK_ST_READY;
 
 				/* set the new task to running */
 			 	TasksVar[nexttask].Flags.State = TASK_ST_RUNNING;
 
-				/** \req OSEK_SYS_3.4.1.3 its context is saved */
-				/** \req OSEK_SYS_3.4.1.4 and the higher-priority task is executed */
+				/* \req OSEK_SYS_3.4.1.3 its context is saved */
+				/* \req OSEK_SYS_3.4.1.4 and the higher-priority task is executed */
 				CallTask(nexttask);
 			}
 			else
 			{
-				/** \req OSEK_SYS_3.4.2 Otherwise the calling task is continued */
+				/* \req OSEK_SYS_3.4.2 Otherwise the calling task is continued */
 			}
 
 		}
 	}
 
 #if (HOOK_ERRORHOOK == ENABLE)
-	/** \req OSEK_ERR_1.3-4/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-4/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-4/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-4/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
@@ -166,6 +168,7 @@ StatusType Schedule
 	return ret;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

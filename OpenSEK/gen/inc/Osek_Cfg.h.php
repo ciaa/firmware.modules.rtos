@@ -41,6 +41,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */ 
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -118,13 +120,12 @@ $errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 if ($errorhook == "TRUE")
 {
 ?>
-/** \brief OS Error Get Service Id
- **
- ** \req OSEK_ERR_0.1 The macro OSErrorGetServiceId() shall provide the service
- ** identifier with a OSServiceIdType type where the error has been risen
- ** \req OSEK_ERR_0.1.1 Possibly return values are: OSServiceId_xxxx, where
- ** xxxx is the name of the system service
- **/
+/** \brief OS Error Get Service Id */
+/* \req OSEK_ERR_0.1 The macro OSErrorGetServiceId() shall provide the service
+ * identifier with a OSServiceIdType type where the error has been risen
+ * \req OSEK_ERR_0.1.1 Possibly return values are: OSServiceId_xxxx, where
+ * xxxx is the name of the system service
+ */
 #define OSErrorGetServiceId() (Osek_ErrorApi)
 
 #define OSErrorGetParam1() (Osek_ErrorParam1)
@@ -249,6 +250,7 @@ print "\n";
 
 ?>
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_CFG_H_ */

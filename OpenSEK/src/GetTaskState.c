@@ -26,7 +26,9 @@
  **/
 
 /** \addtogroup OpenSEK
- *  ** @{ */
+ ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -62,11 +64,11 @@ StatusType GetTaskState
 	TaskStateRefType State
 )
 {
-	/** \req OSEK_SYS_3.6 The system service StatusType
+	/* \req OSEK_SYS_3.6 The system service StatusType
 	 ** GetTaskState ( TaskType TaskID, TaskStateRefType State ) shall be
 	 ** defined. */
 
-	/** \req OSEK_SYS_3.6.3Possible return values in Standard mode is E_OK */
+	/* \req OSEK_SYS_3.6.3Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
@@ -75,7 +77,7 @@ StatusType GetTaskState
 	{
 		/* TaskID is out of range */
 		/* return E_OS_ID */
-		/** \req OSEK_SYS_3.6.4 Extra possible return values in Extended mode is
+		/* \req OSEK_SYS_3.6.4 Extra possible return values in Extended mode is
 		 ** E_OS_ID */
 		ret = E_OS_ID;
 
@@ -86,10 +88,10 @@ StatusType GetTaskState
 #endif
 	{
 
-		/** \req OSEK_SYS_3.6.1 The service shall returns the state of a task
+		/* \req OSEK_SYS_3.6.1 The service shall returns the state of a task
 		 ** (running, ready, waiting, suspended) at the time of calling
 		 ** GetTaskState */
-		/** \req OSEK_SYS_3.6.2 When the service is called for a task, which is
+		/* \req OSEK_SYS_3.6.2 When the service is called for a task, which is
 		 ** activated more than once, the state is set to running if any instance
 		 ** of the task is running. */
 		*State = (TaskStateType) TasksVar[TaskID].Flags.State;
@@ -97,9 +99,9 @@ StatusType GetTaskState
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 		(HOOK_ERRORHOOK == ENABLE) )
-	/** \req OSEK_ERR_1.3-5/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-5/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-5/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-5/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
@@ -115,6 +117,7 @@ StatusType GetTaskState
 	return ret;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

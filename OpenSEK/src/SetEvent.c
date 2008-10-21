@@ -27,7 +27,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Global
+/** \addtogroup OpenSEK_Global
  ** @{ */
 
 /*
@@ -64,28 +64,28 @@ StatusType SetEvent
 	EventMaskType Mask
 )
 {
-	/** \req OSEK_SYS_3.15 The system service StatusType
+	/* \req OSEK_SYS_3.15 The system service StatusType
 	 ** SetEvent ( TaskType TaskID, EventMaskType Mask ) shall be defined */
 
-	/** \req OSEK_SYS_3.15.2: Possible return values in Standard mode is E_OK */
+	/* \req OSEK_SYS_3.15.2: Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	if ( TaskID >= TASKS_COUNT )
 	{
-		/** \req OSEK_SYS_3.15.3-1/3 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.15.3-1/3 Extra possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_ACCESS, E_OS_STATE */
 		ret = E_OS_ID;
 	}
 	else if ( !TasksConst[TaskID].ConstFlags.Extended )
 	{
-		/** \req OSEK_SYS_3.15.3-2/3 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.15.3-2/3 Extra possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_ACCESS, E_OS_STATE */
 		ret = E_OS_ACCESS;
 	}
 	else if ( TasksVar[TaskID].Flags.State == TASK_ST_SUSPENDED )
 	{
-		/** \req OSEK_SYS_3.15.3-3/3 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.15.3-3/3 Extra possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_ACCESS, E_OS_STATE */
 		ret = E_OS_STATE;
 	}
@@ -101,7 +101,7 @@ StatusType SetEvent
 				( TasksVar[TaskID].Flags.State == TASK_ST_WAITING) )
 		{
 			/* set the events */
-			/** \req OSEK_SYS_3.15.1-1/2 The events of task TaskID are set according to the
+			/* \req OSEK_SYS_3.15.1-1/2 The events of task TaskID are set according to the
 			 ** event mask Mask. Calling SetEvent causes the task TaskID to be
 			 ** transferred to the ready state, if it was waiting for at least one
 			 ** of the events specified in Mask */
@@ -111,7 +111,7 @@ StatusType SetEvent
 			if (	( TasksVar[TaskID].Flags.State == TASK_ST_WAITING ) &&
 					( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
 			{
-				/** \req OSEK_SYS_3.15.1-2/2 The events of task TaskID are set according to the
+				/* \req OSEK_SYS_3.15.1-2/2 The events of task TaskID are set according to the
 				 ** event mask Mask. Calling SetEvent causes the task TaskID to be
 				 ** transferred to the ready state, if it was waiting for at least one
 				 ** of the events specified in Mask */
@@ -135,9 +135,9 @@ StatusType SetEvent
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 		(HOOK_ERRORHOOK == ENABLE) )
-	/** \req OSEK_ERR_1.3-8/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-8/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-8/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-8/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{

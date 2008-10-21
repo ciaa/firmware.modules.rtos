@@ -31,7 +31,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Internal
+/** \addtogroup OpenSEK_Global
  ** @{ */
 
 

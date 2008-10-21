@@ -27,6 +27,9 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
+
 
 /*
  * Initials     Name
@@ -61,18 +64,19 @@ AppModeType GetActiveApplicationMode
 	void
 )
 {
-	/** \req OSEK_SYS_3.24 The system service AppModeType
+	/* \req OSEK_SYS_3.24 The system service AppModeType
 	 ** GetActiveApplicationMode ( void ) shall be defined */
 
-	/** \req OSEK_SYS_3.24.1 This service shall return the current
+	/* \req OSEK_SYS_3.24.1 This service shall return the current
 	 ** application mode */
 
-	/** \req OSEK_ERR_1.1.1 The macro GetActiveApplicationMode()
+	/* \req OSEK_ERR_1.1.1 The macro GetActiveApplicationMode()
 	 ** shall be provided */
 
 	return ApplicationMode;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

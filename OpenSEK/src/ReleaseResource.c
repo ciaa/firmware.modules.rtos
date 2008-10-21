@@ -27,6 +27,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -61,10 +63,10 @@ StatusType ReleaseResource
 	ResourceType ResID
 )
 {
-	/** \req OSEK_SYS_3.13 The system service StatusType
+	/* \req OSEK_SYS_3.13 The system service StatusType
 	 ** ReleaseResource ( ResourceType ResID ) shall be defined */
 
-	/** \req OSEK_SYS_3.14.2: Possible return values in Standard mode is
+	/* \req OSEK_SYS_3.14.2: Possible return values in Standard mode is
 	 ** E_OK  */
 	StatusType ret = E_OK;
 
@@ -74,13 +76,13 @@ StatusType ReleaseResource
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	if (ResID > RESOURCES_COUNT)
 	{
-		/** \req OSEK_SYS_3.14.3-1/2 Extra possible return values in Extended mode are
+		/* \req OSEK_SYS_3.14.3-1/2 Extra possible return values in Extended mode are
 		 ** E_OS_ID, E_OS_NOFUNC, E_OS_ACCESS */
 		ret = E_OS_ID;
 	}
 	else if ( ( TasksVar[GetRunningTask()].Resources & ( 1 << ResID ) ) == 0 )
 	{
-		/** \req OSEK_SYS_3.14.3-2/2 Extra possible return values in Extended mode are
+		/* \req OSEK_SYS_3.14.3-2/2 Extra possible return values in Extended mode are
 		 ** E_OS_ID, E_OS_NOFUNC, E_OS_ACCESS */
 		ret = E_OS_NOFUNC;
 	}
@@ -102,7 +104,7 @@ StatusType ReleaseResource
 			}
 		}
 
-		/** \req OSEK_SYS_3.14.1 ReleaseResource is the counterpart of GetResource
+		/* \req OSEK_SYS_3.14.1 ReleaseResource is the counterpart of GetResource
 		 ** and serves to leave critical sections in the code that are assigned to
 		 ** the resource referenced by ResID */
 		TasksVar[GetRunningTask()].ActualPriority = priority;
@@ -113,9 +115,9 @@ StatusType ReleaseResource
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 		(HOOK_ERRORHOOK == ENABLE) )
-	/** \req OSEK_ERR_1.3-7/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-7/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-7/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-7/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
@@ -130,6 +132,7 @@ StatusType ReleaseResource
 	return ret;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

@@ -26,7 +26,10 @@
  **/
 
 /** \addtogroup OpenSEK
- *  ** @{ */
+ ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
+
 
 /*
  * Initials     Name
@@ -61,19 +64,20 @@ StatusType GetTaskID
 	TaskRefType TaskID
 )
 {
-	/** \req OSEK_SYS_3.5 The system service StatusType
+	/* \req OSEK_SYS_3.5 The system service StatusType
 	 ** GetTaskID ( TaskRefType TaskID ) shall be defined */
 
-	/** \req OSEK_SYS_3.5.1 Shall returns the information about the TaskID of
+	/* \req OSEK_SYS_3.5.1 Shall returns the information about the TaskID of
 	 ** the task which is currently running */
-	/** \req OSEK_SYS_3.5.2 If no task is currently running, the service returns
+	/* \req OSEK_SYS_3.5.2 If no task is currently running, the service returns
 	 ** INVALID_TASK as TaskType */
 	*TaskID = GetRunningTask();
 
-	/** \req OSEK_SYS_3.5.3 This function returns always E_OK */
+	/* \req OSEK_SYS_3.5.3 This function returns always E_OK */
 	return E_OK;
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

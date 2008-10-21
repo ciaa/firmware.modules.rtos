@@ -28,7 +28,7 @@
 
 /** \addtogroup TestSuite
  ** @{ */
-/** \addtogroup Internal
+/** \addtogroup TestSuite_Internal
  ** @{ */
 
 /*

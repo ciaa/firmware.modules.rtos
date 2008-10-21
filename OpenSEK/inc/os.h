@@ -28,9 +28,10 @@
  **
  **/
 
-/** \addtogroup OpenSEK
+/** \addtogroup OpenSEK OpenSEK
  ** @{ */
-/** \addtogroup Global
+/** \addtogroup OpenSEK_Global OpenSEK Global
+ ** \ingroup OpenSEK
  ** @{ */
 
 /*
@@ -81,43 +82,43 @@
 /** \brief INVALID Task State */
 #define INVALID_STATE 4U
 
-/** \brief Definition return value E_OK
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OK */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OK					((StatusType)0U)
-/** \brief Definition return value E_OS_ACCESS
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_ACCESS */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_ACCESS			((StatusType)1U)
-/** \brief Definition return value E_OS_CALLEVEL
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_CALLEVEL */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_CALLEVEL		((StatusType)2U)
-/** \brief Definition return value E_OS_ID
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_ID */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_ID				((StatusType)3U)
-/** \brief Definition return value E_OS_LIMIT
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_LIMIT */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_LIMIT			((StatusType)4U)
-/** \brief Definition return value E_OS_NOFUNC
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_NOFUNC */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_NOFUNC			((StatusType)5U)
-/** \brief Definition return value E_OS_RESOURCE
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_RESOURCE */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_RESOURCE		((StatusType)6U)
-/** \brief Definition return value E_OS_STATE
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_STATE */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_STATE			((StatusType)7U)
-/** \brief Definition return value E_OS_VALUE
- ** \req OSEK_SYS_1.1.1 */
+/** \brief Definition return value E_OS_VALUE */
+/* \req OSEK_SYS_1.1.1 */
 #define E_OS_VALUE			((StatusType)8U)
 
 /** \brief Enable All Interrupts
  **
  ** This API enables all Interruptions disabled by DisableAllInterrups.
- **
- ** \req OSEK_SYS_3.7 The system service void EnableAllInterrupts ( void )
- ** shall be defined
- ** \req OSEK_SYS_3.7.1 This service restores the state saved by
- ** DisableAllInterrupts
  **/
+/* \req OSEK_SYS_3.7 The system service void EnableAllInterrupts ( void )
+ *  shall be defined
+ * \req OSEK_SYS_3.7.1 This service restores the state saved by
+ * DisableAllInterrupts
+ */
 #define EnableAllInterrupts()						\
 	{														\
 		DisableAllInterrupts_Counter--;			\
@@ -134,14 +135,14 @@
  **
  ** This API disables all Interruptions and saves the interruptions states for
  ** the EnableAllInterrupts API.
- **
- ** \req OSEK_SYS_3.8 The system service void DisableAllInterrupts ( void )
- ** shall be defined
- ** \req OSEK_SYS_3.8.1 This service disables all interrupts for which the
- ** hardware supports disabling
- ** \req OSEK_SYS_3.8.2 The state before is saved for the EnableAllInterrupts
- ** call
  **/
+/* \req OSEK_SYS_3.8 The system service void DisableAllInterrupts ( void )
+ *  shall be defined
+ * \req OSEK_SYS_3.8.1 This service disables all interrupts for which the
+ *  hardware supports disabling
+ * \req OSEK_SYS_3.8.2 The state before is saved for the EnableAllInterrupts
+ *  call
+ */
 #define DisableAllInterrupts()			\
 	{												\
 		DisableAllInterrupts_Counter++;	\
@@ -152,16 +153,16 @@
  **
  ** This API resume all Interruptions suspended by the last call to
  ** SuspendAllInterrupts.
- **
- ** \req OSEK_SYS_3.9 The system service void ResumeAllInterrupts ( void )
- ** shall be defined
- ** \req OSEK_SYS_3.9.1 This service restores the recognition status of all
- ** interrupts saved by the SuspendAllInterrupts service
- ** \req OSEK_SYS_3.9.2 SuspendAllInterrupts/ResumeAllInterrupts can be nested.
- ** In case of nesting pairs of the calls SuspendAllInterrupts and
- ** ResumeAllInterrupts the interrupt recognition status saved by the first
- ** call of SuspendAllInterrupts is restored by the last call of the
- ** ResumeAllInterrupts service.
+ **/
+/* \req OSEK_SYS_3.9 The system service void ResumeAllInterrupts ( void )
+ *  shall be defined
+ * \req OSEK_SYS_3.9.1 This service restores the recognition status of all
+ *  interrupts saved by the SuspendAllInterrupts service
+ * \req OSEK_SYS_3.9.2 SuspendAllInterrupts/ResumeAllInterrupts can be nested.
+ *  In case of nesting pairs of the calls SuspendAllInterrupts and
+ *  ResumeAllInterrupts the interrupt recognition status saved by the first
+ *  call of SuspendAllInterrupts is restored by the last call of the
+ *  ResumeAllInterrupts service.
  **/
 #define ResumeAllInterrupts() 					\
 	{														\
@@ -179,14 +180,14 @@
  **
  ** This API suspend all Interruptions and saves the interruptions state for
  ** the EnableAllInterrupts API.
- **
- ** \req OSEK_SYS_3.10 The system service void SuspendAllInterrupts ( void )
- ** shall be defined
- ** \req OSEK_SYS_3.10.1 This service shall save the recognition status of all
- ** interrupts
- ** \req OSEK_SYS_3.10.2 and disables all interrupts for which the hardware
- ** supports disabling
  **/
+/* \req OSEK_SYS_3.10 The system service void SuspendAllInterrupts ( void )
+ *  shall be defined
+ * \req OSEK_SYS_3.10.1 This service shall save the recognition status of all
+ *  interrupts
+ * \req OSEK_SYS_3.10.2 and disables all interrupts for which the hardware
+ *  supports disabling
+ */
 #define SuspendAllInterrupts()					\
 	{														\
 		SuspendAllInterrupts_Counter++;			\
@@ -197,17 +198,17 @@
  **
  ** This service restores the recognition status of interrupts saved by the
  ** SuspendOSInterrupts service.
- **
- ** \req OSEK_SYS_3.11 The system service void ResumeOSInterrupts ( void )
- ** shall be defined
- ** \req OSEK_SYS_3.11.1 This service restores the recognition status of
- ** interrupts saved by the SuspendOSInterrupts service
- ** \req OSEK_SYS_3.11.2 SuspendOSInterrupts/ResumeOSInterrupts can be nested.
- ** In case of nesting pairs of the calls SuspendOSInterrupts and
- ** ResumeOSInterrupts the interrupt recognition status saved by the first call
- ** of SuspendOSInterrupts is restored by the last call of the
- ** ResumeOSInterrupts service
  **/
+/* \req OSEK_SYS_3.11 The system service void ResumeOSInterrupts ( void )
+ *  shall be defined
+ * \req OSEK_SYS_3.11.1 This service restores the recognition status of
+ *  interrupts saved by the SuspendOSInterrupts service
+ * \req OSEK_SYS_3.11.2 SuspendOSInterrupts/ResumeOSInterrupts can be nested.
+ *  In case of nesting pairs of the calls SuspendOSInterrupts and
+ *  ResumeOSInterrupts the interrupt recognition status saved by the first call
+ *  of SuspendOSInterrupts is restored by the last call of the
+ *  ResumeOSInterrupts service
+ */
 #define ResumeOSInterrupts()						\
 	{														\
 		SuspendOSInterrupts_Counter--;			\
@@ -226,13 +227,13 @@
  ** the calls SuspendOSInterrupts and ResumeOSInterrupts the interrupt recognition
  ** status saved by the first call of SuspendOSInterrupts is restored by the last
  ** call of the ResumeOSInterrupts service.
- **
- ** \req OSEK_SYS_3.12 The system service void SuspendOSInterrupts ( void )
- ** shall be defined
- ** \req OSEK_SYS_3.12.1 This service shall save the recognition status of
- ** interrupts of category 2
- ** \req OSEK_SYS_3.12.2 and disables the recognition of these interrupts
  **/
+/* \req OSEK_SYS_3.12 The system service void SuspendOSInterrupts ( void )
+ *  shall be defined
+ * \req OSEK_SYS_3.12.1 This service shall save the recognition status of
+ *  interrupts of category 2
+ * \req OSEK_SYS_3.12.2 and disables the recognition of these interrupts
+ */
 #define SuspendOSInterrupts()						\
 	{														\
 		SuspendOSInterrupts_Counter++;			\
@@ -268,10 +269,10 @@
 
 /*==================[typedef]================================================*/
 /** \brief Type definition of StatusType
- ** \req OSEK_SYS_1.1
  **
  ** This type is used to represent the status returned by all OpenSEK APIs
  **/
+/* \req OSEK_SYS_1.1 */
 typedef unsigned char StatusType;
 
 /** \brief Type definition of TaskType

@@ -27,7 +27,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Global
+/** \addtogroup OpenSEK_Global
  ** @{ */
 
 /*
@@ -63,7 +63,7 @@ StatusType ChainTask
 	TaskType taskid
 )
 {
-	/** \req OSEK_SYS_3.3 The system service StatusType
+	/* \req OSEK_SYS_3.3 The system service StatusType
 	 ** ChainTask ( TaskType TaskID ) shall be defined. */
 
 	
@@ -72,20 +72,20 @@ StatusType ChainTask
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	if ( taskid >= TASKS_COUNT )
 	{
-		/** \req OSEK_SYS_3.3.10-1/3 Added possible return values in Extended mode
+		/* \req OSEK_SYS_3.3.10-1/3 Added possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_ID;
 	}
 	else if ( GetCallingContext() != CONTEXT_TASK )
 	{
-		/** \req OSEK_SYS_3.3.10-2/3 Added possible return values in Extended mode
+		/* \req OSEK_SYS_3.3.10-2/3 Added possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_CALLEVEL;
 	}
 	/* check if any resource is still reserved for this task */
 	else if ( TasksVar[GetRunningTask()].Resources != 0 )
 	{
-		/** \req OSEK_SYS_3.3.10-3/3 Added possible return values in Extended mode
+		/* \req OSEK_SYS_3.3.10-3/3 Added possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_RESOURCE;
 	}
@@ -94,8 +94,8 @@ StatusType ChainTask
 	if ( ( (TasksVar[taskid].Activations + 1) > TasksConst[taskid].MaxActivations) && 
 		  ( taskid != GetRunningTask()) )
 	{
-		/** \req OSEK_SYS_3.3.8 If E_OS_LIMIT is returned the activation is ignored */
-		/** \req OSEK_SYS_3.3.9-1/2 Possible return values in Standard mode are:
+		/* \req OSEK_SYS_3.3.8 If E_OS_LIMIT is returned the activation is ignored */
+		/* \req OSEK_SYS_3.3.9-1/2 Possible return values in Standard mode are:
 		 ** no return or E_OS_LIMIT */
 		ret = E_OS_LIMIT;
 	}
@@ -105,7 +105,7 @@ StatusType ChainTask
 		IntSecure_Start();
 
 		/* release internal resources */
-		/** \req OSEK_SYS_3.3.4 If an internal resource is assigned to the calling
+		/* \req OSEK_SYS_3.3.4 If an internal resource is assigned to the calling
 		 ** task it shall be automatically released, even if the succeeding task is
 		 ** identical with the current task. */
 		ReleaseInternalResources();
@@ -116,19 +116,19 @@ StatusType ChainTask
 		if (TasksVar[GetRunningTask()].Activations == 0)
 		{
 			/* if no more activations set state to suspended */
-			/** \req OSEK_SYS_3.3.1-1/2 This service causes the termination of the calling task. */
+			/* \req OSEK_SYS_3.3.1-1/2 This service causes the termination of the calling task. */
 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_SUSPENDED;
 		}
 		else
 		{
 			/* if more activations set state to ready */
-			/** \req OSEK_SYS_3.3.1-2/2 This service causes the termination of the calling task. */
+			/* \req OSEK_SYS_3.3.1-2/2 This service causes the termination of the calling task. */
 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_READY;
 		}
 
 
 		/* set entry point for this task again */
-		/** \req OSEK_SYS_3.1.2-1/3 The operating system shall ensure that the task
+		/* \req OSEK_SYS_3.1.2-1/3 The operating system shall ensure that the task
  		 ** code is being executed from the first statement. */
 		SetEntryPoint(GetRunningTask());
 		/* remove ready list */
@@ -138,9 +138,9 @@ StatusType ChainTask
 		/* increment activations */
 		TasksVar[taskid].Activations++;
 		/* activate task */
-		/** \req OSEK_SYS_3.3.2 After termination of the calling task a succeeding
+		/* \req OSEK_SYS_3.3.2 After termination of the calling task a succeeding
 		 **  task TaskID shall be activated. */
-		/** \req OSEK_SYS_3.3.3 If the succeeding task is identical with the current
+		/* \req OSEK_SYS_3.3.3 If the succeeding task is identical with the current
 		 ** task, this does not result in multiple requests. The task is not
 		 ** transferred to the suspended state, but will immediately become ready
 		 ** again. */
@@ -148,7 +148,7 @@ StatusType ChainTask
 
 		if(TasksVar[taskid].Flags.State ==  TASK_ST_SUSPENDED)
 		{
-			/** \req OSEK_SYS_3.3.7 When an extended task is transferred from suspended
+			/* \req OSEK_SYS_3.3.7 When an extended task is transferred from suspended
 			 ** state into ready state all its events are cleared.*/
 			TasksVar[taskid].Events = 0;
 		}
@@ -156,20 +156,20 @@ StatusType ChainTask
 		IntSecure_End();
 
 		/* call scheduler, never returns */
-		/** \req OSEK_SYS_3.3.5 If called successfully, ChainTask does not return
+		/* \req OSEK_SYS_3.3.5 If called successfully, ChainTask does not return
 		 ** to the call level and the status can not be evaluated. */
-		/** \req OSEK_SYS_3.3.6 If the service ChainTask is called successfully,
+		/* \req OSEK_SYS_3.3.6 If the service ChainTask is called successfully,
 		 ** this enforces a rescheduling. */
-		/** \req OSEK_SYS_3.3.9-2/2 Possible return values in Standard mode are:
+		/* \req OSEK_SYS_3.3.9-2/2 Possible return values in Standard mode are:
 		 ** no return or E_OS_LIMIT */
 		(void)Schedule();
 
 	}
 
 #if (HOOK_ERRORHOOK == ENABLE)
-   /** \req OSEK_ERR_1.3-3/xx The ErrorHook hook routine shall be called if a
+   /* \req OSEK_ERR_1.3-3/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-   /** \req OSEK_ERR_1.3.1-3/xx The hook routine ErrorHook is not called if a
+   /* \req OSEK_ERR_1.3.1-3/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{

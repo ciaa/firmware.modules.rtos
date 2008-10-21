@@ -27,7 +27,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Global 
+/** \addtogroup OpenSEK_Global 
  ** @{ */
 
 
@@ -66,11 +66,11 @@ StatusType SetAbsAlarm
 	TickType Cycle
 )
 {
-	/** \req OSEK_SYS_3.22 The system service StatusType
+	/* \req OSEK_SYS_3.22 The system service StatusType
 	 ** SetAbsAlarm ( AlarmType AlarmID, TickType Start, TickType Cycle )
 	 ** shall be defined */
 
-	/** \req OSEK_SYS_3.22.3-1/2 Possible return values in Standard mode are E_OK,
+	/* \req OSEK_SYS_3.22.3-1/2 Possible return values in Standard mode are E_OK,
 	 ** E_OS_STATE */
 	StatusType ret = E_OK;
 
@@ -78,7 +78,7 @@ StatusType SetAbsAlarm
 	/* check if the alarm id is in range */
 	if(AlarmID >= ALARMS_COUNT)
 	{
-		/** \req OSEK_SYS_3.22.4-1/2 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.22.4-1/2 Extra possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_VALUE */
 		ret = E_OS_ID;
 	}
@@ -88,7 +88,7 @@ StatusType SetAbsAlarm
 					( (Cycle > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
 						(Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
 	{
-		/** \req OSEK_SYS_3.22.4-2/2 Extra possible return values in Extended mode
+		/* \req OSEK_SYS_3.22.4-2/2 Extra possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_VALUE */
 		ret = E_OS_VALUE;
 	}
@@ -97,7 +97,7 @@ StatusType SetAbsAlarm
 	/* check if the alarm is disable */
 	if(AlarmsVar[AlarmID].AlarmState != 0)
    {
-		/** \req OSEK_SYS_3.22.3-2/2 Possible return values in Standard mode are E_OK,
+		/* \req OSEK_SYS_3.22.3-2/2 Possible return values in Standard mode are E_OK,
 		 ** E_OS_STATE */
       ret = E_OS_STATE;
    }
@@ -117,9 +117,9 @@ StatusType SetAbsAlarm
 	}
 
 #if (HOOK_ERRORHOOK == ENABLE)
-	/** \req OSEK_ERR_1.3-14/xx The ErrorHook hook routine shall be called if a
+	/* \req OSEK_ERR_1.3-14/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
-	/** \req OSEK_ERR_1.3.1-14/xx The hook routine ErrorHook is not called if a
+	/* \req OSEK_ERR_1.3.1-14/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{

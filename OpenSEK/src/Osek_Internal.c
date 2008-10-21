@@ -24,7 +24,7 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
-/** \addtogroup Internal
+/** \addtogroup OpenSEK_Internal
  ** @{ */
 
 /*

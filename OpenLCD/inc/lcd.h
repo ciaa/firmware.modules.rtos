@@ -27,9 +27,9 @@
  **
  **/
 
-/** \addtogroup LCD
+/** \addtogroup Lcd LCD
  ** @{ */
-/** \addtogroup Global
+/** \addtogroup Lcd_Global LCD Global
  ** @{ */
 
 /*

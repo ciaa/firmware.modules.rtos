@@ -26,7 +26,9 @@
  **/
 
 /** \addtogroup OpenSEK
- *  *  ** @{ */
+ ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -61,11 +63,11 @@ void ShutdownOs
 	StatusType Error
 )
 {
-	/** \req OSEK_SYS_3.26 The system service void
+	/* \req OSEK_SYS_3.26 The system service void
 	 ** ShutdownOS ( StatusType Error ) shall be defined */
 
 #if (HOOK_SHUTDOWNHOOK == ENABLE)
-	/** \req OSEK_ERR_1.2 The ShutdownHook hook routine shall be called when a
+	/* \req OSEK_ERR_1.2 The ShutdownHook hook routine shall be called when a
 	 ** system shutdown is requested by the application or by the operating
 	 ** system in case of a severe error */
 	ShutdownHook();
@@ -75,6 +77,7 @@ void ShutdownOs
 	while(1);
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

@@ -28,6 +28,8 @@
 
 /** \addtogroup OpenSEK
  ** @{ */
+/** \addtogroup OpenSEK_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -76,6 +78,7 @@ unsigned int Osek_ErrorRet;
 
 /*==================[external functions definition]==========================*/
 
-/** @} doxygen end group definition */ /** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 
