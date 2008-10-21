@@ -20,6 +20,233 @@
 
 /** \page OpenSEK OpenSEK Documentation
  *
+ * On this documentation you are going to find all information related to
+ * the OpenSEK RTOS. OpenSEK is based on the OSEK-VDX RTOS specifications.
+ * You may want to take a look on the specification too. You can get the
+ * OSEK-VDX RTOS specification from the OSEK-VDX page
+ * <a href="http://www.osek-vdx.org/">http://www.osek-vdx.org/</a>.
+ *
+ * \section OpenSEK_Introduction Introduction
+ *
+ * OpenSEK is an Open Source implementation of the real time operating
+ * system specified by OSEK-VDX. The phylosophy of this OS is to provide a
+ * syste with standardised interfaces, scalabilty, standard error checkin
+ * mechanismus and poritability.
+ *
+ * \subsection OpenSEK_Introduction_RunLevels Run Levels
+ *
+ * OpenSEK provides to types of run levels:
+ *		- Task level
+ *		- ISR level
+ *
+ * ISR level have allways precedens to task level. Tasks to each other
+ * and ISR to each others have precedence with their assigned priorities.
+ * Task priorites are signed on configuration time. ISR priorites are
+ * assigned per hardware.
+ *
+ * \subsection OpenSEK_Introduction_ISR ISR Concept
+ *
+ * OpenSEK provides two types of ISR (interrupt service routines) called
+ * ISR1 and ISR2, this means ISR Category 1 and Category 2.
+ *
+ * ISR1 are transparent for the OS. This means the OS have no control when this
+ * types of interrupts are executed, this type of interrupts shall be avoided.
+ * No OS interfaces are allowed to be called on ISR1.
+ *
+ * ISR2 are interrupts which are cached by the OS and the OS call the interrupt
+ * code as a function. In this case the stack context is changed and some OS
+ * APIs may be called.
+ *
+ * \subsection OpenSEK_Introduction_Task Task Concept
+ *
+ * Different as in Windows or Linux on OpenSEK the tasks are defined statically
+ * on configuration time. This means that after generating the system and
+ * compiling it, no more taks can be added to the system. Is not possibly to
+ * create new tasks in a dynamic way.
+ *
+ * OpenSEK provides two types of tasks:
+ * 	- Basic tasks
+ * 	- Extended tasks
+ *
+ * Every task has to be in one of 3 states:
+ * 	- \b Running: the task is running, only one task every time can be running
+ * 	- \b Read: the task ready and waiting on the execution queue.
+ * 	- \b Suspended: the task is stopped.
+ *	
+ *	Extended tasks have an extra state:
+ *		- \b Waiting: the task is waiting for the occurence of one or more events.
+ *
+ *	Not all convinations of state changes are allowed, here a list of allowed
+ *	task state changes:
+ *		- \b activate: the task is moved from the suspended state to the ready state
+ *		- \b start: the task is moved from the ready state to the running state
+ *		- \b wait: the taks is moved from the running state to the waiting state
+ *		- \b release: the task is moved from the waiting state to the ready state
+ *		- \b preempt: the taks is moved from the running state to the ready state
+ *		- \b teminate: the task is moved from the running state to the suspended state
+ *
+ * State changes wait and release are only allowed to extended tasks.
+ *
+ * The state changes start, release, and preempt are performed by the
+ * scheduler. The user can only indirect influent this changes. For
+ * example activating a task whith a higher priority will preemt any lower
+ * priority preemtive task. Setting a event of a task waiting for it
+ * will release this task
+ *
+ * \subsubsection OpenSEK_Introduction_Task_Priority Task Priority
+ *
+ * The Scheduler decides in function of the task priority which is the naxt
+ * task to be started. When two tasks have the same priority the tasks which
+ * was activated before will be executed.
+ *
+ * Task priorites are set on configuration time. A higer value represents
+ * a higher priority. 
+ *
+ * The OS has one ready queue for every priority.
+ *
+ * \subsection OpenSEK_Introduction_Scheduling
+ *
+ * There are to Scheduling methods which can be set to each task. \b preemtive
+ * and \b non \b preemtive.
+ *
+ * \subsubsection OpenSEK_Introduction_Scheduling_Preemtive Preemtive Tasks
+ *
+ * \b Preemtive tasks can be preemted (interrrupted) while running and set back in
+ * rady state when a higher priority task has been activated.
+ *
+ * \subsubsection OpenSEK_Introduction_Scheduling_Nonpreemtive Non Preemtive
+ * Tasks
+ *
+ * \b Non \b Preemtive tasks can not be interrupted while running. After the
+ * task is to running only the task can decide when it will be finished or
+ * preemted. Interrupts may be executed on this time, but not other tasks.
+ * This type of tasks have their scene specialy in small tasks where a task
+ * context swtich may take so long time as finishing the task.
+ *
+ * Non Preemtive task may call the Scheduler function to explicit decide points
+ * where a preemtion may be possibly.
+ *
+ * In Non Preemtvie tasks which doesn't call the Scheduler the OS can make some
+ * resources optimisation since this task doesn't need a context space to save
+ * the registers if a task swtich occurs.
+ *
+ * \subsection OpenSEK_Introduction_TaskGroup Group of Tasks
+ *
+ * The user may be interesed to have some types or Non Preemtive task for
+ * a group of tasks. This means that some tasks all in a task group  may be
+ * non preemtive to each other but may be preemted by task with higher
+ * priorities of other groups. Every task can belong to one group.
+ *
+ * \subsection OpenSEK_Introduction_ApplMode Application Modes
+ *
+ * OpenSEK can be confiured to have one or more Application Modes. At
+ * least one Application Mode has to be defined. For every Application
+ * Mode the user can select some tasks and alarms to be started autmaticaly.
+ * The user has to take care to select the adequate Application Mode after
+ * every reset and call the StartOs OS interfaces indicating the Application
+ * Mode.
+ *
+ * \subsection OpenSEK_Introduction_Events Event Mechanism
+ *
+ * Events are used in OpenSEK to synconize events and are only allowed for
+ * extended tasks.
+ *
+ * An extended task can clear and wait for his pre configured events. Every
+ * task or ISR2 can set events of any task. Is not possible to clear events
+ * of other tasks or to wait for events of others tasks.
+ *
+ * \subsection OpenSEK_Introduction_Resources Resources in OpenSEK
+ *
+ * Resources are used in OpenSEK to coordinate access of many tasks with
+ * different priorities to one resource.
+ *
+ * The resource mechanism avoid that two tasks get access to a same resorce
+ * any time. To avoid this a \b Priority \b Ceiling \b Protocol is used. This
+ * protocol avoids the posbility that a task tries to use a resource which
+ * is beeing accessed by other task. This avoids protocol avoids deadlocks too.
+ *
+ * \subsubsection OpenSEK_Introduction_Resources_CeilingProtocol Ceiling Protocol
+ *
+ * The Ceiling Protocol defines a static priority for every resource. this priority:
+ * 	- shall be set to at least the highest priority of all tasks using this
+ * 	  resource.
+ * 	- shall be lower to the lowest priority of all tasks that do not use this
+ * 	  resource and have higher priority to all taks that use the resource.
+ *
+ * When a task get a resource it priority is set to the resource priority and set
+ * back to the original priority when the resource is released.
+ *
+ * \subsection OpenSEK_Introduction_InternalResources Internal Resources
+ *
+ * Internal resources are like resources but are not visible to the user. Every
+ * task can be assigned maximal to one internal resource. Every time that the
+ * task is started the internal resources will be getted and released when the
+ * tasks terminates.
+ *
+ * This allow a task to have two priorites, one on the ready state to decide when
+ * the task will be executed and other priority when running, this priority decide
+ * when the task will be set back to ready state if preemtion occurs.
+ *
+ * \subsection OpenSEK_Introduction_Alarms Alarms
+ *
+ * TODO
+ *
+ * \section OpenSEK_Data_and_Interfaces Data types and Interfaces
+ *
+ * This chapter describes the OpenSEK data types and interfaces.
+ *
+ * \subsection OpenSEK_Data_and_Interfaces_DataTypes Data Types
+ *
+ * \subsection OpenSEK_Data_and_Interfaces_Interfaces Interfaces
+ *
+ * <table>
+ * 	<tr>
+ * 		<td>Service</td><td>Task</td><td>ISR1</td><td>ISR2</td><td>ErrorHook
+ * 		</td><td>PreTaskHook</td><td>PostTaskHook</td><td>StartupHook</td>
+ * 		<td>ShutdownHook</td><td>alarm-callback</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td>\ref ActivateTask</td><td>*</td><td></td><td>*</td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref TerminateTask</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref ChainTask</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref Schedule</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref GetTaskID</td><td>*</td><td></td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref GetTaskState</td><td>*</td><td></td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref DisableAllInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref EnableAllInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref SuspendAllInterrupts</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td>*</td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref ResumeAllInterrupts</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td>*</td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref SuspendOSInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+ *		<tr>
+ *			<td>\ref ResumeOSInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		</tr>
+
+ * </table>
+ *
+ * \ref Schedule
+ *
+ *
  * \section arch OpenSEK dependencies to every Architecture
  *
  * - \ref OpenSEK_Posix
