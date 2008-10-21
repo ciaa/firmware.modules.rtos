@@ -3,32 +3,34 @@
  * This is the Documentation Main Page. You can use it to write your own
  * specific documentation.
  *
- * \section Mainpage_Basics Basic Documentation
+ * \section Links Links to the Documentation
  *
- * - \ref CREDITS
- * - \ref RELEASENOTES
- * - \ref FUTURERELEASES
- * - \ref README
+ * - \subpage Basic
+ * - \subpage Introduction
+ * - \subpage Manuals
  *
- * \section Mainpage_Links Module Documentation
+ */
+
+/** \page Basic Basic Documentation
  *
- * If this is your first time with OpenSEK environment we recommend you to start
- * reading the introduction:
+ * - \subpage CREDITS
+ * - \subpage RELEASENOTES
+ * - \subpage FUTURERELEASES
+ * - \subpage README
  *
- * - \ref Introduction
+ */
+
+/** \page Manuals Manuals of OpenSEK Modules
  *
- * After reading the introduction on the following chapters you can find more
- * detailed information of every module.
- *
- * - \ref Modules
- * - \ref OilFormat
- * - \ref OpenSEK
- * - \ref OpenTIME
- * - \ref OpenLCD
- * - \ref OpenCOM
- * - \ref OpenKEY
- * - \ref OpenGEN
- * - \ref OpenDRV
- * - \ref OpenMAKE
+ * - \subpage Modules
+ * - \subpage OilFormat
+ * - \subpage OpenSEK
+ * - \subpage OpenTIME
+ * - \subpage OpenLCD
+ * - \subpage OpenCOM
+ * - \subpage OpenKEY
+ * - \subpage OpenGEN
+ * - \subpage OpenDRV
+ * - \subpage OpenMAKE
  *
  */

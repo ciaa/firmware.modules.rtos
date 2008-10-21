@@ -199,57 +199,117 @@
  *
  * \subsection OpenSEK_Data_and_Interfaces_Interfaces Interfaces
  *
- * <table>
- * 	<tr>
+ * <table border="1" cellspacing="0" cellpadding="2">
+ * 	<tr align="center">
  * 		<td>Service</td><td>Task</td><td>ISR1</td><td>ISR2</td><td>ErrorHook
  * 		</td><td>PreTaskHook</td><td>PostTaskHook</td><td>StartupHook</td>
  * 		<td>ShutdownHook</td><td>alarm-callback</td>
  * 	</tr>
- * 	<tr>
- * 		<td>\ref ActivateTask</td><td>*</td><td></td><td>*</td><td></td><td></td><td></td><td></td><td></td>
+ * 	<tr align="center">
+ * 		<td>\ref ActivateTask</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref TerminateTask</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref TerminateTask</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref ChainTask</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref ChainTask</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref Schedule</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref Schedule</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref GetTaskID</td><td>*</td><td></td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref GetTaskID</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref GetTaskState</td><td>*</td><td></td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref GetTaskState</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref DisableAllInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref DisableAllInterrupts</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref EnableAllInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref EnableAllInterrupts</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref SuspendAllInterrupts</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td>*</td>
+ *		<tr align="center">
+ *			<td>\ref SuspendAllInterrupts</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>X</td>
  *		</tr>
- *		<tr>
- *			<td>\ref ResumeAllInterrupts</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td>*</td>
+ *		<tr align="center">
+ *			<td>\ref ResumeAllInterrupts</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>X</td>
  *		</tr>
- *		<tr>
- *			<td>\ref SuspendOSInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref SuspendOSInterrupts</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
- *		<tr>
- *			<td>\ref ResumeOSInterrupts</td><td>*</td><td>*</td><td>*</td><td></td><td></td><td></td><td></td><td></td><td></td>
+ *		<tr align="center">
+ *			<td>\ref ResumeOSInterrupts</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
-
+ *		<tr align="center">
+ *			<td>\ref GetResource</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref ReleaseResource</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref SetEvent</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref ClearEvent</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref GetEvent</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref WaitEvent</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref GetAlarmBase</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref GetAlarm</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref SetRelAlarm</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref SetAbsAlarm</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref CancelAlarm</td><td>X</td><td>-</td><td>X</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref GetActiveApplicationMode</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td>
+ *		</tr>
+ *		<tr align="center">
+ *			<td>\ref StartOs</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *		</tr>
+ *    <tr align="center">
+ *       <td>\ref ShutdownOs</td><td>X</td><td>-</td><td>X</td><td>X</td><td>-</td><td>-</td><td>X</td><td>-</td><td>-</td>
+ *    </tr>
  * </table>
+ *
+ * \code
+ * int main (void)
+ * {
+ * }
+ * \endcode
+ *
+ * \verbatim
+ * int main (void)
+ * {
+ * }
+ * \endverbatim
+ *
+ * \copydoc Schedule
+ *
+ * \copydetails Schedule
+ *
+ * \copybrief Schedule
  *
  * \ref Schedule
  *
  *
  * \section arch OpenSEK dependencies to every Architecture
  *
- * - \ref OpenSEK_Posix
- * - \ref OpenSEK_Windows
+ * - \subpage OpenSEK_Posix
+ * - \subpage OpenSEK_Windows
+ * - \subpage OpenSEK_Requirements
  *
  */
