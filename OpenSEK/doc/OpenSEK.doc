@@ -18,7 +18,7 @@
  *
  */
 
-/** \page OpenSEK OpenSEK Documentation
+/** \page OpenSEK OpenSEK OS Documentation
  *
  * On this documentation you are going to find all information related to
  * the OpenSEK RTOS. OpenSEK is based on the OSEK-VDX RTOS specifications.
@@ -197,7 +197,12 @@
  *
  * \subsection OpenSEK_Data_and_Interfaces_DataTypes Data Types
  *
- * \subsection OpenSEK_Data_and_Interfaces_Interfaces Interfaces
+ * \section OpenSEK_API OpenSEK Services
+ *
+ * \subsection OpenSEK_API_Context Call Context
+ *
+ * The following table indicates for every OpenSEK interface from which context
+ * can be called.
  *
  * <table border="1" cellspacing="0" cellpadding="2">
  * 	<tr align="center">
@@ -285,26 +290,155 @@
  *    </tr>
  * </table>
  *
+ * \subsection OpenSEK_API_Ref Interfaces Reference
+ *
+ * \subsubsection OpenSEK_API_Ref_ActivateTask ActivateTask Service
+ *
+ * \copydetails ActivateTask
+ *
+ * \b Example:
+ *
  * \code
- * int main (void)
- * {
- * }
+ * /* ... */
+ *
+ * StatusType ret;
+ *
+ * /* The Task Checksum_Task has to be defined on the OIL configuration */
+ * /* Activate Checksum_Task */
+ * ret = ActivateTask(Checksum_Task); 
+ *
+ * /* ... */
  * \endcode
  *
- * \verbatim
- * int main (void)
- * {
- * }
- * \endverbatim
+ * \subsubsection OpenSEK_API_Ref_CancelAlarm CancelAlarm Service
  *
- * \copydoc Schedule
+ * \copydetails CancelAlarm
+ *
+ * \b Example:
+ *
+ * \code
+ * /* ... */
+ *
+ * StatusType ret;
+ *
+ * /* The alarm TimeOut_Alarm has to be defined on the OIL configuration */
+ * /* Cancel the alarm TimeOut_Alarm */
+ * ret = CancelAlarm(TimeOut_Alarm);
+ *
+ * /* ... */
+ * \endcode
+ *
+ * \subsubsection OpenSEK_API_Ref_ChainTask ChainTask Service
+ *
+ * \copydetails ChainTask
+ *
+ * \subsubsection OpenSEK_API_Ref_ClearEvent ClearEvent Service
+ *
+ * \copydetails ClearEvent
+ *
+ * \subsubsection OpenSEK_API_Ref_DisableAllInterrupts DisableAllInterrupts Service
+ *
+ * \copydetails DisableAllInterrupts
+ *
+ * \subsubsection OpenSEK_API_Ref_EnableAllInterrupts EnableAllInterrupts Service
+ *
+ * \copydetails EnableAllInterrupts
+ *
+ * \subsubsection OpenSEK_API_Ref_GetResource GetResource Service
+ *
+ * \copydetails GetResource
+ *
+ * \subsubsection OpenSEK_API_Ref_GetActiveApplicationMode GetActiveApplicationMode Service
+ *
+ * \copydetails GetActiveApplicationMode
+ *
+ * \subsubsection OpenSEK_API_Ref_GetAlarm GetAlarm Service
+ *
+ * \copydetails GetAlarm
+ *
+ * \subsubsection OpenSEK_API_Ref_GetAlarmBase GetAlarmBase Service
+ *
+ * \copydetails GetAlarmBase
+ *
+ * \subsubsection OpenSEK_API_Ref_GetEvent GetEvent Service
+ *
+ * \copydetails GetEvent
+ *
+ * \subsubsection OpenSEK_API_Ref_GetTaskID GetTaskID Service
+ *
+ * \copydetails GetTaskID
+ *
+ * \subsubsection OpenSEK_API_Ref_GetTaskState GetTaskState Service
+ *
+ * \copydetails GetTaskState
+ *
+ * \subsubsection OpenSEK_API_Ref_ReleaseResource ReleaseResource Service
+ *
+ * \copydetails ReleaseResource
+ *
+ * \subsubsection OpenSEK_API_Ref_ResumeAllInterrupts ResumeAllInterrupts Service
+ *
+ * \copydetails ResumeAllInterrupts
+ *
+ * \subsubsection OpenSEK_API_Ref_ResumeOSInterrupts ResumeOSInterrupts Service
+ *
+ * \copydetails ResumeOSInterrupts
+ *
+ * \subsubsection OpenSEK_API_Ref_Schedule Schedule Service
  *
  * \copydetails Schedule
  *
- * \copybrief Schedule
+ * \subsubsection OpenSEK_API_Ref_SetAbsAlarm SetAbsAlarm Service
  *
- * \ref Schedule
+ * \copydetails SetAbsAlarm
  *
+ * \subsubsection OpenSEK_API_Ref_SetEvent SetEvent Service
+ *
+ * \copydetails SetEvent
+ *
+ * \subsubsection OpenSEK_API_Ref_SetRelAlarm SetRelAlarm Service
+ *
+ * \copydetails SetRelAlarm
+ *
+ * \subsubsection OpenSEK_API_Ref_ShutdownOs ShutdownOs Service
+ *
+ * \copydetails ShutdownOs
+ *
+ * \subsubsection OpenSEK_API_Ref_StartOs StartOs Service
+ *
+ * \copydetails StartOs
+ *
+ * \b Example:
+ *
+ * \code
+ * void main(void)
+ * {
+ * 	/* local variable to save the mode */
+ * 	AppModeType Mode;
+ * 	/* get the actual mode from a user specific function */
+ * 	Mode = GetMode();
+ * 	/* start the OS indicating the mode */
+ * 	StartOs(Mode);
+ * 	/* StartOs shall never return but in case we put a while(1); */
+ * 	while(1);
+ * }
+ * \endcode
+ *
+ * \subsubsection OpenSEK_API_Ref_SuspendAllInterrupts SuspendAllInterrupts Service
+ *
+ * \copydetails SuspendAllInterrupts
+ *
+ * \subsubsection OpenSEK_API_Ref_SuspendOSInterrupts SuspendOSInterrupts Service
+ *
+ * \copydetails SuspendOSInterrupts
+ *
+ * \subsubsection OpenSEK_API_Ref_TerminateTask TerminateTask Service
+ *
+ * \copydetails TerminateTask
+ *
+ * \subsubsection OpenSEK_API_Ref_WaitEvent WaitEvent Service
+ *
+ * \copydetails WaitEvent
  *
  * \section arch OpenSEK dependencies to every Architecture
  *

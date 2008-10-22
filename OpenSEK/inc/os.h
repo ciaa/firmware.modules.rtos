@@ -374,10 +374,31 @@ extern InterruptCounterType SuspendAllInterrupts_Counter;
 /*==================[external functions declaration]=========================*/
 /** \brief Activate the specified Task
  **
- ** Activate the Task with id TaskID.
+ ** This system service activates the task with id indicated in the TaskID
+ ** parameter.
+ **
+ ** This service can be used to activate any OpenSEK Tasks. By the activation
+ ** the task will be transfered from the suspended to the ready state. Basic
+ ** tasks may be activated more tha one time, if configured. A second or n
+ ** activation puts the task for a second or n time on the ready list. A
+ ** maximal count of activation shall be defined on the OIL configuration for
+ ** every basic tasks. Extended task can only be activated ones.
+ **
+ ** OpenSEK generates macros with the names of the tasks as defined on the on
+ ** the OIL configuration.
+ **
+ ** Rescheduling takes place before returning. Activating a higher priority
+ ** task preemts the running task (only if preemtable) and start the
+ ** activated task.
+ **
+ ** This function may return E_OK or E_OS_LIMIT in standard mode.
+ ** Extra in extended mode E_OS_ID may be returned.
+ **
+ ** If the return code is other than E_OK, the ErrorHook is enable, and
+ ** ErrorHook is not beeing executed the ErrorHook function will be called.
  **
  ** \param[in] TaskID TaskID of the task to be activated.
- ** \return E_OK if no error
+ ** \return E_OK if no error occurrs
  ** \return E_OS_LIMIT if to many task activations of TaskID
  ** \return E_OS_ID if the TaskID is invalid, only in extended mode.
  **/
@@ -469,9 +490,14 @@ extern StatusType ReleaseResource(ResourceType ResID);
 
 /** \brief Start the OpenSEK Operating System
  **
- ** Start the OpenSEK
+ ** This Interface shall be used to start the Operating System. It may be
+ ** called directly from the main function after performing any neccesary
+ ** hardware initializations.
+ **
+ ** This function shall never return.
  **
  ** \param[in] Mode Application Mode
+ ** \return never
  **/
 extern void StartOs(AppModeType Mode);
 
@@ -573,9 +599,25 @@ extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle)
 
 /** \brief Cancel Alarm
  **
- ** The system service shall cancel the alarm AlarmID.
+ ** The system service cancels the alarm indicated in the parameter AlarmID.
+ **
+ ** This service can be used to cancel a running alarm activated before
+ ** with the service SetRelAlarm or SetAbsAlarm or started automaticaly
+ ** for the actual application mode.
+ **
+ ** OpenSEK generates macros with the names of the alarms as defined on the on
+ ** the OIL configuration.
+ **
+ ** This service may return E_OK, or E_OS_NOFUNC in standard mode. Extra
+ ** in extended mode E_OS_ID may be returned.
+ **
+ ** If the return code is other than E_OK, the ErrorHook is enable, and
+ ** ErrorHook is not beeing executed the ErrorHook function will be called.
  **
  ** \param[in] AlarmID Alamar ID to be readed
+ ** \return E_OK if no error occurs
+ ** \return E_OS_ID if an invalid AlamrID is provided
+ ** \return E_NO_FUNC if the alarm is not running
  **/
 extern StatusType CancelAlarm(AlarmType AlarmID);
 
