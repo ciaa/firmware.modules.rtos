@@ -303,7 +303,7 @@
  *
  * StatusType ret;
  *
- * /* The Task Checksum_Task has to be defined on the OIL configuration */
+ * /* The task Checksum_Task has to be defined on the OIL configuration */
  * /* Activate Checksum_Task */
  * ret = ActivateTask(Checksum_Task); 
  *
@@ -331,6 +331,20 @@
  * \subsubsection OpenSEK_API_Ref_ChainTask ChainTask Service
  *
  * \copydetails ChainTask
+ *
+ * \b Example:
+ *
+ * \code
+ * /* ... */
+ *
+ * StatusType ret;
+ *
+ * /* The task Next_Task has to be defined on the OIL configuration */
+ * /* Chain to task Next_Task */
+ * ret = ChainTask(Next_Task);
+ *
+ * /* ... */
+ * \endcode
  *
  * \subsubsection OpenSEK_API_Ref_ClearEvent ClearEvent Service
  *

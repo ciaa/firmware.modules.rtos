@@ -417,9 +417,31 @@ extern StatusType TerminateTask(void);
 
 /** \brief Terminate the calling Task and Activate the specified Task
  **
- ** This API shall finish the execution of the calling task. And Active
- ** the specified Task. If no error this API doesn't return.
+ ** This system service finishs the execution of the calling task and
+ ** activates the indicated task. If no error occurrs this service never
+ ** returns.
  **
+ ** This service can be used to continue executing a task terminating the
+ ** calling task.
+ **
+ ** ChainTask service may be used to referencint the actual task. This
+ ** will case the actual task to be restarted.
+ **
+ ** OpenSEK generates macros with the names of the tasks as defined on the on
+ ** the OIL configuration.
+ **
+ ** Rescheduling takes place before returning. 
+ **
+ ** This function may return E_OS_LIMIT in standard mode.
+ ** Extra in extended mode E_OS_ID, E_OS_CALLEVEL, or E_OS_RESOURCE may be
+ ** returned.
+ **
+ ** If any error occurs, and the ErrorHook is enable, and ErrorHook is not
+ ** beeing executed, the ErrorHook function will be called.
+ **
+ ** If no error occurrs the function doesn't return.
+ **
+ ** \param[in] TaskID task to be activatied after finishing the actial task.
  ** \return E_OS_LIMIT if too many task activations of TaskID
  ** \return E_OS_ID if the TaskID is invalid
  ** \return E_OS_RESOURCE if the calling task still occupies resources
