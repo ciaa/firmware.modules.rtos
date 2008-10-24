@@ -601,6 +601,107 @@
  *
  * \section OpenSEK_Porting Porting OpenSEK to new platforms
  *
+ * This sections explains how to port OpenSEK to a new platform. Important is
+ * that you will need a good background of the platform where you want to port
+ * OpenSEK and to have access to an evaluation board to test and debug your
+ * work.
+ *
+ * We recommend you to base your work for the new platform on an other
+ * platform. If there is a platform which is like yours take this platform
+ * but is not the case you can base your work in posix or windows platform.
+ * Always is easier to have the files and to change it on the way when
+ * you try to compile.
+ *
+ * \subsection OpenSEK_Porting_DirStructure Directory structure
+ *
+ * First of all lets take a look on the OpenSEK directory structure. There
+ * are some generic directories and other that are platform specific. To port
+ * OpenSEK to a new platform you have only to work on the project specific
+ * files, you DON'T have to change anything on the generic directories. If
+ * you change anything on a generic directory the code may not run any more
+ * in an other platform, so please take care of this.
+ *
+ * Platform specific directories are:
+ *
+ * - OpenSEK/gen/src/\<ARCH\>
+ * - OpenSEK/gen/src/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/gen/inc/\<ARCH\>
+ * - OpenSEK/gen/inc/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/src/\<ARCH\>
+ * - OpenSEK/src/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/inc/\<ARCH\>
+ * - OpenSEK/inc/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/mak/\<ARCH\>
+ * - OpenSEK/mak/\<ARCH\>/\<DERIVATE\>
+ *
+ * Not all directories are needed to all platforms. This depends on how you
+ * create the structure for your platform. First of all you have to define
+ * an architecture name, for example for Windows (cygwin) we are sugin win and
+ * for Linux (posix) posix. Please use a lower case name with only alphabetica
+ * letters (a-z).
+ *
+ * After defining your \<ARCH\> name you have to decide if you need one or more
+ * \<DERIVATEs\>. Some microcontrollers are a main controller with many sub
+ * controllers which for example may have less or more timers, i/o channels
+ * or any other small HW differences. In the case that there is no appreciable
+ * difference you can work only with the \<ARCH\> directories, if you want to
+ * make a difference between \<DERIVATES\> you can define one or more
+ * \<DERIVATEs\>. Again for all \<DERIVATES\> names use lower cases and only
+ * alphabeticals letters (a-z).
+ *
+ * Important is that all files that you will write generic for all
+ * \<DERIVATEs\> have to be written on the \<ARCH\> directorie and all specific
+ * for an \<DERIVATE\> have to be written on the \<DERIVATE\> directory.
+ *
+ * For example if you don't need separated files for \<DERIVATEs\> you don't
+ * have to create any \<DERIVATE\> directory, same if you don't need any special
+ * make file you don't need a OpenSEK/mak/\<ARCH\> or
+ * OpenSEK/mak/\<ARCH\>/\<DERIVATE\>.
+ * 
+ * \subsection OpenSEK_Porting_Files Files to be ported
+ *
+ * The following files have to be defined since they are included
+ * from the generic files or compiled and linked, and are:
+ *
+ * - Osek_Arch.h
+ * - Osek_Internal_Arch.h
+ * - Osek_Internal_Arch_Cfg.h
+ * - Osek_Internal_Cfg.h
+ * - Osek_Internal_Arch_Cfg.c.php
+ * - StartOs_Arch.c
+ * - Osek_Arch.c
+ * - Osek_Internal_Arch.c
+ * - Osek_Internal_Arch_Cfg.c
+ *
+ * \subsubsection OpenSEK_Porting_Files_Osek_Arch.h Platform header file
+ *
+ * This file will be included from \ref os.h so anything that you write on this
+ * file will be exported to the user, since the user includes in his project
+ * os.h. So please take care that what you write on this file is not internal
+ * OpenSEK information.
+ *
+ * This file shall define 6 macros or functions (macros are recommended):
+ *
+ * - EnableAllInterrupts_Arch()
+ * - DisableAllInterrupts_Arch()
+ * - ResumeAllInterrupts_Arch()
+ * - SuspendAllInterrupts_Arch()
+ * - ResumeOSInterrupts_Arch()
+ * - SuspendOSInterrupts_Arch()
+ *
+ * This functions or macros are called from the \<SERVICE\>_Interrupts which are
+ * platform independent.
+ *
+ * \b EnableAllInterrupts_Arch()
+ *
+ * This service shall enable all interrupts of the system. Please take care
+ * to enable only interrupts which are used, do not enable interrupts for
+ * which ones without any interrupt service.
+ *
+ * \b DisableAllInterrupts_Arch()
+ *
+ * This service shall disable all interrupts of the system. 
+ *
  * \section OpenSEK_Requirements Requirements
  *
  * - \subpage OpenSEK_Requirements
