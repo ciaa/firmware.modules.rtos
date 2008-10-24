@@ -23,6 +23,7 @@
  * v0.2.3	OpenSEK Beta Release 2008MMDD
  *		- add Manual Structure
  *		- write first OpenSEK OS Manual
+ *
  * v0.2.2	OpenSEK Beta Release 20081012
  * 	- add support for windows (cygwin)
  * 	- generic os file were checked with splint

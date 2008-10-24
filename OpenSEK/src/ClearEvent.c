@@ -65,7 +65,7 @@ StatusType ClearEvent
 )
 {
 	/* \req OSEK_SYS_3.16 The system service StatusType
-	 ** ClearEvent ( EventMaskType Mask ) shall be defined */
+	 * ClearEvent ( EventMaskType Mask ) shall be defined */
 
 	/* \req OSEK_SYS_3.16.2 Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
@@ -74,13 +74,13 @@ StatusType ClearEvent
 	if ( !TasksConst[GetRunningTask()].ConstFlags.Extended )
 	{
 		/* \req OSEK_SYS_3.16.3-1/2 Extra possible return values in Extended
-		 ** mode are E_OS_ACCESS, E_OS_CALLEVEL */
+		 * mode are E_OS_ACCESS, E_OS_CALLEVEL */
 		ret = E_OS_ACCESS;
 	}
 	else if ( GetCallingContext() != CONTEXT_TASK )
 	{
 		/* \req OSEK_SYS_3.16.3-2/2 Extra possible return values in Extended
-		 ** mode are E_OS_ACCESS, E_OS_CALLEVEL */
+		 * mode are E_OS_ACCESS, E_OS_CALLEVEL */
 		ret = E_OS_CALLEVEL;
 	}
 	else
@@ -90,7 +90,7 @@ StatusType ClearEvent
 		IntSecure_Start();
 
 		/* \req OSEK_SYS_3.16.1 The events of the extended task calling ClearEvent
-		 ** are cleared according to the event mask Mask */
+		 * are cleared according to the event mask Mask */
 		TasksVar[GetRunningTask()].Events &=
 			(EventMaskType)~( Mask & TasksConst[GetRunningTask()].EventsMask );
 
@@ -102,9 +102,9 @@ StatusType ClearEvent
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 		(HOOK_ERRORHOOK == ENABLE) )
 	/* \req OSEK_ERR_1.3-9/xx The ErrorHook hook routine shall be called if a
-	 ** system service returns a StatusType value not equal to E_OK.*/
+	 * system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-9/xx The hook routine ErrorHook is not called if a
-	 ** system service is called from the ErrorHook itself. */
+	 * system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
 		SetError_Api(OSServiceId_ClearEvent);

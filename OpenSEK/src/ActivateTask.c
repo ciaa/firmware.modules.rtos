@@ -64,10 +64,10 @@ StatusType ActivateTask
 )
 {
 	/* \req OSEK_SYS_3.1 The system service StatusType
-	 ** ActivateTask ( TaskType TaskID ) shall be defined. */
+	 * ActivateTask ( TaskType TaskID ) shall be defined. */
 
 	/* \req OSEK_SYS_3.1.3 The service may be called from interrupt category 2
-    ** level and from task level. */
+    * level and from task level. */
 	/* nothing to do for this req. */
 
 	/* \req OSEK_SYS_3.1.7-1/3 Possible return values in Standard mode are E_OK or E_OS_LIMIT */
@@ -79,9 +79,9 @@ StatusType ActivateTask
 	{
 		/* if an invalid task id return E_OS_ID */
 		/* \req OSEK_SYS_3.1.5-1/3 If other than E_OK is returned the activation
-		 ** is ignored */
+		 * is ignored */
 		/* \req OSEK_SYS_3.1.8 Added possible return values in Extended mode is
-		 ** E_OS_ID */
+		 * E_OS_ID */
 		ret = E_OS_ID;
 	}
 	else
@@ -91,18 +91,18 @@ StatusType ActivateTask
 
 		/* check if the task is susspended */
 		/* \req OSEK_SYS_3.1.1-1/2 The task TaskID shall be transferred from the
-		 ** suspended state into the ready state. */
+		 * suspended state into the ready state. */
 		if ( TasksVar[TaskID].Flags.State == TASK_ST_SUSPENDED )
 		{
 			/* increment activation counter */
 			TasksVar[TaskID].Activations++;
 			/* if the task was suspended set it to ready */
-			/** OSEK_SYS_3.1.1-2/2 The task TaskID shall be transferred from the
-			 ** suspended state into the ready state.*/
+			/* OSEK_SYS_3.1.1-2/2 The task TaskID shall be transferred from the
+			 * suspended state into the ready state.*/
 			TasksVar[TaskID].Flags.State = TASK_ST_READY;
 			/* clear all events */
 			/* \req OSEK_SYS_3.1.6 When an extended task is transferred from
-			 ** suspended state into ready state all its events are cleared. */
+			 * suspended state into ready state all its events are cleared. */
 			TasksVar[TaskID].Events = 0;
 			/* add the task to the ready list */
 			AddReady(TaskID);
@@ -116,9 +116,9 @@ StatusType ActivateTask
 			{
 				/* return E_OS_LIMIT */
 				/* \req OSEK_SYS_3.1.5-2/3 If other than E_OK is returned the activation
-				 ** is ignored */
+				 * is ignored */
 				/* \req OSEK_SYS_3.1.7-2/3 Possible return values in Standard mode are
-				 ** E_OK or E_OS_LIMIT */
+				 * E_OK or E_OS_LIMIT */
 				ret = E_OS_LIMIT;
 			}
 			else
@@ -135,9 +135,9 @@ StatusType ActivateTask
 				{
 					/* maximal activation reached, return E_OS_LIMIT */
 					/* \req OSEK_SYS_3.1.5-3/3 If other than E_OK is returned the
-					 ** activation is ignored */
+					 * activation is ignored */
 					/* \req OSEK_SYS_3.1.7-3/3 Possible return values in Standard mode are
-					 ** E_OK or E_OS_LIMIT */
+					 * E_OK or E_OS_LIMIT */
 					ret = E_OS_LIMIT;
 				}
 			}
@@ -151,7 +151,7 @@ StatusType ActivateTask
 			( ret == E_OK )	)
 		{
 			/* \req OSEK_SYS_3.1.4 Rescheduling shall take place only if called from a
-			 ** preemptable task. */
+			 * preemptable task. */
 			(void)Schedule();
 		}
 	}
@@ -159,9 +159,9 @@ StatusType ActivateTask
 
 #if (HOOK_ERRORHOOK == ENABLE)
 	/* \req OSEK_ERR_1.3-1/xx The ErrorHook hook routine shall be called if a
- 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 	 * system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-1/xx The hook routine ErrorHook is not called if a
- 	 ** system service is called from the ErrorHook itself. */
+ 	 * system service is called from the ErrorHook itself. */
 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1U))
  	{
 		SetError_Api(OSServiceId_ActivateTask);

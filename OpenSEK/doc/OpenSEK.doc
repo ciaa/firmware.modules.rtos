@@ -26,6 +26,56 @@
  * OSEK-VDX RTOS specification from the OSEK-VDX page
  * <a href="http://www.osek-vdx.org/">http://www.osek-vdx.org/</a>.
  *
+ * \section OpenSEK_TOC Table of content
+ *
+ * - \ref OpenSEK_Introduction <br>
+ * 	- \ref OpenSEK_Introduction_RunLevels <br>
+ * 	- \ref OpenSEK_Introduction_ISR <br>
+ * 	- \ref OpenSEK_Introduction_Task <br>
+ * 	- \ref OpenSEK_Introduction_Task_Priority <br>
+ * 	- \ref OpenSEK_Introduction_Scheduling <br>
+ * 	- \ref OpenSEK_Introduction_Scheduling_Preemtive <br>
+ * 	- \ref OpenSEK_Introduction_Scheduling_Nonpreemtive <br>
+ * 	- \ref OpenSEK_Introduction_TaskGroup <br>
+ * 	- \ref OpenSEK_Introduction_ApplMode <br>
+ * 	- \ref OpenSEK_Introduction_Events <br>
+ * 	- \ref OpenSEK_Introduction_Resources <br>
+ * 	- \ref OpenSEK_Introduction_Resources_CeilingProtocol <br>
+ * 	- \ref OpenSEK_Introduction_InternalResources <br>
+ * 	- \ref OpenSEK_Introduction_Alarms <br>
+ * 	- \ref OpenSEK_Data_and_Interfaces <br>
+ * - \ref OpenSEK_Data_and_Interfaces_DataTypes <br>
+ * - \ref OpenSEK_API <br>
+ * 	- \ref OpenSEK_API_Context <br>
+ * 	- \ref OpenSEK_API_Ref <br>
+ * 		- \ref OpenSEK_API_Ref_ActivateTask <br>
+ * 		- \ref OpenSEK_API_Ref_CancelAlarm <br>
+ * 		- \ref OpenSEK_API_Ref_ChainTask <br>
+ * 		- \ref OpenSEK_API_Ref_ClearEvent <br>
+ * 		- \ref OpenSEK_API_Ref_DisableAllInterrupts <br>
+ * 		- \ref OpenSEK_API_Ref_EnableAllInterrupts <br>
+ * 		- \ref OpenSEK_API_Ref_GetResource <br>
+ * 		- \ref OpenSEK_API_Ref_GetActiveApplicationMode <br>
+ * 		- \ref OpenSEK_API_Ref_GetAlarm <br>
+ * 		- \ref OpenSEK_API_Ref_GetAlarmBase <br>
+ * 		- \ref OpenSEK_API_Ref_GetEvent <br>
+ * 		- \ref OpenSEK_API_Ref_GetTaskID <br>
+ * 		- \ref OpenSEK_API_Ref_GetTaskState <br>
+ * 		- \ref OpenSEK_API_Ref_ReleaseResource <br>
+ * 		- \ref OpenSEK_API_Ref_ResumeAllInterrupts <br>
+ * 		- \ref OpenSEK_API_Ref_ResumeOSInterrupts <br>
+ * 		- \ref OpenSEK_API_Ref_Schedule <br>
+ * 		- \ref OpenSEK_API_Ref_SetAbsAlarm <br>
+ * 		- \ref OpenSEK_API_Ref_SetEvent <br>
+ * 		- \ref OpenSEK_API_Ref_SetRelAlarm <br>
+ * 		- \ref OpenSEK_API_Ref_ShutdownOs <br>
+ * 		- \ref OpenSEK_API_Ref_StartOs <br>
+ * 		- \ref OpenSEK_API_Ref_SuspendAllInterrupts <br>
+ * 		- \ref OpenSEK_API_Ref_SuspendOSInterrupts <br>
+ * 		- \ref OpenSEK_API_Ref_TerminateTask <br>
+ * 		- \ref OpenSEK_API_Ref_WaitEvent <br>
+ * 		- \ref OpenSEK_Arch <br>
+ *
  * \section OpenSEK_Introduction Introduction
  *
  * OpenSEK is an Open Source implementation of the real time operating
@@ -350,9 +400,45 @@
  *
  * \copydetails ClearEvent
  *
+ * \b Example:
+ *
+ * \code
+ * /* ... */
+ *
+ * /* local variable for the events */
+ * EventMaskType Event;
+ *
+ * /* set event variable to a valid event */
+ * Event = MsgRx_Event;
+ *
+ *	/* Wait for the Event */
+ * (void)WaitEvent(Event);
+ * /* Clear the Event */
+ * (void)ClearEvent(Event);
+ *
+ * /* MsgRx_Event occurs */
+ * /* do something  */
+ *
+ * /* ... */
+ * \endcode
+ *
  * \subsubsection OpenSEK_API_Ref_DisableAllInterrupts DisableAllInterrupts Service
  *
  * \copydetails DisableAllInterrupts
+ *
+ * \code
+ * /* ... */
+ *
+ * /* start critical code */
+ * DisableAllInterrupts();
+ *
+ * /* add the critical code */
+ *
+ * /* end ciritical code */
+ * EnableAllInterrupts();
+ *
+ * /* ... */
+ * \endcode
  *
  * \subsubsection OpenSEK_API_Ref_EnableAllInterrupts EnableAllInterrupts Service
  *
@@ -454,7 +540,7 @@
  *
  * \copydetails WaitEvent
  *
- * \section arch OpenSEK dependencies to every Architecture
+ * \section OpenSEK_Arch OpenSEK dependencies to every Architecture
  *
  * - \subpage OpenSEK_Posix
  * - \subpage OpenSEK_Windows

@@ -112,7 +112,14 @@
 
 /** \brief Enable All Interrupts
  **
- ** This API enables all Interruptions disabled by DisableAllInterrups.
+ ** This system service enables all interruptions disabled by
+ ** the DisableAllInterrups service.
+ **
+ ** If the service DisablleAllInterrupt is called n times
+ ** time, only the n call to EnablleAllInterrupts will enable
+ ** all disabled interrupts.
+ **
+ ** \return none
  **/
 /* \req OSEK_SYS_3.7 The system service void EnableAllInterrupts ( void )
  *  shall be defined
@@ -133,8 +140,12 @@
 
 /** \brief Disable All Interrupts
  **
- ** This API disables all Interruptions and saves the interruptions states for
- ** the EnableAllInterrupts API.
+ ** This system service disables all interrupts.
+ **
+ ** If this service is called n times, EnableAllInterrupts has to be
+ ** called n times to enable the interrupts back.
+ **
+ ** \return none
  **/
 /* \req OSEK_SYS_3.8 The system service void DisableAllInterrupts ( void )
  *  shall be defined
@@ -535,10 +546,24 @@ extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
 
 /** \brief Clear Event
  **
- ** This Interface can be used to clear one or more events of the calling
- ** task
+ ** This system service clears one or more events of the calling task.
+ **
+ ** This service can be used to remove events set to the calling task by any
+ ** other task.
+ **
+ ** OpenSEK generates macros with the names of the events as defined on the OIL
+ ** configuration.
+ **
+ ** This function returns E_OK in standard mode. Extra in extended mode
+ ** E_OS_ACCESS and E_OS_CALLEVEL may be returned.
+ **
+ ** If any error occurs, and the ErrorHook is enable, and ErrorHook is not
+ ** beeing executed, the ErrorHook function will be called.
  **
  ** \param[in] Mask Events to be cleared.
+ ** \return E_OK if no error occurs
+ ** \return E_OS_ACCESS if called from a basic task
+ ** \return E_OS_CALLEVEL if called from a context other than a task
  **/
 extern StatusType ClearEvent(EventMaskType Mask);
 
