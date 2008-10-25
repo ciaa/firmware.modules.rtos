@@ -144,6 +144,35 @@
  **/
 #define PostIsr2_Arch(isr)
 
+#define SavePosixStack() \
+   {                                   \
+      /* save actual win esp */        \
+      __asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (PosixStack) : : "eax"); \
+   }
+
+/** \brief Pre Call Service
+ **
+ ** This macro shall be called before calling any posix system service
+ **/
+#define PreCallService() 		\
+	{									\
+		/* save osek stack */	\
+		__asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (OsekStack) : : "eax"); \
+		/* get windows stack */	\
+		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (PosixStack) ); \
+	}
+
+/** \brief Post Call Service
+ **
+ ** This macro shall be called after calling any posix system service
+ **/
+#define PostCallService()		\
+	{									\
+		/* get windows stack */ \
+		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (OsekStack) ); \
+	}
+
+
 /*==================[typedef]================================================*/
 /** \brief uint8 type definition */
 typedef unsigned char uint8;
@@ -216,6 +245,10 @@ extern struct sigevent SignalEvent;
 /** \brief Osek Hardware Timer 0
  **/
 extern uint32 OsekHWTimer0;
+
+extern uint32 PosixStack;
+
+extern uint32 OsekStack;
 
 /*==================[external functions declaration]=========================*/
 /** \brief Posix Interrupt Handler

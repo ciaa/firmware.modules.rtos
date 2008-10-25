@@ -74,6 +74,8 @@ int SharedMemory;
 
 uint32 WinStack;
 
+uint32 OsekStack;
+
 /*==================[internal functions definition]==========================*/
 /** \brief SendMessage
  **

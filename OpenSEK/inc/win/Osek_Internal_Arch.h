@@ -125,7 +125,7 @@
 #define SaveWinStack() \
    {                                   \
       /* save actual win esp */        \
-      __asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (WinStack)); \
+      __asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (WinStack) : : "eax"); \
    }
 
 /** \brief Set the entry point for a task */
@@ -172,6 +172,30 @@
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
 #define PostIsr2_Arch(isr)
+
+/** \brief Pre Call Service
+ **
+ ** This macro shall be called before calling any posix system service
+ **/
+#define PreCallService()      \
+	{                          \
+		/* save osek stack */   \
+		__asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (OsekStack) : : "eax"); \
+		/* get windows stack */ \
+		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (WinStack) ); \
+	}
+
+/** \brief Post Call Service
+ **
+ ** This macro shall be called after calling any posix system service
+ **/
+#define PostCallService()     \
+	{                          \
+		/* get windows stack */ \
+		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (OsekStack) ); \
+	}
+
+
 
 /*==================[typedef]================================================*/
 /** \brief uint8 type definition */
@@ -248,6 +272,8 @@ extern MessageQueueType *MessageQueue;
 extern int SharedMemory;
 
 extern uint32 WinStack;
+
+extern uint32 OsekStack;
 
 /*==================[external functions declaration]=========================*/
 extern void CallTask(TaskType NewTask);
