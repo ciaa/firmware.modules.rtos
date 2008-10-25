@@ -41,6 +41,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "TS_Internal.h"
+#include "Osek_Internal.h"
 #include "stdio.h"
 
 /*==================[macros]=================================================*/
@@ -62,6 +63,7 @@ void TS_RunTestSuite(void)
 	{
 		result = TestCases[loopi]();
 		TS_TestResults[(loopi/sizeof(TS_TestResults))] |= (0x3 & result) << (loopi*2 % 4);
+		PreCallService();
 		printf("Test: %4d Result: ",loopi);
 		switch(result)
 		{
@@ -81,6 +83,8 @@ void TS_RunTestSuite(void)
 				printf("ERROR RESULT\n");
 				break;
 		}
+		PostCallService();
+		
 	}
 }
 

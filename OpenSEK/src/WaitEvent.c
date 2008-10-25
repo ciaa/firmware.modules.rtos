@@ -64,7 +64,7 @@ StatusType WaitEvent
 )
 {
 	/* \req OSEK_SYS_3.18: The system service StatusType
-	 ** WaitEvent ( EventMaskType Mask ) shall be defined */
+	  * WaitEvent ( EventMaskType Mask ) shall be defined */
 
 	uint8	flag = 1;
 
@@ -75,19 +75,19 @@ StatusType WaitEvent
 	if ( !TasksConst[GetRunningTask()].ConstFlags.Extended )
 	{
 		/* \req OSEK_SYS_3.18.4-1/3 Extra possible return values in Extended mode
-		 ** are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
+		  * are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_ACCESS;
 	}
 	else if ( GetCallingContext() != CONTEXT_TASK )
 	{
 		/* \req OSEK_SYS_3.18.4-2/3 Extra possible return values in Extended mode
-		 ** are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
+		  * are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_CALLEVEL;
 	}
 	else if ( TasksVar[GetRunningTask()].Resources != 0 )
 	{
 		/* \req OSEK_SYS_3.18.4-3/3 Extra possible return values in Extended mode
-		 ** are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
+		  * are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_RESOURCE;
 	}
 	else
@@ -104,8 +104,8 @@ StatusType WaitEvent
 		else
 		{
 			/* \req OSEK_SYS_3.18.1 The state of the calling task is set to waiting,
-			 ** unless at least one of the events specified in Mask has already been
-			 ** set */
+			  * unless at least one of the events specified in Mask has already been
+			  * set */
 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_WAITING;
 
 			/* set wait mask */
@@ -129,10 +129,10 @@ StatusType WaitEvent
 				/* finish cirtical code */
 		      IntSecure_End();
 
-				/** OSEK_SYS_3.18.2 This call enforces rescheduling, if the wait
-				 ** condition occurs. If rescheduling takes place, the internal
-				 ** resource of the task is released while the task is in the
-				 ** waiting state */
+				/* OSEK_SYS_3.18.2 This call enforces rescheduling, if the wait
+				  * condition occurs. If rescheduling takes place, the internal
+				  * resource of the task is released while the task is in the
+				  * waiting state */
 				(void)Schedule();
 			}
 			else
@@ -145,9 +145,9 @@ StatusType WaitEvent
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	/* \req OSEK_ERR_1.3-11/xx The ErrorHook hook routine shall be called if a
-	 ** system service returns a StatusType value not equal to E_OK.*/
+	  * system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-11/xx The hook routine ErrorHook is not called if a
-	 ** system service is called from the ErrorHook itself. */
+	  * system service is called from the ErrorHook itself. */
 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
 	{
 		SetError_Api(OSServiceId_WaitEvent);

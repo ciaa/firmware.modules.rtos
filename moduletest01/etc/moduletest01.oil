@@ -19,7 +19,7 @@ TASK InitTask {
       };
 	RESOURCE = Resource1;
 	EVENT = Event1;
-   STACK = 50240;
+   STACK = 256;
    TYPE = EXTENDED;
 };
 
@@ -31,7 +31,7 @@ TASK TaskA {
    RESOURCE = Resource1;
    EVENT = Event1;
 	EVENT = Event2;
-	STACK = 10240;
+	STACK = 256;
 	TYPE = EXTENDED;
 };
 
@@ -41,7 +41,7 @@ TASK TaskB {
 	ACTIVATION = 2;
 	AUTOSTART = FALSE;
 	RESOURCE = Resource1;
-	STACK = 10240;
+	STACK = 256;
 	TYPE = BASIC;
 }
 
@@ -52,7 +52,7 @@ TASK TaskC {
 	AUTOSTART = FALSE;
 	RESOURCE = Resource2;
 	TYPE = BASIC;
-	STACK = 10024;
+	STACK = 256;
 }
 
 TASK TaskD {
@@ -62,7 +62,7 @@ TASK TaskD {
 	AUTOSTART = FALSE;
 	RESOURCE = Resource2;
 	EVENT = Event2;
-	STACK = 10024;
+	STACK = 256;
 	TYPE = BASIC;
 }
 
@@ -73,7 +73,7 @@ TASK TaskE {
    AUTOSTART = FALSE;
    RESOURCE = Resource3;
    EVENT = Event2;
-   STACK = 10024;
+   STACK = 256;
    TYPE = BASIC;
 }
 
@@ -81,21 +81,21 @@ ISR CanTx {
 	CATEGORY = 2;
 	INTERRUPT = INT_CANTX;
 	PRIORITY = 2;
-	STACK = 10240;
+	STACK = 256;
 };
 
 ISR CanRx {
 	CATEGORY = 2;
 	INTERRUPT = INT_CANRX;
 	PRIORITY = 2;
-	STACK = 10240;
+	STACK = 256;
 };
 
 ISR NMI {
 	CATEGORY = 1;
 	INTERRUPT = INT_NMI;
 	PRIORITY = 10;
-	STACK = 10240;
+	STACK = 256;
 };
 
 APPMODE AppMode1;

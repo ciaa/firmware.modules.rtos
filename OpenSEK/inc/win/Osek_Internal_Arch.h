@@ -73,13 +73,11 @@
 /** \brief osekpause
  **
  **/
-#define osekpause()  \
-   {                 \
-      /* get win stack and save the osek stack */     \
-/*      __asm__ __volatile__ ("movl %%esp, %%ebx; movl %0, %%esp; pushl %%ebx" : : "g" (WinStack) : "ebx"); */\
-      (void)usleep(1);                                \
-      /* get old stack back */                        \
-/*      __asm__ __volatile__ ("popl %esp;");            */\
+#define osekpause()  		\
+   {                 		\
+		PreCallService();	\
+	   (void)usleep(1);		\
+		PostCallService();	\
    }
 
 /** \brief Jmp to an other Task
