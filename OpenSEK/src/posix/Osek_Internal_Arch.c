@@ -205,8 +205,6 @@ void PosixInterruptHandler(int status)
 		printf("Error: Message Notification can not be activated, error: %d.\n",errno);
 		sleep(3);
 	}
-
-	
 }
 
 void HWTimerFork(uint8 timer)
@@ -238,8 +236,10 @@ void HWTimerFork(uint8 timer)
 
 void OsekKillSigHandler(int status)
 {
+	PreCallService();
 	mq_unlink("/OpenSEK");
 	exit(0);
+	PostCallService();
 }
 
 /** @} doxygen end group definition */

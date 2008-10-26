@@ -69,7 +69,12 @@
 /** \brief osekpause
  **
  **/
-#define osekpause()	{ (void)usleep(1); }
+#define osekpause()			\
+	{								\
+		PreCallService();		\
+	 	(void)usleep(1); 		\
+		PostCallService();	\
+	}
 
 /** \brief Call to an other Task
  **
@@ -92,13 +97,27 @@
  **
  ** This function jmps to the indicated task.
  **/
-#define JmpTask(task)   { (void)setcontext(TasksConst[(task)].TaskContext); }
+#define JmpTask(task)			\
+	{									\
+		PreCallService();			\
+		(void)setcontext(TasksConst[(task)].TaskContext);	\
+	}
 
 /** \brief Save context */
-#define SaveContext(task) { (void)getcontext(TasksConst[(task)].TaskContext); }
+#define SaveContext(task) 		\
+	{									\
+		PreCallService();			\
+		(void)getcontext(TasksConst[(task)].TaskContext);	\
+		PostCallService();		\
+	}
 
 /** \brief Set the entry point for a task */
-#define SetEntryPoint(task)   { (void)makecontext(TasksConst[(task)].TaskContext, TasksConst[(task)].EntryPoint, 0); }
+#define SetEntryPoint(task)	\
+	{									\
+		PreCallService();			\
+		(void)makecontext(TasksConst[(task)].TaskContext, TasksConst[(task)].EntryPoint, 0);	\
+		PostCallService();		\
+	}
 
 /** \brief */
 #define ResetStack(task)																													\
