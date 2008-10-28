@@ -62,11 +62,13 @@ extern Lcd_ReturnType Lcd_Write
 (
 	const Lcd_MsgRefType msg,
 	Lcd_MsgLength length
-
+)
 {
 	Lcd_ReturnType ret;
 	
 	ret = LCD_E_OK;
+
+	Lcd_Write_Arch(msg, length);
 
 	return ret;
 }
