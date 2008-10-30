@@ -1,3 +1,7 @@
+/*********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY *
+ *********************************************************/
+
 /*
  * Copyright 2008, Mariano Cerdeiro
  *
@@ -18,5 +22,16 @@
  *
  */
 
-/** \page OpenSEK_Requirements OpenSEK Requirements
+/** \page OpenSEK_RE OpenSEK Requirements
+ *
+ * This page list all OpenSEK requirements and links to their implementation
+ * and test.
+ *
+ * \section OpenSEK_RE_RTracing OpenSEK OS Reqruirement Tracing
+ *
+ * \reqd OSEK_SYS_3.2 The system service StatusType TerminateTask ( void ) shall be defined.
+ *
+ * \copyreqs
+ *
+ * \copyreqt
  */ 

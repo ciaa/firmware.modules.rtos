@@ -42,7 +42,7 @@ CC = gcc
 
 CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
 
-DOC += doxygen
+DOC += reqdoc doxygen
 
 ###############################################################################
 # include modules make files
@@ -65,6 +65,9 @@ clean : $(CLEAN)
 	rm -rf $(DOCDIR)$(DIR)*
 
 doc : $(DOC)
+
+reqdoc :
+	./doc/reqdoc.pl
 
 doxygen :
 	doxygen doc$(DIR)doxygen.cfg

@@ -20,11 +20,13 @@
 
 /** \page OpenSEK OpenSEK OS Manual
  *
- * On this manual you are will find all information related to the
- * OpenSEK RTOS. OpenSEK is based on the OSEK-VDX RTOS specifications.
+ * This is the OpenSEK manual, here  you will find all information related to
+ * the OpenSEK RTOS. OpenSEK is based on the OSEK-VDX RTOS specifications.
  * You may want to take a look on the specification too. You can get the
  * OSEK-VDX RTOS specification from the OSEK-VDX page
  * <a href="http://www.osek-vdx.org/">http://www.osek-vdx.org/</a>.
+ *
+ * \subpage OpenSEK_RE
  *
  * \section OpenSEK_TOC Table of content
  *
