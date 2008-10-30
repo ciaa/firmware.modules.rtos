@@ -29,9 +29,45 @@
  *
  * \section OpenSEK_RE_RTracing OpenSEK OS Reqruirement Tracing
  *
- * \reqd OSEK_SYS_3.2 The system service StatusType TerminateTask ( void ) shall be defined.
- *
+ * \reqd OSEK_SYS_3.2 The system service StatusType TerminateTask ( void )
+ *			shall be defined.
  * \copyreqs
- *
  * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.1 The calling task shall be transferred from the running
+ * 		state into the suspended state.
+ * \copyreqs
+ * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.2 If an internal resource is assigned to the calling
+ *			task, it is automatically released. 
+ * \copyreqs
+ * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.3 If the call was successful, TerminateTask does not
+ *			return to the call level and the status can not be evaluated. 
+ * \copyreqs
+ * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.4 If the version with extended status is used, the
+ *			service returns in case of error, and provides a status which
+ *			can be evaluated in the application.
+ * \copyreqs
+ * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.5 If the service TerminateTask is called successfully, it
+ *			enforces a rescheduling.
+ * \copyreqs
+ * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.6 This function will never returns in Standard mode.
+ * \copyreqs
+ * \copyreqt
+ *
+ * \reqd OSEK_SYS_3.2.7 Possibly return values in Extended mode are:
+ *			E_OS_RESOURCE if the Task still occupies resources, or
+ *			E_OS_CALLEVEL if called at interrupt level.
+ * \copyreqs
+ * \copyreqt
+ *
  */ 

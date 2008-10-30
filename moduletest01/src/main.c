@@ -188,21 +188,21 @@ TEST(OS_0002)
 
 	mt_SetMark(0);
 
-	/* \req OSEK_SYS_3.1.1-1/2 */
+	/* \reqt OSEK_SYS_3.1.1-1/2 */
 	GetTaskState(TaskA, &State);
 	ASSERT(State != SUSPENDED);
 	GetTaskState(InitTask, &State);
 	ASSERT(State != RUNNING);
 
-	/* \req OSEK_SYS_3.1 */
+	/* \reqt OSEK_SYS_3.1 */
 	ret = ActivateTask(TaskA);
 	mt_SetMark(2);
-	/* \req OSEK_SYS_3.1.3-1/2 */
+	/* \reqt OSEK_SYS_3.1.3-1/2 */
    ASSERT(mt_ErrorHook_Counter != 0);
-	/* \req OSEK_SYS_3.1.4-1/2 */
+	/* \reqt OSEK_SYS_3.1.4-1/2 */
 	ASSERT(mt_GetMark() != 2);
 	ASSERT(mt_GetTaskAssert() != TS_OK);
-	/* \req OSEK_SYS_3.1.7-1/2 */
+	/* \reqt OSEK_SYS_3.1.7-1/2 */
 	ASSERT(ret != E_OK)
 
 	ret = ActivateTask(TaskB);
@@ -220,7 +220,7 @@ TEST(OS_0002)
 	ASSERT(ret != E_OK);
 	ASSERT(mt_ErrorHook_Counter != 0);
 
-	/* \req OSEK_SYS_3.1.7-2/2 */
+	/* \reqt OSEK_SYS_3.1.7-2/2 */
 	ret = ActivateTask(TaskB);
 	ASSERT(mt_GetTaskAssert() != TS_OK);
 	ASSERT(ret != E_OS_LIMIT);
@@ -234,7 +234,7 @@ TEST(OS_0002)
 	ASSERT(mt_ErrorHook_Api != OSServiceId_ActivateTask);
 	ASSERT(mt_ErrorHook_Param1 != INVALID_TASK);
 	ASSERT(mt_ErrorHook_Ret != E_OS_ID);
-	/* \req OSEK_SYS_3.1.8 */
+	/* \reqt OSEK_SYS_3.1.8 */
 	ASSERT(ret != E_OS_ID)
 	
 	return TS_OK;
@@ -253,12 +253,12 @@ TEST(OS_0003)
 	ActivateTask(TaskA);
 	mt_SetMark(2);
 	GetTaskState(TaskA, &State);
-	/* \req OSEK_SYS_3.2.1-2/2 */
+	/* \reqt OSEK_SYS_3.2.1-2/2 */
 	ASSERT(State != SUSPENDED);
 	ASSERT(mt_GetMark() != 2);
 
 	GetResource(Resource1);
-	/* \req OSEK_SYS_3.2.7-1/2 */
+	/* \reqt OSEK_SYS_3.2.7-1/2 */
 	ret = TerminateTask();
    ASSERT(ret != E_OS_RESOURCE);
 	ASSERT(mt_ErrorHook_Counter != 1);
@@ -844,24 +844,24 @@ TASK(TaskA)
 	{
 		case OS_0002:
 			mt_SetMark(1);
-			/* \req OSEK_SYS_3.1.1-2/2 */
+			/* \reqt OSEK_SYS_3.1.1-2/2 */
 			GetTaskState(TaskA, &State);
 			TASKASSERT(State != RUNNING);
 			GetTaskState(InitTask, &State);
 			TASKASSERT(State != READY);
-			/* \req OSEK_SYS_3.1.2 */
+			/* \reqt OSEK_SYS_3.1.2 */
 			TASKASSERT(test != 1);
 			GetEvent(TaskA, &Events);
-			/* \req OSEK_SYS_3.1.6 */
+			/* \reqt OSEK_SYS_3.1.6 */
 			TASKASSERT(Events != 0);
 			TerminateTask();
 			break;
 		case OS_0003:
 			mt_SetMark(1);
 			GetTaskState(TaskA, &State);
-			/* \req OSEK_SYS_3.2.1-1/2 */
+			/* \reqt OSEK_SYS_3.2.1-1/2 */
 			TASKASSERT(State != RUNNING);
-			/* \req OSEK_SYS_3.2 */
+			/* \reqt OSEK_SYS_3.2 */
 			TerminateTask();
 			break;
 		case OS_0004:
