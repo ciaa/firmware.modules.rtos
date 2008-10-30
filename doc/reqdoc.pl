@@ -45,6 +45,7 @@ sub getReq
 		my $linen = 0;
 		while(my $line = <IN>)
 		{
+			$linen++;
 			chomp $line;
 			if (index($line,$REQ_CODE)>-1)
 			{
@@ -55,7 +56,6 @@ sub getReq
 				my @el = ($file, @req[0], $linen, $coln);
 				push(@ret,\@el);
 			}
-			$linen++;
 		}
 		close IN;
 	}
