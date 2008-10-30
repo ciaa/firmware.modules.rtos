@@ -1,5 +1,22 @@
 #!/usr/bin/perl
 
+# Copyright 2008, Mariano Cerdeiro
+#
+# This file is part of OpenSEK.
+#
+# OpenSEK is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# OpenSEK is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+
 $REQ_DEFINITION = "\\reqd";
 $REQ_CODE = "\\req";
 $REQ_TEST = "\\reqt";
@@ -96,6 +113,31 @@ sub getRelatedReq
 	return @ret
 }
 
+sub info
+{
+	print "INFO: " . @_[0] . "\n";
+}
+
+# PROGRAM START
+
+print "OpenSEK Requiremnet Tracing Tool - Copyright 2008, Mariano Cerdeiro - http://www.openosek.com.ar\n\n";
+info("------ LICENSE START ------");
+info("OpenSEK Generator is part of OpenOSEK.");
+info("");
+info("OpenSEK is free software: you can redistribute it and/or modify");
+info("it under the terms of the GNU General Public License as published by");
+info("the Free Software Foundation, either version 3 of the License, or");
+info("(at your option) any later version.");
+info("");
+info("OpenSEK is distributed in the hope that it will be useful,");
+info("but WITHOUT ANY WARRANTY; without even the implied warranty of");
+info("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+info("GNU General Public License for more details.");
+info("You should have received a copy of the GNU General Public License");
+info("along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.");
+info("------- LICENSE END -------");
+
+
 @chfiles = getAllCHFiles("");
 ($reqs, $reqt) = getReq(@chfiles);
 
@@ -104,7 +146,6 @@ sub getRelatedReq
 
 open IN, "<OpenSEK/doc/OpenSEK.req" or die $!;
 open OUT, ">out/req/OpenSEK_Req.doc" or die $!;
-
 
 my $req;
 
@@ -131,7 +172,7 @@ while ($line = <IN>)
 	}
 	if(index($line, $REQ_COPYSOURCE)>-1)
 	{
-		print OUT " * - \\b Source \\b Tracing \\b Information:\n";
+		print OUT " * - \\b Implemented:\n";
 		#print "Searching for req.: $req\n";
 		my @reqsrcs = getRelatedReq(\@reqs,$req);
 		foreach $reqsrc (@reqsrcs)
@@ -143,7 +184,7 @@ while ($line = <IN>)
 	}
 	if(index($line, $REQ_COPYTEST)>-1)
 	{
-		print OUT " * - \\b Test \\b Tracing \\b Information:\n";
+		print OUT " * - \\b Tested:\n";
 		my @reqtsts = getRelatedReq(\@reqt,$req);
 		foreach $reqtst (@reqtsts)
       {
