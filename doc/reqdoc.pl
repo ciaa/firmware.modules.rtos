@@ -139,10 +139,14 @@ info("------- LICENSE END -------");
 
 
 @chfiles = getAllCHFiles("");
+info("Total of parsed header and source files.: " . scalar(@chfiles) );
 ($reqs, $reqt) = getReq(@chfiles);
 
 @reqs = @$reqs;
 @reqt = @$reqt;
+
+info("Total of implemented requirements.......: " . scalar(@reqs));
+info("Total of tested requirements............: " . scalar(@reqt));
 
 open IN, "<OpenSEK/doc/OpenSEK.req" or die $!;
 open OUT, ">out/req/OpenSEK_Req.doc" or die $!;
