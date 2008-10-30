@@ -36,7 +36,8 @@ sub getAllCHFiles
 
 sub getReq
 {
-	@ret;
+	my @rets;
+	my @rett;
 
 	foreach $file (@_)
 	{
@@ -47,20 +48,30 @@ sub getReq
 		{
 			$linen++;
 			chomp $line;
-			if (index($line,$REQ_CODE)>-1)
+			if (index($line,$REQ_CODE . " ")>-1)
 			{
 				my $coln = index($line,$REQ_CODE);
 				my $req = substr($line, index($line, $REQ_CODE)+length($REQ_CODE)+1);
 				my @req = split(/ /,$req);
-				#print "File: $file - Line: $linen - Col: $coln - Req: @req[0]\n";
+				#print "Code File: $file - Line: $linen - Col: $coln - Req: @req[0]\n";
 				my @el = ($file, @req[0], $linen, $coln);
-				push(@ret,\@el);
+				push(@rets,\@el);
+			}
+
+			if (index($line,$REQ_TEST . " ")>-1)
+			{
+				my $coln = index($line,$REQ_TEST);
+				my $req = substr($line, index($line, $REQ_TEST)+length($REQ_TEST)+1);
+				my @req = split(/ /,$req);
+				#print "Test File: $file - Line: $linen - Col: $coln - Req: @req[0]\n";
+				my @el = ($file, @req[0], $linen, $coln);
+				push(@rett,\@el);
 			}
 		}
 		close IN;
 	}
 
-	return @ret;
+	return (\@rets, \@rett);
 }
 
 sub getRelatedReq
@@ -86,7 +97,10 @@ sub getRelatedReq
 }
 
 @chfiles = getAllCHFiles("");
-@reqs = getReq(@chfiles);
+($reqs, $reqt) = getReq(@chfiles);
+
+@reqs = @$reqs;
+@reqt = @$reqt;
 
 open IN, "<OpenSEK/doc/OpenSEK.req" or die $!;
 open OUT, ">out/req/OpenSEK_Req.doc" or die $!;
@@ -130,6 +144,13 @@ while ($line = <IN>)
 	if(index($line, $REQ_COPYTEST)>-1)
 	{
 		print OUT " * - \\b Test \\b Tracing \\b Information:\n";
+		my @reqtsts = getRelatedReq(\@reqt,$req);
+		foreach $reqtst (@reqtsts)
+      {
+         @reqtst = @$reqtst;
+         print OUT " *  - \\b @reqtst[1] - @reqtst[0] : @reqtst[2] : @reqtst[3]\n";
+      }
+      $copy_flag = 0;
 		$copy_flag = 0;
 	}
 

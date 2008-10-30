@@ -33,6 +33,7 @@ BINDIR = out$(DIR)bin
 LIBDIR = out$(DIR)lib
 DOCDIR = out$(DIR)doc
 GENDIR = out$(DIR)gen
+REQDIR = out$(DIR)req
 
 PROJECT = OpenSEK
 BIN = $(PROJECT)
@@ -63,6 +64,7 @@ clean : $(CLEAN)
 	rm -rf $(LIBDIR)$(DIR)*
 	rm -rf $(GENDIR)$(DIR)*
 	rm -rf $(DOCDIR)$(DIR)*
+	rm -rf $(REQDIR)$(DIR)*
 
 doc : $(DOC)
 
@@ -102,6 +104,7 @@ info :
 	@echo Output directory for binary files....: $(BINDIR)
 	@echo Output directory for library files...: $(LIBDIR)
 	@echo Output directory for documentation...: $(DOCDIR)
+	@echo Output directory for requirements....: $(REQDIR)
 	@echo Output directory for generated files.: $(GENDIR)
 	@echo Configuration files..................: $(CFGFILES)
 
