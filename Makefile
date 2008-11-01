@@ -33,7 +33,6 @@ BINDIR = out$(DIR)bin
 LIBDIR = out$(DIR)lib
 DOCDIR = out$(DIR)doc
 GENDIR = out$(DIR)gen
-REQDIR = out$(DIR)req
 
 PROJECT = OpenSEK
 BIN = $(PROJECT)
@@ -64,11 +63,11 @@ clean : $(CLEAN)
 	rm -rf $(LIBDIR)$(DIR)*
 	rm -rf $(GENDIR)$(DIR)*
 	rm -rf $(DOCDIR)$(DIR)*
-	rm -rf $(REQDIR)$(DIR)*
 
 doc : $(DOC)
 
 reqdoc :
+	mkdir -p $(GENDIR)$(DIR)doc
 	./doc/reqdoc.pl
 
 doxygen :
@@ -88,8 +87,10 @@ help :
 	@echo make generate - to generate the code
 	@echo make - to compile the code, has to be executed after make generate
 	@echo make clean - to remove all created files: binary, objects, libraries, doc, generated files
-	@echo make doc - to generate the documentation
+	@echo make doc - to generate the documentation (execute make reqdoc and make sizedoc automatically)
 	@echo make splint - to perform splint analyze
+	@echo make reqdoc - generate requirement tracing documentation
+	@echo make sizedoc - generate size documentation
 
 info :
 	@echo ++++++++
@@ -104,7 +105,6 @@ info :
 	@echo Output directory for binary files....: $(BINDIR)
 	@echo Output directory for library files...: $(LIBDIR)
 	@echo Output directory for documentation...: $(DOCDIR)
-	@echo Output directory for requirements....: $(REQDIR)
 	@echo Output directory for generated files.: $(GENDIR)
 	@echo Configuration files..................: $(CFGFILES)
 

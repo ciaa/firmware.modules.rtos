@@ -149,17 +149,19 @@ info("Total of implemented requirements.......: " . scalar(@reqs));
 info("Total of tested requirements............: " . scalar(@reqt));
 
 open IN, "<OpenSEK/doc/OpenSEK.req" or die $!;
-open OUT, ">out/req/OpenSEK_Req.doc" or die $!;
+open OUT, ">out/gen/doc/OpenSEK_Req.doc" or die $!;
 
 my $req;
+my $reqcount=0;
 
 while ($line = <IN>)
 {
 	chomp $line;
 	my $copy_flag = 1;
 
-	if(index($line, $REQ_DEFINITION)>-1)
+	if(index($line, $REQ_DEFINITION . " ")>-1)
 	{
+		$reqcount++;
 		$req = substr($line, index($line, $REQ_DEFINITION)+length($REQ_DEFINITION)+1);
 		my @req = split(/ /,$req);
 		$req = @req[0];
@@ -204,6 +206,7 @@ while ($line = <IN>)
 		print OUT $line . "\n";
 	}
 }
+info("Total of defined requirements...........: " . $reqcount);
 
 close IN;
 close OUT;

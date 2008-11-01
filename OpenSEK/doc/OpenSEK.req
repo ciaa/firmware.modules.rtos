@@ -22,7 +22,7 @@
  *
  */
 
-/** \page OpenSEK_RE OpenSEK Requirement Tracing
+/** \page OpenSEK_RE OpenSEK OS Requirement Tracing
  *
  * This page list all OpenSEK requirements and links to their implementation
  * and test.
