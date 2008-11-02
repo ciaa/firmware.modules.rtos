@@ -40,7 +40,8 @@ BIN = $(PROJECT)
 #TODO this has to be automatic depending in the COMPILER variable
 CC = gcc
 
-CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
+#CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
+CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
 
 DOC += nm sizedoc reqdoc doxygen
 
@@ -53,7 +54,8 @@ DOC += nm sizedoc reqdoc doxygen
 include $(foreach module, $(MODS), $(module)$(DIR)mak$(DIR)Makefile)
 
 OpenSEK : $(OBJ) $(LIB)
-	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
+	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN)
+#	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
 
 generate : $(GEN)
 
@@ -67,7 +69,6 @@ clean : $(CLEAN)
 doc : $(DOC)
 
 reqdoc :
-	mkdir -p $(GENDIR)$(DIR)doc
 	./doc/reqdoc.pl
 
 sizedoc :
@@ -80,6 +81,7 @@ splint :
 	splint $(SPLINT) $(INCLUDE) +posixlib -Dstack_t=char +charindex -predboolint -boolops -type
 
 nm :
+	mkdir -p $(GENDIR)$(DIR)doc
 	nm $(BINDIR)$(DIR)$(PROJECT) -f sysv -l -S > $(GENDIR)$(DIR)doc$(DIR)nm.out
 
 help :
