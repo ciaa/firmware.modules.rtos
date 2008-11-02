@@ -66,6 +66,8 @@
  *  - splint if you want to check the code
  *  - doxygen to generate the documentation
  *  - gcov to maeasure the test coverage
+ *  - perl to run documentation scripts
+ *  - nm to get the RAM/ROM consumption
  *
  * \section Introduction_Installing Installing OpenSEK
  *

@@ -20,11 +20,12 @@
 
 /** \page RELEASENOTES RELEASENOTES
  *
- * v0.2.3	OpenSEK Beta Release 2008MMDD
+ * v0.2.3	OpenSEK Beta Release 20081102
  *		- add Manual Structure
- *		- write first OpenSEK OS Manual
+ *		- write first OpenSEK OS Manual (not yet complete)
  *		- fix win and posix stack probelm (id: 2166476)
- *		- add requirement tracing script and doxygen documentation
+ *		- add requirement tracing documentation
+ *		- add RAM/ROM memory consumption documentation
  *
  * v0.2.2	OpenSEK Beta Release 20081012
  * 	- add support for windows (cygwin)
