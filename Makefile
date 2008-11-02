@@ -42,7 +42,7 @@ CC = gcc
 
 CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
 
-DOC += reqdoc doxygen
+DOC += nm sizedoc reqdoc doxygen
 
 ###############################################################################
 # include modules make files
@@ -70,11 +70,17 @@ reqdoc :
 	mkdir -p $(GENDIR)$(DIR)doc
 	./doc/reqdoc.pl
 
+sizedoc :
+	./doc/sizedoc.pl
+
 doxygen :
 	doxygen doc$(DIR)doxygen.cfg
 
 splint :
 	splint $(SPLINT) $(INCLUDE) +posixlib -Dstack_t=char +charindex -predboolint -boolops -type
+
+nm :
+	nm $(BINDIR)$(DIR)$(PROJECT) -f sysv -l -S > $(GENDIR)$(DIR)doc$(DIR)nm.out
 
 help :
 	@echo ++++++++
