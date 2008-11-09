@@ -18,6 +18,7 @@ COMPILER = GCC
 
 MODS +=	TestSuite \
 			OpenSEK \
+			OpenTCPIP \
 			moduletest01
 
 all: OpenSEK
