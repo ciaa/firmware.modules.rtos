@@ -39,6 +39,12 @@
 /* Some ICMP messages should be passed to the transport protocols. This
    is not implemented. */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_ICMP /* don't build if not configured for use in lwipopts.h */
@@ -315,3 +321,6 @@ icmp_time_exceeded(struct pbuf *p, enum icmp_te_type t)
 #endif /* IP_FORWARD */
 
 #endif /* LWIP_ICMP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

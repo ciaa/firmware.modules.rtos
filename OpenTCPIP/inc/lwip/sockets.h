@@ -30,6 +30,11 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Global OpenSEK Global
+ ** \ingroup OpenTCPIP
+ ** @{ */
 
 #ifndef __LWIP_SOCKETS_H__
 #define __LWIP_SOCKETS_H__
@@ -335,3 +340,6 @@ int lwip_ioctl(int s, long cmd, void *argp);
 #endif /* LWIP_SOCKET */
 
 #endif /* __LWIP_SOCKETS_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

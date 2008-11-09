@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if (NO_SYS == 0) /* don't build if not configured for use in lwipopts.h */
@@ -342,3 +348,6 @@ sys_msleep(u32_t ms)
 
 
 #endif /* NO_SYS */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

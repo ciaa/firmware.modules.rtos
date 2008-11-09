@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_MEM_H__
 #define __LWIP_MEM_H__
 
@@ -101,3 +108,6 @@ void  mem_free(void *mem);
 #endif
 
 #endif /* __LWIP_MEM_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

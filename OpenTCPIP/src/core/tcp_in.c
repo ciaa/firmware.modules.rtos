@@ -41,6 +41,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_TCP /* don't build if not configured for use in lwipopts.h */
@@ -1350,3 +1356,6 @@ tcp_parseopt(struct tcp_pcb *pcb)
 }
 
 #endif /* LWIP_TCP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

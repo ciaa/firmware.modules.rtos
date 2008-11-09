@@ -30,6 +30,13 @@
  * Author: Leon Woestenberg <leon.woestenberg@axon.tv>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_SNMP_H__
 #define __LWIP_SNMP_H__
 
@@ -362,3 +369,6 @@ void snmp_get_snmpenableauthentraps(u8_t *value);
 #endif
 
 #endif /* __LWIP_SNMP_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

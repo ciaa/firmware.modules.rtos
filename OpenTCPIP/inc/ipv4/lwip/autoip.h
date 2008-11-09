@@ -40,6 +40,12 @@
  * Please coordinate changes and requests with Dominik Spies
  * <kontakt@dspies.de>
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
  
 #ifndef __LWIP_AUTOIP_H__
 #define __LWIP_AUTOIP_H__
@@ -103,3 +109,6 @@ void autoip_tmr(void);
 #endif /* LWIP_AUTOIP */
 
 #endif /* __LWIP_AUTOIP_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

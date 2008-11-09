@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_ERR_H__
 #define __LWIP_ERR_H__
 
@@ -79,3 +86,6 @@ extern const char *lwip_strerr(err_t err);
 #endif
 
 #endif /* __LWIP_ERR_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

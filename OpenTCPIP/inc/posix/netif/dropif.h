@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __DROPIF_H__
 #define __DROPIF_H__
 
@@ -39,3 +46,6 @@
 err_t dropif_init(struct netif *netif);
 
 #endif /* __DROPIF_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

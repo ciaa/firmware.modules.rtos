@@ -64,6 +64,14 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
+
+
 #include "lwip/opt.h"
 
 #if PPP_SUPPORT /* don't build if not configured for use in lwipopts.h */
@@ -986,3 +994,6 @@ free_wordlist(struct wordlist *wp)
 #endif  /* 0 */ /* PAP_SUPPORT || CHAP_SUPPORT */
 
 #endif /* PPP_SUPPORT */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __DELIF_H__
 #define __DELIF_H__
 
@@ -40,3 +47,6 @@ err_t delif_init(struct netif *netif);
 err_t delif_init_thread(struct netif *netif);
 
 #endif /* __DELIF_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

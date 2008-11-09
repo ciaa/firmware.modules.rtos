@@ -31,6 +31,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __NETIF_SLIPIF_H__
 #define __NETIF_SLIPIF_H__
 
@@ -48,3 +55,5 @@ err_t slipif_init(struct netif * netif);
  
 #endif 
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

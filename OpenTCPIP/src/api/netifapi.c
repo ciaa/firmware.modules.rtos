@@ -31,6 +31,12 @@
  * 
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_NETIF_API /* don't build if not configured for use in lwipopts.h */
@@ -124,3 +130,6 @@ netifapi_netif_common( struct netif *netif,
 }
 
 #endif /* LWIP_NETIF_API */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

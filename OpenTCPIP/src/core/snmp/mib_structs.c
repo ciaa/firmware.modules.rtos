@@ -32,6 +32,12 @@
  * Author: Christiaan Simons <christiaan.simons@axon.tv>
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_SNMP /* don't build if not configured for use in lwipopts.h */
@@ -1181,3 +1187,6 @@ snmp_iso_prefix_expand(u8_t ident_len, s32_t *ident, struct snmp_obj_id *oidret)
 }
 
 #endif /* LWIP_SNMP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

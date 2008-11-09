@@ -53,6 +53,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if !MEM_LIBC_MALLOC /* don't build if not configured for use in lwipopts.h */
@@ -575,3 +581,6 @@ void *mem_calloc(mem_size_t count, mem_size_t size)
 }
 
 #endif /* !MEM_LIBC_MALLOC */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

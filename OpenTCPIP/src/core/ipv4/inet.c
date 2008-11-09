@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #include "lwip/inet.h"
@@ -276,3 +282,6 @@ ntohl(u32_t n)
 }
 
 #endif /* (LWIP_PLATFORM_BYTESWAP == 0) && (BYTE_ORDER == LITTLE_ENDIAN) */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

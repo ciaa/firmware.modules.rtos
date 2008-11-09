@@ -35,6 +35,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_HAVE_LOOPIF
@@ -215,3 +222,6 @@ loopif_init(struct netif *netif)
 }
 
 #endif /* LWIP_HAVE_LOOPIF */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

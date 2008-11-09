@@ -30,6 +30,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_IP_FRAG_H__
 #define __LWIP_IP_FRAG_H__
 
@@ -74,3 +80,6 @@ err_t ip_frag(struct pbuf *p, struct netif *netif, struct ip_addr *dest);
 #endif
 
 #endif /* __LWIP_IP_FRAG_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

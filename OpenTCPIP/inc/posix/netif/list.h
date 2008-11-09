@@ -1,3 +1,8 @@
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
 
 #ifndef __LIST_H__
 #define __LIST_H__
@@ -23,3 +28,6 @@ int list_remove(struct list *list, void *elem);
 void list_map(struct list *list, void (* func)(void *arg));
 
 #endif
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

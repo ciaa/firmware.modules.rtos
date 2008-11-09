@@ -32,6 +32,12 @@
  * source code.
 */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_IGMP_H__
 #define __LWIP_IGMP_H__
 
@@ -160,3 +166,6 @@ void   igmp_send( struct igmp_group *group, u8_t type);
 #endif /* LWIP_IGMP */
 
 #endif /* __LWIP_IGMP_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

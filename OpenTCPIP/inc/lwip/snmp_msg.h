@@ -32,6 +32,12 @@
  * Author: Christiaan Simons <christiaan.simons@axon.tv>
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_SNMP_MSG_H__
 #define __LWIP_SNMP_MSG_H__
 
@@ -305,3 +311,6 @@ void snmp_authfail_trap(void);
 #endif
 
 #endif /* __LWIP_SNMP_MSG_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

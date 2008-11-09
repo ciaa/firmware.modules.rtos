@@ -38,6 +38,12 @@
  * 
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 #include "lwip/ip_frag.h"
 #include "lwip/ip.h"
@@ -781,3 +787,6 @@ ip_frag(struct pbuf *p, struct netif *netif, struct ip_addr *dest)
   return ERR_OK;
 }
 #endif /* IP_FRAG */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

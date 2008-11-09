@@ -68,6 +68,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_DHCP /* don't build if not configured for use in lwipopts.h */
@@ -1546,3 +1552,6 @@ static u32_t dhcp_get_option_long(u8_t *ptr)
 }
 
 #endif /* LWIP_DHCP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

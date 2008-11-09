@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_NETIF_H__
 #define __LWIP_NETIF_H__
 
@@ -243,3 +250,6 @@ void netif_set_link_callback(struct netif *netif, void (* link_callback)(struct 
 #endif
 
 #endif /* __LWIP_NETIF_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

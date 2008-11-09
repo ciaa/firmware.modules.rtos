@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_TCP_H__
 #define __LWIP_TCP_H__
 
@@ -639,3 +646,6 @@ extern struct tcp_pcb *tcp_tmp_pcb;      /* Only used for temporary storage. */
 #endif /* LWIP_TCP */
 
 #endif /* __LWIP_TCP_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

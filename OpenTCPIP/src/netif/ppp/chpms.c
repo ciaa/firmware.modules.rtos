@@ -64,6 +64,12 @@
  *   You should also use DOMAIN\\USERNAME as described in README.MSCHAP80
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #define USE_CRYPT
 
 #include "lwip/opt.h"
@@ -394,3 +400,6 @@ ChapMS_LANMan( char *rchallenge,
 #endif /* MSCHAP_SUPPORT */
 
 #endif /* PPP_SUPPORT */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

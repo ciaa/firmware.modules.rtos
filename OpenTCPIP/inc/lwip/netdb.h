@@ -27,6 +27,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_DNS && LWIP_SOCKET
@@ -107,3 +113,6 @@ int lwip_getaddrinfo(const char *nodename,
 #endif /* LWIP_COMPAT_SOCKETS */
 
 #endif /* LWIP_DNS && LWIP_SOCKET */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

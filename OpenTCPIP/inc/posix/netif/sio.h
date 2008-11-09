@@ -1,3 +1,9 @@
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef SIO_H
 #define SIO_H
 
@@ -80,3 +86,5 @@ void sio_change_baud( sioBaudrates baud, sio_status_t * siostat );
 
 #endif
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

@@ -67,6 +67,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef PPP_OE_H
 #define PPP_OE_H
 
@@ -159,3 +166,6 @@ extern int pppoe_hdrlen;
 #endif /* PPPOE_SUPPORT */
 
 #endif /* PPP_OE_H */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

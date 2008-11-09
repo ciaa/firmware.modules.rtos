@@ -43,6 +43,12 @@
  * This file is part of the lwIP TCP/IP stack.
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
  
 #include "lwip/opt.h"
 
@@ -1175,3 +1181,6 @@ ethernet_input(struct pbuf *p, struct netif *netif)
   return ERR_OK;
 }
 #endif /* LWIP_ARP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

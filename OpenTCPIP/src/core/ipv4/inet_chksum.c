@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #include "lwip/inet_chksum.h"
@@ -421,3 +427,6 @@ inet_chksum_pbuf(struct pbuf *p)
   }
   return (u16_t)~(acc & 0xffffUL);
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

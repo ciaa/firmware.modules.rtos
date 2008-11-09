@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/err.h"
 
 #ifdef LWIP_DEBUG
@@ -72,3 +78,6 @@ lwip_strerr(err_t err)
 }
 
 #endif /* LWIP_DEBUG */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

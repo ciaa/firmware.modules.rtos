@@ -32,6 +32,12 @@
  * Author: Christiaan Simons <christiaan.simons@axon.tv>
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_SNMP_ASN1_H__
 #define __LWIP_SNMP_ASN1_H__
 
@@ -95,3 +101,6 @@ err_t snmp_asn1_enc_raw(struct pbuf *p, u16_t ofs, u8_t raw_len, u8_t *raw);
 #endif
 
 #endif /* __LWIP_SNMP_ASN1_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

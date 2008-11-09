@@ -38,6 +38,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_RAW /* don't build if not configured for use in lwipopts.h */
@@ -334,3 +340,6 @@ raw_new(u8_t proto) {
 }
 
 #endif /* LWIP_RAW */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

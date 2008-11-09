@@ -31,6 +31,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_DNS_H__
 #define __LWIP_DNS_H__
 
@@ -90,3 +96,6 @@ err_t          dns_gethostbyname(const char *hostname, struct ip_addr *addr,
 #endif /* LWIP_DNS */
 
 #endif /* __LWIP_DNS_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

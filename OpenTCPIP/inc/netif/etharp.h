@@ -32,6 +32,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __NETIF_ETHARP_H__
 #define __NETIF_ETHARP_H__
 
@@ -173,3 +179,6 @@ extern const struct eth_addr ethbroadcast, ethzero;
 #endif /* LWIP_ARP */
 
 #endif /* __NETIF_ARP_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

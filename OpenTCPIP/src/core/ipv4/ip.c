@@ -38,6 +38,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 #include "lwip/ip.h"
 #include "lwip/def.h"
@@ -612,3 +618,6 @@ ip_debug_print(struct pbuf *p)
   LWIP_DEBUGF(IP_DEBUG, ("+-------------------------------+\n"));
 }
 #endif /* IP_DEBUG */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

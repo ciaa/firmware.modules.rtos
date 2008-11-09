@@ -1,6 +1,12 @@
 /** @file
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_DHCP_H__
 #define __LWIP_DHCP_H__
 
@@ -244,3 +250,6 @@ void dhcp_fine_tmr(void);
 #endif /* LWIP_DHCP */
 
 #endif /*__LWIP_DHCP_H__*/
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

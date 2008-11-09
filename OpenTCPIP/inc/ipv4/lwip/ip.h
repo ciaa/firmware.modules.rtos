@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_IP_H__
 #define __LWIP_IP_H__
 
@@ -170,4 +177,5 @@ void ip_debug_print(struct pbuf *p);
 
 #endif /* __LWIP_IP_H__ */
 
-
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

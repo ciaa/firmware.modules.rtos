@@ -32,6 +32,12 @@
  * It needs to be implemented by those platforms which need SLIP or PPP
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/arch.h"
 
 #ifdef __cplusplus
@@ -69,3 +75,6 @@ void sio_read_abort(sio_fd_t);
 #ifdef __cplusplus
 }
 #endif
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

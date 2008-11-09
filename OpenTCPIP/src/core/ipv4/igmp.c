@@ -73,6 +73,12 @@ Steve Reynolds
  * RFC 2113 - IP Router Alert Option                                      - 
  *----------------------------------------------------------------------------*/
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 /*-----------------------------------------------------------------------------
  * Includes
  *----------------------------------------------------------------------------*/
@@ -806,3 +812,6 @@ igmp_send(struct igmp_group *group, u8_t type)
 }
 
 #endif /* LWIP_IGMP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

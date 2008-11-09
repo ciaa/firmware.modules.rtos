@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __ARCH_PERF_H__
 #define __ARCH_PERF_H__
 
@@ -61,3 +68,6 @@ void perf_print_times(struct tms *start, struct tms *end, char *key);
 void perf_init(char *fname);
 
 #endif /* __ARCH_PERF_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

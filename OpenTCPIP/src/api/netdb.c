@@ -33,6 +33,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/netdb.h"
 
 #if LWIP_DNS && LWIP_SOCKET
@@ -350,3 +356,6 @@ memerr:
 }
 
 #endif /* LWIP_DNS && LWIP_SOCKET */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

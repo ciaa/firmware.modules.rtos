@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 /* This is the part of the API that is linked with
    the application */
 
@@ -568,3 +574,6 @@ netconn_gethostbyname(const char *name, struct ip_addr *addr)
 #endif /* LWIP_DNS*/
 
 #endif /* LWIP_NETCONN */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

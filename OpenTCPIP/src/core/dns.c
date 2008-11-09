@@ -72,6 +72,12 @@
  * Includes
  *----------------------------------------------------------------------------*/
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_DNS /* don't build if not configured for use in lwipopts.h */
@@ -812,3 +818,6 @@ dns_gethostbyname(const char *hostname, struct ip_addr *addr, dns_found_callback
 }
 
 #endif /* LWIP_DNS */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

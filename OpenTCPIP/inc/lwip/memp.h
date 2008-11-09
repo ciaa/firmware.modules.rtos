@@ -30,6 +30,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_MEMP_H__
 #define __LWIP_MEMP_H__
 
@@ -92,3 +98,6 @@ void  memp_free(memp_t type, void *mem);
 #endif
 
 #endif /* __LWIP_MEMP_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

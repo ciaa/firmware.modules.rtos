@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #include "lwip/init.h"
@@ -251,3 +257,6 @@ lwip_init(void)
   dns_init();
 #endif /* LWIP_DNS */
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

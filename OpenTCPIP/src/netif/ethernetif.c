@@ -43,6 +43,12 @@
  * something that better describes your network interface.
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if 0 /* don't build, this is only a skeleton, see previous comment */
@@ -311,3 +317,6 @@ ethernetif_init(struct netif *netif)
 }
 
 #endif /* 0 */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

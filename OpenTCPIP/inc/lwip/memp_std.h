@@ -9,6 +9,13 @@
  * If the include'r doesn't require any special treatment of each of the types
  * above, then will declare #2 & #3 to be just standard mempools.
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef LWIP_MALLOC_MEMPOOL
 /* This treats "malloc pools" just like any other pool */
 #define LWIP_MALLOC_MEMPOOL(num, size) LWIP_MEMPOOL(POOL_##size, num, size, "MALLOC_"#size)
@@ -99,3 +106,6 @@ LWIP_PBUF_MEMPOOL(PBUF_POOL, PBUF_POOL_SIZE,           PBUF_POOL_BUFSIZE,       
 #undef LWIP_MALLOC_MEMPOOL_START
 #undef LWIP_MALLOC_MEMPOOL_END
 #undef LWIP_PBUF_MEMPOOL
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

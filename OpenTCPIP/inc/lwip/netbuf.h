@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __LWIP_NETBUF_H__
 #define __LWIP_NETBUF_H__
 
@@ -74,3 +81,6 @@ void              netbuf_first    (struct netbuf *buf);
 #endif
 
 #endif /* __LWIP_NETBUF_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

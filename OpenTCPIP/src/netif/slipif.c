@@ -42,6 +42,12 @@
  * provided by another file. They are sio_open, sio_recv and sio_send
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "netif/slipif.h"
 #include "lwip/opt.h"
 #include "lwip/def.h"
@@ -273,3 +279,6 @@ slipif_init(struct netif *netif)
   sys_thread_new(SLIPIF_THREAD_NAME, slipif_loop, netif, SLIPIF_THREAD_STACKSIZE, SLIPIF_THREAD_PRIO);
   return ERR_OK;
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

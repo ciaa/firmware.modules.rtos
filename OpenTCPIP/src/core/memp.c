@@ -38,6 +38,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #include "lwip/memp.h"
@@ -378,3 +384,6 @@ memp_free(memp_t type, void *mem)
 
   SYS_ARCH_UNPROTECT(old_level);
 }
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

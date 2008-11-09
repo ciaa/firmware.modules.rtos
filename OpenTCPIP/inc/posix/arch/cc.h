@@ -29,6 +29,13 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef __ARCH_CC_H__
 #define __ARCH_CC_H__
 
@@ -77,3 +84,6 @@ typedef u32_t mem_ptr_t;
 #define LWIP_TIMEVAL_PRIVATE 0
 				     
 #endif /* __ARCH_CC_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

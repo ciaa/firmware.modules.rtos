@@ -46,6 +46,12 @@
 /* @todo Check the use of '(struct udp_pcb).chksum_len_rx'!
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_UDP /* don't build if not configured for use in lwipopts.h */
@@ -822,3 +828,6 @@ udp_debug_print(struct udp_hdr *udphdr)
 #endif /* UDP_DEBUG */
 
 #endif /* LWIP_UDP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

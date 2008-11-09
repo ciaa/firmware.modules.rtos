@@ -1,3 +1,9 @@
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #ifndef FIFO_H
 #define FIFO_H
 
@@ -52,3 +58,5 @@ void fifoInit(fifo_t * fifo);
 
 #endif
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

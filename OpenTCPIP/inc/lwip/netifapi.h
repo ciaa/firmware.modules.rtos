@@ -24,6 +24,12 @@
  * This file is part of the lwIP TCP/IP stack.
  * 
  */
+
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
  
 #ifndef __LWIP_NETIFAPI_H__
 #define __LWIP_NETIFAPI_H__
@@ -98,3 +104,6 @@ err_t netifapi_netif_common    ( struct netif *netif,
 #endif /* LWIP_NETIF_API */
 
 #endif /* __LWIP_NETIFAPI_H__ */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

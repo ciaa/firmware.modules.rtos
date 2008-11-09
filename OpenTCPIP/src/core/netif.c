@@ -36,6 +36,12 @@
  *
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #include "lwip/def.h"
@@ -497,3 +503,6 @@ void netif_set_link_callback(struct netif *netif, void (* link_callback)(struct 
         netif->link_callback = link_callback;
 }
 #endif /* LWIP_NETIF_LINK_CALLBACK */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

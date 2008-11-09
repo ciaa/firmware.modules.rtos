@@ -35,6 +35,12 @@
  * Author: Christiaan Simons <christiaan.simons@axon.tv>
  */
 
+/** \addtogroup OpenTCPIP OpenTCPIP
+ ** @{ */
+/** \addtogroup OpenSEK_Inernal OpenSEK Internal
+ ** \ingroup OpenTCPIP
+ ** @{ */
+
 #include "lwip/opt.h"
 
 #if LWIP_SNMP /* don't build if not configured for use in lwipopts.h */
@@ -4124,3 +4130,6 @@ snmp_set_value(struct obj_def *od, u16_t len, void *value)
 }
 
 #endif /* LWIP_SNMP */
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
