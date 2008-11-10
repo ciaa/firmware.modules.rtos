@@ -46,10 +46,10 @@
 /* @todo Check the use of '(struct udp_pcb).chksum_len_rx'!
  */
 
-/** \addtogroup OpenTCPIP OpenTCPIP
+/** \addtogroup lwIP
  ** @{ */
-/** \addtogroup OpenSEK_Inernal OpenSEK Internal
- ** \ingroup OpenTCPIP
+/** \addtogroup lwIP_Inernal
+ ** \ingroup lwIP
  ** @{ */
 
 #include "lwip/opt.h"
