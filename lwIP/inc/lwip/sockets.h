@@ -30,10 +30,10 @@
  *
  */
 
-/** \addtogroup OpenTCPIP OpenTCPIP
+/** \addtogroup lwIP
  ** @{ */
 /** \addtogroup OpenSEK_Global OpenSEK Global
- ** \ingroup OpenTCPIP
+ ** \ingroup lwIP
  ** @{ */
 
 #ifndef __LWIP_SOCKETS_H__
