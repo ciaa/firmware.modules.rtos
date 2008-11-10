@@ -42,10 +42,10 @@
  * provided by another file. They are sio_open, sio_recv and sio_send
  */
 
-/** \addtogroup OpenTCPIP OpenTCPIP
+/** \addtogroup lwIP
  ** @{ */
-/** \addtogroup OpenSEK_Inernal OpenSEK Internal
- ** \ingroup OpenTCPIP
+/** \addtogroup lwIP_Inernal
+ ** \ingroup lwIP
  ** @{ */
 
 #include "netif/slipif.h"

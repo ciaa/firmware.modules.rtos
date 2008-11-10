@@ -4,11 +4,11 @@
 
 LIB += lwIP.a
 
-GEN += gentcpip
+GEN += genlwip
 
 LFLAGS +=
 
-OPENTCPIP_OBJ +=	api_lib.o					\
+LWIP_OBJ +=			api_lib.o					\
 						api_msg.o					\
 						err.o							\
 						netbuf.o						\
@@ -79,10 +79,10 @@ INCLUDE += 	-IlwIP$(DIR)inc							\
 				-IlwIP$(DIR)inc$(DIR)netif			\
 				-IlwIP$(DIR)inc$(DIR)$(ARCH)		\
 
-OpenTCPIP.a : $(OPENTCPIP_OBJ)
-	ar -rcs $(LIBDIR)$(DIR)lwIP.a $(foreach obj, $(OPENTCPIP_OBJ), $(OBJDIR)$(DIR)$(obj))
+lwIP.a : $(LWIP_OBJ)
+	ar -rcs $(LIBDIR)$(DIR)lwIP.a $(foreach obj, $(LWIP_OBJ), $(OBJDIR)$(DIR)$(obj))
 
 SPLINT +=
 
-gentcpip:
+genlwip:
 

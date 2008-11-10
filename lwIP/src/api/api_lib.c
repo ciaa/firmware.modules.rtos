@@ -36,10 +36,10 @@
  *
  */
 
-/** \addtogroup OpenTCPIP OpenTCPIP
+/** \addtogroup lwIP
  ** @{ */
-/** \addtogroup OpenSEK_Inernal OpenSEK Internal
- ** \ingroup OpenTCPIP
+/** \addtogroup lwIP_Inernal
+ ** \ingroup lwIP
  ** @{ */
 
 /* This is the part of the API that is linked with

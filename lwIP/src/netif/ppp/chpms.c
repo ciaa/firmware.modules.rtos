@@ -64,10 +64,10 @@
  *   You should also use DOMAIN\\USERNAME as described in README.MSCHAP80
  */
 
-/** \addtogroup OpenTCPIP OpenTCPIP
+/** \addtogroup lwIP
  ** @{ */
-/** \addtogroup OpenSEK_Inernal OpenSEK Internal
- ** \ingroup OpenTCPIP
+/** \addtogroup lwIP_Inernal
+ ** \ingroup lwIP
  ** @{ */
 
 #define USE_CRYPT

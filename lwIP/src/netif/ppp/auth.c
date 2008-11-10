@@ -64,13 +64,11 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-/** \addtogroup OpenTCPIP OpenTCPIP
+/** \addtogroup lwIP
  ** @{ */
-/** \addtogroup OpenSEK_Inernal OpenSEK Internal
- ** \ingroup OpenTCPIP
+/** \addtogroup lwIP_Inernal
+ ** \ingroup lwIP
  ** @{ */
-
-
 
 #include "lwip/opt.h"
 
