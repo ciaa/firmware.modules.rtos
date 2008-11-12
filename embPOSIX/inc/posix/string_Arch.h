@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _STRING_H_
-#define _STRING_H_
+#ifndef _STRING_ARCH_H_
+#define _STRING_ARCH_H_
 /** \brief Posix String Header File
  **
  ** \file string.h
@@ -43,39 +43,18 @@
  */  
 
 /*==================[inclusions]=============================================*/
-#include "embPOSIX.h"
-#include "string_Arch.h"
 
 /*==================[macros]=================================================*/
-#ifndef (emPOSIX_STRING_MEMCPY == emPOSIX_MACRO)
-#define memcpy(s1, s2, n) memcpy_arch(s1, s2, n)
-#endif
+#define emPOSIX_STRING_MEMCPY emPOSIX_MACRO
 
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-#ifdef (emPOSIX_STRING_MEMCPY == emPOSIX_FUNCTION)
-/** \brief This function shall copy n bytes from s2 to s1
- **
- ** The memcpy() function shall copy n bytes from the object pointed to by s2
- ** into the object pointed to by s1. If copying takes place between objects
- ** that overlap, the behavior is undefined.
- **
- ** \return The memcpy() function shall return s1; no return value is reserved
- **			to indicate an error.
- **/
-extern void *memcpy
-(
-	void *restrict s1,
-	const void *restrict s2,
-	size_t n
-);
-#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _STRING_H_ */
+#endif /* #ifndef _STRING_ARCH_H_ */
 
