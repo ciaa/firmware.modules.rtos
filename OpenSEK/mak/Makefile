@@ -70,4 +70,5 @@ SPLINT +=	OpenSEK$(DIR)src$(DIR)*.c \
 genosek:
 	mkdir -p $(GENDIR)$(DIR)inc$(DIR)$(ARCH)
 	mkdir -p $(GENDIR)$(DIR)src$(DIR)$(ARCH)
+	mkdir -p $(GENDIR)$(DIR)mak$(DIR)$(ARCH)
 	php OpenSEK$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	

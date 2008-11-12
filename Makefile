@@ -16,9 +16,21 @@ DERIVATE =
 
 COMPILER = GCC
 
-MODS +=	TestSuite \
-			OpenSEK \
-			OpenTCPIP \
+# MODULES
+#
+# Available modules are:
+# modBASIC			Basic module which includes: generator, type definitions, architecture dependencies.
+# OpenSEK 			RTOS OSEK OS
+# TestSuite			Test suite
+# seENC				Small Embedded Encryption Module
+# lwIP				Lightweight TCPIP
+# moduletest01		Module tests for all modules
+#
+
+MODS +=	modBASIC			\
+			TestSuite		\
+			OpenSEK			\
+			seENC				\
 			moduletest01
 
 all: OpenSEK
