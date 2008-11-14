@@ -35,12 +35,15 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * KLi          Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20081113 v0.1.1 KLi        - Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe       - initial version
+ */
  */
 
 /*==================[inclusions]=============================================*/
@@ -59,6 +62,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+
 StatusType GetAlarm
 (
 	AlarmType AlarmID,
@@ -113,6 +118,8 @@ StatusType GetAlarm
 	
 	return ret;
 }
+
+#pragma MEM_ATTRIB_OSEK_CODE_END
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

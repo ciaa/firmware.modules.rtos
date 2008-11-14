@@ -31,11 +31,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * KLi          Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20081113 v0.1.1 KLi        - Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe       - initial version
  */
 
@@ -51,11 +53,16 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+
+#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+
 InterruptCounterType SuspendOSInterrupts_Counter;
 
 InterruptCounterType DisableAllInterrupts_Counter;
 
 InterruptCounterType SuspendAllInterrupts_Counter;
+
+#pragma MEM_ATTRIB_OSEK_RAM_END
 
 /*==================[internal functions definition]==========================*/
 

@@ -34,11 +34,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * KLi          Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20081113 v0.1.1 KLi        - Added memory layout attribute macros
  * 20080810 v0.1.0 MaCe       - initial version
  */
 
@@ -58,6 +60,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+
 void StartOs
 (
 	AppModeType Mode
@@ -129,6 +133,8 @@ void StartOs
 	/* this function shall never return */
 	while(1);
 }
+
+#pragma MEM_ATTRIB_OSEK_CODE_END
 
 /** @} doxygen end group definition */
 /** @} doxygen endVar group definition */

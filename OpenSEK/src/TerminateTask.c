@@ -35,11 +35,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * KLi          Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20081113 v0.1.1 KLi        - Added memory layout attribute macros
  * 20080810 v0.1.0 MaCe       - initial version
  */
 
@@ -59,6 +61,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+
 StatusType TerminateTask
 (
 	void
@@ -134,7 +138,7 @@ StatusType TerminateTask
 		(void)Schedule();
 	}
 
-#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+#if (HOOK_ERRORHOOK == ENABLE)
 	/* \req OSEK_ERR_1.3-2/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-2/xx The hook routine ErrorHook is not called if a
@@ -150,6 +154,8 @@ StatusType TerminateTask
 
 	return ret;
 }
+
+#pragma MEM_ATTRIB_OSEK_CODE_END
 
 /** @} doxygen endVar group definition */
 /** @} doxygen endVar group definition */

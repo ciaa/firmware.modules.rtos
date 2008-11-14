@@ -31,11 +31,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * KLi          Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20081113 v0.1.1 KLi        - Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe       - initial version
  */
 
@@ -51,13 +53,19 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+
 TaskType RunningTask;
 
 ContextType ActualContext;
 
+#pragma MEM_ATTRIB_OSEK_RAM_END
+
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+
 void AddReady(TaskType TaskID)
 {
 	TaskPriorityType priority;
@@ -141,10 +149,16 @@ TaskType GetNextTask
 	return ret;
 }
 
+#pragma MEM_ATTRIB_OSEK_CODE_END
+
+#pragma MEM_ATTRIB_OSEK_ISR_BEGIN
+
 void OSEK_ISR_NoHandler(void)
 {
 	while(1);
 }
+
+#pragma MEM_ATTRIB_OSEK_ISR_END
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
