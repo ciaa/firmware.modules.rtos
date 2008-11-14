@@ -17,11 +17,11 @@
  *
  */
 
-#ifndef _MEMMAP_H_
-#define _MEMMAP_H_
-/** \brief OpenSEK Memory Mapping Header File
+#ifndef _MEMMAP_SECTION_ARCH_H_
+#define _MEMMAP_SECTION_ARCH_H_
+/** \brief OpenSEK Posix Section Mapping Header File
  **
- ** \file MemMap.h
+ ** \file posix/MemMap_Section_Arch.h
  **
  **/
 
@@ -32,7 +32,7 @@
  ** @{ */
 
 /*
- * Initials     Name
+ * Initials	  Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
  */
@@ -43,35 +43,26 @@
  * v0.1.0 20081114 MaCe	initial version
  */
 
-/* MEMMAP_ERROR definition */
-#define MEMMAP_ERROR
-
-/* include user configurated memory mapping */
-#include "MemMap_Cfg.h"
-
-/* include arhcitecture dependent user configurated memory mapping */
-#include "MemMap_Arch_Cfg.h"
-
-#if (MEMMAP_GEN_MEMMAP_ARCH == MEMMAP_ENABLE)
-/* include generic architecture dependent memory mapping */
-#include "MemMap_Arch.h"
+#ifdef START_SECTION_CODE
+	#undef START_SECTION_CODE
+	#undef MEMMAP_ERROR
 #endif
 
-/* include user configurated section mapping */
-#include "MemMap_Section_Cfg.h"
-
-/* include architecture dependent user section mapping */
-#include "MemMap_Section_Arch_Cfg.h"
-
-#if (MEMMAP_GEN_SECTION_ARCH == MEMMAP_ENABLE)
-/* include generic architecture dependent section mapping */
-#include "MemMap_Section_Arch.h"
+#ifdef STOP_SECTION_CODE
+	#undef STOP_SECTION_CODE
+	#undef MEMMAP_ERROR
 #endif
 
-/* if MEMMAP_ERROR is still defined a compiler error shall be generated */
-#ifdef MEMMAP_ERROR
-#error Error the memory class was not found.
+#ifdef START_SECTION_VAR
+   #undef START_SECTION_VAR
+   #undef MEMMAP_ERROR
 #endif
+
+#ifdef STOP_SECTION_VAR
+   #undef STOP_SECTION_VAR
+   #undef MEMMAP_ERROR
+#endif
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

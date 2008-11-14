@@ -1,3 +1,12 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
+/** TODO in the future this file has to be generated from
+ *  the configuration
+ */
+
+
 /* Copyright 2008, Mariano Cerdeiro
  *
  * This file is part of OpenSEK.
@@ -17,11 +26,11 @@
  *
  */
 
-#ifndef _MEMMAP_H_
-#define _MEMMAP_H_
-/** \brief OpenSEK Memory Mapping Header File
+#ifndef _MEMMAP_ARCH_CFG_H_
+#define _MEMMAP_ARCH_CFG_H_
+/** \brief OpenSEK Architecture Configurated Memory Mapping Header File
  **
- ** \file MemMap.h
+ ** \file MemMap_Arch_Cfg.h
  **
  **/
 
@@ -43,38 +52,18 @@
  * v0.1.0 20081114 MaCe	initial version
  */
 
-/* MEMMAP_ERROR definition */
-#define MEMMAP_ERROR
+/*==================[inclusions]=============================================*/
 
-/* include user configurated memory mapping */
-#include "MemMap_Cfg.h"
+/*==================[macros]=================================================*/
 
-/* include arhcitecture dependent user configurated memory mapping */
-#include "MemMap_Arch_Cfg.h"
+/*==================[typedef]================================================*/
 
-#if (MEMMAP_GEN_MEMMAP_ARCH == MEMMAP_ENABLE)
-/* include generic architecture dependent memory mapping */
-#include "MemMap_Arch.h"
-#endif
+/*==================[external data declaration]==============================*/
 
-/* include user configurated section mapping */
-#include "MemMap_Section_Cfg.h"
-
-/* include architecture dependent user section mapping */
-#include "MemMap_Section_Arch_Cfg.h"
-
-#if (MEMMAP_GEN_SECTION_ARCH == MEMMAP_ENABLE)
-/* include generic architecture dependent section mapping */
-#include "MemMap_Section_Arch.h"
-#endif
-
-/* if MEMMAP_ERROR is still defined a compiler error shall be generated */
-#ifdef MEMMAP_ERROR
-#error Error the memory class was not found.
-#endif
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MEMMAP_H_ */
+#endif /* #ifndef _MEMMAP_ARCH_CFG_H_ */
 
