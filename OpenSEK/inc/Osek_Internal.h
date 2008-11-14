@@ -37,11 +37,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
+ * KLi           Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20081113 KLi  Added memory layout attribute macros
  * v0.1.0 20080713 MaCe	initial version
  */  
 
@@ -171,6 +173,8 @@
 typedef uint8 ContextType;
 
 /*==================[external data declaration]==============================*/
+#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+
 /** \brief ActualContext
  **
  ** This variable saves the actual context
@@ -179,8 +183,11 @@ extern ContextType ActualContext;
 
 /** \brief RunningTask variable */
 extern TaskType RunningTask;
+#pragma MEM_ATTRIB_OSEK_RAM_END
 
 /*==================[external functions declaration]=========================*/
+#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+
 /** \brief Architecture Dependnece Start Os function
  **
  ** This function is called from the StartOs function
@@ -214,12 +221,16 @@ void RemoveTask(TaskType TaskID);
  ** \param[in] TaskID task to be add to the ready list
  **/
 extern void AddReady(TaskType TaskID);
+#pragma MEM_ATTRIB_OSEK_CODE_END
 
+#pragma MEM_ATTRIB_OSEK_ISR_BEGIN
 /** \brief No Handled Interrupt Handler
  **
  ** This is an interrupt handler used for all not handled interrupts.
  **/ 
 extern void OSEK_ISR_NoHandler(void);
+
+#pragma MEM_ATTRIB_OSEK_ISR_END
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

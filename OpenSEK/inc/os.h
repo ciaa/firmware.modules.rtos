@@ -38,13 +38,15 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
+ * KLi           Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20081113 KLi  Added memory layout attribute macros
  * v0.1.0 20080713 MaCe	initial version
- */  
+ */
 
 /*==================[inclusions]=============================================*/ 
 #include "Osek_Cfg.h"
@@ -373,6 +375,8 @@ typedef AlarmBaseType* AlarmBaseRefType;
 typedef signed char InterruptCounterType;
 
 /*==================[external data declaration]==============================*/
+#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+
 /** \brief Suspend OS interrupts counter */
 extern InterruptCounterType SuspendOSInterrupts_Counter;
 
@@ -382,7 +386,11 @@ extern InterruptCounterType DisableAllInterrupts_Counter;
 /** \brief Suspend All interrupts counter */
 extern InterruptCounterType SuspendAllInterrupts_Counter;
 
+#pragma MEM_ATTRIB_OSEK_RAM_END
+
 /*==================[external functions declaration]=========================*/
+#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+
 /** \brief Activate the specified Task
  **
  ** This system service activates the task with id indicated in the TaskID
@@ -667,6 +675,7 @@ extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle)
  ** \return E_NO_FUNC if the alarm is not running
  **/
 extern StatusType CancelAlarm(AlarmType AlarmID);
+#pragma MEM_ATTRIB_OSEK_CODE_END
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
