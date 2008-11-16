@@ -27,7 +27,7 @@ COMPILER = GCC
 # moduletest01		Module tests for all modules
 #
 
-MODS +=	modBASIC			\
+MODS +=	OpenGEN			\
 			TestSuite		\
 			OpenSEK			\
 			seENC				\

@@ -173,7 +173,8 @@
 typedef uint8 ContextType;
 
 /*==================[external data declaration]==============================*/
-#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+#define OpenSEK_START_SEC_VAR
+#include "MemMap.h"
 
 /** \brief ActualContext
  **
@@ -183,10 +184,13 @@ extern ContextType ActualContext;
 
 /** \brief RunningTask variable */
 extern TaskType RunningTask;
-#pragma MEM_ATTRIB_OSEK_RAM_END
+
+#define OpenSEK_STOP_SEC_VAR
+#include "MemMap.h"
 
 /*==================[external functions declaration]=========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 /** \brief Architecture Dependnece Start Os function
  **
@@ -221,16 +225,15 @@ void RemoveTask(TaskType TaskID);
  ** \param[in] TaskID task to be add to the ready list
  **/
 extern void AddReady(TaskType TaskID);
-#pragma MEM_ATTRIB_OSEK_CODE_END
 
-#pragma MEM_ATTRIB_OSEK_ISR_BEGIN
 /** \brief No Handled Interrupt Handler
  **
  ** This is an interrupt handler used for all not handled interrupts.
  **/ 
 extern void OSEK_ISR_NoHandler(void);
 
-#pragma MEM_ATTRIB_OSEK_ISR_END
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

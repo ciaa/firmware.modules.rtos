@@ -61,7 +61,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 StatusType TerminateTask
 (
@@ -155,7 +156,8 @@ StatusType TerminateTask
 	return ret;
 }
 
-#pragma MEM_ATTRIB_OSEK_CODE_END
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen endVar group definition */
 /** @} doxygen endVar group definition */

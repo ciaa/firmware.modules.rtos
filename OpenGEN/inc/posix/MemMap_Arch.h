@@ -43,6 +43,26 @@
  * v0.1.0 20081114 MaCe	initial version
  */
 
+#ifdef OpenSEK_START_SEC_CODE
+	#define START_SECTION_CODE
+	#undef OpenSEK_START_SEC_CODE
+#endif
+
+#ifdef OpenSEK_STOP_SEC_CODE
+	#define STOP_SECTION_CODE
+	#undef OpenSEK_STOP_SEC_CODE
+#endif
+
+#ifdef OpenSEK_START_SEC_VAR
+	#define START_SECTION_VAR
+	#undef OpenSEK_START_SEC_VAR
+#endif
+
+#ifdef OpenSEK_STOP_SEC_VAR
+	#define STOP_SECTION_VAR
+	#undef OpenSEK_STOP_SEC_VAR
+#endif
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

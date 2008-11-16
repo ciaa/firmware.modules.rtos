@@ -44,7 +44,6 @@
  * 20081113 v0.1.1 KLi        - Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe       - initial version
  */
- */
 
 /*==================[inclusions]=============================================*/
 #include "Osek_Internal.h"
@@ -62,7 +61,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 StatusType GetAlarm
 (
@@ -119,7 +119,8 @@ StatusType GetAlarm
 	return ret;
 }
 
-#pragma MEM_ATTRIB_OSEK_CODE_END
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

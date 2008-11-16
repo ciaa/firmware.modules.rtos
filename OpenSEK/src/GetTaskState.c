@@ -60,7 +60,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 StatusType GetTaskState
 (
@@ -121,7 +122,8 @@ StatusType GetTaskState
 	return ret;
 }
 
-#pragma MEM_ATTRIB_OSEK_CODE_END
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

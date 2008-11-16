@@ -53,8 +53,8 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-
-#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+#define OpenSEK_START_SEC_VAR
+#include "MemMap.h"
 
 InterruptCounterType SuspendOSInterrupts_Counter;
 
@@ -62,7 +62,8 @@ InterruptCounterType DisableAllInterrupts_Counter;
 
 InterruptCounterType SuspendAllInterrupts_Counter;
 
-#pragma MEM_ATTRIB_OSEK_RAM_END
+#define OpenSEK_STOP_SEC_VAR
+#include "MemMap.h"
 
 /*==================[internal functions definition]==========================*/
 

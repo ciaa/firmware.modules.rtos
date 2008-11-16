@@ -375,7 +375,8 @@ typedef AlarmBaseType* AlarmBaseRefType;
 typedef signed char InterruptCounterType;
 
 /*==================[external data declaration]==============================*/
-#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+#define OpenSEK_START_SEC_VAR
+#include "MemMap.h"
 
 /** \brief Suspend OS interrupts counter */
 extern InterruptCounterType SuspendOSInterrupts_Counter;
@@ -386,10 +387,12 @@ extern InterruptCounterType DisableAllInterrupts_Counter;
 /** \brief Suspend All interrupts counter */
 extern InterruptCounterType SuspendAllInterrupts_Counter;
 
-#pragma MEM_ATTRIB_OSEK_RAM_END
+#define OpenSEK_STOP_SEC_VAR
+#include "MemMap.h"
 
 /*==================[external functions declaration]=========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 /** \brief Activate the specified Task
  **
@@ -675,7 +678,9 @@ extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle)
  ** \return E_NO_FUNC if the alarm is not running
  **/
 extern StatusType CancelAlarm(AlarmType AlarmID);
-#pragma MEM_ATTRIB_OSEK_CODE_END
+
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

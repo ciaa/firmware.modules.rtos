@@ -60,7 +60,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 void StartOs
 (
@@ -134,7 +135,8 @@ void StartOs
 	while(1);
 }
 
-#pragma MEM_ATTRIB_OSEK_CODE_END
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen endVar group definition */

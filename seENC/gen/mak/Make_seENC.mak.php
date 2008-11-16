@@ -8,7 +8,7 @@ SEENC_OBJ +=		\
 		error("more than one SUBMODULE defined in the seENC configuration");
 	}
 
-	var_dump($config);
+/*	var_dump($config);
 
 	$submods = $config->getList("/seENC/" . $config[0] ,"*");
 
@@ -16,5 +16,5 @@ SEENC_OBJ +=		\
 	{
 		print "$submod\n";
 #		$val = $config->getValue("/seENC/" . $config[0], $submod);
-	}
+	} */
 ?>

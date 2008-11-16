@@ -53,18 +53,21 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-#pragma MEM_ATTRIB_OSEK_RAM_BEGIN
+#define OpenSEK_START_SEC_VAR
+#include "MemMap.h"
 
 TaskType RunningTask;
 
 ContextType ActualContext;
 
-#pragma MEM_ATTRIB_OSEK_RAM_END
+#define OpenSEK_STOP_SEC_VAR
+#include "MemMap.h"
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#pragma MEM_ATTRIB_OSEK_CODE_BEGIN
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
 
 void AddReady(TaskType TaskID)
 {
@@ -149,16 +152,13 @@ TaskType GetNextTask
 	return ret;
 }
 
-#pragma MEM_ATTRIB_OSEK_CODE_END
-
-#pragma MEM_ATTRIB_OSEK_ISR_BEGIN
-
 void OSEK_ISR_NoHandler(void)
 {
 	while(1);
 }
 
-#pragma MEM_ATTRIB_OSEK_ISR_END
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
