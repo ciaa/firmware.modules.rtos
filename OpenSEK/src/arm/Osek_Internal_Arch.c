@@ -53,27 +53,6 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-uint8	InterruptState;
-
-mqd_t MessageQueue;
-
-struct mq_attr MessageQueueAttr;
-
-struct sigaction MessageSignal;
-
-struct sigaction KillSignal;
-
-pid_t OsekProcessID;
-
-struct sigevent SignalEvent;
-
-uint32 OsekHWTimer0;
-
-InterruptFlagsType InterruptFlag;
-
-uint32 PosixStack;
-
-uint32 OsekStack;
 
 /*==================[internal functions definition]==========================*/
 
@@ -142,104 +121,6 @@ void CounterInterrupt(CounterType CounterID)
 			}
 		}
 	}
-}
-
-void OSEK_ISR_HWTimer0(void)
-{
-	CounterInterrupt(0);
-}
-
-void OSEK_ISR_HWTimer1(void)
-{
-	CounterInterrupt(1);
-}
-
-void PosixInterruptHandler(int status)
-{
-	uint8 msg[10];
-	ssize_t mq_ret;
-
-	mq_ret = mq_receive(MessageQueue, (char*)msg, sizeof(msg), NULL);
-	if (mq_ret > 0)
-	{
-		if (msg[0] < 32)
-		{
-			/* printf("Interrupt: %d\n",msg[0]); */
-			if ( (InterruptState) &&
-				  ( (InterruptMask & (1 << msg[0] ) )  == 0 ) )
-			{
-				InterruptTable[msg[0]]();
-			}
-			else
-			{
-				InterruptFlag |= 1 << msg[0];
-			}
-		}
-
-	}
-	else
-	{
-		switch(errno)
-		{
-			case EAGAIN:
-				printf("Queue Empty\n");
-				break;
-			case EBADF:
-				printf("Not valued queue descriptor\n");
-				break;
-			case EMSGSIZE:
-				printf("Message buffer to small\n");
-				break;
-			case EINTR:
-				printf("Reception interrupted by a signal\n");
-				break;
-			default:
-				printf("other error\n");
-				break;
-		}
-		printf("Error by reading the Message Queue, returned value: %d, error number: %d\n",mq_ret,errno);
-	}
-
-	if (mq_notify(MessageQueue, &SignalEvent) == -1)
-	{
-		printf("Error: Message Notification can not be activated, error: %d.\n",errno);
-		sleep(3);
-	}
-}
-
-void HWTimerFork(uint8 timer)
-{
-	int mq_ret;
-	char msg;
-	struct timespec rqtp;
-
-	if (timer <= 2)
-	{
-		msg = timer + 4;
-
-		rqtp.tv_sec=0;
-   	rqtp.tv_nsec=1000000;
-
-		while(1)
-		{
-			mq_ret = mq_send(MessageQueue, &msg, sizeof(msg), 0);
-			if (mq_ret < 0)
-			{
-				/* printf("Error HW Timer can not generate an interrupt\n"); */
-			}
-			nanosleep(&rqtp,NULL);
-		}
-	}
-
-	exit(0);
-}
-
-void OsekKillSigHandler(int status)
-{
-	PreCallService();
-	mq_unlink("/OpenSEK");
-	exit(0);
-	PostCallService();
 }
 
 /** @} doxygen end group definition */

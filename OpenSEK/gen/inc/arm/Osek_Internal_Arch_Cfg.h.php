@@ -56,7 +56,10 @@
 
 /*==================[typedef]================================================*/
 /** \brief Task Context Type */
-typedef ucontext_t TaskContextType;
+typedef struct {
+	uint32 reg_a;
+	uint32 reg_b;
+} TaskContextType;
 
 /** \brief Task Context Type */
 typedef TaskContextType* TaskContextRefType;

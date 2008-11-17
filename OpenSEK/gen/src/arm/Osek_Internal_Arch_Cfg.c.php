@@ -83,11 +83,7 @@ for ($loopi = 0; $loopi < 32; $loopi++)
 				print "	OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
 				break;
 			case 4:
-				print "	OSEK_ISR_HWTimer0, /* HW Timer 0 Interrupt handler */\n";
-				break;
 			case 5:
-				print "	OSEK_ISR_HWTimer1, /* HW Timer 1 Interrupt handler */\n";
-				break;
 			case 6:
 			case 7:
 				print "	OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";

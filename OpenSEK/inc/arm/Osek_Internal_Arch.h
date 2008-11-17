@@ -44,16 +44,11 @@
  */  
 
 /*==================[inclusions]=============================================*/
-#include "ucontext.h"	/* used to task changes */
-#include "mqueue.h"		/* used to simulate interrupts */
-#include "errno.h"		/* used to read errno */
-#include "stdio.h"		/* used to print debug information */
-#include "signal.h"		/* used to simulate interrupts */
-#include "unistd.h"		/* used to create a fork to poll the interrupts */
-#include "stdlib.h"		/* used to call exit to terminate the process */
-#include "time.h"			/* used to simulate the hardware timer */
 
 /*==================[macros]=================================================*/
+/** \brief NULL definition */
+#define NULL ((void *)0U)
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro shall be used to disable the interrupts
@@ -72,7 +67,7 @@
 #define osekpause()			\
 	{								\
 		PreCallService();		\
-	 	(void)usleep(1); 		\
+		/** TODO	*/				\
 		PostCallService();	\
 	}
 
@@ -83,13 +78,13 @@
 #define CallTask(task)															\
 	{																					\
 		uint8 jmp = 1;																\
-		(void)getcontext(TasksConst[GetRunningTask()].TaskContext);	\
+		/** TODO */																	\
 		jmp--;																		\
 		if (jmp == 0)																\
 		{																				\
 			/* set as running task */											\
 			SetRunningTask(task);												\
-			(void)setcontext(TasksConst[(task)].TaskContext);			\
+			/** TODO */																\
 		}																				\
 	}
 
@@ -100,14 +95,14 @@
 #define JmpTask(task)			\
 	{									\
 		PreCallService();			\
-		(void)setcontext(TasksConst[(task)].TaskContext);	\
+		/** TODO */					\
 	}
 
 /** \brief Save context */
 #define SaveContext(task) 		\
 	{									\
 		PreCallService();			\
-		(void)getcontext(TasksConst[(task)].TaskContext);	\
+		/** TODO */					\
 		PostCallService();		\
 	}
 
@@ -115,16 +110,14 @@
 #define SetEntryPoint(task)	\
 	{									\
 		PreCallService();			\
-		(void)makecontext(TasksConst[(task)].TaskContext, TasksConst[(task)].EntryPoint, 0);	\
+		/** TODO */					\
 		PostCallService();		\
 	}
 
 /** \brief */
 #define ResetStack(task)																													\
 	{																																				\
-		TasksConst[loopi].TaskContext->uc_stack.ss_sp = TasksConst[loopi].StackPtr;      /* set stack pointer */	\
-		TasksConst[loopi].TaskContext->uc_stack.ss_size = TasksConst[loopi].StackSize;   /* set stack size */		\
-		TasksConst[loopi].TaskContext->uc_stack.ss_flags = 0;																		\
+		/** TODO */																																\
    }
 
 #define ISR_NMI      0
@@ -134,12 +127,12 @@
 
 #define EnableOSInterrupts()															\
 	{																							\
-		InterruptMask &= (InterruptFlagsType)~(OSEK_OS_INTERRUPT_MASK);	\
+		/** TODO */																			\
 	}
 
 #define EnableInterrupts()		\
 	{									\
-		InterruptState = 1;		\
+		/** TODO */					\
 	}
 
 /** \brief Get Counter Actual Value
@@ -173,23 +166,13 @@
  **
  ** This macro shall be called before calling any posix system service
  **/
-#define PreCallService() 		\
-	{									\
-		/* save osek stack */	\
-		__asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (OsekStack) : : "eax"); \
-		/* get windows stack */	\
-		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (PosixStack) ); \
-	}
+#define PreCallService()
 
 /** \brief Post Call Service
  **
  ** This macro shall be called after calling any posix system service
  **/
-#define PostCallService()		\
-	{									\
-		/* get windows stack */ \
-		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (OsekStack) ); \
-	}
+#define PostCallService()
 
 
 /*==================[typedef]================================================*/
@@ -233,56 +216,8 @@ typedef signed int sint32_least;
 typedef unsigned char flag;
 
 /*==================[external data declaration]==============================*/
-/** \brief Interrupt Falg
- **
- ** This variable indicate the state of the posix interrupts. If bit 0 is set
- ** interrupt 0 has been activated, if bit 1 is set interrupt 1 has been
- ** activated, and so on.
- **/
-extern InterruptFlagsType InterruptFlag;
-
-/** \brief Message Queue
- **/
-extern mqd_t MessageQueue;
-
-/** \brief Message Queue Attributes
- **/
-extern struct mq_attr MessageQueueAttr;
-
-/** \brief Message Signal
- **/
-extern struct sigaction MessageSignal;
-
-/** \brief Kill Signal
- **/
-extern struct sigaction KillSignal;
-
-/** \brief Signal Event
- **/
-extern struct sigevent SignalEvent;
-
-/** \brief Osek Hardware Timer 0
- **/
-extern uint32 OsekHWTimer0;
-
-extern uint32 PosixStack;
-
-extern uint32 OsekStack;
 
 /*==================[external functions declaration]=========================*/
-/** \brief Posix Interrupt Handler
- **
- ** This function is called every time when a interrupt message is received.
- **/
-extern void PosixInterruptHandler(int status);
-
-extern void HWTimerFork(uint8 timer);
-
-extern void OsekKillSigHandler(int status);
-
-extern void OSEK_ISR_HWTimer0(void);
-
-extern void OSEK_ISR_HWTimer1(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

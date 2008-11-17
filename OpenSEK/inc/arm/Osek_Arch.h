@@ -59,50 +59,27 @@
 /** \brief Resume All Interrupts Arch */
 #define ResumeAllInterrupts_Arch()						\
 	{																\
-		InterruptState = ((InterruptStateType)1U);	\
-		ScheduleInterrupts();								\
 	}
 
 /** \brief Suspend All Interrupts Arch */
 #define SuspendAllInterrupts_Arch()						\
 	{																\
-		InterruptState = ((InterruptStateType)0U);	\
 	}
 
 /** \brief Resume OS Interrupts Arch */
 #define ResumeOSInterrupts_Arch()													\
 	{																							\
-		InterruptMask &= (InterruptFlagsType)~(OSEK_OS_INTERRUPT_MASK);	\
 	}
 
 
 /** \brief Suspend OS Interrupts Arch */
 #define SuspendOSInterrupts_Arch()					\
 	{															\
-		InterruptMask |= OSEK_OS_INTERRUPT_MASK;	\
 	}
 
 /*==================[typedef]================================================*/
-/** \brief Interrupt type definition */
-typedef unsigned int InterruptFlagsType;
-
-/** \brief Interrupt state type definition */
-typedef unsigned char InterruptStateType;
 
 /*==================[external data declaration]==============================*/
-/** \brief Interrupt Mask
- **
- ** This variable mask the interrupts. Interrupts which are masked are
- ** not going to be executed until the mask is cleared.
- **/
-extern InterruptFlagsType InterruptMask;
-
-/** \brief Interrupt State
- **
- ** If this variable is set the intterupts are enable, if it is 0
- ** interrupts are disable.
- **/
-extern InterruptStateType InterruptState;
 
 /*==================[external functions declaration]=========================*/
 extern void ScheduleInterrupts(void);
