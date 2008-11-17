@@ -81,7 +81,7 @@
    {                                                                                                  \
       if (cond)                                                                                       \
       {                                                                                               \
-         printf("Error the condition \"" # cond "\" in File: %s, in Line: %d is true.\n",__FILE__, __LINE__);  \
+         ASSERT_ARCH();																											\
          mt_TaskAssert = TS_FAILED;                                                                   \
       }                                                                                               \
    }

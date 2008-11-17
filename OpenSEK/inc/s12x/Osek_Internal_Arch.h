@@ -21,8 +21,8 @@
 #define _OSEK_INTERNAL_ARCH_H_
 /** \brief OpenSEK Internal Architecture Dependent Header File
  **
- ** \file s12/Osek_Internal_Arch.h
- ** \arch s12 
+ ** \file s12x/Osek_Internal_Arch.h
+ ** \arch s12x
  **/
 
 /** \addtogroup OpenSEK

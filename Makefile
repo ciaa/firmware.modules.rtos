@@ -7,12 +7,13 @@
 # at the moment the followings archictectures are supported:
 #	- posix
 #  - win
-ARCH = posix
+#  - arm
+ARCH = arm
 
 # DERIVATE
 # defines the derivate. For each architecture none, one or more derivates can be
 # defined
-DERIVATE =
+DERIVATE = 
 
 COMPILER = GCC
 
@@ -51,7 +52,8 @@ PROJECT = OpenSEK
 BIN = $(PROJECT)
 
 #TODO this has to be automatic depending in the COMPILER variable
-CC = gcc
+CC = arm-elf-gcc
+LD = arm-elf-ld
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
 CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
@@ -67,7 +69,7 @@ DOC += nm sizedoc reqdoc doxygen
 include $(foreach module, $(MODS), $(module)$(DIR)mak$(DIR)Makefile)
 
 OpenSEK : $(OBJ) $(LIB)
-	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN)
+	$(LD) $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN)
 #	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
 
 generate : $(GEN)

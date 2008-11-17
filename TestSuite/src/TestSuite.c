@@ -54,6 +54,11 @@ TS_ResultType TS_TestResults[(TS_TESTS_COUNT)/4];
 TS_ChecksumType TS_Checksum;
 
 /*==================[external functions declaration]=========================*/
+void TS_PrintResult(unsigned int tc, unsigned char result)
+{
+	TS_PrintResult_Arch(tc, result);
+}
+
 void TS_RunTestSuite(void)
 {
 	unsigned int loopi;
@@ -64,25 +69,7 @@ void TS_RunTestSuite(void)
 		result = TestCases[loopi]();
 		TS_TestResults[(loopi/sizeof(TS_TestResults))] |= (0x3 & result) << (loopi*2 % 4);
 		PreCallService();
-		printf("Test: %4d Result: ",loopi);
-		switch(result)
-		{
-			case TS_OK:
-				printf("OK\n");
-				break;
-			case TS_FAILED:
-				printf("FAILED\n");
-				break;
-			case TS_USER:
-				printf("USER\n");
-				break;
-			case TS_NOTRUN:
-				printf("NOTRUN\n");
-				break;
-			default:
-				printf("ERROR RESULT\n");
-				break;
-		}
+		TS_PrintResult(loopi, result);
 		PostCallService();
 		
 	}

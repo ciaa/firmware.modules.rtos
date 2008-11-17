@@ -12,7 +12,8 @@ GENFILES += TestSuite$(DIR)gen$(DIR)inc$(DIR)TS_Cfg.h.php					\
 VPATH += TestSuite$(DIR)src					\
 			$(GENDIR)$(DIR)src
 
-INCLUDE += 	-ITestSuite$(DIR)inc
+INCLUDE += 	-ITestSuite$(DIR)inc				\
+				-ITestSuite$(DIR)inc$(DIR)$(ARCH)$(DIR)
 
 TestSuite.a : $(TESTSUITE_OBJ)
 	ar -rcs $(LIBDIR)$(DIR)TestSuite.a $(foreach obj, $(TESTSUITE_OBJ), $(OBJDIR)$(DIR)$(obj))
