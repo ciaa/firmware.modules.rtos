@@ -9,7 +9,7 @@ GEN +=
 
 LFLAGS +=
 
-OpenGEN_OBJ += start.o
+OpenGEN_OBJ +=
 
 GENFILES += OpenGEN$(DIR)gen$(DIR)mak$(DIR)Make_OpenGEN.mak.php
 
