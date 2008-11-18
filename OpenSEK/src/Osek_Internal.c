@@ -90,8 +90,16 @@ void AddReady(TaskType TaskID)
 	/* get max number of entries */
 	maxtasks = ReadyConst[priority].ListLength;
 
-	/* get pincrementtion */
-	position = ( ReadyVar[priority].ListStart + ReadyVar[priority].ListCount ) % maxtasks;
+	/* get position incrementtion */
+	position = ReadyVar[priority].ListStart + ReadyVar[priority].ListCount;
+
+	/* go arround maxtasks */
+	/* this if works like  % instruction */
+	if (position >= maxtasks)
+	{
+		position -= maxtasks;
+	}
+
 	/* set the task id in ready the list */
 	readylist[position] = TaskID;
 	/* increment the list counter */
@@ -120,8 +128,17 @@ void RemoveTask
 	readylist = ReadyConst[priority].TaskRef;
 	/* get max number of entries */
 	maxtasks = ReadyConst[priority].ListLength;
+
 	/* increment the ListStart */
-	ReadyVar[priority].ListStart= ( ReadyVar[priority].ListStart + 1 )  % maxtasks;
+	ReadyVar[priority].ListStart = ReadyVar[priority].ListStart + 1;
+
+	/* go arround maxtasks */
+	/* this if works like a % instruction */
+	if (ReadyVar[priority].ListStart >= maxtasks)
+	{
+		ReadyVar[priority].ListStart -= maxtasks;
+	}
+
 	/* decrement the count of ready tasks */
 	ReadyVar[priority].ListCount--;
 }
