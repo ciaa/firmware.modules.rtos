@@ -9,11 +9,12 @@ GEN +=
 
 LFLAGS +=
 
-OPENOSEK_OBJ +=
+OpenGEN_OBJ += start.o
 
 GENFILES += OpenGEN$(DIR)gen$(DIR)mak$(DIR)Make_OpenGEN.mak.php
 
-VPATH +=
+VPATH += OpenGEN$(DIR)src	\
+			OpenGEN$(DIR)src$(DIR)$(ARCH)
 
 INCLUDE +=	-IOpenGEN$(DIR)inc												\
 				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)								\
