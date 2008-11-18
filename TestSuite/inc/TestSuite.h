@@ -65,7 +65,7 @@
 	{																																	\
 		if (cond)																													\
 		{																																\
-			ASSERT_ARCH();																											\
+			ASSERT_ARCH(cond);																									\
 			return TS_FAILED;																										\
 		}																																\
 	}

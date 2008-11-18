@@ -44,8 +44,8 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-#define ASSERT_ARCH()	\
-	{							\
+#define ASSERT_ARCH(cond)	\
+	{								\
 		printf("Error the condition \"" # cond "\" in File: %s, in Line: %d is true.\n",__FILE__, __LINE__);  \
 	}
 
@@ -69,7 +69,8 @@
          default:									\
             printf("ERROR RESULT\n");		\
             break;								\
-      }
+      }												\
+	}
 
 /*==================[typedef]================================================*/
 

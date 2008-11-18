@@ -70,8 +70,7 @@ void TS_RunTestSuite(void)
 		TS_TestResults[(loopi/sizeof(TS_TestResults))] |= (0x3 & result) << (loopi*2 % 4);
 		PreCallService();
 		TS_PrintResult(loopi, result);
-		PostCallService();
-		
+		PostCallService();	
 	}
 }
 
