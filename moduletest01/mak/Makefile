@@ -9,6 +9,7 @@ INCLUDE += -Imoduletest01$(DIR)inc
 
 CFGFILES += moduletest01$(DIR)etc$(DIR)moduletest01.oil			\
 				moduletest01$(DIR)etc$(DIR)testsuite.oil				\
+				moduletest01$(DIR)etc$(DIR)OpenDRV.oil					\
 				moduletest01$(DIR)etc$(DIR)seENC.oil
 
 CLEAN += moduletest01clean

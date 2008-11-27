@@ -1,0 +1,10 @@
+OpenDRV OpenDRV {
+
+	DRIVERS {
+		StartUp = ENABLE;
+		Clk = DISABLE;
+	};
+
+	StartUp StartUp {
+	};
+};
