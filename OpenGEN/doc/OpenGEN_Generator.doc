@@ -5,11 +5,54 @@
  * \section OpenGEN_G_Int Introduction to the Code Generator
  *
  * The first importan to understand is why OpenSEK needs a code generator.
- * Goal of the project is to offer 
+ * Goal of the project is to offer a software solution for embedded software.
+ * But not for one also for all, so you need to configure and decide exact
+ * what do you want to have.
  *
- * \section OpenGEN_G_Use
+ * For example an user may need a OpenSEK OS to have only two tasks and other
+ * user may want to have 20 task on the OpenSEK OS, same happens with all
+ * modules, the user has to configurate the system. And the system will be
+ * generated for exactly that configuration trying to save all possibly
+ * resources.
  *
- * \section OpenGEN_G_Dev
+ * \section OpenGEN_G_Use Using OpenSEK
+ *
+ * OpenSEK generator is written in php and can be directly be called from
+ * the command line. But is not necesary for you since it is being called
+ * automaticaly from the make environment running:
+ *
+ * \b make \b generate
+ *
+ * any way you can find here the command lines options availables on the
+ * generator.
+ *
+ * php generator.php [-l] [-h] [--cmdline] -c CONFIG_1 [CONFIG_2] -o OUTPUTDIR -f GENFILE_1 [GENFILE_2] 
+ * 
+ * - TODO run php generator.php -h for more details
+ *
+ * \subsection OpenSEK_G_Dev_Internal
+ *
+ * OpenSEK generator is written in php. Today it is bassed on 3 files:
+ *
+ * - generator.php
+ * - config.php
+ * - oilParser.php
+ *
+ * and of course all files to be generated.
+ *
+ *
+ * OpenSEK G
+ *
+ * \section OpenGEN_G_Dev Writing your own code for the generator
+ *
+ * Imporntant is that you have at least an idea of the OIL format. At this
+ * moment the only one supported from OpenSEK. You will need a basic know how
+ * of php,since the code to be generated is written in php. Anyway I wrote the
+ * generator without any idea of php and sure a php expert will say that is
+ * not good coded, but it is what we have. If any one wants to extend it, to
+ * rewritet it of course is welcome to the team.
+ *
+ *
  *
  * \subsection OpenGEN_G_Dev
  *
