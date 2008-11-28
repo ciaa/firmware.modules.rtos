@@ -1,5 +1,53 @@
 /** \page OpenGEN OpenGEN Documentation
  *
- * This page shall content the OpenGEN documentation.
+ * OpenGEN is the Generic Module of OpenSEK. It takes generic tasks like
+ * the OpenSEK generator and generic files like types and memory allocation
+ * files.
  *
+ * For information related to the OpenSEK generator take a look on the 
+ * follogwing page:
+ *
+ * \subpage OpenGEN_Generator
+ *
+ * This page will documents the rest of the OpenGEN features.
+ *
+ * \section OpenGEN_MA Memory Allocation
+ *
+ * In embedded systems is sometime important to decide which information or
+ * functions are lockated in specific places on the memory. To make this 
+ * possibly the OpenGEN modules allow a memory allocation system based on the
+ * AUTOSAR standard, at least the idea was taken from this standard.
+ * (http://www.autosar.org)
+ *
+ * If you are still not sure which i
+ *
+ * \subsection OpenGEN_MA_WCode Writing your code
+ *
+ * \subsection Changing the default memory location
+ *
+ * \section OpenGEN_MA_Types Types
+ *
+ * An important feature of the OpenGEN module are the offered types used
+ * for all sub modules. This allow you to use in an easy way a for example
+ * an unsigned int with 8 bytes using the type uint8.
+ *
+ * If you want to use these types you have only to include Types.h. But if
+ * you use any other OpenSEK module you may have this Types being included in
+ * your namespace anyway.
+ *
+ * The defined types are:
+ *
+ * \copydoc uint8
+ * \copydoc sint8
+ * \copydoc uint8f
+ * \copydoc sint8f
+ * \copydoc uint8
+ * \copydoc sint16
+ * \copydoc uint16f
+ * \copydoc sint16f
+ * \copydoc uint32
+ * \copydoc sint32
+ * \copydoc uint32f
+ * \copydoc sint32f
+ * \copydoc NULL
  */
