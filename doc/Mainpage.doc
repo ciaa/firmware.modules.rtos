@@ -46,7 +46,7 @@
  * - \subpage Modules
  * - \subpage OilFormat
  * - \subpage OpenSEK
- * - \subpage OpenTCPIP
+ * - \subpage lwIP
  * - \subpage OpenTIME
  * - \subpage OpenLCD
  * - \subpage OpenCOM
