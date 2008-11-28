@@ -23,7 +23,7 @@
  **
  ** This file shall be included by all files using any OpenDRV Clock API.
  **
- ** \file Clk.h
+ ** \file clk.h
  **
  **/
 

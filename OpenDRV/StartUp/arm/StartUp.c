@@ -19,7 +19,7 @@
 
 /** \brief OpenDRV StartUp c file for arm
  **
- ** \file arm/SrtartUp.c
+ ** \file arm/StartUp.c
  ** \arch arm
  **/
 
@@ -57,5 +57,7 @@
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 
