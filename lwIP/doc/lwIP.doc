@@ -18,9 +18,9 @@
  *
  */
 
-/** \page OpenTCPIP OpenTCPIP Manual
+/** \page lwIP OpenSEK lwIP Manual
  *
- * Ths TCPIP used in OpenSEK is the lwip (Lightweight TCP/IP stack). We only
+ * The TCPIP used in OpenSEK is the lwIO (Lightweight TCP/IP stack). We only
  * adapt the structure to be like any other OpenSEK module, to compile
  * in the same make environment and use the same like configuration and
  * to run with or without OpenSEK OS. Source and Header files are almost
@@ -38,5 +38,6 @@
  *
  * \section OpenTCPIP_Configuration Configuration
  *
+ * TODO
  *
  */
