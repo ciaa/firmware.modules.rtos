@@ -176,8 +176,9 @@ foreach ($args as $arg)
 			print "INFO: ------- LICENSE END -------\n";
 			break;
 		case "-h":
+		case "--help":
 			print "php generator.php [-l] [-h] [--cmdline] -c <CONFIG_1> [<CONFIG_2>] -o <OUTPUTDIR> -f <GENFILE_1> [<GENFILE_2>]\n";
-			print "      -c   ndicate the configuration input files\n";
+			print "      -c   indicate the configuration input files\n";
 			print	"      -o   output directory\n";
 			print "      -f   indicate the files to be generated\n";
 			print "   optional parameters:\n";
@@ -210,7 +211,7 @@ foreach ($args as $arg)
 						$genfiles[] = $arg;
 						break;
 					default:
-						abort("invalid argument: " . $arg);
+						halt("invalid argument: " . $arg);
 						break;
 				}
 			break;
@@ -219,17 +220,17 @@ foreach ($args as $arg)
 
 if (count($configfiles)==0)
 {
-	abort("at least one config file shall be provided");
+	halt("at least one config file shall be provided");
 }
 
 if (count($outputdir)!=1)
 {
-	abort("exactly one output directory shall be provided");
+	halt("exactly one output directory shall be provided");
 }
 
 if (count($genfiles)==0)
 {
-	abort("at least one file to be generated shall be provided");
+	halt("at least one file to be generated shall be provided");
 }
 
 if ($verbose)
