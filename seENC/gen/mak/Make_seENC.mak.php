@@ -1,9 +1,9 @@
 
 SEENC_OBJ +=		\
 <?php
-	$config = $config->getList("/seENC","SUBMODULES");
+	$configs = $config->getList("/seENC","SUBMODULES");
 
-	if (count($config) != 1)
+	if (count($configs) != 1)
 	{
 		error("more than one SUBMODULE defined in the seENC configuration");
 	}

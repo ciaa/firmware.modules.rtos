@@ -101,7 +101,7 @@ foreach ($counters as $counter)
          $countalarms++;
 		}
 	}
-	print "AlarmType OSEK_ALARMLIST_" . $counter . "[" . $countalarms . "] = {\n";
+	print "const AlarmType OSEK_ALARMLIST_" . $counter . "[" . $countalarms . "] = {\n";
 	foreach ($alarms as $alarm)
 	{
 		if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))

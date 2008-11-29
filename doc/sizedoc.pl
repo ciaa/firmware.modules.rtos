@@ -276,7 +276,11 @@ foreach my $mod (@modules)
 		my @el = @$sym;
 		@el[2] = hex(@el[2]);
 
-		wf("\\b @el[0] in \\b @el[3] use \\b @el[2] bytes (file: @el[5]:@el[6])<br>");
+		# do not print symbols with size 0
+		if (@el[2] > 0)
+		{
+			wf("\\b @el[0] in \\b @el[3] use \\b @el[2] bytes (file: @el[5]:@el[6])<br>");
+		}
 
 		@sizemodule = addSectionSize(\@sizemodule, @el[3], @el[2]);
 

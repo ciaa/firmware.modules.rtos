@@ -18,7 +18,7 @@
  *
  */
 
-/** \page Modules OpenSEK Module Structure
+/** \page Modules OpenSEK Module Structure (still empty)
  *
  * This page shall content how to create a new Module compatible
  * to the OpenSEK make environment.

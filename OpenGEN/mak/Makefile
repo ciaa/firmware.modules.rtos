@@ -1,6 +1,7 @@
 ##############################################################################
 # add library
 #
+-include OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 -include $(GENDIR)$(DIR)mak$(DIR)Make_OpenGEN.mak
 
 LIB += OpenGEN.a

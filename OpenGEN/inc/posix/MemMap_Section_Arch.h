@@ -44,11 +44,13 @@
  */
 
 #ifdef START_SECTION_CODE
+	__attribute__ ((section ("SEC_CODE"));
 	#undef START_SECTION_CODE
 	#undef MEMMAP_ERROR
 #endif
 
 #ifdef STOP_SECTION_CODE
+	__attribute__ ((section ("SEC_INVALID"));
 	#undef STOP_SECTION_CODE
 	#undef MEMMAP_ERROR
 #endif
