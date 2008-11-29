@@ -1,0 +1,17 @@
+/** \page OpenBLF Boot Loader Flasher Manual
+ *
+ * \section OpenBLF_Int Introduction to the Boot Loader Flasher
+ *
+ * The Boot Loader Flasher is a module which takes the control of the uC
+ * after every boot and check for some specific preconfigurated conditions
+ * to decide to jmp to the normal application or to stay in the Boot Loader
+ * Flasher state.
+ *
+ * This modules allow the end user in case of an error or an update on the
+ * application to reflash the software over a standard bus: ethernet, can,
+ * spi, usb or like.
+ *
+ * At this moment nobody is working on this module, but in some time I hope
+ * somebody starts working in the BLF for OpenSEK.
+ *
+ */
