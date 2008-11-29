@@ -1,5 +1,10 @@
-/** \page OpenDRV OpenDRV Documentation
+/** \page OpenDRV OpenDRV Documentation (still empty)
  *
- * This page shall content the OpenDRV documentation.
+ * OpenDRV are the Basic Input Output Drivers supported by OpenSEK
+ * At the moment we are working in:
  *
+ * - \ref OpenDRV_Io
+ * - \ref OpenDRV_Clk
+ *
+ * 
  */
