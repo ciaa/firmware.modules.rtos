@@ -8,7 +8,7 @@
 #	- posix
 #  - win
 #  - arm
-ARCH = arm
+ARCH = posix
 
 # DERIVATE
 # defines the derivate. For each architecture none, one or more derivates can be
@@ -31,7 +31,7 @@ COMPILER = GCC
 MODS +=	OpenGEN			\
 			TestSuite		\
 			OpenSEK			\
-			seENC				\
+			OpenDRV			\
 			moduletest01
 
 all: OpenSEK
@@ -52,8 +52,10 @@ PROJECT = OpenSEK
 BIN = $(PROJECT)
 
 #TODO this has to be automatic depending in the COMPILER variable
-CC = arm-elf-gcc
-LD = arm-elf-ld
+#CC = arm-gcc
+#LD = arm-ld
+CC = gcc
+LD = gcc
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
 CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)

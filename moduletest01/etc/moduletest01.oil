@@ -19,7 +19,7 @@ TASK InitTask {
       };
 	RESOURCE = Resource1;
 	EVENT = Event1;
-   STACK = 256;
+   STACK = 1024;
    TYPE = EXTENDED;
 };
 
