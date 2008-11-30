@@ -19,7 +19,7 @@
 
 /** \brief OpenDRV StartUp assembler file for arm
  **
- ** \file arm/SrtartUp.s
+ ** \file arm/SrtartUp_Asm.s
  ** \arch arm
  **/
 
