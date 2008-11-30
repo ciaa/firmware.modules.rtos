@@ -17,11 +17,11 @@
  *
  */
 
-/** \brief OpenDRV Ethernet Main Function
+/** \brief OpenDRV Etherner Init Service
  **
- ** This file implements the Ethernet Main Function service
+ ** This file implements the Ethernet Init Service
  **
- ** \file Eth_MainFunction.c
+ ** \file Eth_Init.c
  **
  **/
 
@@ -58,56 +58,12 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void Eth_MainFunction
+void Eth_Init
 (
-	void
+	Eth_ConfigType const * config
 )
 {
-
-	for (i=0 ; i< UIP_CONNS ; i++)
-	{
-		uip_periodic(i);
-		if (uip_len > 0)
-		{
-			uip_arp_out();
-			Eth_Transmit();
-		}
-	}
-
-	while (Eth_Var.Flags.TX_Data > 0)
-	{
-		Eth_Var.TX_Data--;
-		Eth_Receive;
-	}
-
-	/* check if new data was received by the driver */
-	while (Eth_Var.RX_Data > 0)
-	{
-		if(BUF->type == HTONS(UIP_ETHTYPE_IP))
-		{
-			uip_arp_ipin();
-			uip_input();
-			if (uip_len > 0)
-			{
-				uip_arp_out();
-				Eth_Transmit();
-			}
-		}
-		else if (BUF->type == HTONS(UIP_ETHTYPE_ARP))
-		{
-			uip_arp_arpin();
-			if (uip_len > 0)
-			{
-				Eth_Transmit();
-			}
-		}
-		else
-		{
-			
-		}
-		
-		Eth_Var.RX_Data--;
-	}
+	Eth_Init_Arch(&(config->Config_Arch));
 }
 
 /** @} doxygen end group definition */
