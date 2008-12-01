@@ -48,7 +48,8 @@
  * v0.1.0 20080713 MaCe	initial version
  */
 
-/*==================[inclusions]=============================================*/ 
+/*==================[inclusions]=============================================*/
+#include "Types.h"
 #include "Osek_Cfg.h"
 #include "Osek_Arch.h"
 
@@ -379,10 +380,10 @@ typedef signed char InterruptCounterType;
 #include "MemMap.h"
 
 /** \brief Suspend OS interrupts counter */
-extern InterruptCounterType SuspendOSInterrupts_Counter;
+extern InterruptCounterType SuspendOSInterrupts_Counter ATTRIBUTES();
 
 /** \brief Disable All interrupts counter */
-extern InterruptCounterType DisableAllInterrupts_Counter;
+extern InterruptCounterType DisableAllInterrupts_Counter ATTRIBUTES();
 
 /** \brief Suspend All interrupts counter */
 extern InterruptCounterType SuspendAllInterrupts_Counter;

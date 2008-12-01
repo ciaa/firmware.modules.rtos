@@ -8,14 +8,14 @@
 #	- posix
 #  - win
 #  - arm
-ARCH = posix
+ARCH = arm
 
 # DERIVATE
 # defines the derivate. For each architecture none, one or more derivates can be
 # defined
 DERIVATE = 
 
-COMPILER = GCC
+COMPILER = gcc
 
 # MODULES
 #
@@ -52,13 +52,16 @@ PROJECT = OpenSEK
 BIN = $(PROJECT)
 
 #TODO this has to be automatic depending in the COMPILER variable
-#CC = arm-gcc
-#LD = arm-ld
-CC = gcc
-LD = gcc
+CC = arm-gcc
+LD = arm-ld
+AR = arm-ar
+AS = arm-as
+#CC = gcc
+#LD = gcc
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
 CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
+LFLAGS = $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
 
 DOC += nm sizedoc reqdoc doxygen
 
@@ -67,6 +70,10 @@ DOC += nm sizedoc reqdoc doxygen
 
 %.o : %.c
 	$(CC) $(CFLAGS) $< -o $(OBJDIR)$(DIR)$@
+
+%.o : %.s
+	$(AS) $(AFLAGS) $< -o $(OBJDIR)$(DIR)$@
+
 
 include $(foreach module, $(MODS), $(module)$(DIR)mak$(DIR)Makefile)
 
@@ -99,7 +106,7 @@ splint :
 
 nm :
 	mkdir -p $(GENDIR)$(DIR)doc
-	nm $(BINDIR)$(DIR)$(PROJECT) -f sysv -l -S > $(GENDIR)$(DIR)doc$(DIR)nm.out
+	$(NM) $(BINDIR)$(DIR)$(PROJECT) -f sysv -l -S > $(GENDIR)$(DIR)doc$(DIR)nm.out
 
 help :
 	@echo ++++++++

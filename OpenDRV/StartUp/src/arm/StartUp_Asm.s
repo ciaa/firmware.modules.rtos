@@ -106,7 +106,7 @@ Reset_Handler:
 	/* Setup a stack for each mode - note that this only sets up a usable stack
    	for User mode.   Also each mode is setup with interrupts initially disabled. */
 
-	ldr   r0, =_stack_end
+	ldr   r0, = SEC_STACK_END
 	msr   CPSR_c, #MODE_UND|I_BIT|F_BIT    /* Undefined Instruction Mode  */
 	mov   sp, r0
 	sub   r0, r0, #UND_STACK_SIZE
@@ -126,9 +126,9 @@ Reset_Handler:
 	mov   sp, r0
 
 	/* copy .data section (Copy from ROM to RAM) */
-	ldr     R1, =_etext
-	ldr     R2, =_data
-	ldr     R3, =_edata
+	ldr     R1, = SEC_END_CODE
+	ldr     R2, = SEC_START_DATA_INIT
+	ldr     R3, = SEC_END_DATA_INIT
 1:
 	cmp     R2, R3
 	ldrlo   R0, [R1], #4
@@ -137,8 +137,8 @@ Reset_Handler:
 
 	/* Clear .bss section (Zero init)  */
 	mov     R0, #0
-	ldr     R1, =_bss_start
-   ldr     R2, =_bss_end
+	ldr     R1, = SEC_START_DATA
+   ldr     R2, = SEC_END_DATA
 2:
 	cmp     R1, R2
 	strlo   R0, [R1], #4
