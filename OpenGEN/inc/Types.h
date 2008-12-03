@@ -48,8 +48,18 @@
 #include "Types_Arch.h"
 
 /*==================[macros]=================================================*/
+#ifndef TYPES_NULL
+#define TYPES_NULL
+/** \brief NULL definition */
+#define NULL ((void *)0)
+#endif
 
 /*==================[typedef]================================================*/
+#ifndef TYPES_BOOL
+/** \brief bool type type definition */
+typedef unsigned char bool;
+#endif
+
 #ifndef TYPES_UINT8
 #define TYPES_UINT8
 /** \brief default usigned 8 bits integer type definition */
@@ -120,12 +130,6 @@ typedef unsigned int uint32f;
 #define TYPES_SINT32F
 /** \brief default signed 32 bits fast integer type definition */
 typedef signed int sint32f;
-#endif
-
-#ifndef TYPES_NULL
-#define TYPES_NULL
-/** \brief default NULL definition */
-#define NULL ((void *)0)
 #endif
 
 /*==================[external data declaration]==============================*/

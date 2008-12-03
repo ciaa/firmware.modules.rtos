@@ -317,7 +317,7 @@ typedef uint32 TaskResourcesType;
 
 typedef uint8* StackPtrType;
 
-typedef uint16_least StackSizeType;
+typedef uint16f StackSizeType;
 
 typedef void (* EntryPointType)(void);
 

@@ -73,7 +73,7 @@ void StartOs
 
 	/* \req OSEK_SYS_3.25.1 This system service shall starts the operating
 	 ** system */
-	uint8_least loopi;
+	uint8f loopi;
 
 	IntSecure_Start();
 

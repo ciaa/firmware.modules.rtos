@@ -35,7 +35,8 @@ SECTIONS
 
 	. = ALIGN(4);
 
-	SEC_DATA :
+	/* SEC_DATA : */
+	.bss :
 	{
 		SEC_START_DATA = .;
 		*(.bss)

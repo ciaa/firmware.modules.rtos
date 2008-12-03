@@ -148,8 +148,8 @@ TaskType GetNextTask
 	void
 )
 {
-	uint8_least loopi;
-	flag found = FALSE;
+	uint8f loopi;
+	bool found = FALSE;
 	TaskType ret = INVALID_TASK;
 
 	/* check in all ready lists */

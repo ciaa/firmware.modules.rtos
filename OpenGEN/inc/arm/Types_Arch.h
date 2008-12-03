@@ -47,8 +47,23 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+#ifndef TYPES_NULL
+#define TYPES_NULL
+/** \brief NULL definition */
+#define NULL ((void *)0)
+#else
+#error NULL defined before
+#endif
 
 /*==================[typedef]================================================*/
+#ifndef TYPES_BOOL
+#define TYPES_BOOL
+/** \brief bool type type definition */
+typedef unsigned char bool;
+#else
+#error bool defined before
+#endif
+
 #ifndef TYPES_UINT8
 #define TYPES_UINT8
 /** \brief usigned 8 bits integer type definition */
@@ -143,14 +158,6 @@ typedef unsigned int uint32f;
 typedef signed int sint32f;
 #else
 #error sint32 defined before
-#endif
-
-#ifndef TYPES_NULL
-#define TYPES_NULL
-/** \brief NULL definition */
-#define NULL ((void *)0)
-#else
-#error NULL defined before
 #endif
 
 /*==================[external data declaration]==============================*/
