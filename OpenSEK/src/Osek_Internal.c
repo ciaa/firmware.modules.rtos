@@ -53,14 +53,14 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-#define OpenSEK_START_SEC_VAR
+#define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
 
 TaskType RunningTask;
 
 ContextType ActualContext;
 
-#define OpenSEK_STOP_SEC_VAR
+#define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
 
 /*==================[internal functions definition]==========================*/

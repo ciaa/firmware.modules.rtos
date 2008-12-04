@@ -376,7 +376,7 @@ typedef AlarmBaseType* AlarmBaseRefType;
 typedef signed char InterruptCounterType;
 
 /*==================[external data declaration]==============================*/
-#define OpenSEK_START_SEC_VAR
+#define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
 
 /** \brief Suspend OS interrupts counter */
@@ -386,9 +386,9 @@ extern InterruptCounterType SuspendOSInterrupts_Counter ATTRIBUTES();
 extern InterruptCounterType DisableAllInterrupts_Counter ATTRIBUTES();
 
 /** \brief Suspend All interrupts counter */
-extern InterruptCounterType SuspendAllInterrupts_Counter;
+extern InterruptCounterType SuspendAllInterrupts_Counter ATTRIBUTES();
 
-#define OpenSEK_STOP_SEC_VAR
+#define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
 
 /*==================[external functions declaration]=========================*/
@@ -425,7 +425,7 @@ extern InterruptCounterType SuspendAllInterrupts_Counter;
  ** \return E_OS_LIMIT if to many task activations of TaskID
  ** \return E_OS_ID if the TaskID is invalid, only in extended mode.
  **/
-extern StatusType ActivateTask(TaskType TaskID);
+extern StatusType ActivateTask(TaskType TaskID) ATTRIBUTES();
 
 /** \brief Terminate the calling Task
  **
@@ -436,7 +436,7 @@ extern StatusType ActivateTask(TaskType TaskID);
  ** \return E_OS_RESOURCE if the Task still occupies resources
  ** \return E_OS_CALLEVEL if called at interrupt level
  **/
-extern StatusType TerminateTask(void);
+extern StatusType TerminateTask(void) ATTRIBUTES();
 
 /** \brief Terminate the calling Task and Activate the specified Task
  **
@@ -470,7 +470,7 @@ extern StatusType TerminateTask(void);
  ** \return E_OS_RESOURCE if the calling task still occupies resources
  ** \return E_OS_CALLEVEL if call at interrupt level
  **/
-extern StatusType ChainTask(TaskType TaskID);
+extern StatusType ChainTask(TaskType TaskID) ATTRIBUTES();
 
 /** \brief Schedule this Task if higher priority Task are Active
  **
@@ -481,7 +481,7 @@ extern StatusType ChainTask(TaskType TaskID);
  ** \return E_OS_CALLEVEL if call at interrupt level
  ** \return E_OS_RESOURCE if the calling task occupies resources
  **/
-extern StatusType Schedule(void);
+extern StatusType Schedule(void) ATTRIBUTES();
 
 /** \brief Get Task ID of the calling Task
  **
@@ -490,7 +490,7 @@ extern StatusType Schedule(void);
  ** \param[out] TaskID TaskID of the actual task
  ** \return E_OK always
  **/
-extern StatusType GetTaskID(TaskRefType TaskID);
+extern StatusType GetTaskID(TaskRefType TaskID) ATTRIBUTES();
 
 /** \brief Get the Task State of the specified Task
  **
@@ -501,7 +501,7 @@ extern StatusType GetTaskID(TaskRefType TaskID);
  ** \return E_OK if no errors
  ** \return E_OS_ID if the Task TaskID is invalid
  **/
-extern StatusType GetTaskState(TaskType TaskID, TaskStateRefType State);
+extern StatusType GetTaskState(TaskType TaskID, TaskStateRefType State) ATTRIBUTES();
 
 /** \brief Get a Resource
  **
@@ -515,7 +515,7 @@ extern StatusType GetTaskState(TaskType TaskID, TaskStateRefType State);
  **         by any task or ISR
  **
  **/
-extern StatusType GetResource(ResourceType ResID);
+extern StatusType GetResource(ResourceType ResID) ATTRIBUTES();
 
 /** \brief Release a Resource
  **
@@ -531,7 +531,7 @@ extern StatusType GetResource(ResourceType ResID);
  **         priority than the statically assigned priority of interrupt routine.
  **
  **/
-extern StatusType ReleaseResource(ResourceType ResID);
+extern StatusType ReleaseResource(ResourceType ResID) ATTRIBUTES();
 
 /** \brief Start the OpenSEK Operating System
  **
@@ -544,7 +544,7 @@ extern StatusType ReleaseResource(ResourceType ResID);
  ** \param[in] Mode Application Mode
  ** \return never
  **/
-extern void StartOs(AppModeType Mode);
+extern void StartOs(AppModeType Mode) ATTRIBUTES();
 
 /** \brief Set Event 
  **
@@ -554,7 +554,7 @@ extern void StartOs(AppModeType Mode);
  ** \param[in] TaskID TaskID of the task to set the Events
  ** \param[in] Mask Events to be set on the specified task
  **/
-extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
+extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask) ATTRIBUTES();
 
 /** \brief Clear Event
  **
@@ -577,7 +577,7 @@ extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
  ** \return E_OS_ACCESS if called from a basic task
  ** \return E_OS_CALLEVEL if called from a context other than a task
  **/
-extern StatusType ClearEvent(EventMaskType Mask);
+extern StatusType ClearEvent(EventMaskType Mask) ATTRIBUTES();
 
 /** \brief Get Event
  **
@@ -586,7 +586,7 @@ extern StatusType ClearEvent(EventMaskType Mask);
  ** \param[in] TaskID TaskID of the task to get the Events
  ** \param[in] Event reference to the Event status.
  **/
-extern StatusType GetEvent(TaskType TaskID, EventMaskRefType Event);
+extern StatusType GetEvent(TaskType TaskID, EventMaskRefType Event) ATTRIBUTES();
 
 /** \brief Wait Event
  **
@@ -595,7 +595,7 @@ extern StatusType GetEvent(TaskType TaskID, EventMaskRefType Event);
  **
  ** \param[in] Mask events to wait for
  **/
-extern StatusType WaitEvent(EventMaskType Mask);
+extern StatusType WaitEvent(EventMaskType Mask) ATTRIBUTES();
 
 /** \brief ShutdownOs
  **
@@ -603,13 +603,13 @@ extern StatusType WaitEvent(EventMaskType Mask);
  **
  ** \param[in] Error shutdown error
  **/
-extern void ShutdownOs(StatusType Error);
+extern void ShutdownOs(StatusType Error) ATTRIBUTES();
 
 /** \brief Get Active Application Mode
  **
  ** This API returns the Application Mode
  **/
-extern AppModeType GetActiveApplicationMode(void);
+extern AppModeType GetActiveApplicationMode(void) ATTRIBUTES();
 
 /** \brief Get Alarm Base
  **
@@ -620,7 +620,7 @@ extern AppModeType GetActiveApplicationMode(void);
  ** \param[in] AlarmID Alamar ID to be readed
  ** \param[out] Info Reference to an Alarm Base Type
  **/
-extern StatusType GetAlarmBase(AlarmType AlarmID, AlarmBaseRefType Info);
+extern StatusType GetAlarmBase(AlarmType AlarmID, AlarmBaseRefType Info) ATTRIBUTES();
 
 /** \brief Get Alarm
  **
@@ -630,7 +630,7 @@ extern StatusType GetAlarmBase(AlarmType AlarmID, AlarmBaseRefType Info);
  ** \param[in] AlarmID Alamar ID to be readed
  ** \param[out] Tick count of tick before alarm expires.
  **/
-extern StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick);
+extern StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick) ATTRIBUTES();
 
 /** \brief Set Relative Alarm
  **
@@ -641,7 +641,7 @@ extern StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick);
  ** \param[in] Increment 
  ** \param[in] Cycle
  **/
-extern StatusType SetRelAlarm(AlarmType AlarmID, TickType Increment, TickType Cycle);
+extern StatusType SetRelAlarm(AlarmType AlarmID, TickType Increment, TickType Cycle) ATTRIBUTES();
 
 /** \brief Set Absolute Alarm
  **
@@ -654,7 +654,7 @@ extern StatusType SetRelAlarm(AlarmType AlarmID, TickType Increment, TickType Cy
  ** \param[in] Start
  ** \param[in] Cycle
  **/
-extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle);
+extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle) ATTRIBUTES();
 
 /** \brief Cancel Alarm
  **
@@ -678,7 +678,7 @@ extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle)
  ** \return E_OS_ID if an invalid AlamrID is provided
  ** \return E_NO_FUNC if the alarm is not running
  **/
-extern StatusType CancelAlarm(AlarmType AlarmID);
+extern StatusType CancelAlarm(AlarmType AlarmID) ATTRIBUTES();
 
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"

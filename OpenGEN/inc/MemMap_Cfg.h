@@ -58,9 +58,9 @@
 
 #define MEMMAP_DISABLE		2
 
-#define MEMMAP_GEN_MEMMAP_ARCH	MEMMAP_ENABLE
+#define MEMMAP_GEN_MEMMAP_ARCH			MEMMAP_ENABLE
 
-#define MEMMAP_GEN_SECTION_ARCH	MEMMAP_ENABLE
+#define MEMMAP_GEN_SECTION_COMPILER		MEMMAP_ENABLE
 
 /*==================[typedef]================================================*/
 

@@ -17,8 +17,6 @@
  *
  */
 
-#ifndef _MEMMAP_SECTION_ARCH_H_
-#define _MEMMAP_SECTION_ARCH_H_
 /** \brief OpenSEK Posix Section Mapping Header File
  **
  ** \file arm/MemMap_Section_Arch.h
@@ -44,24 +42,28 @@
  */
 
 #ifdef START_SECTION_CODE
-	__attribute__ ((section ("SEC_CODE"));
+	#undef SEC_ACTUAL
+	#define SEC_ACTUAL "SEC_CODE"
 	#undef START_SECTION_CODE
 	#undef MEMMAP_ERROR
 #endif
 
 #ifdef STOP_SECTION_CODE
-	__attribute__ ((section ("SEC_INVALID"));
+	#undef SEC_ACTUAL
+	#define SEC_ACTUAL "SEC_INVALID"
 	#undef STOP_SECTION_CODE
 	#undef MEMMAP_ERROR
 #endif
 
-#ifdef START_SECTION_VAR
-   #undef START_SECTION_VAR
+#ifdef START_SECTION_DATA
+	#undef SEC_ACTUAL
+	#define SEC_ACTUAL "SEC_DATA"
+   #undef START_SECTION_DATA
    #undef MEMMAP_ERROR
 #endif
 
-#ifdef STOP_SECTION_VAR
-   #undef STOP_SECTION_VAR
+#ifdef STOP_SECTION_DATA
+   #undef STOP_SECTION_DATA
    #undef MEMMAP_ERROR
 #endif
 
@@ -69,5 +71,4 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MEMMAP_SECTION_ARCH_H_ */
 

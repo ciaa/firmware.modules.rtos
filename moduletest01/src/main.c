@@ -112,6 +112,9 @@ TS_ResultType mt_TaskAssert;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#define ModuleTest_START_SEC_CODE
+#include "MemMap.h"
+
 /** \brief main function
  **
  ** Project main function. This function is called after the c conformance
@@ -993,6 +996,9 @@ ALARMCALLBACK(AlarmCallback)
 {
 
 }
+
+#define ModuleTest_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

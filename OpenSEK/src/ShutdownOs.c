@@ -82,7 +82,7 @@ void ShutdownOs
 	while(1);
 }
 
-#define OpenSEK_STOP_SEC_COE
+#define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
 
 /** @} doxygen end group definition */

@@ -96,11 +96,13 @@
 	}
 
 /** \brief Save context */
-#define SaveContext(task) 		\
-	{									\
-		PreCallService();			\
-		/** TODO */					\
-		PostCallService();		\
+#define SaveContext(task) 											\
+	{																		\
+		PreCallService();												\
+		__asm__ __volatile__ (										\
+			"STMDB SP!, {R0}"											\
+		);																	\
+		PostCallService();											\
 	}
 
 /** \brief Set the entry point for a task */

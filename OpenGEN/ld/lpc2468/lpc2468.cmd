@@ -17,9 +17,10 @@ SECTIONS
 	_startup = .;
 /* : { StartUp_Asm.s(*) } > flash */
 
-	SEC_CODE :
+	CODE :
 	{
-		*(.text)
+		*(SEC_CODE)
+		/* *(.text) */
 		*(.rodata)
 		*(.glue_7)
 		*(.glue_7t)
@@ -40,6 +41,7 @@ SECTIONS
 	{
 		SEC_START_DATA = .;
 		*(.bss)
+		*(SEC_DATA)
 	} > ram
 	. = ALIGN(4);
 	SEC_END_DATA = . ;

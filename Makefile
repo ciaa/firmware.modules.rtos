@@ -69,15 +69,21 @@ DOC += nm sizedoc reqdoc doxygen
 # include modules make files
 
 %.o : %.c
+	@ echo
+	@ echo Compiling $<
 	$(CC) $(CFLAGS) $< -o $(OBJDIR)$(DIR)$@
 
 %.o : %.s
+	@ echo
+	@ echo Assembling $<
 	$(AS) $(AFLAGS) $< -o $(OBJDIR)$(DIR)$@
 
 
 include $(foreach module, $(MODS), $(module)$(DIR)mak$(DIR)Makefile)
 
 OpenSEK : $(OBJ) $(LIB)
+	@ echo
+	@ echo Linking $(BINDIR)$(DIR)$(BIN)
 	$(LD) $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN)
 #	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
 

@@ -17,8 +17,6 @@
  *
  */
 
-#ifndef _MEMMAP_ARCH_H_
-#define _MEMMAP_ARCH_H_
 /** \brief OpenSEK Posix Memory Mapping Header File
  **
  ** \file arm/MemMap_Arch.h
@@ -53,18 +51,17 @@
 	#undef OpenSEK_STOP_SEC_CODE
 #endif
 
-#ifdef OpenSEK_START_SEC_VAR
-	#define START_SECTION_VAR
-	#undef OpenSEK_START_SEC_VAR
+#ifdef OpenSEK_START_SEC_DATA
+	#define START_SECTION_DATA
+	#undef OpenSEK_START_SEC_DATA
 #endif
 
-#ifdef OpenSEK_STOP_SEC_VAR
-	#define STOP_SECTION_VAR
-	#undef OpenSEK_STOP_SEC_VAR
+#ifdef OpenSEK_STOP_SEC_DATA
+	#define STOP_SECTION_DATA
+	#undef OpenSEK_STOP_SEC_DATA
 #endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MEMMAP_ARCH_H_ */
 

@@ -17,8 +17,6 @@
  *
  */
 
-#ifndef _MEMMAP_H_
-#define _MEMMAP_H_
 /** \brief OpenSEK Memory Mapping Header File
  **
  ** \file MemMap.h
@@ -63,9 +61,9 @@
 /* include architecture dependent user section mapping */
 #include "MemMap_Section_Arch_Cfg.h"
 
-#if (MEMMAP_GEN_SECTION_ARCH == MEMMAP_ENABLE)
-/* include generic architecture dependent section mapping */
-#include "MemMap_Section_Arch.h"
+#if (MEMMAP_GEN_SECTION_COMPILER == MEMMAP_ENABLE)
+/* include compiler dependent section mapping */
+#include "MemMap_Section_Compiler.h"
 #endif
 
 /* if MEMMAP_ERROR is still defined a compiler error shall be generated */
@@ -76,5 +74,4 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MEMMAP_H_ */
 

@@ -26,8 +26,6 @@
  *
  */
 
-#ifndef _MEMMAP_ARCH_CFG_H_
-#define _MEMMAP_ARCH_CFG_H_
 /** \brief OpenSEK Architecture Configurated Memory Mapping Header File
  **
  ** \file MemMap_Arch_Cfg.h
@@ -65,5 +63,4 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MEMMAP_ARCH_CFG_H_ */
 

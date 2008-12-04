@@ -173,7 +173,7 @@
 typedef uint8 ContextType;
 
 /*==================[external data declaration]==============================*/
-#define OpenSEK_START_SEC_VAR
+#define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
 
 /** \brief ActualContext
@@ -185,7 +185,7 @@ extern ContextType ActualContext;
 /** \brief RunningTask variable */
 extern TaskType RunningTask;
 
-#define OpenSEK_STOP_SEC_VAR
+#define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
 
 /*==================[external functions declaration]=========================*/
