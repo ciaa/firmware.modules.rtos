@@ -50,15 +50,23 @@
  * v0.1.0 20081114 MaCe	initial version
  */
 
-/*==================[inclusions]=============================================*/
+<?php
 
-/*==================[macros]=================================================*/
+$mappings = $config->getList("/OpenGEN/MemMap","Mapping");
 
-/*==================[typedef]================================================*/
-
-/*==================[external data declaration]==============================*/
-
-/*==================[external functions declaration]=========================*/
+foreach ($mappings as $map)
+{
+	$name = $config->getValue("/OpenGEN/MemMap/" . $map, "NAME");
+	$mapping = $config->getValue("/OpenGEN/MemMap/" . $map, "MAPPING");
+	$section = $config->getValue("/OpenGEN/MemMap/" . $map, "SECTION");
+	print "/* Mapping of $name */\n";
+	print "#ifdef $mapping\n";
+	print "	#define $section\n";
+	print "	#undef $mapping\n";
+	print "#endif\n\n";
+}
+	
+?>
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

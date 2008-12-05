@@ -12,7 +12,8 @@ LFLAGS +=
 
 OpenGEN_OBJ +=
 
-GENFILES += OpenGEN$(DIR)gen$(DIR)mak$(DIR)Make_OpenGEN.mak.php
+GENFILES += OpenGEN$(DIR)gen$(DIR)mak$(DIR)Make_OpenGEN.mak.php		\
+				OpenGEN$(DIR)gen$(DIR)inc$(DIR)MemMap_Arch_Cfg.h.php
 
 VPATH += OpenGEN$(DIR)src	\
 			OpenGEN$(DIR)src$(DIR)$(ARCH)

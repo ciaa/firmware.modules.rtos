@@ -42,7 +42,8 @@
  */  
 
 /*==================[inclusions]=============================================*/
-#include "TS_Cfg.h"	/* include configuration */
+#include "Types.h"		/* include types */
+#include "TS_Cfg.h"		/* include configuration */
 #include "TS_Arch.h"
 
 /*==================[macros]=================================================*/

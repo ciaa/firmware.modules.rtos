@@ -41,6 +41,7 @@
  * v0.1.0 20081116 MaCe	initial version
  */
 
+/*==================[Start OpenSEK OS Mapping]===============================*/
 #ifdef OpenSEK_START_SEC_CODE
 	#define START_SECTION_CODE
 	#undef OpenSEK_START_SEC_CODE
@@ -60,6 +61,31 @@
 	#define STOP_SECTION_DATA
 	#undef OpenSEK_STOP_SEC_DATA
 #endif
+
+/*==================[Stop OpenSEK OS Mapping]===============================*/
+
+/*==================[Start TestSuite Mapping]===============================*/
+#ifdef TestSuite_START_SEC_CODE
+	#define START_SECTION_CODE
+	#undef TestSuite_START_SEC_CODE
+#endif
+
+#ifdef TestSuite_STOP_SEC_CODE
+   #define STOP_SECTION_CODE
+   #undef TestSuite_STOP_SEC_CODE
+#endif
+
+#ifdef TestSuite_START_SEC_DATA
+   #define START_SECTION_DATA
+   #undef TestSuite_START_SEC_DATA
+#endif
+
+#ifdef TestSuite_STOP_SEC_DATA
+   #define STOP_SECTION_DATA
+   #undef TestSuite_STOP_SEC_DATA
+#endif
+
+/*==================[Stop TestSuite Mapping]=================================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

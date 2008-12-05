@@ -48,7 +48,7 @@
 /*==================[inclusions]=============================================*/ 
 
 /*==================[macros]=================================================*/
-#define SEC_ACTUAL ".text"
+#define SEC_ACTUAL "SEC_INVALID"
 #define ATTRIBUTES(attr) __attribute__ ((section(SEC_ACTUAL)))
 
 /*==================[typedef]================================================*/

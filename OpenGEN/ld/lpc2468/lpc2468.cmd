@@ -17,6 +17,11 @@ SECTIONS
 	_startup = .;
 /* : { StartUp_Asm.s(*) } > flash */
 
+	CODE_OTHER :
+	{
+		*(.text)
+	} > flash
+
 	CODE :
 	{
 		*(SEC_CODE)

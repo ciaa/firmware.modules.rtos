@@ -48,47 +48,9 @@
 #include "os.h"
 #include "TestSuite.h"
 #include "stdio.h"
+#include "main.h"
 
 /*==================[macros and definitions]=================================*/
-#define INVALID_TASK	0xFF
-
-#define INVALID_RESOURCE 0xFF
-
-#define INVALID_ALARM 0xFF
-
-#define mt_GetMark() (mt_StateCounter)
-
-#define mt_SetMark(mark)																	\
-	{																								\
-		if ( (mark) == 0 )																	\
-		{																							\
-			mt_StateCounter = 0;																\
-		}																							\
-		else if ( (mt_StateCounter+1) == (mark) )										\
-		{																							\
-			mt_StateCounter++;																\
-		}																							\
-		else																						\
-		{																							\
-		}																							\
-	}
-
-#define mt_SetTaskAssert(state) (mt_TaskAssert = (state) )
-
-#define mt_GetTaskAssert()	(mt_TaskAssert)
-
-#define TASKASSERT(cond)																										\
-   {                                                                                                  \
-      if (cond)                                                                                       \
-      {                                                                                               \
-         ASSERT_ARCH();																											\
-         mt_TaskAssert = TS_FAILED;                                                                   \
-      }                                                                                               \
-   }
-
-#define mt_SetTestCase(testcase)	(mt_TestCase = (testcase))
-
-#define mt_GetTestCase() (mt_TestCase)
 
 /*==================[internal data declaration]==============================*/
 
@@ -97,31 +59,30 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-unsigned int mt_ErrorHook_Counter;
-unsigned int mt_ErrorHook_Api;
-unsigned int mt_ErrorHook_Param1;
-unsigned int mt_ErrorHook_Param2;
-unsigned int mt_ErrorHook_Param3;
-unsigned int mt_ErrorHook_Ret;
+#define TestSuite_START_SEC_DATA
+#include "MemMap.h"
 
-unsigned int mt_TestCase;
-unsigned int mt_StateCounter;
+unsigned int mt_ErrorHook_Counter ATTRIBUTES();
+unsigned int mt_ErrorHook_Api ATTRIBUTES();
+unsigned int mt_ErrorHook_Param1 ATTRIBUTES();
+unsigned int mt_ErrorHook_Param2 ATTRIBUTES();
+unsigned int mt_ErrorHook_Param3 ATTRIBUTES();
+unsigned int mt_ErrorHook_Ret ATTRIBUTES();
 
-TS_ResultType mt_TaskAssert;
+unsigned int mt_TestCase ATTRIBUTES();
+unsigned int mt_StateCounter ATTRIBUTES();
+
+TS_ResultType mt_TaskAssert ATTRIBUTES();
+
+#define TestSuite_STOP_SEC_DATA
+#include "MemMap.h"
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#define ModuleTest_START_SEC_CODE
+#define TestSuite_START_SEC_CODE
 #include "MemMap.h"
 
-/** \brief main function
- **
- ** Project main function. This function is called after the c conformance
- ** initialisation. This function shall call the StartOs in the right
- ** Application Mode. The StartOs API shall never return.
- **
- **/
 int main
 (
 	void
@@ -814,6 +775,12 @@ TEST(OS_0023)
 	return TS_OK;
 }
 
+#define TestSuite_STOP_SEC_CODE
+#include "MemMap.h"
+
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
+
 ISR(CanRx)
 {
 }
@@ -997,7 +964,7 @@ ALARMCALLBACK(AlarmCallback)
 
 }
 
-#define ModuleTest_STOP_SEC_CODE
+#define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
 
 /** @} doxygen end group definition */

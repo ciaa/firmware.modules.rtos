@@ -69,6 +69,9 @@ typedef unsigned char TS_ResultType;
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+#define TestSuite_START_SEC_CODE
+#include "MemMap.h"
+
 <?php
 $testnames = $config->getList("/TESTSUITE","*");
 
@@ -79,9 +82,12 @@ foreach ($testnames as $name)
 	print " **\n";
 	print " ** $desc\n";
 	print " **/\n";
-	print "TS_ResultType TEST_$name(void);\n\n";
+	print "TS_ResultType TEST_$name(void)  ATTRIBUTES();\n\n";
 }
 ?>
+
+#define TestSuite_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
