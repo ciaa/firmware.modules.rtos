@@ -54,6 +54,9 @@ TS_ResultType TS_TestResults[(TS_TESTS_COUNT)/4];
 TS_ChecksumType TS_Checksum;
 
 /*==================[external functions declaration]=========================*/
+#define TestSuite_START_SEC_CODE
+#include "MemMap.h"
+
 void TS_PrintResult(unsigned int tc, unsigned char result)
 {
 	TS_PrintResult_Arch(tc, result);
@@ -78,6 +81,9 @@ TS_ResultType TS_GetTestResult(TS_TestIDType TestID)
 {
 	return ( (TS_TestResults[(TestID/sizeof(TS_TestResults))] >> (TestID % 4) ) & 0x3);
 }
+
+#define TestSuite_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -430,6 +430,9 @@ uint8 ErrorHookRunning;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
+
 <?php
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
@@ -449,6 +452,9 @@ foreach ($intnames as $int)
 	
 }
 ?>
+
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

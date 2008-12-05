@@ -531,6 +531,9 @@ print "extern const CounterConstType CountersConst[" . count($counters) . "];\n"
 
 ?>
 /*==================[external functions declaration]=========================*/
+#define OpenSEK_START_SEC_CODE
+#include "MemMap.h"
+
 <?php
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
@@ -542,11 +545,14 @@ foreach ($intnames as $int)
    {
       print "/** \\brief Interrupt Cat 2 $int\n";
       print " **/\n";
-      print "extern void OSEK_ISR2_$int(void);\n";
+      print "extern void OSEK_ISR2_$int(void) ATTRIBUTES();\n";
    }
 
 }
 ?>
+
+#define OpenSEK_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

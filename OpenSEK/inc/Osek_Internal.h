@@ -196,7 +196,7 @@ extern TaskType RunningTask;
  **
  ** This function is called from the StartOs function
  **/
-extern void StartOs_Arch(void);
+extern void StartOs_Arch(void) ATTRIBUTES();
 
 /** \brief Get Next Task
  **
@@ -205,7 +205,7 @@ extern void StartOs_Arch(void);
  **
  ** \return next task to be executed
  **/
-extern TaskType GetNextTask(void);
+extern TaskType GetNextTask(void) ATTRIBUTES();
 
 /** \brief Remove Task of the Ready List
  **
@@ -215,7 +215,7 @@ extern TaskType GetNextTask(void);
  **
  ** \param[in] TaskID TaskID
  **/
-void RemoveTask(TaskType TaskID);
+void RemoveTask(TaskType TaskID) ATTRIBUTES();
 
 /** \brief Add Task to the scheduler list
  **
@@ -224,13 +224,13 @@ void RemoveTask(TaskType TaskID);
  **
  ** \param[in] TaskID task to be add to the ready list
  **/
-extern void AddReady(TaskType TaskID);
+extern void AddReady(TaskType TaskID) ATTRIBUTES();
 
 /** \brief No Handled Interrupt Handler
  **
  ** This is an interrupt handler used for all not handled interrupts.
  **/ 
-extern void OSEK_ISR_NoHandler(void);
+extern void OSEK_ISR_NoHandler(void) ATTRIBUTES();
 
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"

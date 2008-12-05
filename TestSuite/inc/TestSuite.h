@@ -83,15 +83,21 @@ extern TS_ResultType TS_TestResults[(TS_TESTS_COUNT)/4];
 extern TS_ChecksumType TS_Checksum;
 
 /*==================[external functions declaration]=========================*/
+#define TestSuite_START_SEC_CODE
+#include "MemMap.h"
+
 /** \brief TS_RunTestSuite
  **
  ** This api runs the test suite
  **/
-extern void TS_RunTestSuite(void);
+extern void TS_RunTestSuite(void) ATTRIBUTES();
 
-extern TS_ResultType TS_GetTestResult(TS_TestIDType TestID);
+extern TS_ResultType TS_GetTestResult(TS_TestIDType TestID) ATTRIBUTES();
 
-extern void TS_PrintResult(unsigned int tc, unsigned char result);
+extern void TS_PrintResult(unsigned int tc, unsigned char result) ATTRIBUTES();
+
+#define TestSuite_STOP_SEC_CODE
+#include "MemMap.h"
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
