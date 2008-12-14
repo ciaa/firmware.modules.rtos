@@ -44,6 +44,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.2 20081214 Asnoka Fix mistaken comments for SetRelAlarm
  * v0.1.1 20081113 KLi  Added memory layout attribute macros
  * v0.1.0 20080713 MaCe	initial version
  */
@@ -634,8 +635,10 @@ extern StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick) ATTRIBUTES();
 
 /** \brief Set Relative Alarm
  **
- ** The system service GetAlarm shall return the relative value in ticks before the
- ** alarm AlarmID expires.
+ ** The system service occupies the alarm <AlarmID> element.
+ ** After <increment> ticks have elapsed, the task assigned to the
+ ** alarm <AlarmID> is activated or the assigned event (only for
+ ** extended tasks) is set or the alarm-callback routine is called.
  **
  ** \param[in] AlarmID Alamar ID to be readed
  ** \param[in] Increment 
