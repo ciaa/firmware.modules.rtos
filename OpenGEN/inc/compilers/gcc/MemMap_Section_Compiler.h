@@ -67,7 +67,6 @@
    #undef MEMMAP_ERROR
 #endif
 
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

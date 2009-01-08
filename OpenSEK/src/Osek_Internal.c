@@ -56,9 +56,9 @@
 #define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
 
-TaskType RunningTask;
-
-ContextType ActualContext;
+TaskType RunningTask ATTRIBUTES();
+ 
+ContextType ActualContext ATTRIBUTES();
 
 #define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
