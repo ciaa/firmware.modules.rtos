@@ -28,11 +28,14 @@ COMPILER = gcc
 # moduletest01		Module tests for all modules
 #
 
-MODS +=	OpenGEN			\
-			TestSuite		\
-			OpenSEK			\
-			OpenDRV			\
-			moduletest01
+MODS +=	armexample		\
+			OpenGEN
+
+#			OpenGEN			\
+#			TestSuite		\
+#			OpenSEK			\
+#			OpenDRV			\
+#			example01
 
 all: OpenSEK
 
@@ -50,14 +53,6 @@ GENDIR = out$(DIR)gen
 
 PROJECT = OpenSEK
 BIN = $(PROJECT)
-
-#TODO this has to be automatic depending in the COMPILER variable
-CC = arm-gcc
-LD = arm-ld
-AR = arm-ar
-AS = arm-as
-#CC = gcc
-#LD = gcc
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
 CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
