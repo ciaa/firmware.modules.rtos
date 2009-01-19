@@ -2,8 +2,10 @@
 
 LIB += OpenDRV_StartUp.a
 
-VPATH += OpenDRV$(DIR)StartUp$(DIR)src					\
-			OpenDRV$(DIR)StartUp$(DIR)src$(DIR)$(ARCH)
+VPATH += OpenDRV$(DIR)StartUp$(DIR)src						\
+			OpenDRV$(DIR)StartUp$(DIR)src$(DIR)$(ARCH)	\
+			OpenDRV$(DIR)StartUp$(DIR)asm						\
+			OpenDRV$(DIR)StartUp$(DIR)asm$(DIR)$(ARCH)
 
 
 OpenDRV_StartUp.a : $(OPENDRV_STARTUP_OBJ)
