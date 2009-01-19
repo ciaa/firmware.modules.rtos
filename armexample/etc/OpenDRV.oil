@@ -1,0 +1,12 @@
+OpenDRV OpenDRV {
+
+	DRIVER GenConfig {
+		StartUp = ENABLE;
+		Clk = DISABLE;
+		Io = DISABLE;
+		Eth = DISABLE;
+	};
+
+	DRIVER StartUp {
+	};
+};

@@ -1,15 +1,14 @@
 ###############################################################################
 # add library
 #
-OBJ += 	crt.o 	\
-			main.o	\
+OBJ +=	main.o
 
 VPATH += armexample$(DIR)src \
 			armexample$(DIR)asm
 
 INCLUDE += -Iarmexample$(DIR)inc
 
-CFGFILES +=
+CFGFILES += armexample$(DIR)etc$(DIR)OpenDRV.oil
 
 CLEAN += armexampleclean
 
