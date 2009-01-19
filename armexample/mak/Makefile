@@ -1,8 +1,8 @@
 ###############################################################################
 # add library
 #
-OBJ += 	main.o	\
-			crt.o
+OBJ += 	crt.o 	\
+			main.o	\
 
 VPATH += armexample$(DIR)src \
 			armexample$(DIR)asm

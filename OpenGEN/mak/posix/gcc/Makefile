@@ -28,3 +28,5 @@ LD = ld
 AR = ar
 AS = as
 GDB = gdb
+# compiler options for posix with GCC Compiler #
+CFLAGS += -c -Wall -ggdb3 

@@ -55,8 +55,8 @@ PROJECT = OpenSEK
 BIN = $(PROJECT)
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
-CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
-LFLAGS = $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
+CFLAGS += $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
+LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
 
 DOC += nm sizedoc reqdoc doxygen
 
@@ -83,6 +83,9 @@ OpenSEK : $(OBJ) $(LIB)
 #	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
 
 generate : $(GEN)
+
+debug : $(DEBUG)
+	$(GDB) $(GDBO) $(BINDIR)$(DIR)$(BIN)
 
 clean : $(CLEAN)
 	rm -rf $(BINDIR)$(DIR)*
