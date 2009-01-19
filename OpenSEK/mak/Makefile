@@ -5,7 +5,7 @@
 
 LIB += OpenSEK.a
 
-GEN += genosek
+GEN += 
 
 LFLAGS +=
 
@@ -67,8 +67,3 @@ SPLINT +=	OpenSEK$(DIR)src$(DIR)*.c \
 				OpenSEK$(DIR)src$(DIR)$(ARCH)*.c \
 				OpenSEK$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)$(DIR)*.c
 
-genosek:
-	mkdir -p $(GENDIR)$(DIR)inc$(DIR)$(ARCH)
-	mkdir -p $(GENDIR)$(DIR)src$(DIR)$(ARCH)
-	mkdir -p $(GENDIR)$(DIR)mak$(DIR)$(ARCH)
-	php OpenSEK$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	

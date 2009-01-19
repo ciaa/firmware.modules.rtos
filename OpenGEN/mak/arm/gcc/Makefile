@@ -21,11 +21,22 @@
 
 ###############################################################################
 # includes
--include OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)Makefile
 
-###############################################################################
+##############################################################################
 # definitions
-#OpenGEN_OBJ += start.o
 
-LINKSCRIPT = -TOpenGEN$(DIR)ld$(DIR)$(ARCH)$(DIR)lpc2468$(DIR)lpc_e2468.cmd
-#-TOpenGEN$(DIR)ld$(DIR)lpc2468$(DIR)lpc2468.cmd
+# GCC ARM tools chains #
+CC = arm-gcc
+LD = arm-ld
+AR = arm-ar
+AS = arm-as
+GDB = arm-gdb
+
+# debug options #
+GDBO += -x OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
+
+# compiler options for ARM with GCC Compiler #
+#CFLAGS += -c -Wall
+CFLAGS += -c -fno-common -O0 -g
+
+AFLAGS += -mapcs-32
