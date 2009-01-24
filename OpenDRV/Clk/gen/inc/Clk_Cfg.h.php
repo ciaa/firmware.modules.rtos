@@ -1,3 +1,7 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
 /* Copyright 2008, Mariano Cerdeiro
  *
  * This file is part of OpenSEK.
@@ -17,18 +21,24 @@
  *
  */
 
-#ifndef _CLK_H_
-#define _CLK_H_
-/** \brief OpenDRV Clock Header File
+<?php
+/** \brief OpenDRV File to be Generated
  **
- ** This file shall be included by all files using any OpenDRV Clock API.
+ ** \file Clk_Cfg.h.php
+ **/
+?>
+
+#ifndef _CLK_CFG_H_
+#define _CLK_CFG_H_
+/** \brief OpenDRV Clock Generated Configuration Header File
  **
- ** \file clk.h
+ ** This file contents the generated configuration of the Clock Driver
  **
+ ** \file Clk_Cfg.h
  **/
 
 /** \addtogroup OpenDRV
- ** @{ */
+ ** @{ */ 
 /** \addtogroup OpenDRV_Clk
  ** \ingroup OpenDRV
  ** @{ */
@@ -42,36 +52,21 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081126 MaCe	initial version
- */
+ * v0.1.0 20090124 MaCe	initial version
+ */  
 
 /*==================[inclusions]=============================================*/
-#include "Types.h"
-#include "Clk_Cfg.h"
-#include "Clk_Arch.h"
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
-typedef uint8 Clk_ReturnType;
-
-typedef struct {
-	Clk_ConfigArchType Clk_Arch;
-} Clk_ConfigType;
-
-typedef Clk_ConfigType* Clk_ConfigRefType;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-extern Clk_ReturnType Clk_Init(Clk_ConfigRefType config);
-
-extern Clk_RetunrType Clk_ReInit(Clk_ConfigRefType config);
-
-extern Clk_ReturnType Clk_DeInit();
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CLK_H_ */
+#endif /* #ifndef _CLK_CFG_H_ */
 
