@@ -20,7 +20,7 @@
  *
  ****************************************************************************/
  
-#include "lpc2468_registers.h"
+#include "lpc2468.h"
 
 #define	STAT1	0x01
 #define	STAT2	0x02
