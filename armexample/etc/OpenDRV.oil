@@ -2,7 +2,7 @@ OpenDRV OpenDRV {
 
 	DRIVER GenConfig {
 		StartUp = ENABLE;
-		Clk = DISABLE;
+		Clk = ENABLE;
 		Io = DISABLE;
 		Eth = DISABLE;
 	};
