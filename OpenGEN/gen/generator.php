@@ -263,7 +263,12 @@ foreach ($genfiles as $file)
 	$outfile = $file;
 	$outfile = substr($outfile, 0, strlen($outfile)-4);
 	//print "info aca: pos: ". strpos($outile, "a",1);
-	$outfile = substr($outfile, strpos($outfile, "/", strpos($outfile, "/",1)+1));
+	#while(strpos($outfile,"gen")!==FALSE)
+	{
+		#print "si: $outfile - ";
+		$outfile = substr($outfile, strpos($outfile, "gen")+3);
+		#print "$outfile\n";
+	}
    $outfile = $outputdir[0] . $outfile;
 	info("generating ". $file . " to " . $outfile);
 	global $ob_file;

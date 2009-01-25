@@ -43,7 +43,8 @@ VPATH += OpenGEN$(DIR)src	\
 INCLUDE +=	-IOpenGEN$(DIR)inc													\
 				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)									\
 				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)			\
-				-IOpenGEN$(DIR)inc$(DIR)compilers$(DIR)$(COMPILER)
+				-IOpenGEN$(DIR)inc$(DIR)compilers$(DIR)$(COMPILER)			\
+				-I$(GENDIR)$(DIR)inc
 
 SPLINT +=
 
@@ -57,3 +58,4 @@ OpenGENgen:
 	mkdir -p $(GENDIR)$(DIR)src$(DIR)$(ARCH)
 	mkdir -p $(GENDIR)$(DIR)mak$(DIR)$(ARCH)
 	php OpenGEN$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	
+
