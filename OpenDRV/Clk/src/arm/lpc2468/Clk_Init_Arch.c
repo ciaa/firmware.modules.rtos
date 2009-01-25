@@ -47,6 +47,7 @@
  */
 
 /*==================[inclusions]=============================================*/
+#include "lpc2468.h"
 #include "Clk_Internal.h"
 
 /*==================[macros and definitions]=================================*/
@@ -66,8 +67,9 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#define OpenDRV_CLK_START_SEC_CODE
-#include "MemMap.h"
+/** TODO */
+/* #define OpenDRV_CLK_START_SEC_CODE
+ * #include "MemMap.h" */
 
 Clk_ReturnType Clk_Init_Arch
 (
@@ -88,7 +90,7 @@ Clk_ReturnType Clk_Init_Arch
 	PLLCON = 0;				/* Disable PLL, disconnected */
 	PLLFEED = 0xaa;
 	PLLFEED = 0x55;
-    
+
 	SCS |= 0x20;			/* Enable main OSC */
 	while( !(SCS & 0x40) );	/* Wait until main OSC is usable */
 
@@ -97,7 +99,7 @@ Clk_ReturnType Clk_Init_Arch
 	PLLCFG = PLL_MValue | (PLL_NValue << 16);
 	PLLFEED = 0xaa;
 	PLLFEED = 0x55;
-      
+
 	PLLCON = 1;				/* Enable PLL, disconnected */
 	PLLFEED = 0xaa;
 	PLLFEED = 0x55;
@@ -105,7 +107,7 @@ Clk_ReturnType Clk_Init_Arch
 	CCLKCFG = CCLKDivValue;	/* Set clock divider */
 
 	while ( ((PLLSTAT & (1 << 26)) == 0) );	/* Check lock bit status */
-    
+
 	MValue = PLLSTAT & 0x00007FFF;
 	NValue = (PLLSTAT & 0x00FF0000) >> 16;
 	while ((MValue != PLL_MValue) && ( NValue != PLL_NValue) );
@@ -116,8 +118,9 @@ Clk_ReturnType Clk_Init_Arch
 	while ( ((PLLSTAT & (1 << 25)) == 0) );	/* Check connect bit status */
 }
 
-#define OpenDRV_CLK_STOP_SEC_CODE
-#include "MemMap.h"
+/** TODO */
+/* #define OpenDRV_CLK_STOP_SEC_CODE
+ * #include "MemMap.h" */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

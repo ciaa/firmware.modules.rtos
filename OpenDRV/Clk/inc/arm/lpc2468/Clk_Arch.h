@@ -17,11 +17,13 @@
  *
  */
 
-/** \brief OpenDRV Clk Init implementation file
+#ifndef _CLK_ARCH_H_
+#define _CLK_ARCH_H_
+/** \brief Clk Arch Header File
  **
- ** This file implements the Clk_Init API
+ ** Clk Arch Header File
  **
- ** \file Clk_Init.c
+ ** \file Clk_Arch.h
  **
  **/
 
@@ -30,52 +32,40 @@
 /** \addtogroup OpenDRV_Clk
  ** \ingroup OpenDRV
  ** @{ */
+/** \addtogroup OpenDRV_CLk_Internal
+ ** \ingroup OpenDRV_Clk
+ ** @{ */
+
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
+ * MaCe			 Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090124 v0.1.0 MaCe       - initial version
- */
+ * v0.1.0 20090125 MaCe	initial version
+ */  
 
-/*==================[inclusions]=============================================*/
-#include "Clk_Internal.h"
+/*==================[inclusions]=============================================*/ 
+#include "clk.h"
 
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
+typedef struct {
+	uint8 Config;
+} Clk_ConfigArchType;
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[external data definition]===============================*/
-
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-/** TODO */
-/* #define OpenDRV_CLK_START_SEC_CODE
- * #include "MemMap.h" */
-
-Clk_ReturnType Clk_Init
-(
-	Clk_ConfigRefType config
-)
-{
-	Clk_Init_Arch(config);
-}
-
-/** TODO */
-/* #define OpenDRV_CLK_STOP_SEC_CODE
- * #include "MemMap.h" */
-
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _CLK_ARCH_H_ */
 

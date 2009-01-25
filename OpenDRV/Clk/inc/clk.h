@@ -66,7 +66,7 @@ typedef Clk_ConfigType* Clk_ConfigRefType;
 /*==================[external functions declaration]=========================*/
 extern Clk_ReturnType Clk_Init(Clk_ConfigRefType config);
 
-extern Clk_RetunrType Clk_ReInit(Clk_ConfigRefType config);
+extern Clk_ReturnType Clk_ReInit(Clk_ConfigRefType config);
 
 extern Clk_ReturnType Clk_DeInit();
 

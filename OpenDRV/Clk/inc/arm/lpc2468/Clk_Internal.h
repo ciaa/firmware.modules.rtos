@@ -59,13 +59,15 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-#define OpenDRV_CLK_START_SEC_CODE
-#include "MemMap.h"
+/** TODO */
+/* #define OpenDRV_CLK_START_SEC_CODE
+ * #include "MemMap.h" */
 
-extern Clk_ReturnType Clk_Init_Arch(Clk_ConfigRefType config) ATTRIBUTE();
+extern Clk_ReturnType Clk_Init_Arch(Clk_ConfigRefType config);
 
-#define OpenDRV_CLK_STOP_SEC_CODE
-#include "MemMap.h"
+/** TODO */
+/* #define OpenDRV_CLK_STOP_SEC_CODE
+ * #include "MemMap.h" */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
