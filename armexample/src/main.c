@@ -35,7 +35,6 @@
 #define	FALSE	0
 
 void SetLed(int led, int state);
-void InitLeds(void);
 
 void InitPLL(void);
 void feed(void);
@@ -58,20 +57,20 @@ int But2Pressed(void)
 	else return TRUE;
 }
 
-void Delay(void)
+/* void Delay(void)
 {
 	int j;
 	for (j = 0; j < 10000; j++ );
-}
+} */
 
 /* return TRUE if the RTC is OK */
-int TestRTC(void)
+/* int TestRTC(void)
 {
 	int timeout = 1000000;
 	RTC_CCR = 0;
 	RTC_SEC = 0x00;
-	RTC_CCR = 1<<1; /* clear the counter */
-	RTC_CCR = 1<<0 | 1<<4; /* enable the clock using the external xtal */
+	RTC_CCR = 1<<1; clear the counter
+	RTC_CCR = 1<<0 | 1<<4; enable the clock using the external xtal
 	
 	while (timeout--);
 	timeout = RTC_CTC;
@@ -79,19 +78,16 @@ int TestRTC(void)
 	if ((1550 < timeout) & (timeout < 1600)) return TRUE;
 	
 	return FALSE;
-}
+} */
 
 int	main (void) {
 	
 	int	j;										// loop counter (stack variable)
 
 	Clk_Init((Clk_ConfigRefType)NULL);
+	Io_Init((Io_ConfigRefType)NULL);
 	
-	SCS |= 1<<0; /* enable fast IO on ports 0&1 */
-	
-	InitLeds();
-	
-	SetLed(STAT1, LED_OFF);
+	/* SetLed(STAT1, LED_OFF);
 	if (TestRTC() == TRUE) 
 	{
 		SetLed(STAT2, LED_OFF);
@@ -100,9 +96,9 @@ int	main (void) {
 	else 
 	{
 		SetLed(STAT2, LED_ON);
-	}
+	} */
 		
-	for (j = 0; j < 200000; j++);
+	/* for (j = 0; j < 200000; j++); */
 	
 	// endless loop to toggle the green led
 	while (1) {
@@ -171,18 +167,7 @@ void SetLed(int led, int state)
 				break;
 		}
 	}
-}
-
-void InitLeds(void)
-{
-	SetLed(STAT1, LED_OFF);
-	SetLed(STAT2, LED_OFF);
-	
-	FIO4DIR |= 1<<17; /* STAT1&2 as out */
-	FIO4DIR |= 1<<16; 
-}
-
-
+}
 /*  Stubs for various interrupts (may be replaced later)  */
 /*  ----------------------------------------------------  */
 
