@@ -72,7 +72,13 @@ Io_ReturnType Io_Init_Arch
 	Io_ConfigRefType config
 )
 {
+	SCS |= 1<<0; /* enable fast IO on ports 0&1 */
 
+	FIO4SET |= 1<<17;
+	FIO4SET |= 1<<16;
+
+	FIO4DIR |= 1<<17; /* STAT1&2 as out */
+	FIO4DIR |= 1<<16;
 }
 
 /** TODO */
