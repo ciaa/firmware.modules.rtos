@@ -46,7 +46,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Gen_Types.h"
+#include "Types.h"
 #include "Io_Cfg.h"
 #include "Io_Arch.h"
 
@@ -160,7 +160,7 @@ extern Io_ReturnType Io_Init(const Io_ConfigRefType config);
  ** \return IO_E_PARAM if the configuration is invalid
  ** \return IO_E_NOTOK if other error occurs
  **/
-extern Io_RetunrType Io_ReInit(const Io_ConfigRefType config);
+extern Io_ReturnType Io_ReInit(const Io_ConfigRefType config);
 
 /** \brief IO driver de-init service
  **
