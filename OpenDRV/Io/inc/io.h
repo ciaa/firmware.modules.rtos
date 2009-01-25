@@ -17,13 +17,13 @@
  *
  */
 
-#ifndef _IO_INTERNAL_H_
-#define _IO_INTERNAL_H_
-/** \brief Io Internal Header File
+#ifndef _IO_H_
+#define _IO_H_
+/** \brief Io Header File
  **
- ** Io Internal Header File
+ ** Io Header File
  **
- ** \file Io_Internal.h
+ ** \file io.h
  **
  **/
 
@@ -32,10 +32,6 @@
 /** \addtogroup OpenDRV_Io
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Io_Internal
- ** \ingroup OpenDRV_Io
- ** @{ */
-
 
 /*
  * Initials     Name
@@ -50,11 +46,20 @@
  */  
 
 /*==================[inclusions]=============================================*/
-#include "io.h"
+#include "Types.h"
+#include "Io_Arch.h"
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
+typedef uint8f Io_ReturnType;
+
+typedef struct {
+   Io_ConfigArchType Io_Arch;
+} Io_ConfigType;
+
+typedef Io_ConfigType* Io_ConfigRefType;
+
 
 /*==================[external data declaration]==============================*/
 
@@ -62,6 +67,8 @@
 /** TODO */
 /* #define OpenDRV_IO_START_SEC_CODE
  * #include "MemMap.h" */
+
+Io_ReturnType Io_Init(Io_ConfigRefType config);
 
 /** TODO */
 /* #define OpenDRV_IO_STOP_SEC_CODE
@@ -71,5 +78,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _IO_INTERNAL_H_ */
+#endif /* #ifndef _IO_H_ */
 
