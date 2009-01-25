@@ -22,6 +22,7 @@
  
 #include "lpc2468.h"
 #include "clk.h"
+#include "io.h"
 
 #define	STAT1	0x01
 #define	STAT2	0x02
