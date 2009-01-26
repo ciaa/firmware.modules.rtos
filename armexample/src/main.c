@@ -21,6 +21,7 @@
  ****************************************************************************/
  
 #include "lpc2468.h"
+#include "os.h"
 #include "clk.h"
 #include "io.h"
 
@@ -101,6 +102,8 @@ int	main (void) {
 	/* for (j = 0; j < 200000; j++); */
 	
 	// endless loop to toggle the green led
+	StartOs(AppMode1);
+
 	while (1) {
 		
 		for (j = 0; j < 5000; j++ )
@@ -111,6 +114,21 @@ int	main (void) {
 		
 		SetLed(STAT1, LED_TOGGLE);
 	}
+}
+
+TASK(InitTask)
+{
+	TerminateTask();
+}
+
+TASK(Task_Leds)
+{
+	TerminateTask();
+}
+
+TASK(Task_Keys)
+{
+	TerminateTask();
 }
 
 void SetLed(int led, int state)

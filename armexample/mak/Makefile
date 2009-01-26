@@ -8,10 +8,10 @@ VPATH += armexample$(DIR)src \
 
 INCLUDE += -Iarmexample$(DIR)inc
 
-CFGFILES += armexample$(DIR)etc$(DIR)OpenDRV.oil
+CFGFILES += armexample$(DIR)etc$(DIR)OpenDRV.oil			\
+				armexample$(DIR)etc$(DIR)OpenSEK.oil
 
 CLEAN += armexampleclean
 
 armexampleclean :
-
 
