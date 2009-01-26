@@ -399,7 +399,7 @@ foreach ($alarms as $alarm)
 print "\n};\n\n";
 
 $counters = $config->getList("/OSEK","COUNTER");
-print "CounterVarType CountersVar[" . count($counters) . "];\n";
+print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
 $alarms = $config->getList("/OSEK","ALARM");
 $count = 0;
@@ -420,7 +420,7 @@ foreach ($counters as $counter)
 		}
 	}
 	print "		$countalarms, /* quantity of alarms for this counter */\n";
-	print "		OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
+	print "		(AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
 	print "		" . $config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
 	print "		" . $config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
 	print "		" . $config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
