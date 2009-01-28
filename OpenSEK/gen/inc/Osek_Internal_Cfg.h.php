@@ -45,6 +45,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20090128 MaCe remove ENABLE and DISABLE macro, now defined in OpenGEN
  * v0.1.0 20080713 MaCe	initial version
  */  
 <?php
@@ -110,12 +111,6 @@ arsort($priority);
 
 /** \brief ERROR_CHECKING_EXTENDED */
 #define ERROR_CHECKING_EXTENDED   2
-
-/** \brief DISABLE */
-#define DISABLE 1
-
-/** \brief ENABLE */
-#define ENABLE 2
 
 /** \brief Count of task */
 <?php
