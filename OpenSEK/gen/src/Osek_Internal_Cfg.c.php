@@ -43,7 +43,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080713 v0.1.0 MaCe       - initial version
+ * 20090128 v0.1.1 MaCe add OSEK_MEMMAP check
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -115,8 +116,10 @@ foreach ($counters as $counter)
 ?>
 
 /*==================[external data definition]===============================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /* OpenSEK to configured priority table
  *
@@ -438,14 +441,18 @@ uint8 ApplicationMode;
  ** uint8 ErrorHookRunning ATTRIBUTES(); */
 uint8 ErrorHookRunning;
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 <?php
 $intnames = $config->getList("/OSEK","ISR");
@@ -467,8 +474,10 @@ foreach ($intnames as $int)
 }
 ?>
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

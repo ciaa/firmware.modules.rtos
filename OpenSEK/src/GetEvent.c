@@ -41,8 +41,9 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20081113 v0.1.1 KLi          - Added memory layout attribute macros
- * 20080814 v0.1.0 MaCe			- initial version
+ * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+ * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+ * 20080814 v0.1.0 MaCe	initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -61,8 +62,10 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 StatusType GetEvent
 (
@@ -126,8 +129,10 @@ StatusType GetEvent
 	return ret;
 }
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen endVar group definition */

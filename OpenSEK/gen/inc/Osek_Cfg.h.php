@@ -53,6 +53,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20090128 MaCe add MEMMAP off configuration
  * v0.1.0 20080810 MaCe	initial version
  */  
 
@@ -138,13 +139,32 @@ if ($errorhook == "TRUE")
 
 <?php
 }
+
+$memmap = $config->getValue("/OSEK/" . $os[0],"MEMMAP");
+print "/** \brief OSEK_MEMMAP macro (DISABLE not MemMap is used for OpenSEK, ENABLE\n ** MemMap is used for OpenSEK) */\n";
+if ($memmap == "TRUE")
+{
+	print "#define OSEK_MEMMAP ENABLE\n";
+}
+elseif ($memmap == "FALSE")
+{
+	print "#define OSEK_MEMMAP DISABLE\n";
+}
+else
+{
+	warning("MEMMAP configuration not found in OpenSEK configuration, disabling as default");
+	print "#define OSEK_MEMMAP DISABLE\n";
+}
+
 ?>
 
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
+#endif
 
 <?php
 $errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
@@ -189,12 +209,16 @@ extern unsigned int Osek_ErrorRet;
 }
 ?>
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /*==================[external functions declaration]=========================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_CODE
 #include "MemMap.h"
+#endif
 <?php
 $pretaskhook=$config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 if ($pretaskhook == "TRUE")
@@ -258,10 +282,13 @@ print "\n";
 
 ?>
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_CFG_H_ */
+
