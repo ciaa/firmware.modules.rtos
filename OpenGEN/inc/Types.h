@@ -40,6 +40,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20090128 MaCe add DISABLE and ENABLE macros
  * v0.1.0 20081126 MaCe	initial version
  */  
 
@@ -52,6 +53,20 @@
 #define TYPES_NULL
 /** \brief NULL definition */
 #define NULL ((void *)0)
+#endif
+
+#ifndef ENABLE
+/** \brief ENABLE macro with the value 1 */
+#define ENABLE 1
+#elif ENABLE != 1
+#error ENABLE defined somewhere else with a different value
+#endif
+
+#ifndef DISABLE
+/** \brief DISABLE macro 2 */
+#define DISABLE 2
+#elif DISABLE != 2
+#error DISABLE defined somewhere else with a different value
 #endif
 
 /*==================[typedef]================================================*/
