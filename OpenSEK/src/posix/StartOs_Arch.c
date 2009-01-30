@@ -39,7 +39,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080810 v0.1.0 MaCe       - initial version
+ * 20090130 v0.1.1 MaCe change type uint8_least to uint8f
+ * 20080810 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -60,7 +61,7 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch(void)
 {
-	uint8_least loopi;
+	uint8f loopi;
 
 	/* init every task */
 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)

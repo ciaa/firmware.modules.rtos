@@ -38,7 +38,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080713 v0.1.0 MaCe       - initial version
+ * 20090130 v0.1.1 MaCe change type uint8_least to uint8f
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -80,7 +81,7 @@ uint32 OsekStack;
 /*==================[external functions definition]==========================*/
 void CounterInterrupt(CounterType CounterID)
 {
-	uint8_least loopi;
+	uint8f loopi;
 	AlarmType AlarmID;
 
 	/* increment counter */

@@ -45,8 +45,9 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.1 20090128 MaCe remove ENABLE and DISABLE macro, now defined in OpenGEN
- * v0.1.0 20080713 MaCe	initial version
+ * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+ * 20090128 v0.1.1 MaCe remove ENABLE and DISABLE macro, now defined in OpenGEN
+ * 20080713 v0.1.0 MaCe	initial version
  */  
 <?php
 
@@ -526,8 +527,10 @@ print "extern const CounterConstType CountersConst[" . count($counters) . "];\n"
 
 ?>
 /*==================[external functions declaration]=========================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 <?php
 $intnames = $config->getList("/OSEK","ISR");
@@ -546,8 +549,10 @@ foreach ($intnames as $int)
 }
 ?>
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

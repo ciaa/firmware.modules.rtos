@@ -38,15 +38,17 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
- * KLi           Kang Li
+ * KLi          Kang Li
+ * AsKa         Asnoka
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.2 20081214 Asnoka Fix mistaken comments for SetRelAlarm
- * v0.1.1 20081113 KLi  Added memory layout attribute macros
- * v0.1.0 20080713 MaCe	initial version
+ * 20090129 v0.1.3 MaCe add OSEK_MEMMAP check
+ * 20081214 v0.1.2 AsKa Fix mistaken comments for SetRelAlarm
+ * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -377,8 +379,10 @@ typedef AlarmBaseType* AlarmBaseRefType;
 typedef signed char InterruptCounterType;
 
 /*==================[external data declaration]==============================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /** \brief Suspend OS interrupts counter */
 extern InterruptCounterType SuspendOSInterrupts_Counter ATTRIBUTES();
@@ -389,12 +393,16 @@ extern InterruptCounterType DisableAllInterrupts_Counter ATTRIBUTES();
 /** \brief Suspend All interrupts counter */
 extern InterruptCounterType SuspendAllInterrupts_Counter ATTRIBUTES();
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /*==================[external functions declaration]=========================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** \brief Activate the specified Task
  **
@@ -683,8 +691,10 @@ extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle)
  **/
 extern StatusType CancelAlarm(AlarmType AlarmID) ATTRIBUTES();
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

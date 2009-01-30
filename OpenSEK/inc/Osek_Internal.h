@@ -43,8 +43,9 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.1 20081113 KLi  Added memory layout attribute macros
- * v0.1.0 20080713 MaCe	initial version
+ * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+ * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+ * 20080713 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/ 
@@ -173,8 +174,10 @@
 typedef uint8 ContextType;
 
 /*==================[external data declaration]==============================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /** \brief ActualContext
  **
@@ -185,12 +188,16 @@ extern ContextType ActualContext;
 /** \brief RunningTask variable */
 extern TaskType RunningTask;
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_DATA
 #include "MemMap.h"
+#endif
 
 /*==================[external functions declaration]=========================*/
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** \brief Architecture Dependnece Start Os function
  **
@@ -232,8 +239,10 @@ extern void AddReady(TaskType TaskID) ATTRIBUTES();
  **/ 
 extern void OSEK_ISR_NoHandler(void) ATTRIBUTES();
 
+#if (OSEK_MEMMAP == ENABLE)
 #define OpenSEK_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
