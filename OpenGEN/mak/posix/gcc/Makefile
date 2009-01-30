@@ -24,9 +24,10 @@
 
 # GCC posix tool chains #
 CC = gcc
-LD = ld
+LD = gcc
 AR = ar
 AS = as
 GDB = gdb
 # compiler options for posix with GCC Compiler #
-CFLAGS += -c -Wall -ggdb3 
+CFLAGS += -c -Wall -ggdb3
+LFLAGS += $(LINKSCRIPT)

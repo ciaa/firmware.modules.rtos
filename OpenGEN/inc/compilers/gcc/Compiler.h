@@ -42,14 +42,20 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081201 MaCe	initial version
+ * 20090130 v0.1.1 MaCe add OpenGEN_MEMMAP check
+ * 20081201 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/ 
 
 /*==================[macros]=================================================*/
+/** TODO */
+#if 0
 #define SEC_ACTUAL "SEC_INVALID"
 #define ATTRIBUTES(attr) __attribute__ ((section(SEC_ACTUAL)))
+#else
+#define ATTRIBUTES(attr)
+#endif
 
 /*==================[typedef]================================================*/
 

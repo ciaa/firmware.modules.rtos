@@ -36,22 +36,24 @@ SECTIONS
 {
 	. = 0;
 	
-	startup : { out/obj/StartUp.o(.text) } >flash
+	startup : { out/obj/StartUp.o(.text) } > flash
 
 	.text :
 	{
 		*(.text)
+		*(SEC_CODE)
 		*(.rodata)
 		*(.rodata*)
 		*(.glue_7)
 		*(.glue_7t)
 		_etext = .;
-	} >flash
+	} > flash
 
 	.data :
 	{
 		_data = .;
 		*(.data)
+		*(SEC_DATA)
 		_edata = .;
 	} >ram AT >flash
 
