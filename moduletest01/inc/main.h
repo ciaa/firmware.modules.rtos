@@ -41,10 +41,16 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081205 MaCe	initial version
+ * 20090130 v0.1.1 MaCe add MAIN_MEMMAP check
+ * 20081205 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
+#include "Types.h"
+
+/*==================[macros]=================================================*/
+#define MAIN_MEMMAP DISABLE
+
 #define INVALID_TASK 0xFF
 
 #define INVALID_RESOURCE 0xFF
@@ -85,15 +91,15 @@
 
 #define mt_GetTestCase() (mt_TestCase)
 
-/*==================[macros]=================================================*/
-
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+#if (MAIN_MEMMAP == ENABLE)
 #define TestSuite_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** \brief main function
  **
@@ -107,8 +113,10 @@ int main
    void
 ) ATTRIBUTES();
 
+#if (MAIN_MEMMAP == ENABLE)
 #define TestSuite_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
