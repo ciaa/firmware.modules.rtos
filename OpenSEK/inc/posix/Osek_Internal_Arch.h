@@ -40,7 +40,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20080725 MaCe	initial version
+ * 20090130 v0.1.1 MaCe remove std type definitions, now in Types.h
+ * 20080725 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -193,44 +194,6 @@
 
 
 /*==================[typedef]================================================*/
-/** \brief uint8 type definition */
-typedef unsigned char uint8;
-
-/** \brief sint8 type definition */
-typedef signed char sint8;
-
-/** \brief uint16 type definition */
-typedef unsigned short uint16;
-
-/** \brief sint16 type definition */
-typedef signed short sint16;
-
-/** \brief uint32 type definition */
-typedef unsigned int uint32;
-
-/** \brief sint32 type definition */
-typedef signed int sint32;
-
-/** \brief uint8_least type definition */
-typedef unsigned int uint8_least;
-
-/** \brief sint8_least type definition */
-typedef signed int sint8_least;
-
-/** \brief uint16_least type definition */
-typedef unsigned int uint16_least;
-
-/** \brief sint16_least type definition */
-typedef signed int sint16_least;
-
-/** \brief uint32_least type definition */
-typedef unsigned int uint32_least;
-
-/** \brief sint32_least type definition */
-typedef signed int sint32_least;
-
-/** \brief falg type definition */
-typedef unsigned char flag;
 
 /*==================[external data declaration]==============================*/
 /** \brief Interrupt Falg
