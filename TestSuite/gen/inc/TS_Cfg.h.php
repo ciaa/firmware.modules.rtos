@@ -42,12 +42,30 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20080830 MaCe	initial version
+ * 20090129 v0.1.1 MaCe add TS_MEMMAP check
+ * 20080830 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/ 
 
 /*==================[macros]=================================================*/
+<?php
+print "/** \brief TS_MEMMAP definition (DISABLE MemMap is not used, ENABLE MemMap is\n ** used) */\n";
+$memmap = $config->getValue("/TESTSUITE/GenConfig","MEMMAP");
+switch ($memmap)
+{
+	case "TRUE":
+		print "#define TS_MEMMAP ENABLE\n";
+		break;
+	default:
+		warning("TS_MEMMAP not configured, disabling as default");
+	case "FALSE":
+		print "#define TS_MEMMAP DISABLE\n";
+		break;
+}
+
+?>
+
 #define TS_TESTS_COUNT <?php echo $config->getCount("/TESTSUITE","*"); ?>
 
 
@@ -69,8 +87,10 @@ typedef unsigned char TS_ResultType;
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+#if (TS_MEMMAP == ENABLE)
 #define TestSuite_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 <?php
 $testnames = $config->getList("/TESTSUITE","*");
@@ -86,10 +106,13 @@ foreach ($testnames as $name)
 }
 ?>
 
+#if (TS_MEMMAP == ENABLE)
 #define TestSuite_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _TS_CFG_H_ */
+

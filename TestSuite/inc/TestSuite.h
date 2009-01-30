@@ -38,7 +38,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20080713 MaCe	initial version
+ * 20090129 v0.1.1 MaCe add TS_MEMMAP check
+ * 20080713 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -83,8 +84,10 @@ extern TS_ResultType TS_TestResults[(TS_TESTS_COUNT)/4];
 extern TS_ChecksumType TS_Checksum;
 
 /*==================[external functions declaration]=========================*/
+#if (TS_MEMMAP == ENABLE)
 #define TestSuite_START_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** \brief TS_RunTestSuite
  **
@@ -96,8 +99,10 @@ extern TS_ResultType TS_GetTestResult(TS_TestIDType TestID) ATTRIBUTES();
 
 extern void TS_PrintResult(unsigned int tc, unsigned char result) ATTRIBUTES();
 
+#if (TS_MEMMAP == ENABLE)
 #define TestSuite_STOP_SEC_CODE
 #include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
