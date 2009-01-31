@@ -45,6 +45,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090131 v0.1.3 MaCe add extern to CountersVar declaration
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20090128 v0.1.1 MaCe remove ENABLE and DISABLE macro, now defined in OpenGEN
  * 20080713 v0.1.0 MaCe	initial version
@@ -520,7 +521,7 @@ print "extern const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT];\n\
 
 $counters = $config->getList("/OSEK","COUNTER");
 print "/** \brief Counter Var Structure */\n";
-print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
+print "extern CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
 print "/** \brief Counter Const Structure */\n";
 print "extern const CounterConstType CountersConst[" . count($counters) . "];\n";
