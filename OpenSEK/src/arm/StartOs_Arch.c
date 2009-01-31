@@ -66,8 +66,29 @@ void StartOs_Arch(void)
 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
 	{
 		/* init stack */
+		TasksConst[loopi].TaskContext->reg_r13 = (uint32)TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize;
 
-		/* create task context */
+		/* init entry point */
+		TasksConst[loopi].TaskContext->reg_r15 = TasksConst[loopi].EntryPoint;
+
+		/* init program status register */
+		TasksConst[loopi].TaskContext->reg_cpsr = 0x000000d3; /** ?? TODO */
+
+		/* init all registers to 0 */
+		TasksConst[loopi].TaskContext->reg_r0 = 0;
+		TasksConst[loopi].TaskContext->reg_r1 = 0;
+		TasksConst[loopi].TaskContext->reg_r2 = 0;
+		TasksConst[loopi].TaskContext->reg_r3 = 0;
+		TasksConst[loopi].TaskContext->reg_r4 = 0;
+		TasksConst[loopi].TaskContext->reg_r5 = 0;
+		TasksConst[loopi].TaskContext->reg_r6 = 0;
+		TasksConst[loopi].TaskContext->reg_r7 = 0;
+		TasksConst[loopi].TaskContext->reg_r8 = 0;
+		TasksConst[loopi].TaskContext->reg_r9 = 0;
+		TasksConst[loopi].TaskContext->reg_r10 = 0;
+		TasksConst[loopi].TaskContext->reg_r11 = 0;
+		TasksConst[loopi].TaskContext->reg_r12 = 0;
+		TasksConst[loopi].TaskContext->reg_r14 = 0;
 	}
 
 }
