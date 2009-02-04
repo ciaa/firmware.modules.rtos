@@ -92,7 +92,7 @@
 #define JmpTask(task)			\
 	{									\
 		PreCallService();			\
-		__asm__	__volatile__  ("b %0" : : "r" (TasksConst[task].EntryPoint) : );	\
+		/* __asm__	__volatile__  ("b %0" : : "r" (TasksConst[task].EntryPoint) : ); */	\
 	}
 
 /** \brief Save context */
