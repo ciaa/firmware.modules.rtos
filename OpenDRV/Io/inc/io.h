@@ -61,7 +61,7 @@
  ** \param[in] value indicate the value to be set to this port
  ** \return IO_E_OK is always returned
  **/
-#define Io_SetPort(port, value) 				\
+#define /* Io_ReturnType */ Io_SetPort( /* Io_PortType */ port, /* Io_PortLevelType */ value) 				\
 	IO_E_OK;											\
 	{													\
 		Io_SetPort_Arch(port, value, mask);	\
@@ -75,7 +75,7 @@
  ** \param[in] value indicates the value to be set to this pin
  ** \return IO_E_OK is always returned
  **/
-#define Io_SetPin(pin, value)					\
+#define /* Io_ReturnType */ Io_SetPin( /* Io_PinType */ pin, /* Io_PinLevelType */ value)					\
 	IO_E_OK;											\
 	{													\
 		Io_SetPort_Arch(port, value);			\
@@ -89,7 +89,7 @@
  ** \param[out] value the value of the readed port is set to this variable
  ** \return IO_E_OK is always returned
  **/
-#define Io_GetPort(port, value)				\
+#define /* Io_PortValueType */ Io_GetPort( /* Io_PortType */ port, /* Io_PortValueType */ value)				\
 	IO_E_OK;											\
 	{													\
 		Io_GetPort_Arch(port, value);			\
@@ -103,11 +103,17 @@
  ** \param[out] value the status of the readed port is set to this variable
  ** \return IO_E_OK is always returned
  **/
-#define Io_GetPin(pin, value)					\
+#define /* Io_PinValueType */ Io_GetPin( /* Io_PinType */ pin, /* Io_PinValueType */ value)					\
 	IO_E_OK;											\
 	{													\
 		Io_GetPint_Arch(pin, value)			\
 	}													
+
+/** \brief Low state */
+#define IO_PIN_LOW	0
+
+/** \brief High state */
+#define IO_PIN_HIGH
 		
 /*==================[typedef]================================================*/
 /** \brief IO driver return type definition */
@@ -120,9 +126,6 @@ typedef struct {
 
 /** \brief IO driver configuration reference type definition */
 typedef Io_ConfigType* Io_ConfigRefType;
-
-/** \brief IO driver port type configuration */
-typedef uint8 Io_PortType;
 
 /** \brief IO driver port value type definition */
 #if   (IO_PORT_BITS_WIDTH == 8)
@@ -169,10 +172,31 @@ extern Io_ReturnType Io_ReInit(const Io_ConfigRefType config);
  ** \return IO_E_OK if no error occurs
  ** \return IO_E_NOTOK if any error occurs
  **/
-extern Io_ReturnType Io_DeInit();
+extern Io_ReturnType Io_ReInit();
+
+/** \brief IO set port group
+ **
+ ** This function set a port group.
+ **
+ ** \param[in] portgroup port group to be set
+ ** \param[in] value value to set the port group
+ ** \return IO_E_OK always
+ **/
+extern Io_ReturnType Io_SetPortGroup(Io_PortGroupType portgroup, Io_PortGroupValueType value);
+
+/** \brief IO set port group
+ **
+ ** This function get the values of a port group.
+ **
+ ** \param[in] portgroup port group to be readed
+ ** \param[out] value reference to get the value
+ ** \return IO_E_OK always
+ **/
+extern Io_ReturnType Io_GetPortGroup(Io_PortGroupType portgroup, Io_PortGroupValueRefType value);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _IO_H_ */
+

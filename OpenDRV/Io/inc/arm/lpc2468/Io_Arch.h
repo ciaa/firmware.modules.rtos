@@ -59,6 +59,27 @@ typedef struct {
 	uint8 Config;
 } Io_ConfigArchType;
 
+/** \brief Channel type definition */
+typedef uint8 Io_PinType;
+
+/** \brief Port type definition */
+typedef uint8 Io_PortType;
+
+/** \brief Port Group type definition */
+typedef uint32 Io_PortGroupType;
+
+/** \brief Level type definition */
+typedef uint8 Io_PinLevelType;
+
+/** \brief Port Level type definition */
+typedef uint8 Io_PortLevelType;
+
+/** \brief Port Group Value type definition */
+typedef uint32 Io_PortGroupValueType;
+
+/** \brief Port Group Value Reference type definition */
+typedef Io_PortGroupValueType* Io_PortGroupValueRefType;
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
