@@ -643,9 +643,9 @@ extern StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick) ATTRIBUTES();
 
 /** \brief Set Relative Alarm
  **
- ** The system service occupies the alarm <AlarmID> element.
- ** After <increment> ticks have elapsed, the task assigned to the
- ** alarm <AlarmID> is activated or the assigned event (only for
+ ** The system service occupies the alarm AlarmID element.
+ ** After increment ticks have elapsed, the task assigned to the
+ ** alarm AlarmID is activated or the assigned event (only for
  ** extended tasks) is set or the alarm-callback routine is called.
  **
  ** \param[in] AlarmID Alamar ID to be readed
