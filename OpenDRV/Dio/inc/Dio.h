@@ -151,6 +151,9 @@ typedef struct {
 /** \brief DIO driver configuration reference type definition */
 typedef Dio_ConfigType* Dio_ConfigRefType;
 
+/** \brief DIO driver return type */
+typedef uint8f Dio_ReturnType;
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
@@ -173,7 +176,7 @@ extern Dio_ReturnType Dio_Init(const Dio_ConfigRefType Config);
  ** \return IO_E_OK if no error occurs
  ** \return IO_E_NOTOK if any error occurs
  **/
-extern Dio_ReturnType Dio_ReInit();
+extern Dio_ReturnType Dio_DeInit();
 
 #if (DioDevErrorDetect == ENABLE)
 /** \brief Dio Driver Read Channel service 

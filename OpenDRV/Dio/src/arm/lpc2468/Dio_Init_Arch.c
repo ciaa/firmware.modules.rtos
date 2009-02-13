@@ -67,7 +67,7 @@
 /* #define OpenDRV_DIO_START_SEC_CODE
  * #include "MemMap.h" */
 
-Io_ReturnType Dio_Init_Arch
+Dio_ReturnType Dio_Init_Arch
 (
 	Dio_ConfigRefType config
 )

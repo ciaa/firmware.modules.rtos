@@ -1,27 +1,19 @@
 <?php
 
-$drivers = $config->getList("/OpenDRV","DRIVER");
+$drvconfig = $config->getList("/OpenDRV","GENERAL");
 
-$count = 0;
-foreach ($drivers as $driver)
+if (count($drvconfig) != 1)
 {
-	if ($driver == "GenConfig")
-	{
-		$count ++;
-	}
-}
-
-if ($count != 1)
-{
-	error("only one OpenDRV DRIVERS configuration is allowed, " . count($drivers) . " were found.");
+	error("only one OpenDRV DRIVERS configuration is allowed, " . count($drvconfig) . " were found.");
 }
 else
 {
+	$drvconfig = $drvconfig[0];
 	print "# include sub drivers\n";
 	$drivers = array ("StartUp", "Dio", "Eth", "Clk");
 	foreach($drivers as $driver)
 	{
-		$value = $config->getValue("/OpenDRV/GenConfig", $driver);
+		$value = $config->getValue("/OpenDRV/" . $drvconfig , $driver);
 		switch ($value)
 		{
 			case "ENABLE":

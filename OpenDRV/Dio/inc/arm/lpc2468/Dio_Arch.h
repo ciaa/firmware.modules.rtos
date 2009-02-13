@@ -51,14 +51,14 @@
  */  
 
 /*==================[inclusions]=============================================*/
+#include "lpc2468.h"
 
 /*==================[macros]=================================================*/
-#define IO_PORT_BITS_WIDTH	8
 
 /*==================[typedef]================================================*/
 typedef struct {
 	uint8 Config;
-} Io_ConfigArchType;
+} Dio_ConfigArchType;
 
 /** \brief Channel type definition */
 /* \req DIO015 Parameters of type Dio_ChannelType contain the numeric ID of a
@@ -83,7 +83,7 @@ typedef uint8 Dio_LevelType;
 
 /** \brief Port Level type definition */
 /* \req DIO024 Dio_PortLevelType is the type for the value of a DIO port. */
-typedef uint32 Do_PortLevelType;
+typedef uint32 Dio_PortLevelType;
 
 /*==================[external data declaration]==============================*/
 

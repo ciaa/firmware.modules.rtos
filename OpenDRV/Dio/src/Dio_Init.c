@@ -64,12 +64,12 @@
 /* #define OpenDRV_DIO_START_SEC_CODE
  * #include "MemMap.h" */
 
-Io_ReturnType Dio_Init
+Dio_ReturnType Dio_Init
 (
-	Dio_ConfigRefType config
+	Dio_ConfigRefType Config
 )
 {
-	Dio_Init_Arch(config);
+	Dio_Init_Arch(Config);
 }
 
 /** TODO */

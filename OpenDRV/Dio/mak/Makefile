@@ -13,7 +13,7 @@ VPATH += OpenDRV$(DIR)Dio$(DIR)src												\
 			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)								\
 			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)
 
-GENFILES += OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)Io_Cfg.h.php
+GENFILES += OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)Dio_Cfg.h.php
 
 OpenDRV_Dio.a : $(OPENDRV_DIO_OBJ)
 	$(AR) -rcs $(LIBDIR)$(DIR)OpenDRV_Dio.a $(foreach obj, $(OPENDRV_DIO_OBJ), $(OBJDIR)$(DIR)$(obj))
