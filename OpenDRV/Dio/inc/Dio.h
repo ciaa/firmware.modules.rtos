@@ -52,79 +52,6 @@
 #include "Dio_Arch.h"
 
 /*==================[macros]=================================================*/
-/** \brief IO driver set port service
- **
- ** This IO driver service shall be called to set a port to a specified value.
- ** The bits not configured of this port will stay unchaged. Writing to an
- ** input is not defined.
- **
- ** \param[in] port indicates the port to be set
- ** \param[in] value indicate the value to be set to this port
- ** \return IO_E_OK is always returned
- **/
-#define /* Io_ReturnType */ Io_SetPort( /* Io_PortType */ port, /* Io_PortLevelType */ value) 				\
-	IO_E_OK;											\
-	{													\
-		Io_SetPort_Arch(port, value, mask);	\
-	}
-
-/** \brief IO driver set pin service
- **
- ** This IO driver service shall be called to set a pint to a specific value.
- **
- ** \param[in] pin indicates the pin to be set
- ** \param[in] value indicates the value to be set to this pin
- ** \return IO_E_OK is always returned
- **/
-#define /* Io_ReturnType */ Io_SetPin( /* Io_PinType */ pin, /* Io_PinLevelType */ value)					\
-	IO_E_OK;											\
-	{													\
-		Io_SetPort_Arch(port, value);			\
-	}
-
-/** \brief IO driver get port service
- **
- ** This IO driver service shall be called to get the status of a specific port.
- **
- ** \param[in] port inidcates the port to be readed
- ** \param[out] value the value of the readed port is set to this variable
- ** \return IO_E_OK is always returned
- **/
-#define /* Io_PortValueType */ Io_GetPort( /* Io_PortType */ port, /* Io_PortValueType */ value)				\
-	IO_E_OK;											\
-	{													\
-		Io_GetPort_Arch(port, value);			\
-	}
-
-#if (DioDevErrorDetect == DISABLE)
-/** \brief Dio Driver Read Channel service 
- **
- ** This Dio driver service shall used to read the state of a specific
- ** channel. This service is implemented as function if DioDevErrorDetect is
- ** ENABLE and as macro if DioDevErrorDetect is DISABLE
- **
- ** \param[in] ChannelId IO of DIO Channel
- ** \return Dio_LevelType DIO_HIGH the physical level of the corresponding Pin is high
- **							  DIO_LOW the physical level of the corresponding Pin is low
- **/
-#define /* Dio_LevelType */ Dio_ReadChannel( /* Dio_ChannelType */ ChannelId) \
-	Dio_ReadChannel_Arch(ChannelId)
-
-/** \brief Dio Driver Write Channel service 
- **
- ** This Dio driver service shall used to write the state of a specific
- ** channel. This service is implemented as function if DioDevErrorDetect is
- ** ENABLE and as macro if DioDevErrorDetect is DISABLE
- **
- ** \param[in] ChannelId IO of DIO Channel
- ** \param[in] Level Level
- ** \return None
- **/
-#define /* void */ Dio_WriteChannel( /* Dio_ChannelType */ ChannelId, /* Dio_LevelType */ Level)	\
-	Dio_WriteChannel_Arch(ChannelId, Level)
-
-#endif /* #if (DioDevErrorDetect == DISABLE) */
-
 /** \brief High state */
 /* \req DIO089-1/2 Values used by the DIO Driver for the software level of
  *	Channels are either STD_HIGH or STD_LOW. */
@@ -160,85 +87,93 @@
  * DIO_E_PARAM_INVALID_GROUP_ID
  */
 #define DIO_E_PARAM_INVALID_GROUP_ID				31
-		
+
+#if (DioDevErrorDetect == DISABLE)
+/** \brief Dio Driver Read Channel service 
+ **
+ ** This Dio driver service shall used to read the state of a specific
+ ** channel. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] ChannelId IO of DIO Channel
+ ** \return Dio_LevelType DIO_HIGH the physical level of the corresponding Pin is high
+ **							  DIO_LOW the physical level of the corresponding Pin is low
+ **/
+#define /* Dio_LevelType */ Dio_ReadChannel( /* Dio_ChannelType */ ChannelId) \
+	Dio_ReadChannel_Arch(ChannelId)
+
+/** \brief Dio Driver Write Channel service 
+ **
+ ** This Dio driver service shall used to write the state of a specific
+ ** channel. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] ChannelId IO of DIO Channel
+ ** \param[in] Level Level
+ ** \return None
+ **/
+#define /* void */ Dio_WriteChannel( /* Dio_ChannelType */ ChannelId, /* Dio_LevelType */ Level)	\
+	Dio_WriteChannel_Arch(ChannelId, Level)
+
+/** \brief Dio Read Port service 
+ **
+ ** This Dio driver service shall used to read the state of a specific
+ ** port. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] PortId IO of DIO Channel
+ ** \return Dio_PortLevelType Level of all channels of that port
+ **/
+#define /* Dio_PortLevelType */ Dio_ReadPort( /* Dio_PortType */ PortId)	\
+	Dio_ReadPort_Arch(PortId)
+
+/** \brief Dio Driver Write Port service 
+ **
+ ** This Dio driver service shall used to write the state of a specific
+ ** port. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] PortId IO of DIO Channel
+ ** \param[in] Level Level
+ ** \return None
+ **/
+#define /* void */ Dio_WritePort( /*Dio_PortType */ PortId, /* Dio_PortLevelType */ Level)	\
+	Dio_WritePort_Arch(PortId, Level)
+
+#endif /* #if (DioDevErrorDetect == DISABLE) */
+
 /*==================[typedef]================================================*/
-/** \brief IO driver return type definition */
-typedef uint8f Io_ReturnType;
-
-/** \brief IO driver configuration type definition */
+/** \brief DIO driver configuration type definition */
 typedef struct {
-   Io_ConfigArchType Io_Arch;
-} Io_ConfigType;
+   Dio_ConfigArchType Dio_Arch;
+} Dio_ConfigType;
 
-/** \brief IO driver configuration reference type definition */
-typedef Io_ConfigType* Io_ConfigRefType;
-
-/** \brief IO driver port value type definition */
-#if   (IO_PORT_BITS_WIDTH == 8)
-typedef uint8 Io_PortValue;
-#elif (IO_PORT_BITS_WIDTH == 16)
-typedef uint16 Io_PortValue;
-#elif (IO_PORT_BITS_WIDHT == 32)
-typedef uint32 Io_PortValue;
-#else
-#error invalid IO_PORT_BITS_WIDHT value
-#endif
+/** \brief DIO driver configuration reference type definition */
+typedef Dio_ConfigType* Dio_ConfigRefType;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-/** \brief IO driver init service
+/** \brief Dio driver init service
  **
- ** This IO driver service shall be called to initialize the IO driver. Calls
- ** to any other IO driver service before initialization is not allowed.
+ ** This Dio driver service shall be called to initialize the Dio driver. Calls
+ ** to any other Dio driver service before initialization is not allowed.
  **
- ** \param[in] config pointer to the IO driver configuration
- ** \return IO_E_OK	if no error occurs
- ** \return IO_E_PARAM if the configuration is invalid
- ** \return IO_E_NOTOK if other error occurs
+ ** \param[in] config pointer to the Dio driver configuration
+ ** \return DIO_E_OK	if no error occurs
+ ** \return DIO_E_PARAM if the configuration is invalid
+ ** \return DIO_E_NOTOK if other error occurs
  **/
-extern Io_ReturnType Io_Init(const Io_ConfigRefType config);
+extern Dio_ReturnType Dio_Init(const Dio_ConfigRefType Config);
 
-/** \brief IO driver re init service
+/** \brief Dio driver de-init service
  **
- ** This IO driver service shall be called to re initialize the IO driver.
- ** This services allows the user to change the port configuration on the go.
- **
- ** \param[in] config pointer to the new IO driver configuration
- ** \return IO_E_OK if no error occurs
- ** \return IO_E_PARAM if the configuration is invalid
- ** \return IO_E_NOTOK if other error occurs
- **/
-extern Io_ReturnType Io_ReInit(const Io_ConfigRefType config);
-
-/** \brief IO driver de-init service
- **
- ** This IO driver service shall be called to de-initialize the IO driver.
+ ** This Dio driver service shall be called to de-initialize the Dio driver.
  **
  ** \return IO_E_OK if no error occurs
  ** \return IO_E_NOTOK if any error occurs
  **/
-extern Io_ReturnType Io_ReInit();
-
-/** \brief IO set port group
- **
- ** This function set a port group.
- **
- ** \param[in] portgroup port group to be set
- ** \param[in] value value to set the port group
- ** \return IO_E_OK always
- **/
-extern Io_ReturnType Io_SetPortGroup(Io_PortGroupType portgroup, Io_PortGroupValueType value);
-
-/** \brief IO set port group
- **
- ** This function get the values of a port group.
- **
- ** \param[in] portgroup port group to be readed
- ** \param[out] value reference to get the value
- ** \return IO_E_OK always
- **/
-extern Io_ReturnType Io_GetPortGroup(Io_PortGroupType portgroup, Io_PortGroupValueRefType value);
+extern Dio_ReturnType Dio_ReInit();
 
 #if (DioDevErrorDetect == ENABLE)
 /** \brief Dio Driver Read Channel service 
@@ -265,6 +200,28 @@ extern Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId);
  **/
 extern void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level);
 
+/** \brief Dio Read Port service 
+ **
+ ** This Dio driver service shall used to read the state of a specific
+ ** port. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] PortId IO of DIO Channel
+ ** \return Dio_PortLevelType Level of all channels of that port
+ **/
+extern Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId);
+
+/** \brief Dio Driver Write Port service 
+ **
+ ** This Dio driver service shall used to write the state of a specific
+ ** port. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] PortId IO of DIO Channel
+ ** \param[in] Level Level
+ ** \return None
+ **/
+extern void Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level);
 
 #endif /* #if (DioDevErrorDetect == ENABLE) */
 

@@ -83,7 +83,7 @@ typedef uint8 Dio_LevelType;
 
 /** \brief Port Level type definition */
 /* \req DIO024 Dio_PortLevelType is the type for the value of a DIO port. */
-typedef uint8 Do_PortLevelType;
+typedef uint32 Do_PortLevelType;
 
 /*==================[external data declaration]==============================*/
 
