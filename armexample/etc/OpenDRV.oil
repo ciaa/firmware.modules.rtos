@@ -1,12 +1,49 @@
 OpenDRV OpenDRV {
 
-	DRIVER GenConfig {
+	GENERAL GenConfig {
 		StartUp = ENABLE;
 		Clk = ENABLE;
-		Io = ENABLE;
+		Dio = ENABLE;
 		Eth = DISABLE;
 	};
 
 	DRIVER StartUp {
 	};
+
+	DRIVER Dio {
+		GENERAL DioConfig {
+			DIO_DET = FALSE;
+		}
+
+		CONFIG DioConfig {
+
+			CHANNEL Channel1 {
+				NAME = Channel1;
+				PORT = 0;
+				PIN = 0;
+				DIRECTION = INPUT;
+			}
+
+			CHANNEL Channel2 {
+				NAME = Channel2;
+				PORT = 0;
+				PIN = 1;
+				DIRECTION = OUTPUT;
+			}
+
+			PORT Port0 {
+				NAME = Port0;
+				PORT = 1;
+				DIRECTION = INPUT;
+			}
+
+			CHANNELGROUP ChannelGroup1 {
+				NAME = ChannelGroup1;
+				PORT = 0;
+				MASK = 0xFC;
+				DIRECTION = OUTPUT;
+			}
+			
+		}
+	}
 };
