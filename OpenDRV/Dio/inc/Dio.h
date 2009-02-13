@@ -96,25 +96,70 @@
 		Io_GetPort_Arch(port, value);			\
 	}
 
-/** \brief IO driver get pin service 
+#if (DioDevErrorDetect == DISABLE)
+/** \brief Dio Driver Read Channel service 
  **
- ** This IO driver service shall be called to get the state of a specific pin
+ ** This Dio driver service shall used to read the state of a specific
+ ** channel. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
  **
- ** \param[in] pin indicates the pin to be readed
- ** \param[out] value the status of the readed port is set to this variable
- ** \return IO_E_OK is always returned
+ ** \param[in] ChannelId IO of DIO Channel
+ ** \return Dio_LevelType DIO_HIGH the physical level of the corresponding Pin is high
+ **							  DIO_LOW the physical level of the corresponding Pin is low
  **/
-#define /* Io_PinValueType */ Io_GetPin( /* Io_PinType */ pin, /* Io_PinValueType */ value)					\
-	IO_E_OK;											\
-	{													\
-		Io_GetPint_Arch(pin, value)			\
-	}													
+#define /* Dio_LevelType */ Dio_ReadChannel( /* Dio_ChannelType */ ChannelId) \
+	Dio_ReadChannel_Arch(ChannelId)
 
-/** \brief Low state */
-#define IO_PIN_LOW	0
+/** \brief Dio Driver Write Channel service 
+ **
+ ** This Dio driver service shall used to write the state of a specific
+ ** channel. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] ChannelId IO of DIO Channel
+ ** \param[in] Level Level
+ ** \return None
+ **/
+#define /* void */ Dio_WriteChannel( /* Dio_ChannelType */ ChannelId, /* Dio_LevelType */ Level)	\
+	Dio_WriteChannel_Arch(ChannelId, Level)
+
+#endif /* #if (DioDevErrorDetect == DISABLE) */
 
 /** \brief High state */
-#define IO_PIN_HIGH
+/* \req DIO089-1/2 Values used by the DIO Driver for the software level of
+ *	Channels are either STD_HIGH or STD_LOW. */
+/* \dev DIO089-1/2 the high state is called DIO_HIGH and not STD_HIGH */
+#define DIO_HIGH	1
+
+/** \brief Low state */
+/* \req DIO089-2/2 Values used by the DIO Driver for the software level of
+ * Channels are either STD_HIGH or STD_LOW. */
+/* \dev DIO089-2/2 the low state is called DIO_LOW and not STD_LOW */
+#define DIO_LOW	0
+
+/** \brief Dio Invalid Channel Id error code */
+/* \req DIO065-1/3 The Dio module shall detect the following errors and
+ * exceptions depending on its build version (development/production mode):
+ * DIO_E_PARAM_INVALID_CHANNEL_ID, DIO_E_PARAM_INVALID_PORT_ID and
+ * DIO_E_PARAM_INVALID_GROUP_ID
+ */
+#define DIO_E_PARAM_INVALID_CHANNEL_ID				10
+
+/** \brief Dio Invalid Port Id error code */
+/* \req DIO065-2/3 The Dio module shall detect the following errors and
+ * exceptions depending on its build version (development/production mode):
+ * DIO_E_PARAM_INVALID_CHANNEL_ID, DIO_E_PARAM_INVALID_PORT_ID and
+ * DIO_E_PARAM_INVALID_GROUP_ID
+ */
+#define DIO_E_PARAM_INVALID_PORT_ID					20
+
+/** \brief Dio Invalid Group Id error code */
+/* \req DIO065-3/3 The Dio module shall detect the following errors and
+ * exceptions depending on its build version (development/production mode):
+ * DIO_E_PARAM_INVALID_CHANNEL_ID, DIO_E_PARAM_INVALID_PORT_ID and
+ * DIO_E_PARAM_INVALID_GROUP_ID
+ */
+#define DIO_E_PARAM_INVALID_GROUP_ID				31
 		
 /*==================[typedef]================================================*/
 /** \brief IO driver return type definition */
@@ -194,6 +239,34 @@ extern Io_ReturnType Io_SetPortGroup(Io_PortGroupType portgroup, Io_PortGroupVal
  ** \return IO_E_OK always
  **/
 extern Io_ReturnType Io_GetPortGroup(Io_PortGroupType portgroup, Io_PortGroupValueRefType value);
+
+#if (DioDevErrorDetect == ENABLE)
+/** \brief Dio Driver Read Channel service 
+ **
+ ** This Dio driver service shall used to read the state of a specific
+ ** channel. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] ChannelId IO of DIO Channel
+ ** \return Dio_LevelType DIO_HIGH the physical level of the corresponding Pin is high
+ **							  DIO_LOW the physical level of the corresponding Pin is low
+ **/
+extern Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId);
+
+/** \brief Dio Driver Write Channel service 
+ **
+ ** This Dio driver service shall used to write the state of a specific
+ ** channel. This service is implemented as function if DioDevErrorDetect is
+ ** ENABLE and as macro if DioDevErrorDetect is DISABLE
+ **
+ ** \param[in] ChannelId IO of DIO Channel
+ ** \param[in] Level Level
+ ** \return None
+ **/
+extern void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level);
+
+
+#endif /* #if (DioDevErrorDetect == ENABLE) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -18,7 +18,7 @@ if ($count != 1)
 else
 {
 	print "# include sub drivers\n";
-	$drivers = array ("StartUp", "Io", "Eth", "Clk");
+	$drivers = array ("StartUp", "Dio", "Eth", "Clk");
 	foreach($drivers as $driver)
 	{
 		$value = $config->getValue("/OpenDRV/GenConfig", $driver);

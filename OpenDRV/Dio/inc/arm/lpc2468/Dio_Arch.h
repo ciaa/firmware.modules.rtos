@@ -61,25 +61,29 @@ typedef struct {
 } Io_ConfigArchType;
 
 /** \brief Channel type definition */
-typedef uint8 Io_PinType;
+/* \req DIO015 Parameters of type Dio_ChannelType contain the numeric ID of a
+ * DIO channel. The mapping of the ID is implementation specific but not
+ * configurable. */
+typedef uint8 Dio_ChannelType;
 
 /** \brief Port type definition */
-typedef uint8 Io_PortType;
+/* \req DIO018 Parameters of type Dio_PortType contain the numeric ID of a DIO
+ * port. The mapping of ID is implementation specific but not configurable. */
+typedef uint8 Dio_PortType;
 
-/** \brief Port Group type definition */
-typedef uint32 Io_PortGroupType;
+/** \brief Channel Group type definition */
+/* \req DIO021 Dio_ChannelGroupType is the type for the definition of a channel
+ * group, which consists of several adjoining channels within a port. */
+typedef uint8 Dio_ChannelGroupType;
 
 /** \brief Level type definition */
-typedef uint8 Io_PinLevelType;
+/* \req  DIO023 Dio_LevelType is the type for the possible levels that a DIO
+ * channel can have (input or output). */
+typedef uint8 Dio_LevelType;
 
 /** \brief Port Level type definition */
-typedef uint8 Io_PortLevelType;
-
-/** \brief Port Group Value type definition */
-typedef uint32 Io_PortGroupValueType;
-
-/** \brief Port Group Value Reference type definition */
-typedef Io_PortGroupValueType* Io_PortGroupValueRefType;
+/* \req DIO024 Dio_PortLevelType is the type for the value of a DIO port. */
+typedef uint8 Do_PortLevelType;
 
 /*==================[external data declaration]==============================*/
 
