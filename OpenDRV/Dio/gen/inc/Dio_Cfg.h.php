@@ -1,3 +1,7 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
 /* Copyright 2008, Mariano Cerdeiro
  *
  * This file is part of OpenSEK.
@@ -17,25 +21,27 @@
  *
  */
 
-#ifndef _IO_INTERNAL_H_
-#define _IO_INTERNAL_H_
-/** \brief Io Internal Header File
+<?php
+/** \brief OpenDRV File to be Generated
  **
- ** Io Internal Header File
+ ** \file Dio_Cfg.h.php
+ **/
+?>
+
+#ifndef _DIO_CFG_H_
+#define _DIO_CFG_H_
+/** \brief OpenDRV DIO Generated Configuration Header File
  **
- ** \file Io_Internal.h
+ ** This file contents the generated configuration of the IO Driver
  **
+ ** \file Dio_Cfg.h
  **/
 
 /** \addtogroup OpenDRV
- ** @{ */
-/** \addtogroup OpenDRV_Io
+ ** @{ */ 
+/** \addtogroup OpenDRV_Dio
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Io_Internal
- ** \ingroup OpenDRV_Io
- ** @{ */
-
 
 /*
  * Initials     Name
@@ -46,11 +52,11 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090125 MaCe	initial version
+ * 20090213 v0.1.1 MaCe raname Io driver to Dio
+ * 20090125 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
-#include "io.h"
 
 /*==================[macros]=================================================*/
 
@@ -59,17 +65,9 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-/** TODO */
-/* #define OpenDRV_IO_START_SEC_CODE
- * #include "MemMap.h" */
 
-/** TODO */
-/* #define OpenDRV_IO_STOP_SEC_CODE
- * #include "MemMap.h" */
-
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _IO_INTERNAL_H_ */
+#endif /* #ifndef _DIO_CFG_H_ */
 

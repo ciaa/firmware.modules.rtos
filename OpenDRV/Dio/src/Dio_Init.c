@@ -17,21 +17,18 @@
  *
  */
 
-/** \brief OpenDRV IO Init Arch implementation file
+/** \brief OpenDRV DIO Init implementation file
  **
- ** This file implements the Io_Init_Arch API
+ ** This file implements the Dio_Init API
  **
- ** \file Io_Init_Arch.c
+ ** \file Dio_Init.c
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Io
+/** \addtogroup OpenDRV_Dio
  ** \ingroup OpenDRV
- ** @{ */
-/** \addtogroup OpenDRV_Io_Internal
- ** \ingroup OpenDRV_Io
  ** @{ */
 
 /*
@@ -43,12 +40,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090125 v0.1.0 MaCe       - initial version
+ * 20090213 v0.1.1 MaCe raname Io driver to Dio
+ * 20090125 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "lpc2468.h"
-#include "Io_Internal.h"
+#include "Dio_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -64,28 +61,21 @@
 
 /*==================[external functions definition]==========================*/
 /** TODO */
-/* #define OpenDRV_IO_START_SEC_CODE
+/* #define OpenDRV_DIO_START_SEC_CODE
  * #include "MemMap.h" */
 
-Io_ReturnType Io_Init_Arch
+Io_ReturnType Dio_Init
 (
-	Io_ConfigRefType config
+	Dio_ConfigRefType config
 )
 {
-	SCS |= 1<<0; /* enable fast IO on ports 0&1 */
-
-	FIO4SET |= 1<<17;
-	FIO4SET |= 1<<16;
-
-	FIO4DIR |= 1<<17; /* STAT1&2 as out */
-	FIO4DIR |= 1<<16;
+	Dio_Init_Arch(config);
 }
 
 /** TODO */
-/* #define OpenDRV_IO_STOP_SEC_CODE
+/* #define OpenDRV_DIO_STOP_SEC_CODE
  * #include "MemMap.h" */
 
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

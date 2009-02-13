@@ -17,19 +17,19 @@
  *
  */
 
-#ifndef _IO_H_
-#define _IO_H_
-/** \brief OpenDRV IO Header File
+#ifndef _DIO_H_
+#define _DIO_H_
+/** \brief OpenDRV DIO Header File
  **
- ** This file shall be included by all files using any OpenDRV IO API.
+ ** This file shall be included by all files using any OpenDRV DIO API.
  **
- ** \file io.h
+ ** \file Dio.h
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Io
+/** \addtogroup OpenDRV_Dio
  ** \ingroup OpenDRV
  ** @{ */
 
@@ -42,13 +42,14 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090125 MaCe	initial version
+ * 20090213 v0.1.1 MaCe raname Io driver to Dio
+ * 20090125 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
 #include "Types.h"
-#include "Io_Cfg.h"
-#include "Io_Arch.h"
+#include "Dio_Cfg.h"
+#include "Dio_Arch.h"
 
 /*==================[macros]=================================================*/
 /** \brief IO driver set port service
@@ -198,5 +199,5 @@ extern Io_ReturnType Io_GetPortGroup(Io_PortGroupType portgroup, Io_PortGroupVal
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _IO_H_ */
+#endif /* #ifndef _DIO_H_ */
 

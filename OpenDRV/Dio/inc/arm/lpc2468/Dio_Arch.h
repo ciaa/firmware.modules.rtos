@@ -1,7 +1,3 @@
-/********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
- ********************************************************/
-
 /* Copyright 2008, Mariano Cerdeiro
  *
  * This file is part of OpenSEK.
@@ -21,27 +17,25 @@
  *
  */
 
-<?php
-/** \brief OpenDRV File to be Generated
+#ifndef _DIO_ARCH_H_
+#define _IO_ARCH_H_
+/** \brief DIO Arch Header File
  **
- ** \file Io_Cfg.h.php
- **/
-?>
-
-#ifndef _IO_CFG_H_
-#define _IO_CFG_H_
-/** \brief OpenDRV IO Generated Configuration Header File
+ ** DIO Arch Header File
  **
- ** This file contents the generated configuration of the IO Driver
+ ** \file Dio_Arch.h
  **
- ** \file Io_Cfg.h
  **/
 
 /** \addtogroup OpenDRV
- ** @{ */ 
-/** \addtogroup OpenDRV_Io
+ ** @{ */
+/** \addtogroup OpenDRV_Dio
  ** \ingroup OpenDRV
  ** @{ */
+/** \addtogroup OpenDRV_Dio_Internal
+ ** \ingroup OpenDRV_Dio
+ ** @{ */
+
 
 /*
  * Initials     Name
@@ -52,14 +46,40 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090125 MaCe	initial version
+ * 20090213 v0.1.1 MaCe raname Io driver to Dio
+ * 20090125 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+#define IO_PORT_BITS_WIDTH	8
 
 /*==================[typedef]================================================*/
+typedef struct {
+	uint8 Config;
+} Io_ConfigArchType;
+
+/** \brief Channel type definition */
+typedef uint8 Io_PinType;
+
+/** \brief Port type definition */
+typedef uint8 Io_PortType;
+
+/** \brief Port Group type definition */
+typedef uint32 Io_PortGroupType;
+
+/** \brief Level type definition */
+typedef uint8 Io_PinLevelType;
+
+/** \brief Port Level type definition */
+typedef uint8 Io_PortLevelType;
+
+/** \brief Port Group Value type definition */
+typedef uint32 Io_PortGroupValueType;
+
+/** \brief Port Group Value Reference type definition */
+typedef Io_PortGroupValueType* Io_PortGroupValueRefType;
 
 /*==================[external data declaration]==============================*/
 
@@ -67,6 +87,7 @@
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _IO_CFG_H_ */
+#endif /* #ifndef _DIO_ARCH_H_ */
 
