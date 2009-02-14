@@ -3,11 +3,11 @@
 #
 OBJ += main.o
 
-VPATH += example01$(DIR)src
+VPATH += examples$(DIR)example01$(DIR)src
 
-INCLUDE += -Iexample01$(DIR)inc
+INCLUDE += -Iexamples$(DIR)example01$(DIR)inc
 
-CFGFILES += example01$(DIR)etc$(DIR)example01.oil
+CFGFILES += examples$(DIR)example01$(DIR)etc$(DIR)example01.oil
 
 CLEAN += example01clean
 
