@@ -25,13 +25,11 @@
  * 	- requirements have to be completed
  * 	- tests have to be completed.
  *
- * v0.4.0 planned for Q1 2009
+ * v0.4.0 planned for Q2 2009
  *    - start tracing the requirements on the code
  *    - start testing the requirements and the code
  *    - sure some bugfixing
- *    - many optimization on time and size.	
- *
- * v0.3.0 planned for Q4 2008
- * 	- implement all OSEK-VDX classes
+ *    - many optimization on time and size.
+ *		- uIP TCPIP running for OpenSEK
  *
  */

@@ -21,6 +21,9 @@
 /** \page RELEASENOTES RELEASENOTES
  *
  * v0.3.0	OpenSEK Beta Release 20090215
+ *		- first version of the Dio driver is available
+ *		- move the tests to the tst folder
+ *		- move examples to the examples folder
  *		- port for ARM Architecture (validatet on lpc2468)
  *		- move the generator from the OpenSEK module to OpenGEN module
  *
