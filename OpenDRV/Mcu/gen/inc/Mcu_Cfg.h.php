@@ -60,6 +60,16 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+/** \brief Mcu Development Error Detection Macro */
+/* \req MCU100 The McuDevErrorDetect enables the development error detection.
+ * (ENABLE the development error detection is enable, DISABLE the development
+ * error detection is disable)
+ */
+/* \dev The McuDevErrorDetect macro can be ENABLE or DISABLE, this is not
+ * conform to the specification */
+/** TODO this has to be a configurable parameter in function of the Dio oil
+ ** configuration. */
+#define McuDevErrorDetect	ENABLE
 
 /*==================[typedef]================================================*/
 
