@@ -22,7 +22,7 @@
  
 #include "lpc2468.h"
 #include "os.h"
-#include "clk.h"
+#include "Mcu.h"
 #include "Dio.h"
 
 #define	STAT1	0x01
@@ -85,7 +85,7 @@ int	main (void) {
 	
 	int	j;										// loop counter (stack variable)
 
-	Clk_Init((Clk_ConfigRefType)NULL);
+	Mcu_Init((Mcu_ConfigRefType)NULL);
 	Dio_Init((Dio_ConfigRefType)NULL);
 	
 	/* SetLed(STAT1, LED_OFF);
