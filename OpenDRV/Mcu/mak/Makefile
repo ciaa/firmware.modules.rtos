@@ -1,19 +1,19 @@
--include OpenDRV$(DIR)Clk$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
+-include OpenDRV$(DIR)Mcu$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
-OPENDRV_CLK_OBJ +=	Clk_Init.o														\
-							Clk_Init_Arch.o
+OPENDRV_MCU_OBJ +=	Mcu_Init.o														\
+							Mcu_Init_Arch.o
 
-INCLUDE += 	-IOpenDRV$(DIR)Clk$(DIR)inc											\
-				-IOpenDRV$(DIR)Clk$(DIR)inc$(DIR)$(ARCH)							\
-				-IOpenDRV$(DIR)Clk$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+INCLUDE += 	-IOpenDRV$(DIR)Mcu$(DIR)inc											\
+				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)							\
+				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)
 
-LIB += OpenDRV_Clk.a
+LIB += OpenDRV_Mcu.a
 
-VPATH += OpenDRV$(DIR)Clk$(DIR)src												\
-			OpenDRV$(DIR)Clk$(DIR)src$(DIR)$(ARCH)								\
-			OpenDRV$(DIR)Clk$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+VPATH += OpenDRV$(DIR)Mcu$(DIR)src												\
+			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)								\
+			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)
 
-GENFILES += OpenDRV$(DIR)Clk$(DIR)gen$(DIR)inc$(DIR)Clk_Cfg.h.php
+GENFILES += OpenDRV$(DIR)Mcu$(DIR)gen$(DIR)inc$(DIR)Mcu_Cfg.h.php
 
-OpenDRV_Clk.a : $(OPENDRV_CLK_OBJ)
-	$(AR) -rcs $(LIBDIR)$(DIR)OpenDRV_Clk.a $(foreach obj, $(OPENDRV_CLK_OBJ), $(OBJDIR)$(DIR)$(obj))
+OpenDRV_Mcu.a : $(OPENDRV_MCU_OBJ)
+	$(AR) -rcs $(LIBDIR)$(DIR)OpenDRV_Mcu.a $(foreach obj, $(OPENDRV_MCU_OBJ), $(OBJDIR)$(DIR)$(obj))
