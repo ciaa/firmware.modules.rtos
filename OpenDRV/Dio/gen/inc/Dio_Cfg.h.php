@@ -59,6 +59,7 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+/** \brief Dio Development Error Detection Macro */
 /* \req DIO071 The DioDevErrorDetect enables the development error detection.
  * (ENABLE the development error detection is enable, DISABLE the development
  * error detection is disable)
