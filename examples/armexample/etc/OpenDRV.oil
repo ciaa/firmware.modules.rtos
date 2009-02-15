@@ -2,7 +2,7 @@ OpenDRV OpenDRV {
 
 	GENERAL GenConfig {
 		StartUp = ENABLE;
-		Clk = ENABLE;
+		Mcu = ENABLE;
 		Dio = ENABLE;
 		Eth = DISABLE;
 	};
@@ -12,7 +12,7 @@ OpenDRV OpenDRV {
 
 	DRIVER Dio {
 		GENERAL DioConfig {
-			DIO_DET = FALSE;
+			DET = FALSE;
 		}
 
 		CONFIG DioConfig {
