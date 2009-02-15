@@ -24,22 +24,23 @@
 <?php
 /** \brief OpenDRV File to be Generated
  **
- ** \file Clk_Cfg.h.php
+ ** \file Mcu_Cfg.h.php
  **/
 ?>
 
-#ifndef _CLK_CFG_H_
-#define _CLK_CFG_H_
-/** \brief OpenDRV Clock Generated Configuration Header File
+#ifndef _MCU_CFG_H_
+#define _MCU_CFG_H_
+/** \brief OpenDRV Mcu Generated Configuration Header File
  **
- ** This file contents the generated configuration of the Clock Driver
+ ** This file contents the generated configuration of the MicroController Unit
+ ** driver.
  **
- ** \file Clk_Cfg.h
+ ** \file Mcu_Cfg.h
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */ 
-/** \addtogroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu
  ** \ingroup OpenDRV
  ** @{ */
 
@@ -52,7 +53,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090124 MaCe	initial version
+ * 20090215 v0.1.1 MaCe	raname the driver to Mcu
+ * 20090124 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -68,5 +70,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CLK_CFG_H_ */
+#endif /* #ifndef _MCU_CFG_H_ */
 

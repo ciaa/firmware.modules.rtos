@@ -17,21 +17,21 @@
  *
  */
 
-/** \brief OpenDRV Clk Init Arch implementation file
+/** \brief OpenDRV Mcu Init Arch implementation file
  **
- ** This file implements the Clk_Init_Arch API
+ ** This file implements the Mcu_Init_Arch API
  **
- ** \file Clk_Init_Arch.c
+ ** \file Mcu_Init_Arch.c
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Clk_Internal
- ** \ingroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu_Internal
+ ** \ingroup OpenDRV_Mcu
  ** @{ */
 
 /*
@@ -43,12 +43,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090124 v0.1.0 MaCe       - initial version
+ * 20090215 v0.1.1 MaCe	raname the driver to Mcu
+ * 20090124 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "lpc2468.h"
-#include "Clk_Internal.h"
+#include "Mcu_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 #define PLL_MValue	11
@@ -68,12 +68,12 @@
 
 /*==================[external functions definition]==========================*/
 /** TODO */
-/* #define OpenDRV_CLK_START_SEC_CODE
+/* #define OpenDRV_MCU_START_SEC_CODE
  * #include "MemMap.h" */
 
-Clk_ReturnType Clk_Init_Arch
+Mcu_ReturnType Mcu_Init_Arch
 (
-	Clk_ConfigRefType config
+	Mcu_ConfigRefType Config
 )
 {
 
@@ -119,7 +119,7 @@ Clk_ReturnType Clk_Init_Arch
 }
 
 /** TODO */
-/* #define OpenDRV_CLK_STOP_SEC_CODE
+/* #define OpenDRV_MCU_STOP_SEC_CODE
  * #include "MemMap.h" */
 
 /** @} doxygen end group definition */

@@ -17,17 +17,17 @@
  *
  */
 
-/** \brief OpenDRV Clk Init implementation file
+/** \brief OpenDRV Mcuu Init implementation file
  **
- ** This file implements the Clk_Init API
+ ** This file implements the Mcu_Init API
  **
- ** \file Clk_Init.c
+ ** \file Mcu_Init.c
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu
  ** \ingroup OpenDRV
  ** @{ */
 
@@ -40,11 +40,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090124 v0.1.0 MaCe       - initial version
+ * 20090215 v0.1.1 MaCe	raname the driver to Mcu
+ * 20090124 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Clk_Internal.h"
+#include "Mcu_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -60,19 +61,19 @@
 
 /*==================[external functions definition]==========================*/
 /** TODO */
-/* #define OpenDRV_CLK_START_SEC_CODE
+/* #define OpenDRV_MCU_START_SEC_CODE
  * #include "MemMap.h" */
 
-Clk_ReturnType Clk_Init
+Mcu_ReturnType Mcu_Init
 (
-	Clk_ConfigRefType config
+	Mcu_ConfigRefType Config
 )
 {
-	Clk_Init_Arch(config);
+	Mcu_Init_Arch(config);
 }
 
 /** TODO */
-/* #define OpenDRV_CLK_STOP_SEC_CODE
+/* #define OpenDRV_MCU_STOP_SEC_CODE
  * #include "MemMap.h" */
 
 /** @} doxygen end group definition */

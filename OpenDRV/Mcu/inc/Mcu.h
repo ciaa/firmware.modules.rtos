@@ -17,19 +17,19 @@
  *
  */
 
-#ifndef _CLK_H_
-#define _CLK_H_
-/** \brief OpenDRV Clock Header File
+#ifndef _MCU_H_
+#define _MCU_H_
+/** \brief OpenDRV Mcu Header File
  **
- ** This file shall be included by all files using any OpenDRV Clock API.
+ ** This file shall be included by all files using any OpenDRV Mcu API.
  **
- ** \file clk.h
+ ** \file Mcu.h
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu
  ** \ingroup OpenDRV
  ** @{ */
 
@@ -42,36 +42,35 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081126 MaCe	initial version
+ * 20090215 v0.1.1 MaCe	raname the driver to Mcu
+ * 20081126 v0.1.0 MaCe	initial version
  */
 
 /*==================[inclusions]=============================================*/
 #include "Types.h"
-#include "Clk_Cfg.h"
-#include "Clk_Arch.h"
+#include "Mcu_Cfg.h"
+#include "Mcu_Arch.h"
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
-typedef uint8 Clk_ReturnType;
+typedef uint8 Mcu_ReturnType;
 
 typedef struct {
-	Clk_ConfigArchType Clk_Arch;
-} Clk_ConfigType;
+	Mcu_ConfigArchType Mcu_Arch;
+} Mcu_ConfigType;
 
-typedef Clk_ConfigType* Clk_ConfigRefType;
+typedef Mcu_ConfigType* Mcu_ConfigRefType;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-extern Clk_ReturnType Clk_Init(Clk_ConfigRefType config);
+extern Mcu_ReturnType Mcu_Init(Mcu_ConfigRefType Config);
 
-extern Clk_ReturnType Clk_ReInit(Clk_ConfigRefType config);
-
-extern Clk_ReturnType Clk_DeInit();
+extern Mcu_ReturnType Mcu_DeInit();
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CLK_H_ */
+#endif /* #ifndef _MCU_H_ */
 

@@ -17,23 +17,23 @@
  *
  */
 
-#ifndef _CLK_ARCH_H_
-#define _CLK_ARCH_H_
-/** \brief Clk Arch Header File
+#ifndef _MCU_ARCH_H_
+#define _MCU_ARCH_H_
+/** \brief Mcu Arch Header File
  **
- ** Clk Arch Header File
+ ** Mcu Arch Header File
  **
- ** \file Clk_Arch.h
+ ** \file Mcu_Arch.h
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_CLk_Internal
- ** \ingroup OpenDRV_Clk
+/** \addtogroup OpenDRV_Mcu_Internal
+ ** \ingroup OpenDRV_Mcu
  ** @{ */
 
 
@@ -46,18 +46,19 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090125 MaCe	initial version
+ * 20090215 v0.1.1 MaCe	raname the driver to Mcu
+ * 20090125 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/ 
-#include "clk.h"
+#include "Mcu.h"
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
 typedef struct {
 	uint8 Config;
-} Clk_ConfigArchType;
+} Mcu_ConfigArchType;
 
 /*==================[external data declaration]==============================*/
 
@@ -67,5 +68,5 @@ typedef struct {
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CLK_ARCH_H_ */
+#endif /* #ifndef _MCU_ARCH_H_ */
 
