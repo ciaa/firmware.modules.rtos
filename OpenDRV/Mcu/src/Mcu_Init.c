@@ -69,7 +69,7 @@ Mcu_ReturnType Mcu_Init
 	Mcu_ConfigRefType Config
 )
 {
-	Mcu_Init_Arch(config);
+	Mcu_Init_Arch(Config);
 }
 
 /** TODO */
