@@ -1,7 +1,9 @@
 -include OpenDRV$(DIR)Mcu$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
 OPENDRV_MCU_OBJ +=	Mcu_Init.o														\
-							Mcu_Init_Arch.o
+							Mcu_InitClock.o												\
+							Mcu_Init_Arch.o												\
+							Mcu_InitClock_Arch.o
 
 INCLUDE += 	-IOpenDRV$(DIR)Mcu$(DIR)inc											\
 				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)							\

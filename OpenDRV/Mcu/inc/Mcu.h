@@ -204,15 +204,38 @@ typedef uint8 Mcu_ClockType;
  **/
 typedef uint8 Mcu_ResetType;
 
-/** TODO page 28 */
+/** \brief Mcu Row Reset type definition */
 typedef uint8 Mcu_RawResetType;
+
+/** \brief Mcu Mode type definition */
+typedef uint8 Mcu_ModeType;
+
+/** \brief Mcu Ram Section type definition */
+typedef uint8 Mcu_RamSectionType;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-extern Mcu_ReturnType Mcu_Init(Mcu_ConfigRefType Config);
+/** \brief Mcu Init service
+ **
+ ** This service initializes the MCU driver.
+ **
+ ** \param[in] ConfigPtr Pointer to MCU driver configuration set.
+ ** \return void
+ **/
+extern void Mcu_Init(const Mcu_ConfigType* ConfigPtr);
 
-extern Mcu_ReturnType Mcu_DeInit();
+/** \brief Mcu Init Clock service
+ **
+ ** This service initializes the PLL and other MCU specific clock options.
+ **
+ ** \param[in] ConfigSettings Clock Settings
+ ** \return E_OK Command has been accepted
+ **			E_NOT_OK Command has not been accepted
+ **/
+extern Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSettings);
+
+/** TODO ALL */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

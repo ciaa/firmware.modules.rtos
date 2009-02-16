@@ -17,11 +17,11 @@
  *
  */
 
-/** \brief OpenDRV Mcu Init implementation file
+/** \brief OpenDRV Mcu Init Clock implementation file
  **
  ** This file implements the Mcu_Init API
  **
- ** \file Mcu_Init.c
+ ** \file Mcu_InitClock.c
  **
  **/
 
@@ -40,8 +40,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090215 v0.1.1 MaCe	raname the driver to Mcu
- * 20090124 v0.1.0 MaCe initial version
+ * 20090216 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -64,12 +63,12 @@
 /* #define OpenDRV_MCU_START_SEC_CODE
  * #include "MemMap.h" */
 
-void Mcu_Init
+Std_ReturnType Mcu_InitClock
 (
-	const Mcu_ConfigType* ConfigPtr
+	Mcu_ClockType ClockSettings
 )
 {
-	Mcu_Init_Arch(ConfigPtr);
+	Mcu_InitClock_Arch(ClockSettings);
 }
 
 /** TODO */

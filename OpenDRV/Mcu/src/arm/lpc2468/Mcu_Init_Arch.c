@@ -51,10 +51,6 @@
 #include "Mcu_Internal.h"
 
 /*==================[macros and definitions]=================================*/
-#define PLL_MValue	11
-#define PLL_NValue	0
-#define CCLKDivValue	4
-#define USBCLKDivValue	5
 
 /*==================[internal data declaration]==============================*/
 
@@ -73,49 +69,10 @@
 
 Mcu_ReturnType Mcu_Init_Arch
 (
-	Mcu_ConfigRefType Config
+	Mcu_ConfigRefType ConfigPtr
 )
 {
-
-	volatile unsigned long MValue;
-	volatile unsigned long NValue;
-
-	if ( PLLSTAT & (1 << 25) )
-	{
-		PLLCON = 1;			/* Enable PLL, disconnected */
-		PLLFEED = 0xaa;
-		PLLFEED = 0x55;
-	}
-
-	PLLCON = 0;				/* Disable PLL, disconnected */
-	PLLFEED = 0xaa;
-	PLLFEED = 0x55;
-
-	SCS |= 0x20;			/* Enable main OSC */
-	while( !(SCS & 0x40) );	/* Wait until main OSC is usable */
-
-	CLKSRCSEL = 0x1;		/* select main OSC, 12MHz, as the PLL clock source */
-
-	PLLCFG = PLL_MValue | (PLL_NValue << 16);
-	PLLFEED = 0xaa;
-	PLLFEED = 0x55;
-
-	PLLCON = 1;				/* Enable PLL, disconnected */
-	PLLFEED = 0xaa;
-	PLLFEED = 0x55;
-
-	CCLKCFG = CCLKDivValue;	/* Set clock divider */
-
-	while ( ((PLLSTAT & (1 << 26)) == 0) );	/* Check lock bit status */
-
-	MValue = PLLSTAT & 0x00007FFF;
-	NValue = (PLLSTAT & 0x00FF0000) >> 16;
-	while ((MValue != PLL_MValue) && ( NValue != PLL_NValue) );
-
-	PLLCON = 3;				/* enable and connect */
-	PLLFEED = 0xaa;
-	PLLFEED = 0x55;
-	while ( ((PLLSTAT & (1 << 25)) == 0) );	/* Check connect bit status */
+	/** TODO */
 }
 
 /** TODO */
