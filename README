@@ -24,22 +24,31 @@
 /** \page README README
  *
  * INDEX:
- * 
- * 0. What is OpenSEK?<br>
- * 1. What do I need to use OpenSEK?<br>
- * 2. How to compile and run the demo?<br>
- * 3. How to port OpenSEK to an other architecture?<br>
- * 4. To be involved<br>
+ *
+ * 0. Give us Feedback.<br>
+ * 1. What is OpenSEK?<br>
+ * 2. What do I need to use OpenSEK?<br>
+ * 3. How to compile and run the demo?<br>
+ * 4. How to port OpenSEK to an other architecture?<br>
+ * 5. To get involved<br>
  * 
  * CONTENT:
+ *
+ * 0. Give us Feedbck.
+ *
+ *		We are interested in your feedback. If you have downloaded OpenSEK
+ *		please tell you us your opinion, we know we are still working on it
+ *		but we would like to know which features/architectures/boards and etc.
+ *		are you	interested for. Any compent good or not can be helpfull for
+ *		us. We wait for your opinion on http://opensek.sf.net/forum-op.html
  * 
- * 0. What is OpenSEK?
+ * 1. What is OpenSEK?
  *
  *		OpenSEK is an OpenSource implementation of the the RTOS
  *		specified by OSEK-VDX. You can download the OSEK-VDX specification
  *		from http://www.osek-vdx.org/.
  *
- * 1. What do I need to use OpenSEK?
+ * 2. What do I need to use OpenSEK?
  * 
  *		OpenSEK is developed and tested in Linux but it can be generated
  *		and used in others architectures. At the moment OpenSEK only runs
@@ -59,7 +68,7 @@
  *				- nm
  *				- doxygen
  *	
- *	2. How to compile and run the demo?
+ *	3. How to compile and run the demo?
  *	
  *		from the root directory execute:
  * \code
@@ -75,13 +84,13 @@
  * make doc
  * \endcode
  *
- *	3. How to port OpenSEK to an other architecture?
+ *	4. How to port OpenSEK to an other architecture?
  *
  *		First of all we will finish the first version of OpenSEK for posix
  *		system. After that we will start porting OpenSEK to at least one
  *		microcontroller. If you want to participate please contact us.
  *
- *	4. To be involved
+ *	5. To get involved
  *
  *		Do you want to participate on the development of OpenSEK,
  *		please contact me at mcerdeiro@gmail.com.
