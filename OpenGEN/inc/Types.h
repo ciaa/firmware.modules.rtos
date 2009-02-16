@@ -147,6 +147,11 @@ typedef unsigned int uint32f;
 typedef signed int sint32f;
 #endif
 
+#ifndef TYPES_STD_RETURNTYPE
+#define TYPES_STD_RETURNTYPE
+/** \brief default Standard Return type definition */
+typedef uint8f Std_ReturnType;
+#endif
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
