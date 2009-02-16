@@ -86,6 +86,7 @@ int	main (void) {
 	int	j;										// loop counter (stack variable)
 
 	Mcu_Init((Mcu_ConfigRefType)NULL);
+	(void)Mcu_InitClock((Mcu_ClockType)0);
 	Dio_Init((Dio_ConfigRefType)NULL);
 	
 	/* SetLed(STAT1, LED_OFF);
