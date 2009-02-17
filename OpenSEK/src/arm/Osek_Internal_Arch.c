@@ -49,6 +49,7 @@
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
+void * Osek_TaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -63,7 +64,14 @@ void CounterInterrupt(CounterType CounterID)
 	AlarmType AlarmID;
 
 	/* increment counter */
-	CountersVar[CounterID].Time = ( CountersVar[CounterID].Time + 1 ) % CountersConst[CounterID].MaxAllowedValue;
+	CountersVar[CounterID].Time++;
+
+	/* check if the timer has an overvlow */
+	if ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
+	{
+		/* reset counter */
+		CountersVar[CounterID].Time = 0;
+	}
 
 	/* for alarms on this counter */
 	for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
