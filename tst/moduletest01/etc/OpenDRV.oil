@@ -1,9 +1,9 @@
 OpenDRV OpenDRV {
 
-	DRIVER GenConfig {
+	GENERAL GenConfig {
 		StartUp = ENABLE;
-		Clk = DISABLE;
-		Io = DISABLE;
+		Mcu = DISABLE;
+		Dio = DISABLE;
 		Eth = DISABLE;
 	};
 
