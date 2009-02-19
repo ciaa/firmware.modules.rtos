@@ -1,26 +1,3 @@
-/****************************************************************************
- *  
- * Project: LPC-E2468 blinking led demo
- *
- * Copyright: Ivan Vasilev, Olimex Ltd. All rights reserved.
- * 
- * File: $File main.c $
- * Description: Board-specific USB initialization
- * Developer: Ivan Vasilev, <ivan at l123.org>
- *
- * Last change: $Date: 2008-04-08 09:23:26 +0300 (вторник, 08 Април 2008) $
- * Revision: $Revision: 4 $
- * Id: $Id: main.c 4 2008-04-08 06:23:26Z Ivan $
- * Author: $Author: Ivan $
- *
- *  This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- ****************************************************************************/
- 
-#include "lpc2468.h"
 #include "os.h"
 #include "Mcu.h"
 #include "Dio.h"
