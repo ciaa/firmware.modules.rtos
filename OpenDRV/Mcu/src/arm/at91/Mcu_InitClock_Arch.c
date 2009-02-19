@@ -17,13 +17,11 @@
  *
  */
 
-#ifndef _MCU_INTERNAL_H_
-#define _MCU_INTERNAL_H_
-/** \brief Mcu Internal Header File
+/** \brief OpenDRV Mcu Init Arch implementation file
  **
- ** Mcu Internal Header File
+ ** This file implements the Mcu_InitClock_Arch API
  **
- ** \file Mcu_Internal.h
+ ** \file Mcu_InitClock_Arch.c
  **
  **/
 
@@ -36,36 +34,45 @@
  ** \ingroup OpenDRV_Mcu
  ** @{ */
 
-
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090215 v0.1.1 MaCe	raname the driver to Mcu
- * 20090124 v0.1.0 MaCe	initial version
- */  
+ * 20090219 v0.1.0 MaCe initial version
+ */
 
-/*==================[inclusions]=============================================*/ 
-#include "at91.h"
-#include "Mcu.h"
+/*==================[inclusions]=============================================*/
+#include "Mcu_Internal.h"
 
-/*==================[macros]=================================================*/
+/*==================[macros and definitions]=================================*/
 
-/*==================[typedef]================================================*/
+/*==================[internal data declaration]==============================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
 /** TODO */
 /* #define OpenDRV_MCU_START_SEC_CODE
  * #include "MemMap.h" */
 
-extern Mcu_ReturnType Mcu_Init_Arch(Mcu_ConfigRefType Config);
+Std_ReturnType Mcu_InitClock_Arch
+(
+	Mcu_ClockType ClockSettings
+)
+{
+	/** TODO */
+}
 
 /** TODO */
 /* #define OpenDRV_MCU_STOP_SEC_CODE
@@ -75,5 +82,4 @@ extern Mcu_ReturnType Mcu_Init_Arch(Mcu_ConfigRefType Config);
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MCU_INTERNAL_H_ */
 
