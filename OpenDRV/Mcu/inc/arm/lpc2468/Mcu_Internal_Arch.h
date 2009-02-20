@@ -17,13 +17,13 @@
  *
  */
 
-#ifndef _MCU_INTERNAL_H_
-#define _MCU_INTERNAL_H_
+#ifndef _MCU_INTERNAL_ARCH_H_
+#define _MCU_INTERNAL_ARCH_H_
 /** \brief Mcu Internal Header File
  **
  ** Mcu Internal Header File
  **
- ** \file Mcu_Internal.h
+ ** \file Mcu_Internal_Arch.h
  **
  **/
 
@@ -46,13 +46,11 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090215 v0.1.1 MaCe	raname the driver to Mcu
- * 20090124 v0.1.0 MaCe	initial version
+ * 20090220 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/ 
-#include "Mcu.h"
-#include "Mcu_Internal_Arch.h"
+#include "lpc2468.h"
 
 /*==================[macros]=================================================*/
 
@@ -61,19 +59,10 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-/** TODO */
-/* #define OpenDRV_MCU_START_SEC_CODE
- * #include "MemMap.h" */
-
-extern Mcu_ReturnType Mcu_Init_Arch(Mcu_ConfigRefType Config);
-
-/** TODO */
-/* #define OpenDRV_MCU_STOP_SEC_CODE
- * #include "MemMap.h" */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MCU_INTERNAL_H_ */
+#endif /* #ifndef _MCU_INTERNAL_ARCH_H_ */
 
