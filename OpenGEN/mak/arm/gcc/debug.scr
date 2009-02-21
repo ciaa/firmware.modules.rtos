@@ -1,9 +1,10 @@
 target remote localhost:3333
 display /i $pc
 define dn
-	if ( $arg0 )
-		disas /m $pc $pc+$arg0
-	else
-		disas /m $pc $pc+20
+	disas /m $pc $pc+$arg0
+end
+
+define rst
+	monitor soft_reset_halt
 end
 
