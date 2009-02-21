@@ -49,7 +49,9 @@
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
-void * Osek_TaskPtr_Arch;
+void* Osek_NewTaskPtr_Arch;
+
+void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -129,6 +131,22 @@ void CounterInterrupt(CounterType CounterID)
 			}
 		}
 	}
+}
+
+void IRQ_Routine (void) {
+   while (1);
+}
+
+void FIQ_Routine (void)  {
+   while (1);
+}
+
+void SWI_Routine (void)  {
+   while (1);
+}
+
+void UNDEF_Routine (void) {
+   while (1);
 }
 
 /** @} doxygen end group definition */

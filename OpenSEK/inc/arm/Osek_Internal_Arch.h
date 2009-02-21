@@ -40,6 +40,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20090221 MaCe port this file to ARM7 architecture
  * v0.1.0 20081116 MaCe	initial version
  */  
 
@@ -85,14 +86,7 @@
 		}																				\
 	}
 
-/** \brief Jmp to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-#define JmpTask(task)															\
-	{																					\
-	Osek_TaskPtr_Arch = (void*)TasksConst[task].TaskContext;			\
-\
+/* \
 	__asm__ __volatile (\
 		"LDR R0, =0x01010101 \n\t"	\
 		"LDR R1, =0x11111111 \n\t"	\
@@ -107,68 +101,49 @@
 		"LDR R10, =0xA1A1A1A1 \n\t"	\
 		"LDR R11, =0xB1B1B1B1 \n\t"	\
 		"LDR R12, =0xC1C1C1C1 \n\t"	\
-	); \
+	); \ */
+
+
+/** \brief Jmp to an other Task
+ **
+ ** This function jmps to the indicated task.
+ **/
+#define JmpTask(task)															\
+	{																					\
+	Osek_NewTaskPtr_Arch = (void*)TasksConst[task].TaskContext;		\
 																						\
 	__asm__ __volatile__ (														\
-		"PUSH {R0}															\n\t"	\
-		"LDR R0, =Osek_TaskPtr_Arch									\n\t"	\
-																						\
-		/* save all registers */												\
-		"STMIB	R0,{R1-R15}^											\n\t"	\
-		"NOP																	\n\t"	\
-\
-	/* Set R0 to point to the task stack pointer. */					\
-	"STMDB	SP,{SP}^											\n\t"	\
-	"NOP														\n\t"	\
-	"SUB	SP, SP, #4											\n\t"	\
-	"POP {R0}											\n\t"	\
-																		\
-	/* Push the return address onto the stack. */						\
-	"STMDB	R0!, {LR}											\n\t"	\
-																		\
-	/* Now we have saved LR we can use it instead of R0. */				\
-	"MOV	LR, R0												\n\t"	\
-																		\
-	/* Pop R0 so we can save it onto the system mode stack. */			\
-	"LDMIA	SP!, {R0}											\n\t"	\
-																		\
-	/* Push all the system mode registers onto the task stack. */		\
-	"STMDB	LR,{R0-LR}^											\n\t"	\
-	"NOP														\n\t"	\
-	"SUB	LR, LR, #60											\n\t"	\
-																		\
-	/* Push the SPSR onto the task stack. */							\
-	"MRS	R0, SPSR											\n\t"	\
-	"STMDB	LR!, {R0}											\n\t"	\
-																		\
-	"LDR	R0, =0           								\n\t"	\
-	"LDR	R0, [R0]											\n\t"	\
-	"STMDB	LR!, {R0}											\n\t"	\
-																		\
-	/* Store the new top of stack for the task. */						\
-	"LDR	R0, =1									\n\t"	\
-	"LDR	R0, [R0]											\n\t"	\
-	"STR	LR, [R0]											\n\t"	\
-\
-\			"LDR		R0, =2									\n\t"			\
-			"LDR		R0, [R0]										\n\t"			\
-			"LDR		LR, [R0]										\n\t"			\
-																						\
-			/* Get the SPSR from the stack. */								\
-			"LDMFD	LR!, {R0}									\n\t"			\
-			"MSR		SPSR, R0										\n\t"			\
-																						\
-		);																				\
+		/* load Task Pointer */													\
+		"LDR R0, =Osek_NewTaskPtr_Arch								\n\t"	\
+		/* load memory location of the pointer */							\
+		"LDR R0, [R0]														\n\t"	\
+		/* get context */															\
+		"LDMIA R0, {R0-R15}												\n\t"	\
+	);																					\
 	}
 
 /** \brief Save context */
-#define SaveContext(task) 											\
-	{																		\
-		PreCallService();												\
-		__asm__ __volatile__ (										\
-			"STMDB SP!, {R0}"											\
-		);																	\
-		PostCallService();											\
+#define SaveContext(task) 														\
+	{																					\
+	Osek_OldTaskPtr_Arch = (void*)TasksConst[task].TaskContext;		\
+																						\
+	__asm__ __volatile__ (														\
+		/* save the R0 reg on the stack */									\
+		"STMDB	SP!, {R0}												\n\t"	\
+		/* get the Task Pointer */												\
+		"LDR R0, =Osek_OldTaskPtr_Arch								\n\t"	\
+		/* load the task pointer */											\
+		"LDR		R0, [R0]													\n\t"	\
+		/* save all registers R1 - R15 without inc R0 */				\
+		"STMIB	R0,{R1-R15}^											\n\t"	\
+		"NOP	/* do not remove this nop */							\n\t"	\
+		"NOP	/* do not remove this nop */							\n\t"	\
+		/* get R0 */																\
+		"LDMIA	SP!, {R1}												\n\t"	\
+		/* push R0 (value is in R1) to */									\
+		/*	Osek_TaskPtr_Arch (value in R0) */								\
+		"STR R1, [R0]														\n\t"	\
+	);																					\
 	}
 
 /** \brief Set the entry point for a task */
@@ -243,12 +218,17 @@
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
-/** \brief Osek Task Pointer for ARM Architecture
+/** \brief Osek New Task Pointer for ARM Architecture
  **
- ** This variable content the pointer to the saved register of a task
- ** which will be leaved or restored.
+ ** This variable content the pointer to the new task.
  **/
-extern void* Osek_TaskPtr_Arch;
+extern void* Osek_NewTaskPtr_Arch;
+
+/** \brief Osek Old Task Pointer for ARM Architecture
+ **
+ ** This variable content the pointer to the old task.
+ **/
+extern void* Osek_OldTaskPtr_Arch;
 
 /*==================[external functions declaration]=========================*/
 
