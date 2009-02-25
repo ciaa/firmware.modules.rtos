@@ -63,22 +63,39 @@ void Eth_MainFunction
 	void
 )
 {
+	uint8f loopi;
 
-	for (i=0 ; i< UIP_CONNS ; i++)
+#if (OpenDRV_TCPIP == ENABLE)
+	/* uip functionality for every TCPIP connection */
+	for (loopi = 0; loopi < UIP_CONNS; loopi++)
 	{
-		uip_periodic(i);
+		uip_periodic(loopi);
 		if (uip_len > 0)
 		{
 			uip_arp_out();
 			Eth_Transmit();
 		}
 	}
+#endif /* #if (OpenDRV_TCPIP == ENABLE) */
 
-	while (Eth_Var.Flags.TX_Data > 0)
+#if (OpenDRV_UDP == ENABLE)
+	/* uip functionality for every UDP connection */
+	for (loopi = 0; loopi < UIP_UDP_CONNS; loopi++)
+	{
+		uip_udp_periodic(loopi);
+		if(uip_len > 0)
+		{
+			uip_arp_out();
+			Eth_Transmit();
+	}
+#endif /* #if (OpenDRV_UDP == ENABLE) */
+
+	/* ?? TODO check this */
+	/* while (Eth_Var.Flags.TX_Data > 0)
 	{
 		Eth_Var.TX_Data--;
 		Eth_Receive;
-	}
+	} */
 
 	/* check if new data was received by the driver */
 	while (Eth_Var.RX_Data > 0)
@@ -103,7 +120,7 @@ void Eth_MainFunction
 		}
 		else
 		{
-			
+			/* nothing to do unknown protocol */	
 		}
 		
 		Eth_Var.RX_Data--;
