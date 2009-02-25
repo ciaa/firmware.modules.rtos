@@ -31,6 +31,7 @@
  * 3. How to compile and run the demo?<br>
  * 4. How to port OpenSEK to an other architecture?<br>
  * 5. To get involved<br>
+ * 6. Editting and viewing the source code with the right indentation<br>
  * 
  * CONTENT:
  *
@@ -94,6 +95,16 @@
  *
  *		Do you want to participate on the development of OpenSEK,
  *		please contact me at mcerdeiro@gmail.com.
+ *
+ *	6. Editting and viewing the source code with the right indentation
+ *
+ *		Please take into account that the OpenSEK source code is written
+ *		tabs which represent 3 spaces. To see the source code in with the
+ *		right indentation please set your tabs to 3 spaces (without
+ *		replacing). This topic is still under discussion if you want to
+ *		participate leave us your message in the forum.
+ *		To do that in vi you can use "set tabstop=3", in other editor
+ *		you have to search in the options or preferences.
  *
  */
 
