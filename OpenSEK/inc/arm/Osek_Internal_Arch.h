@@ -231,6 +231,13 @@ extern void* Osek_NewTaskPtr_Arch;
 extern void* Osek_OldTaskPtr_Arch;
 
 /*==================[external functions declaration]=========================*/
+void IRQ_Routine (void)   __attribute__ ((interrupt("IRQ")));
+
+void FIQ_Routine (void)   __attribute__ ((interrupt("FIQ")));
+
+void SWI_Routine (void)   __attribute__ ((interrupt("SWI")));
+
+void UNDEF_Routine (void) __attribute__ ((interrupt("UNDEF")));
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
