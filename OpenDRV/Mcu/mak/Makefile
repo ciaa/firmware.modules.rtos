@@ -7,13 +7,13 @@ OPENDRV_MCU_OBJ +=	Mcu_Init.o														\
 
 INCLUDE += 	-IOpenDRV$(DIR)Mcu$(DIR)inc											\
 				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)							\
-				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 LIB += OpenDRV_Mcu.a
 
 VPATH += OpenDRV$(DIR)Mcu$(DIR)src												\
 			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)								\
-			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 GENFILES += OpenDRV$(DIR)Mcu$(DIR)gen$(DIR)inc$(DIR)Mcu_Cfg.h.php
 
