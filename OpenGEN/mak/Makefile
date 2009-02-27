@@ -42,7 +42,7 @@ VPATH += OpenGEN$(DIR)src	\
 
 INCLUDE +=	-IOpenGEN$(DIR)inc													\
 				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)									\
-				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)			\
+				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)			\
 				-IOpenGEN$(DIR)inc$(DIR)compilers$(DIR)$(COMPILER)			\
 				-I$(GENDIR)$(DIR)inc
 
