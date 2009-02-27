@@ -48,11 +48,11 @@
 #include "Dio.h"		/* DIO Driver header file */
 
 /*==================[macros and definitions]=================================*/
-#define SET_LED0(val)	Dio_WriteChannel(LED0, (val == 0 ) ? DIO_LOW : DIO_HIGH);
-#define SET_LED1(val)	Dio_WriteChannel(LED1, (val == 0 ) ? DIO_LOW : DIO_HIGH);
+#define SET_LED0(val)	Dio_WriteChannel(LED0, (val == 0 ) ? DIO_LOW : DIO_HIGH)
+#define SET_LED1(val)	Dio_WriteChannel(LED1, (val == 0 ) ? DIO_LOW : DIO_HIGH)
 
-#define GET_BUT0()		Dio_ReadChannel(BUT0);
-#define Get_BUT1()		Dio_ReadChannel(BUT1);
+#define GET_BUT0()		Dio_ReadChannel(BUT0)
+#define GET_BUT1()		Dio_ReadChannel(BUT1)
 
 /*==================[internal data declaration]==============================*/
 uint8 led1;
@@ -139,11 +139,11 @@ TASK(LedsTask)
  **/
 TASK(ButtonsTask)
 {
-	if ( Dio_ReadChannel(BUT0) == DIO_HIGH )
+	if ( GET_BUT0() == DIO_HIGH )
 	{
 		led1 = 1;
 	}
-	if ( Dio_ReadChannel(BUT1) == DIO_HIGH )
+	if ( GET_BUT1() == DIO_HIGH )
 	{
 		led1 = 0;
 	}
