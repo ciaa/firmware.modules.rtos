@@ -7,13 +7,13 @@ OPENDRV_DIO_OBJ +=		Dio_Init.o														\
 
 INCLUDE += 	-IOpenDRV$(DIR)Dio$(DIR)inc											\
 				-IOpenDRV$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)							\
-				-IOpenDRV$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+				-IOpenDRV$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 LIB += OpenDRV_Dio.a
 
 VPATH += OpenDRV$(DIR)Dio$(DIR)src												\
 			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)								\
-			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 GENFILES += OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)Dio_Cfg.h.php
 
