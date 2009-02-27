@@ -10,11 +10,18 @@
 #  - arm
 ARCH = arm
 
-# DERIVATE
-# defines the derivate. For each architecture none, one or more derivates can be
+# CPU Types
+# defines the CPU family. For each architecture none, one or more CPUTYPEs can be
 # defined
-DERIVATE = 
+CPUTYPE = lpc2xxx
 
+# CPU
+CPU = lpc2468
+
+# BOARD
+BOARD = lpc-e2468
+
+# COMPILER
 COMPILER = gcc
 
 # MODULES
@@ -28,14 +35,16 @@ COMPILER = gcc
 # moduletest01		Module tests for all modules
 #
 
-MODS +=	armexample		\
-			OpenGEN
+MODS +=	examples/armexample		\
+			OpenGEN						\
+			OpenDRV						\
+ 			OpenSEK
 
-#			OpenGEN			\
+#MODS +=	OpenGEN			\
 #			TestSuite		\
 #			OpenSEK			\
 #			OpenDRV			\
-#			example01
+#			moduletest01
 
 all: OpenSEK
 
@@ -54,9 +63,8 @@ GENDIR = out$(DIR)gen
 PROJECT = OpenSEK
 BIN = $(PROJECT)
 
-#CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE) -fprofile-arcs -ftest-coverage
-CFLAGS += $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DDERIVATE=$(DERIVATE)
-LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
+#CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE) -fprofile-arcs -ftest-coverage
+CFLAGS += $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE)
 
 DOC += nm sizedoc reqdoc doxygen
 
@@ -80,7 +88,8 @@ OpenSEK : $(OBJ) $(LIB)
 	@ echo
 	@ echo Linking $(BINDIR)$(DIR)$(BIN)
 	$(LD) $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN)
-#	gcc $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
+
+#	$(CC) $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN) -lgcov
 
 generate : $(GEN)
 
@@ -134,7 +143,9 @@ info :
 	@echo ++++++++
 	@echo OpenSEK Make Environment 0.1.0
 	@echo Selected Architecture................: $(ARCH)
-	@echo Selected Derivate....................: $(DERIVATE)
+	@echo Selected Cputype.....................: $(CPUTYPE)
+	@echo Selected Cpu.........................: $(CPU)
+	@echo Selected Board.......................: $(BOARD)
 	@echo Selected Compiler....................: $(COMPILER)
 	@echo Enabled Modules......................: $(MODS)
 	@echo Output directory for object files....: $(OBJDIR)
