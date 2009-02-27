@@ -11,37 +11,38 @@ OpenDRV OpenDRV {
 	};
 
 	DRIVER Dio {
-		GENERAL DioConfig {
+		GENERAL DioGeneral {
 			DET = FALSE;
 		}
 
-		CONFIG DioConfig {
+		CONFIG DioConfig01 {
 
-			CHANNEL Channel1 {
-				NAME = Channel1;
+			CHANNEL LED0 {
+				NAME = LED0;
 				PORT = 0;
 				PIN = 0;
-				DIRECTION = INPUT;
+				DIRECTION = OUTPUT;
 			}
 
-			CHANNEL Channel2 {
-				NAME = Channel2;
+			CHANNEL LED1 {
+				NAME = LED1;
 				PORT = 0;
 				PIN = 1;
 				DIRECTION = OUTPUT;
 			}
 
-			PORT Port0 {
-				NAME = Port0;
-				PORT = 1;
+			CHANNEL BUT0 {
+				NAME = BUT0;
+				PORT = 0;
+				PIN = 0;
 				DIRECTION = INPUT;
 			}
 
-			CHANNELGROUP ChannelGroup1 {
-				NAME = ChannelGroup1;
+			CHANNEL BUT1 {
+				NAME = BUT1;
 				PORT = 0;
-				MASK = 0xFC;
-				DIRECTION = OUTPUT;
+				PIN = 1;
+				DIRECTION = INPUT;
 			}
 			
 		}

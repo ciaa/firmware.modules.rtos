@@ -1,168 +1,157 @@
-#include "os.h"
-#include "Mcu.h"
-#include "Dio.h"
+/* Copyright 2008, Mariano Cerdeiro
+ *
+ * This file is part of OpenSEK.
+ *
+ * OpenSEK is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenSEK is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
-#define	STAT1	0x01
-#define	STAT2	0x02
+/** \brief OpenSEK CancelAlarm Implementation File
+ **
+ ** This file implements the CancelAlarm API
+ **
+ ** \file CancelAlarm.c
+ **
+ **/
 
-#define	LED_OFF		0x01
-#define	LED_ON		0x02
-#define	LED_TOGGLE	0x03
+/** \addtogroup Examples Examples
+ ** @{ */
+/** \addtogroup ARMExample ARM Example
+ ** @{ */
 
-#define TRUE	1
-#define	FALSE	0
+/*
+ * Initials     Name
+ * ---------------------------
+ * MaCe         Mariano Cerdeiro
+ */
 
-void SetLed(int led, int state);
+/*
+ * modification history (new versions first)
+ * -----------------------------------------------------------
+ * 20090227 v0.1.0 MaCe initial version based on an LPC-E2468 blinking led demo
+ */
 
-void InitPLL(void);
-void feed(void);
+/*==================[inclusions]=============================================*/
+#include "os.h"		/* OSEK header file */
+#include "Mcu.h"		/* MCU Driver header file */
+#include "Dio.h"		/* DIO Driver header file */
 
-void IRQ_Routine (void)   __attribute__ ((interrupt("IRQ")));
-void FIQ_Routine (void)   __attribute__ ((interrupt("FIQ")));
-void SWI_Routine (void)   __attribute__ ((interrupt("SWI")));
-void UNDEF_Routine (void) __attribute__ ((interrupt("UNDEF")));
+/*==================[macros and definitions]=================================*/
+#define SET_LED0(val)	Dio_WriteChannel(LED0, (val == 0 ) ? DIO_LOW : DIO_HIGH);
+#define SET_LED1(val)	Dio_WriteChannel(LED1, (val == 0 ) ? DIO_LOW : DIO_HIGH);
 
+#define GET_BUT0()		Dio_ReadChannel(BUT0);
+#define Get_BUT1()		Dio_ReadChannel(BUT1);
 
-/* return TRUE if the button is pressed */
-int But1Pressed(void)
-{
-	if (FIO2PIN & (1<<13)) return FALSE;
-	else return TRUE;
-}
-int But2Pressed(void)
-{
-	if (FIO2PIN & (1<<21)) return FALSE;
-	else return TRUE;
-}
+/*==================[internal data declaration]==============================*/
+uint8 led1;
 
-/* void Delay(void)
-{
-	int j;
-	for (j = 0; j < 10000; j++ );
-} */
+/*==================[internal functions declaration]=========================*/
 
-/* return TRUE if the RTC is OK */
-/* int TestRTC(void)
-{
-	int timeout = 1000000;
-	RTC_CCR = 0;
-	RTC_SEC = 0x00;
-	RTC_CCR = 1<<1; clear the counter
-	RTC_CCR = 1<<0 | 1<<4; enable the clock using the external xtal
-	
-	while (timeout--);
-	timeout = RTC_CTC;
-	
-	if ((1550 < timeout) & (timeout < 1600)) return TRUE;
-	
-	return FALSE;
-} */
+/*==================[internal data definition]===============================*/
 
-int	main (void) {
-	
-	int	j;										// loop counter (stack variable)
+/*==================[external data definition]===============================*/
 
-	Mcu_Init((Mcu_ConfigRefType)NULL);
-	(void)Mcu_InitClock((Mcu_ClockType)0);
-	Dio_Init((Dio_ConfigRefType)NULL);
-	
-	/* SetLed(STAT1, LED_OFF);
-	if (TestRTC() == TRUE) 
-	{
-		SetLed(STAT2, LED_OFF);
-		SetLed(STAT1, LED_ON);
-	}
-	else 
-	{
-		SetLed(STAT2, LED_ON);
-	} */
-		
-	/* for (j = 0; j < 200000; j++); */
-	
-	// endless loop to toggle the green led
-	StartOs(AppMode1);
+/*==================[internal functions definition]==========================*/
 
-	while (1) {
-		
-		for (j = 0; j < 5000; j++ )
-		{
-			if (But2Pressed() == TRUE) SetLed(STAT2, LED_ON);
-			if (But1Pressed() == TRUE) SetLed(STAT2, LED_OFF);
-		}
-		
-		SetLed(STAT1, LED_TOGGLE);
-	}
+/*==================[external functions definition]==========================*/
+/** \brief main function
+ **
+ ** Project main function. This function is called after the c conformance
+ ** initialisation. This function shall call the StartOs in the right
+ ** Application Mode. The StartOs API shall never return.
+ **
+ **/
+int main
+(
+	void
+)
+{	
+	/* Start OSEK */	StartOs(AppMode1);
 }
 
+/** \brief Init Task
+ **
+ ** This task is called one time after every reset and takes care of
+ ** the system initialization.
+ **/
 TASK(InitTask)
 {
+	/* init MCU Driver */	Mcu_Init((Mcu_ConfigRefType)NULL);
+
+	/* init Clock */
+	(void)Mcu_InitClock((Mcu_ClockType)0);
+
+	/* init DIO Driver */
+	Dio_Init((Dio_ConfigRefType)NULL);
+
+	/* start cyclic alarm to activate task LedsTask */
+	SetRelAlarm(ActivateLedsTask, 10, 10);
+
+	/* start cyclic alarm to activate task ButtonsTask */
+	SetRelAlarm(ActivateButtonsTask, 5, 10);
+
 	TerminateTask();
 }
 
-TASK(Task_Leds)
+/** \brief Led Task
+ **
+ ** This task set the Board Leds:
+ **  LED0 will blink every time the task is started
+ **  LED1 can be turned on or of with the board buttons
+ **/
+TASK(LedsTask)
 {
-	TerminateTask();
-}
+	static uint8 led0 = 0;
 
-TASK(Task_Keys)
-{
-	TerminateTask();
-}
-
-void SetLed(int led, int state)
-{
-	if (led == STAT1)
-	{
-		switch (state)
-		{
-			case LED_OFF:
-				FIO4SET |= 1<<17;
-				break;
-			
-			case LED_ON:
-				FIO4CLR |= 1<<17;
-				break;
-			
-			case LED_TOGGLE:
-				if (FIO4PIN & (1<<17) )
-				{
-					SetLed(led, LED_ON);
-				}
-				else 
-				{
-					SetLed(led, LED_OFF);
-				}
-				break;
-			default:
-				break;
-		}
+	switch (led0) {
+		case 0:
+			SET_LED0(0);
+			led0 = 1;
+			break;
+		case 1:
+			SET_LED0(1);
+			led0 = 0;
+			break;
+		default:
+			break;
 	}
-	else if (led == STAT2)
-	{
-		switch (state)
-		{
-			case LED_OFF:
-				FIO4SET |= 1<<16;
-				break;
-			
-			case LED_ON:
-				FIO4CLR |= 1<<16;
-				break;
-			
-			case LED_TOGGLE:
-				if (FIO4PIN & (1<<16) )
-				{
-					SetLed(led, LED_ON);
-				}
-				else 
-				{
-					SetLed(led, LED_OFF);
-				}
-				break;
-			default:
-				break;
-		}
-	}
-}
 
+	SET_LED1(led1);
+
+	TerminateTask();
+}
+
+/** \brief Button Task
+ **
+ ** This task get the status of the 2 Buttons of the board.
+ **/
+TASK(ButtonsTask)
+{
+	if ( Dio_ReadChannel(BUT0) == DIO_HIGH )
+	{
+		led1 = 1;
+	}
+	if ( Dio_ReadChannel(BUT1) == DIO_HIGH )
+	{
+		led1 = 0;
+	}
+	
+	TerminateTask();
+}
+
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/*==================[end of file]============================================*/
 

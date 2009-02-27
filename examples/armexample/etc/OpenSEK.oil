@@ -21,7 +21,7 @@ TASK InitTask {
    TYPE = EXTENDED;
 };
 
-TASK Task_Leds {
+TASK LedsTask {
    PRIORITY = 2;
    SCHEDULE = NON;
    ACTIVATION = 1;
@@ -30,22 +30,16 @@ TASK Task_Leds {
 	TYPE = BASIC;
 };
 
-TASK Task_Keys {
+TASK ButtonsTask {
 	PRIORITY = 3;
 	SCHEDULE = NON;
 	ACTIVATION = 1;
 	AUTOSTART = FALSE;
-	EVENT = Key1;
-	EVENT = Key2;
 	STACK = 64;
 	TYPE = BASIC;
 }
 
 APPMODE AppMode1;
-
-EVENT Key1;
-
-EVENT Key2;
 
 COUNTER HardwareCounter {
 	MAXALLOWEDVALUE = 100000;
@@ -72,6 +66,22 @@ ALARM IncrementSWCounter {
 		ALARMTIME = 1000;
 		CYCLETIME = 1000;
 	};
+};
+
+ALARM ActivateLedsTask {
+	COUNTER = SoftwareCounter;
+	ACTION = ACTIVATETASK {
+		TASK = LedsTask;
+	}
+	AUTOSTART = FALSE;
+};
+
+ALARM ActivateButtonsTask {
+	COUNTER = SoftwareCounter;
+	ACTION = ACTIVATETASK {
+		TASK = ButtonsTask;
+	}
+	AUTOSTART = FALSE;
 };
 
 };
