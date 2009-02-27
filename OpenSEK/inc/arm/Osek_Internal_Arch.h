@@ -47,6 +47,11 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+/** This define makes the Osek_Internal.h file to include the
+ ** Osek_Internal_Arch_Cpu file which is not standard for all architectures 
+ **/
+#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro shall be used to disable the interrupts

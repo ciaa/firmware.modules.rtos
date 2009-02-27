@@ -48,22 +48,22 @@ GENFILES += OpenSEK$(DIR)gen$(DIR)inc$(DIR)Osek_Internal_Cfg.h.php						\
 				OpenSEK$(DIR)gen$(DIR)src$(DIR)$(ARCH)$(DIR)Osek_Internal_Arch_Cfg.c.php 	\
 				OpenSEK$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)Osek_Internal_Arch_Cfg.h.php
 
-VPATH += OpenSEK$(DIR)src					\
-			OpenSEK$(DIR)src$(DIR)$(ARCH)			\
+VPATH += OpenSEK$(DIR)src						\
+			OpenSEK$(DIR)src$(DIR)$(ARCH)		\
 			$(GENDIR)$(DIR)src					\
 			$(GENDIR)$(DIR)src$(DIR)$(ARCH)
 
 INCLUDE += 	-IOpenSEK$(DIR)inc 										\
 				-IOpenSEK$(DIR)inc$(DIR)$(ARCH) 								\
-				-IOpenSEK$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)				\
+				-IOpenSEK$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)				\
 				-I$(GENDIR)$(DIR)inc										\
 				-I$(GENDIR)$(DIR)inc$(DIR)$(ARCH)								\
-            -I$(GENDIR)$(DIR)inc$(DIR)$(ARCH)$(DIR)$(DERIVATE)
+            -I$(GENDIR)$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 OpenSEK.a : $(OPENOSEK_OBJ)
 	ar -rcs $(LIBDIR)$(DIR)OpenSEK.a $(foreach obj, $(OPENOSEK_OBJ), $(OBJDIR)$(DIR)$(obj))
 
 SPLINT +=	OpenSEK$(DIR)src$(DIR)*.c \
 				OpenSEK$(DIR)src$(DIR)$(ARCH)*.c \
-				OpenSEK$(DIR)src$(DIR)$(ARCH)$(DIR)$(DERIVATE)$(DIR)*.c
+				OpenSEK$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)*.c
 

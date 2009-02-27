@@ -17,12 +17,10 @@
  *
  */
 
-/** \brief OpenSEK StartOs Architecture Dependece Implementation File
+/** \brief OpenSEK Internal ARCH CPU Dependece Implementation File
  **
- ** This file implements the StartOs Arch API
- **
- ** \file arm/StartOs_Arch.c
- ** \arch ARM
+ ** \file arm/Osek_Internal_Arch_Cpu.c
+ ** \arch arm/lpc2xxx
  **/
 
 /** \addtogroup OpenSEK
@@ -39,7 +37,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20081116 v0.1.0 MaCe       - initial version
+ * 20090227 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -58,42 +56,32 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void StartOs_Arch(void)
+void StartOs_Arch_Cpu
+(
+	void
+)
 {
-	uint8f loopi;
+	T0CTCR = 00B;	/* bit 1-0: 00 Timer mode
+										01 Counter mode at rising edge
+										10 Counter mode at falling edge
+										11 Counter mode both edges
+							bit 3-2: only valid when bit 1-0 != 0
+										00 CAPn.0 for timer n
+										01 CAPn.1 for timer n
+										1x reserved
+							bit 7-4: reserved
+						*/
 
-	/* init every task */
-	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
-		/* init stack */
-		TasksConst[loopi].TaskContext->reg_r13 = (uint32)TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize;
+	T0PR = 30;	/* 32-bits prescaler register */
 
-		/* init entry point */
-		TasksConst[loopi].TaskContext->reg_r15 = TasksConst[loopi].EntryPoint;
+	/* set Timer Control Register TCR */
+	T0TCR = 11B;	/* bit 0:	enable counter
+							bit 1:	reset counter
+							bit 7-2: reserved */
 
-		/* init program status register */
-		TasksConst[loopi].TaskContext->reg_cpsr = 0x000000d3; /** ?? TODO */
+	T0TCR = 01B;	/* bit 1:	clear reset now */
 
-		/* init all registers to 0 */
-		TasksConst[loopi].TaskContext->reg_r0 = 0;
-		TasksConst[loopi].TaskContext->reg_r1 = 0;
-		TasksConst[loopi].TaskContext->reg_r2 = 0;
-		TasksConst[loopi].TaskContext->reg_r3 = 0;
-		TasksConst[loopi].TaskContext->reg_r4 = 0;
-		TasksConst[loopi].TaskContext->reg_r5 = 0;
-		TasksConst[loopi].TaskContext->reg_r6 = 0;
-		TasksConst[loopi].TaskContext->reg_r7 = 0;
-		TasksConst[loopi].TaskContext->reg_r8 = 0;
-		TasksConst[loopi].TaskContext->reg_r9 = 0;
-		TasksConst[loopi].TaskContext->reg_r10 = 0;
-		TasksConst[loopi].TaskContext->reg_r11 = 0;
-		TasksConst[loopi].TaskContext->reg_r12 = 0;
-		TasksConst[loopi].TaskContext->reg_r14 = 0;
-	}
-
-	/* call CPU dependent initialisation */
-	StartOs_Arch_Cpu();
-
+	
 }
 
 /** @} doxygen end group definition */

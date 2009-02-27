@@ -51,6 +51,12 @@
 /*==================[inclusions]=============================================*/ 
 #include "os.h"
 #include "Osek_Internal_Arch.h"
+#ifdef OSEK_INLCUDE_INTERNAL_ARCH_CPU
+/** Osek_Internal_Arch_Cpu.h is only included if the macro
+ ** OSEK_INCLUDE_INTERNAL_ARCH_CPU is defined on
+ ** Osek_Internal_Arch.h **/
+#include "Osek_Internal_Arch_Cpu.h"
+#endif /* #ifdef OSEK_INLCUDE_INTERNAL_ARCH_CPU */
 #include "Osek_Internal_Arch_Cfg.h"
 #include "Osek_Internal_Cfg.h"
 

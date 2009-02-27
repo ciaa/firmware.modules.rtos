@@ -626,15 +626,15 @@
  * Platform specific directories are:
  *
  * - OpenSEK/gen/src/\<ARCH\>
- * - OpenSEK/gen/src/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/gen/src/\<ARCH\>/\<CPUTYPE\>
  * - OpenSEK/gen/inc/\<ARCH\>
- * - OpenSEK/gen/inc/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/gen/inc/\<ARCH\>/\<CPUTYPE\>
  * - OpenSEK/src/\<ARCH\>
- * - OpenSEK/src/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/src/\<ARCH\>/\<CPUTYPE\>
  * - OpenSEK/inc/\<ARCH\>
- * - OpenSEK/inc/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/inc/\<ARCH\>/\<CPUTYPE\>
  * - OpenSEK/mak/\<ARCH\>
- * - OpenSEK/mak/\<ARCH\>/\<DERIVATE\>
+ * - OpenSEK/mak/\<ARCH\>/\<CPUTYPE\>
  *
  * Not all directories are needed to all platforms. This depends on how you
  * create the structure for your platform. First of all you have to define
@@ -643,22 +643,22 @@
  * letters (a-z).
  *
  * After defining your \<ARCH\> name you have to decide if you need one or more
- * \<DERIVATEs\>. Some microcontrollers are a main controller with many sub
+ * \<CPUTYPEs\>. Some microcontrollers are a main controller with many sub
  * controllers which for example may have less or more timers, i/o channels
  * or any other small HW differences. In the case that there is no appreciable
  * difference you can work only with the \<ARCH\> directories, if you want to
- * make a difference between \<DERIVATES\> you can define one or more
- * \<DERIVATEs\>. Again for all \<DERIVATES\> names use lower cases and only
+ * make a difference between \<CPUTYPES\> you can define one or more
+ * \<CPUTYPEs\>. Again for all \<CPUTYPES\> names use lower cases and only
  * alphabeticals letters (a-z).
  *
  * Important is that all files that you will write generic for all
- * \<DERIVATEs\> have to be written on the \<ARCH\> directorie and all specific
- * for an \<DERIVATE\> have to be written on the \<DERIVATE\> directory.
+ * \<CPUTYPEs\> have to be written on the \<ARCH\> directorie and all specific
+ * for an \<CPUTYPE\> have to be written on the \<CPUTYPE\> directory.
  *
- * For example if you don't need separated files for \<DERIVATEs\> you don't
- * have to create any \<DERIVATE\> directory, same if you don't need any special
+ * For example if you don't need separated files for \<CPUTYPEs\> you don't
+ * have to create any \<CPUTYPE\> directory, same if you don't need any special
  * make file you don't need a OpenSEK/mak/\<ARCH\> or
- * OpenSEK/mak/\<ARCH\>/\<DERIVATE\>.
+ * OpenSEK/mak/\<ARCH\>/\<CPUTYPE\>.
  * 
  * \subsection OpenSEK_Porting_Files Files to be ported
  *
