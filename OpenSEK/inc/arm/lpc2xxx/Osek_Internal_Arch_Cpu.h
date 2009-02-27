@@ -43,6 +43,7 @@
  */  
 
 /*==================[inclusions]=============================================*/
+#include "lpc2468.h"
 
 /*==================[macros]=================================================*/
 
@@ -51,6 +52,7 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+extern void StartOs_Arch_Cpu(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

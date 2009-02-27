@@ -61,7 +61,7 @@ void StartOs_Arch_Cpu
 	void
 )
 {
-	T0CTCR = 00B;	/* bit 1-0: 00 Timer mode
+	T0CTCR = 0b00;	/* bit 1-0: 00 Timer mode
 										01 Counter mode at rising edge
 										10 Counter mode at falling edge
 										11 Counter mode both edges
@@ -75,11 +75,11 @@ void StartOs_Arch_Cpu
 	T0PR = 30;	/* 32-bits prescaler register */
 
 	/* set Timer Control Register TCR */
-	T0TCR = 11B;	/* bit 0:	enable counter
+	T0TCR = 0b11;	/* bit 0:	enable counter
 							bit 1:	reset counter
 							bit 7-2: reserved */
 
-	T0TCR = 01B;	/* bit 1:	clear reset now */
+	T0TCR = 0b01;	/* bit 1:	clear reset now */
 
 	
 }
