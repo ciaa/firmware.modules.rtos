@@ -70,6 +70,25 @@
  ** configuration. */
 #define DioDevErrorDetect ENABLE
 
+<?php
+
+$dioconfig = $config->getList("/OpenDRV/Dio","CONFIG");
+
+if(count($dioconfig)!=1)
+{
+	error("Wront count of Dio Driver configurations, at the moment only 1 config is allowed for the Dio driver");
+}
+
+$diochannels = $config->getList("/OpenDRV/Dio/" . $dioconfig[0],"CHANNEL");
+$count = 0;
+foreach($diochannels as $dioc)
+{
+	print "#define " . $dioc . " " . $count . "\n";
+	$count++;
+}
+
+?>
+
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/

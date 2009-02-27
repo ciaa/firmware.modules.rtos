@@ -1,6 +1,8 @@
 -include OpenDRV$(DIR)Dio$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
 OPENDRV_DIO_OBJ +=		Dio_Init.o														\
+								Dio_ReadChannel.o												\
+								Dio_WriteChannel.o											\
 								Dio_Init_Arch.o
 
 INCLUDE += 	-IOpenDRV$(DIR)Dio$(DIR)inc											\
