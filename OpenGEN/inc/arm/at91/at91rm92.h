@@ -26,6 +26,13 @@
 
 #ifndef __AT91RM9200_H_
 #define __AT91RM9200_H_
+/*
+ * TYPE DEF CHANGE FOR OPEN_SEK
+ * ADDED BY RoRu
+ * 04/03/2009 (dd/mm/yyyy)
+ */
+typedef uint32 u32;
+typedef uint16 u16;
 
 /********************************************
 * Advanced Interrupt Controller(AIC)
