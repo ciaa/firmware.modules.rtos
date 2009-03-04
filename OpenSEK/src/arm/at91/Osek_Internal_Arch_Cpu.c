@@ -61,27 +61,28 @@ void StartOs_Arch_Cpu
 	void
 )
 {
-	T0CTCR = 0b00;	/* bit 1-0: 00 Timer mode
-										01 Counter mode at rising edge
-										10 Counter mode at falling edge
-										11 Counter mode both edges
-							bit 3-2: only valid when bit 1-0 != 0
-										00 CAPn.0 for timer n
-										01 CAPn.1 for timer n
-										1x reserved
-							bit 7-4: reserved
-						*/
+#if 0
+/*** PORT TO CLPS7110 ***/
+   T0CTCR = 0b00;	/* bit 1-0: 00 Timer mode
+      01 Counter mode at rising edge
+      10 Counter mode at falling edge
+      11 Counter mode both edges
+      bit 3-2: only valid when bit 1-0 != 0
+      00 CAPn.0 for timer n
+      01 CAPn.1 for timer n
+      1x reserved
+      bit 7-4: reserved
+      */
 
-	T0PR = 30;	/* 32-bits prescaler register */
+   T0PR = 30;	/* 32-bits prescaler register */
 
 	/* set Timer Control Register TCR */
-	T0TCR = 0b11;	/* bit 0:	enable counter
-							bit 1:	reset counter
-							bit 7-2: reserved */
+   T0TCR = 0b11;	/* bit 0:	enable counter
+      bit 1:	reset counter
+      bit 7-2: reserved */
 
-	T0TCR = 0b01;	/* bit 1:	clear reset now */
-
-	
+   T0TCR = 0b01;	/* bit 1:	clear reset now */
+#endif
 }
 
 /** @} doxygen end group definition */
