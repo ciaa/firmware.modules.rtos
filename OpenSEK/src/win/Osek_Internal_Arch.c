@@ -195,7 +195,7 @@ void CallTask(TaskType NewTask)
 
 void CounterInterrupt(CounterType CounterID)
 {
-	uint8_least loopi;
+	uint8f loopi;
 	AlarmType AlarmID;
 
 	/* increment counter */

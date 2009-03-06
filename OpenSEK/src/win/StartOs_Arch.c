@@ -60,7 +60,7 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch(void)
 {
-	uint8_least loopi;
+	uint8f loopi;
 	   
 	/* init every task */
 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
