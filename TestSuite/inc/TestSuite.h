@@ -57,9 +57,9 @@
 #define TEST(name)	TS_ResultType TEST_ ## name(void)
 
 #define TS_NOTRUN					0
-#define TS_OK						1
-#define TS_FAILED					2
-#define TS_USER					3
+#define TS_FAILED					1
+#define TS_USER					2
+#define TS_OK						3
 
 #define RunTest(name)		TS_RunTest( TS_TEST_## name, TS_TESTID_ ## name)
 
@@ -80,7 +80,7 @@ typedef unsigned int TS_TestIDType;
 typedef unsigned int TS_ChecksumType;
 
 /*==================[external data declaration]==============================*/
-extern TS_ResultType TS_TestResults[(TS_TESTS_COUNT)/4];
+extern TS_ResultType TS_TestResults[(TS_TESTS_COUNT+(sizeof(TS_ResultType)*4)-1)/((sizeof(TS_ResultType)*4))];
 extern TS_ChecksumType TS_Checksum;
 
 /*==================[external functions declaration]=========================*/

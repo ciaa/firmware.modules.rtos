@@ -45,7 +45,8 @@
 
 /*==================[macros]=================================================*/
 #define ASSERT_ARCH(cond)	\
-	{							\
+	{								\
+		while(1);				\
 	}
 
 #define TS_PrintResult_Arch(ts, result)

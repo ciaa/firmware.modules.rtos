@@ -50,7 +50,7 @@
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
-TS_ResultType TS_TestResults[(TS_TESTS_COUNT)/4];
+TS_ResultType TS_TestResults[(TS_TESTS_COUNT+(sizeof(TS_ResultType)*4)-1)/((sizeof(TS_ResultType)*4))];
 
 TS_ChecksumType TS_Checksum;
 
@@ -67,13 +67,23 @@ void TS_PrintResult(unsigned int tc, unsigned char result)
 
 void TS_RunTestSuite(void)
 {
+	unsigned int pos=0;
+	unsigned int shift=0;
 	unsigned int loopi;
 	unsigned char result;
 
 	for(loopi = 0; loopi < TS_TESTS_COUNT; loopi++)
 	{
 		result = TestCases[loopi]();
-		TS_TestResults[(loopi/sizeof(TS_TestResults))] |= (0x3 & result) << (loopi*2 % 4);
+		
+		TS_TestResults[pos] |= (0x3 & result) << shift;
+		shift+=2;
+		if(shift == sizeof(TS_ResultType)*8)
+		{
+			shift = 0;
+			pos++;
+		}
+
 		PreCallService();
 		TS_PrintResult(loopi, result);
 		PostCallService();	
