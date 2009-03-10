@@ -72,7 +72,8 @@ void StartOs_Arch_Cpu
 							bit 7-4: reserved
 						*/
 
-	T0PR = 30;	/* 32-bits prescaler register */
+	T0PR = 12;		/* 32-bits prescaler register */
+						/* 1 incremenet every 1us */
 
 	/* set Timer Control Register TCR */
 	T0TCR = 0b11;	/* bit 0:	enable counter
@@ -81,7 +82,23 @@ void StartOs_Arch_Cpu
 
 	T0TCR = 0b01;	/* bit 1:	clear reset now */
 
-	
+	T0MR0 = 1000;	/* timer match 0 every 1ms*/
+
+	T0MCR = 0b11;	/* bit 0: interrupt if MR0 match the TC
+							bit 1: reset TC if MR0 match */
+
+	/* enable interrupts */
+	__asm__ __volatile__
+	("											\
+		MRS R7, CPSR 				\n\t	\
+		AND R7, R7, #0xFFFFFF9F \n\t	\
+		MSR CPSR, R7				\n\t	\
+	 " : : : "r7" );
+
+	VICIntSelect = 0x20;	/* set TIMER0 as FIRQ */
+
+	VICIntEnable = 0x20; /* enable TIMER0 interrupt */
+
 }
 
 /** @} doxygen end group definition */

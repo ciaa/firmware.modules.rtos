@@ -78,17 +78,40 @@
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(task)															\
-	{																					\
-		uint8 jmp = 1;																\
-		/** TODO */																	\
-		jmp--;																		\
-		if (jmp == 0)																\
-		{																				\
-			/* set as running task */											\
-			SetRunningTask(task);												\
-			/** TODO */																\
-		}																				\
+#define CallTask(task)																			\
+	{																									\
+		Osek_OldTaskPtr_Arch = (void*)TasksConst[GetRunningTask()].TaskContext;	\
+		SetRunningTask(task);																	\
+		Osek_NewTaskPtr_Arch = (void*)TasksConst[task].TaskContext;					\
+																										\
+		__asm__ __volatile__ (																	\
+			/* save the R0 reg on the stack */												\
+			"STMDB	SP!, {R0}															\n\t"	\
+			/* get the Task Pointer */															\
+			"LDR R0, =Osek_OldTaskPtr_Arch											\n\t"	\
+			/* load the task pointer */														\
+			"LDR		R0, [R0]																\n\t"	\
+			/* save all registers R1 - R15 without inc R0 */							\			"STMIB	R0,{R1-R15}^														\n\t"	\
+			"ADD PC, #4	/* avoid skiping jmp to new task */						\n\t" \
+			"NOP	/* do not remove this nop */										\n\t"	\
+			/* here is the return addresse for this task */								\
+			"ADD PC, #16 /* skip jmp to new task when comming back */		\n\t" \
+			/* get R0 */																			\
+			"LDMIA	SP!, {R1}															\n\t"	\
+			/* push R0 (value is in R1) to */												\
+			/*	Osek_TaskPtr_Arch (value in R0) */											\
+			"STR R1, [R0]																	\n\t"	\
+																										\
+			/* get new context */																\
+			/* load Task Pointer */																\
+			"LDR R0, =Osek_NewTaskPtr_Arch											\n\t"	\
+			/* load memory location of the pointer */										\
+			"LDR R0, [R0]																	\n\t"	\
+			/* get context */																		\
+			"LDMIA R0, {R0-R15}															\n\t"	\
+			/* decrement sp */																	\
+			"ADD SP,#4																		\n\t"	\
+		);																								\
 	}
 
 /* \
@@ -144,10 +167,7 @@
 		"NOP	/* do not remove this nop */							\n\t"	\
 		"NOP	/* do not remove this nop */							\n\t"	\
 		/* get R0 */																\
-		"LDMIA	SP!, {R1}												\n\t"	\
-		/* push R0 (value is in R1) to */									\
-		/*	Osek_TaskPtr_Arch (value in R0) */								\
-		"STR R1, [R0]														\n\t"	\
+		"LDMIA	SP!, {R0}												\n\t"	\
 	);																					\
 	}
 
