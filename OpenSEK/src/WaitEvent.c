@@ -74,7 +74,7 @@ StatusType WaitEvent
 	/* \req OSEK_SYS_3.18: The system service StatusType
 	  * WaitEvent ( EventMaskType Mask ) shall be defined */
 
-	uint8	flag = 1;
+	volatile uint8	flag = 1;
 
 	/* \req OSEK_SYS_3.18.3 Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
