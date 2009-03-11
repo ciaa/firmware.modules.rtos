@@ -69,7 +69,7 @@ void StartOs_Arch(void)
 		TasksConst[loopi].TaskContext->reg_r13 = (uint32)TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize;
 
 		/* init entry point */
-		TasksConst[loopi].TaskContext->reg_r15 = TasksConst[loopi].EntryPoint;
+		TasksConst[loopi].TaskContext->reg_r15 = (uint32) TasksConst[loopi].EntryPoint;
 
 		/* init program status register */
 		TasksConst[loopi].TaskContext->reg_cpsr = 0x000000d3; /** ?? TODO */
