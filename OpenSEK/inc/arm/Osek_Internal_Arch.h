@@ -157,17 +157,29 @@
 																						\
 	__asm__ __volatile__ (														\
 		/* save the R0 reg on the stack */									\
-		"STMDB	SP!, {R0}												\n\t"	\
+		"STMDB SP!, {R0}													\n\t"	\
 		/* get the Task Pointer */												\
 		"LDR R0, =Osek_OldTaskPtr_Arch								\n\t"	\
 		/* load the task pointer */											\
-		"LDR		R0, [R0]													\n\t"	\
+		"LDR R0, [R0]														\n\t"	\
+		/* decrement stack pointer */											\
+		"ADD SP, #4															\n\t"	\
 		/* save all registers R1 - R15 without inc R0 */				\
-		"STMIB	R0,{R1-R15}^											\n\t"	\
-		"NOP	/* do not remove this nop */							\n\t"	\
-		"NOP	/* do not remove this nop */							\n\t"	\
+		"STMIB R0,{R1-R15}^												\n\t"	\
+		/* increment stack pointer back */									\
+		"SUB SP, #4															\n\t"	\
+		/* get PC back */															\
+		"LDR R1,[R0,#60]													\n\t"	\
+		/* increment the right value */										\
+		"ADD R1, #16														\n\t"	\
+		/* save it back */														\
+		"STR R1,[R0,#60]													\n\t"	\
 		/* get R0 */																\
-		"LDMIA	SP!, {R0}												\n\t"	\
+		"LDMIA SP!, {R1}													\n\t"	\
+		/* push R0 (value is in R1) to */									\
+		/*	Osek_TaskPtr_Arch (value in R0) */								\
+		"STR R1, [R0]														\n\t"	\
+		/* saved PC points here */												\
 	);																					\
 	}
 
