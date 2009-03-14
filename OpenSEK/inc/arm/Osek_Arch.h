@@ -78,30 +78,29 @@
 /** \brief Resume All Interrupts Arch */
 #define ResumeAllInterrupts_Arch()						\
 	{																\
-/*		__asm__ __volatile__									\
-			("														\
-				MRS R7, CPSR 							\n\t	\
-				AND R7, R7, #0xFFFFFF9F 			\n\t	\
-				MSR CPSR, R7							\n\t	\
-			 " : : : "r7" );									\ */ \
+		__asm__ __volatile__ (								\
+			"mrs r7, CPSR								\t\n"	\
+			"and r7, r7, #0xFFFFFF3F				\t\n"	\
+			"msr CPSR, r7								\t\n"	\
+			: : : "r7"											\
+		);															\
 	}
 
 /** \brief Suspend All Interrupts Arch */
 #define SuspendAllInterrupts_Arch()						\
 	{																\
-/*		__asm__ __volatile__									\
-			("														\
-				MRS R7, CPSR 							\n\t	\
-				ORR R7, R7, #0x00000060	 			\n\t	\
-				MSR CPSR, R7							\n\t	\
-			 " : : : "r7" );									\ */ \
+		__asm__ __volatile__ (								\
+			"mrs r7, CPSR								\t\n"	\
+			"orr r7, r7, #0xC0						\t\n"	\
+			"msr CPSR, r7								\t\n"	\
+			: : : "r7"											\
+		);															\
 	}
-
+					\
 /** \brief Resume OS Interrupts Arch */
-#define ResumeOSInterrupts_Arch()													\
-	{																							\
+#define ResumeOSInterrupts_Arch()						\
+	{																\
 	}
-
 
 /** \brief Suspend OS Interrupts Arch */
 #define SuspendOSInterrupts_Arch()					\

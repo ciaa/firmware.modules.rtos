@@ -114,9 +114,11 @@ void StartOs_Arch_Cpu
 		MSR CPSR, R7				\n\t	\
 	 " : : : "r7" );
 
-	VICIntSelect = 0x20;	/* set TIMER0 as FIRQ */
+	/* set the TIMER0 as FIQ Interrupt */
+	((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
 
-	VICIntEnable = 0x20; /* enable TIMER0 interrupt */
+	/* enable TIMER0 interrupt */
+	((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
 
 }
 

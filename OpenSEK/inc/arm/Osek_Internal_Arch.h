@@ -203,17 +203,20 @@
 	}
 
 /** \brief Set the entry point for a task */
-#define SetEntryPoint(task)	\
-	{									\
-		PreCallService();			\
-		/** TODO */					\
-		PostCallService();		\
+#define SetEntryPoint(task)							\
+	{															\
+		/* init entry point */							\
+		TasksConst[task].TaskContext->reg_r15 = 	\
+			(uint32) TasksConst[task].EntryPoint;	\
 	}
 
 /** \brief */
-#define ResetStack(task)																													\
-	{																																				\
-		/** TODO */																																\
+#define ResetStack(task)											\
+	{																		\
+		/* init stack */												\
+		TasksConst[task].TaskContext->reg_r13 = 				\
+			(uint32)TasksConst[task].StackPtr + 				\
+			TasksConst[task].StackSize;							\
    }
 
 #define ISR_NMI      0
@@ -287,12 +290,22 @@ extern void* Osek_NewTaskPtr_Arch;
 extern void* Osek_OldTaskPtr_Arch;
 
 /*==================[external functions declaration]=========================*/
+/** \brief IRQ Interupt
+ **/
 void IRQ_Routine (void)   __attribute__ ((interrupt("IRQ")));
 
+/** \brief FIQ Interupt
+ **
+ ** This function implements the Fast Interruption
+ **/
 void FIQ_Routine (void)   __attribute__ ((interrupt("FIQ")));
 
+/** \brief SWI Interrupt
+ **/
 void SWI_Routine (void)   __attribute__ ((interrupt("SWI")));
 
+/** \brief UNDEF Instruction Interrupt
+ **/
 void UNDEF_Routine (void) __attribute__ ((interrupt("UNDEF")));
 
 /** @} doxygen end group definition */
