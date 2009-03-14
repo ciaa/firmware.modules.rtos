@@ -35,10 +35,11 @@ COMPILER = gcc
 # moduletest01		Module tests for all modules
 #
 
-MODS +=	examples/armexample		\
+MODS +=	tst/moduletest01			\
 			OpenGEN						\
 			OpenDRV						\
- 			OpenSEK
+ 			OpenSEK						\
+			TestSuite
 
 #MODS +=	OpenGEN			\
 #			TestSuite		\
@@ -64,7 +65,7 @@ PROJECT = OpenSEK
 BIN = $(PROJECT)
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE) -fprofile-arcs -ftest-coverage
-CFLAGS += $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE)
+CFLAGS += $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE) -DCPU=$(CPU)
 
 DOC += nm sizedoc reqdoc doxygen
 
