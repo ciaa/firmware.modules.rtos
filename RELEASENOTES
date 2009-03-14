@@ -38,7 +38,7 @@
 
 /** \page RELEASENOTES RELEASENOTES
  *
- * v0.2.4	OpenSEK Beta Release 200903xx
+ * v0.2.4	OpenSEK Beta Release 20090314
  *		- port OpenSEK for ARM Architecture (tested on lpc2468)
  *		- first version of the Dio driver (concept phase) is available
  *		- first version of the Mcu Driver (concept phase) is available
