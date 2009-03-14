@@ -78,7 +78,8 @@ int main
 	void
 )
 {	
-	/* Start OSEK */	StartOs(AppMode1);
+	/* Start OSEK */
+	StartOs(AppMode1);
 }
 
 /** \brief Init Task
@@ -88,7 +89,8 @@ int main
  **/
 TASK(InitTask)
 {
-	/* init MCU Driver */	Mcu_Init((Mcu_ConfigRefType)NULL);
+	/* init MCU Driver */
+	Mcu_Init((Mcu_ConfigRefType)NULL);
 
 	/* init Clock */
 	(void)Mcu_InitClock((Mcu_ClockType)0);
@@ -102,6 +104,7 @@ TASK(InitTask)
 	/* start cyclic alarm to activate task ButtonsTask */
 	SetRelAlarm(ActivateButtonsTask, 5, 10);
 
+	/* Terminate Init Task */
 	TerminateTask();
 }
 
@@ -130,6 +133,7 @@ TASK(LedsTask)
 
 	SET_LED1(led1);
 
+	/* Terminate Leds Task */
 	TerminateTask();
 }
 
@@ -147,7 +151,8 @@ TASK(ButtonsTask)
 	{
 		led1 = 0;
 	}
-	
+
+	/* Terminate Buttons Task */
 	TerminateTask();
 }
 
