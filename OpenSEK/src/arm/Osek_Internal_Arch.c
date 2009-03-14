@@ -140,9 +140,9 @@ void IRQ_Routine (void) {
 void FIQ_Routine (void)  {
 	static uint32 fiq_flag = 0;
 
-	fiq_flag++;
-
 	T0IR |= 1;
+
+	CounterInterrupt(0);
 	
 }
 
