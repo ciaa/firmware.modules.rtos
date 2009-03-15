@@ -272,6 +272,10 @@ foreach ($genfiles as $file)
    $outfile = $outputdir[0] . $outfile;
 	info("generating ". $file . " to " . $outfile);
 	global $ob_file;
+	if(!file_exists(dirname($outfile)))
+	{
+		mkdir(dirname($outfile), 0777, TRUE);
+	}
 	$ob_file = fopen($outfile, "w");
 	ob_start('ob_file_callback');
 	$generating=true;
