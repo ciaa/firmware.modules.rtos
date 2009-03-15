@@ -111,10 +111,10 @@
 			/* load the task pointer */														\
 			"LDR		R0, [R0]																\n\t"	\
 			/* save all registers R1 - R15 without inc R0 */							\			"STMIB	R0,{R1-R15}^														\n\t"	\
-			"ADD PC, #4	/* avoid skiping jmp to new task */						\n\t" \
+			"ADD PC, PC, #4	/* avoid skiping jmp to new task */				\n\t" \
 			"NOP	/* do not remove this nop */										\n\t"	\
 			/* here is the return addresse for this task */								\
-			"ADD PC, #16 /* skip jmp to new task when comming back */		\n\t" \
+			"ADD PC, PC, #16 /* skip jmp to new task when comming back */	\n\t" \
 			/* get R0 */																			\
 			"LDMIA	SP!, {R1}															\n\t"	\
 			/* push R0 (value is in R1) to */												\
@@ -129,7 +129,7 @@
 			/* get context */																		\
 			"LDMIA R0, {R0-R15}															\n\t"	\
 			/* decrement sp */																	\
-			"ADD SP,#4																		\n\t"	\
+			"ADD SP, SP, #4																\n\t"	\
 		);																								\
 	}
 
@@ -182,15 +182,15 @@
 		/* load the task pointer */											\
 		"LDR R0, [R0]														\n\t"	\
 		/* decrement stack pointer */											\
-		"ADD SP, #4															\n\t"	\
+		"ADD SP, SP, #4													\n\t"	\
 		/* save all registers R1 - R15 without inc R0 */				\
 		"STMIB R0,{R1-R15}^												\n\t"	\
 		/* increment stack pointer back */									\
-		"SUB SP, #4															\n\t"	\
+		"SUB SP, SP, #4													\n\t"	\
 		/* get PC back */															\
 		"LDR R1,[R0,#60]													\n\t"	\
 		/* increment the right value */										\
-		"ADD R1, #16														\n\t"	\
+		"ADD R1, R1, #16													\n\t"	\
 		/* save it back */														\
 		"STR R1,[R0,#60]													\n\t"	\
 		/* get R0 */																\
