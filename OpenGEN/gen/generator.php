@@ -1,6 +1,6 @@
 <?php
 
-/* Copyright 2008, Mariano Cerdeiro
+/* Copyright 2008, 2009, Mariano Cerdeiro
  *
  * This file is part of OpenSEK.
  *
@@ -8,7 +8,26 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *             
+ * Linking OpenSEK statically or dynamically with other modules is making a
+ * combined work based on OpenSEK. Thus, the terms and conditions of the GNU
+ * General Public License cover the whole combination.
  *
+ * In addition, as a special exception, the copyright holders of OpenSEK give
+ * you permission to combine OpenSEK program with free software programs or
+ * libraries that are released under the GNU LGPL and with independent modules
+ * that communicate with OpenSEK solely through the OpenSEK defined interface. 
+ * You may copy and distribute such a system following the terms of the GNU GPL
+ * for OpenSEK and the licenses of the other code concerned, provided that you
+ * include the source code of that other code when and as the GNU GPL requires
+ * distribution of source code.
+ *
+ * Note that people who make modified versions of OpenSEK are not obligated to
+ * grant this special exception for their modified versions; it is their choice
+ * whether to do so. The GNU General Public License gives permission to release
+ * a modified version without this exception; this exception also makes it
+ * possible to release a modified version which carries forward this exception.
+ * 
  * OpenSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -151,7 +170,7 @@ $path = array_shift($args);
 
 $path = substr($path,0, strlen($path)-strlen("/generator.php"));
 
-print "OpenSEK Generator - Copyright 2008, Mariano Cerdeiro - http://www.openosek.com.ar\n\n";
+print "OpenSEK Generator - Copyright 2008, 2009, Mariano Cerdeiro - http://opensek.sf.net\n\n";
 
 foreach ($args as $arg)
 {
@@ -167,6 +186,22 @@ foreach ($args as $arg)
 			print "INFO: it under the terms of the GNU General Public License as published by\n";
 			print "INFO: the Free Software Foundation, either version 3 of the License, or\n";
 			print "INFO: (at your option) any later version.\nINFO: \n";
+			print "INFO: Linking OpenSEK statically or dynamically with other modules is making a\n";
+			print "INFO: combined work based on OpenSEK. Thus, the terms and conditions of the GNU\n";
+			print "INFO: General Public License cover the whole combination.\nINFO:\n";
+			print "INFO: In addition, as a special exception, the copyright holders of OpenSEK give\n";
+			print "INFO: you permission to combine OpenSEK program with free software programs or\n";
+			print "INFO: libraries that are released under the GNU LGPL and with independent modules\n";
+			print "INFO: that communicate with OpenSEK solely through the OpenSEK defined interface. \n";
+			print "INFO: You may copy and distribute such a system following the terms of the GNU GPL\n";
+			print "INFO: for OpenSEK and the licenses of the other code concerned, provided that you\n";
+			print "INFO: include the source code of that other code when and as the GNU GPL requires\n";
+			print "INFO: distribution of source code.\nINFO:\n";
+			print "INFO: Note that people who make modified versions of OpenSEK are not obligated to\n";
+			print "INFO: grant this special exception for their modified versions; it is their choice\n";
+			print "INFO: whether to do so. The GNU General Public License gives permission to release\n";
+			print "INFO: a modified version without this exception; this exception also makes it\n";
+			print "INFO: possible to release a modified version which carries forward this exception.\nINFO:\n";
 			print "INFO: OpenSEK is distributed in the hope that it will be useful,\n";
 			print "INFO: but WITHOUT ANY WARRANTY; without even the implied warranty of\n";
 			print "INFO: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n";

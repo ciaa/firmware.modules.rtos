@@ -38,7 +38,6 @@
  *
  */
 
-
 echo "argc = {$_SERVER['argc']}\n";
 foreach ($_SERVER['argv'] as $k => $v)
 {
