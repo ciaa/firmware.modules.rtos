@@ -8,7 +8,7 @@
 #	- posix
 #  - win
 #  - arm
-ARCH = arm
+ARCH = arm7
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
@@ -35,17 +35,10 @@ COMPILER = gcc
 # moduletest01		Module tests for all modules
 #
 
-MODS +=	tst/moduletest01			\
+MODS +=	examples/Blinking			\
 			OpenGEN						\
 			OpenDRV						\
- 			OpenSEK						\
-			TestSuite
-
-#MODS +=	OpenGEN			\
-#			TestSuite		\
-#			OpenSEK			\
-#			OpenDRV			\
-#			moduletest01
+ 			OpenSEK
 
 all: OpenSEK
 
