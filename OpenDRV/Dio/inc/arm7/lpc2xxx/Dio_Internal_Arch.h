@@ -36,13 +36,13 @@
  *
  */
 
-#ifndef _DIO_INTERNAL_H_
-#define _DIO_INTERNAL_H_
-/** \brief Dio Internal Header File
+#ifndef _DIO_INTERNAL_ARCH_H_
+#define _DIO_INTERNAL_ARCH_H_
+/** \brief DIO Internal Arch Header File
  **
- ** Io Internal Header File
+ ** DIO Internal Arch Header File
  **
- ** \file Dio_Internal.h
+ ** \file Dio_Internal_Arch.h
  **
  **/
 
@@ -70,9 +70,6 @@
  */  
 
 /*==================[inclusions]=============================================*/
-#include "Dio.h"
-#include "Dio_Internal_Arch.h"
-#include "Dio_Internal_Arch_Cfg.h"
 
 /*==================[macros]=================================================*/
 
@@ -81,17 +78,10 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-/** TODO */
-/* #define OpenDRV_IO_START_SEC_CODE
- * #include "MemMap.h" */
-
-/** TODO */
-/* #define OpenDRV_IO_STOP_SEC_CODE
- * #include "MemMap.h" */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_INTERNAL_H_ */
+#endif /* #ifndef _DIO_INTERNAL_ARCH_H_ */
 

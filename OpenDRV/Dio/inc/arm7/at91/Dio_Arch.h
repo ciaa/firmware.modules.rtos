@@ -37,7 +37,7 @@
  */
 
 #ifndef _DIO_ARCH_H_
-#define _IO_ARCH_H_
+#define _DIO_ARCH_H_
 /** \brief DIO Arch Header File
  **
  ** DIO Arch Header File
@@ -65,12 +65,11 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090213 v0.1.1 MaCe raname Io driver to Dio
- * 20090125 v0.1.0 MaCe	initial version
+ * 20090219 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
-#include "lpc2468.h"
+#include "at91rm92.h"
 
 /*==================[macros]=================================================*/
 
