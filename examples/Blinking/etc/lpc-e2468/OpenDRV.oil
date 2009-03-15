@@ -19,29 +19,29 @@ OpenDRV OpenDRV {
 
 			CHANNEL LED0 {
 				NAME = LED0;
-				PORT = 0;
-				PIN = 0;
+				PORT = 4;
+				PIN = 17;
 				DIRECTION = OUTPUT;
 			}
 
 			CHANNEL LED1 {
 				NAME = LED1;
-				PORT = 0;
-				PIN = 1;
+				PORT = 4;
+				PIN = 16;
 				DIRECTION = OUTPUT;
 			}
 
 			CHANNEL BUT0 {
 				NAME = BUT0;
-				PORT = 0;
-				PIN = 0;
+				PORT = 2;
+				PIN = 13;
 				DIRECTION = INPUT;
 			}
 
 			CHANNEL BUT1 {
 				NAME = BUT1;
-				PORT = 0;
-				PIN = 1;
+				PORT = 2;
+				PIN = 21;
 				DIRECTION = INPUT;
 			}
 			

@@ -3,15 +3,15 @@
 #
 OBJ +=	main.o
 
-VPATH += examples$(DIR)armexample$(DIR)src \
-			examples$(DIR)armexample$(DIR)asm
+VPATH += examples$(DIR)Blinking$(DIR)src \
+			examples$(DIR)Blinking$(DIR)asm
 
-INCLUDE += -Iexamples$(DIR)armexample$(DIR)inc
+INCLUDE += -Iexamples$(DIR)Blinking$(DIR)inc
 
-CFGFILES += examples$(DIR)armexample$(DIR)etc$(DIR)OpenDRV.oil			\
-				examples$(DIR)armexample$(DIR)etc$(DIR)OpenSEK.oil
+CFGFILES += examples$(DIR)Blinking$(DIR)etc$(DIR)OpenSEK.oil					\
+				examples$(DIR)Blinking$(DIR)etc$(DIR)$(BOARD)$(DIR)OpenDRV.oil
 
-CLEAN += armexampleclean
+CLEAN += blinkingclean
 
-armexampleclean :
+blinkingclean :
 
