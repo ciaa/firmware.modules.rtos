@@ -85,11 +85,35 @@
  */
 /* \dev The DioDevErrorDetect macro can be ENABLE or DISABLE, this is not
  * conform to the specification */
-/** TODO this has to be a configurable parameter in function of the Dio oil
- ** configuration. */
-#define DioDevErrorDetect ENABLE
-
 <?php
+
+$diogen = $config->getList("/OpenDRV/Dio","GENERAL");
+if (count($diogen)!=1)
+{
+	error("Wrong count of Dio Driver GENERAL parameters on the configuration, only one is allowed");
+}
+else
+{
+	$diodet = $config->getValue("/OpenDRV/Dio/" . $diogen[0],"DET");
+	if($diodet == "")
+	{
+		warning("DET not configured for Dio Driver taking ENABLE as default");
+		$diodet = "TRUE";
+	}
+	if($diodet == "FALSE")
+	{
+		print "#define DioDevErrorDetect DISABLE\n\n";
+	}
+	elseif($diodet == "TRUE")
+	{
+		print "#define DioDevErrorDetect ENABLE\n\n";
+	}
+	else
+	{
+		error("Wrong DET configuration of the Dio Driver");
+	}
+}
+
 
 $dioconfig = $config->getList("/OpenDRV/Dio","CONFIG");
 
@@ -102,7 +126,12 @@ $diochannels = $config->getList("/OpenDRV/Dio/" . $dioconfig[0],"CHANNEL");
 $count = 0;
 foreach($diochannels as $dioc)
 {
-	print "#define " . $dioc . " " . $count . "\n";
+	$name = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
+	$port = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
+	$pin = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
+	$dir = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
+	print "/** \brief Define Dio Channel $dioc - port: $port - pin: $pin */\n";
+	print "#define " . $name . "	" . (($port*32)+$pin) . "\n\n";
 	$count++;
 }
 
