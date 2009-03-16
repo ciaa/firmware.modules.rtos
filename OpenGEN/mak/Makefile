@@ -54,8 +54,5 @@ OpenGEN.a : $(OpenGEN_OBJ)
 	ar -rcs $(LIBDIR)$(DIR)OpenGEN.a $(foreach obj, $(OpenGEN_OBJ), $(OBJDIR)$(DIR)$(obj))
 # generation rule #
 OpenGENgen:
-	mkdir -p $(GENDIR)$(DIR)inc$(DIR)$(ARCH)
-	mkdir -p $(GENDIR)$(DIR)src$(DIR)$(ARCH)
-	mkdir -p $(GENDIR)$(DIR)mak$(DIR)$(ARCH)
 	php OpenGEN$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	
 
