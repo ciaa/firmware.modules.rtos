@@ -70,6 +70,41 @@ require_once("config.php");
 $errors = 0;
 $warnings = 0;
 $generating = false;
+$runagain = false;
+
+/** \brief Compare Files Function 
+ **/
+function comfiles($f)
+{
+	$ret = false;
+
+	if( file_exists($f[0]) && file_exists($f[1]) )
+	{
+		$f1 = file($f[0]);
+		$f2 = file($f[1]);
+		#info("File: " . $f[0] . ", " . $f[1]);
+
+		if(count($f1)==count($f2))
+		{
+			$loopi = 0;
+			for (; ($loopi < count($f1)) && ($f1[$loopi]==$f2[$loopi]); $loopi++)
+			{
+				/* nothing to do */
+			}
+			if( ($loopi == count($f1)) && ($f1[$loopi]==$f2[$loopi]) )
+			{
+				$ret = true;
+			}
+		}
+	}
+	else
+	{
+#		info("one file doesnt exist!!!!!!!!!!!!!!!!!!!!");
+	}
+
+	return $ret;
+	
+}
 
 /** \brief Info Generator Function
  **
@@ -295,6 +330,7 @@ foreach ($configfiles as $file)
 
 foreach ($genfiles as $file)
 {
+	$exits = false;
 	$outfile = $file;
 	$outfile = substr($outfile, 0, strlen($outfile)-4);
 	//print "info aca: pos: ". strpos($outile, "a",1);
@@ -311,6 +347,11 @@ foreach ($genfiles as $file)
 	{
 		mkdir(dirname($outfile), 0777, TRUE);
 	}
+	if(file_exists($outfile))
+	{
+		$exits = true;
+		rename($outfile, $outfile . ".old");
+	}
 	$ob_file = fopen($outfile, "w");
 	ob_start('ob_file_callback');
 	$generating=true;
@@ -318,12 +359,25 @@ foreach ($genfiles as $file)
 	$generating=false;
 	ob_end_flush();
 	fclose($ob_file);
+	if(comfiles(array($outfile, $outfile . ".old")) == false)
+	{
+		if(substr($file, strlen($file) - strlen(".mak.php") == ".mak.php"))
+		{
+			$runagain = true;
+		}
+	}
+
 }
 
 info("Generation Finished with WARNINGS: $warnings and ERRORS: $errors");
 if ($errors > 0)
 {
 	exit(1);
+}
+elseif($runagain == true)
+{
+	info("a makefile was generated, generation process will be executed again");
+	system("make generate");
 }
 
 /** @} doxygen end group definition */
