@@ -16,6 +16,7 @@ VPATH += OpenDRV$(DIR)Dio$(DIR)src												\
 			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 GENFILES += OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)Dio_Cfg.h.php		\
+				OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Dio_Arch_Cfg.h.php				\
 				OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Dio_Internal_Arch_Cfg.h.php
 
 OpenDRV_Dio.a : $(OPENDRV_DIO_OBJ)

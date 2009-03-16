@@ -1,3 +1,7 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
 /* Copyright 2008, 2009, Mariano Cerdeiro
  *
  * This file is part of OpenSEK.
@@ -36,25 +40,27 @@
  *
  */
 
-#ifndef _DIO_ARCH_H_
-#define _DIO_ARCH_H_
-/** \brief DIO Arch Header File
+<?php
+/** \brief OpenDRV DIO Arch Header File to be Generated
  **
- ** DIO Arch Header File
+ ** \file Dio_Arch_Cfg.h.php
+ **/
+?>
+
+#ifndef _DIO_ARCH_CFG_H_
+#define _DIO_ARCH_CFG_H_
+/** \brief OpenDRV DIO Arch Generated Configuration Header File
  **
- ** \file Dio_Arch.h
+ ** This file contents the generated configuration of the IO Driver
  **
+ ** \file Dio_Arch_Cfg.h
  **/
 
 /** \addtogroup OpenDRV
- ** @{ */
+ ** @{ */ 
 /** \addtogroup OpenDRV_Dio
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Dio_Internal
- ** \ingroup OpenDRV_Dio
- ** @{ */
-
 
 /*
  * Initials     Name
@@ -65,52 +71,50 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090213 v0.1.1 MaCe raname Io driver to Dio
- * 20090125 v0.1.0 MaCe	initial version
+ * 20090316 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
-#include "lpc2468.h"
-#include "Dio_Arch_Cfg.h"
 
 /*==================[macros]=================================================*/
-#if (DioDevErrorDetect == DISABLE)
-#define Dio_ReadChannel_Arch(channel)	\
-	Dio_ReadChannel_Arch_ ## channel()
+<?php
+foreach($diochannels as $dioc)
+{
+	$name = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
+	$port = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
+	$pin = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
+	$dir = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
+	if ($port > 4)
+	{
+		error("Invalid port number in Dio channel " . $dioc);
+	}
+	elseif($pin > 31)
+	{
+		error("Invalid pin number on Dio channel " . $dioc);	
+	}
+	elseif( ($dir != "INPUT") &&
+			  ($dir != "OUTPUT"))
+	{
+		error("Invalid direction on Dio channel " . $dioc);
+	}
+	else
+	{
+		if($dir == "OUTPUT")
+		{
+			print "#define Dio_WriteChannel_Arch_" . ($port * 32 + $pin) . "(value) \\\n";
+			print "				((value) == DIO_LOW) ? ( FIO" . $port . "CLR = 1 << " . $pin . " ) : ( FIO" . $port . "SET = 1 << " . $pin . " )\n\n";
+		}
+		else
+		{
+			print "#define Dio_ReadChannel_Arch_" . ($port * 32 + $pin) . "() \\\n";
+			print "				( ( FIO" . $port . "PIN >> " . $pin . " ) & 1 )\n\n";
+		}
+	}
+}
 
-#define Dio_WriteChannel_Arch(channel, value)	\
-	Dio_WriteChannel_Arch_ ## channel(value)
-	
-#endif /* #if (DioDevErrorDetect == DISABLE) */
+?>
+
 /*==================[typedef]================================================*/
-typedef struct {
-	uint8 Config;
-} Dio_ConfigArchType;
-
-/** \brief Channel type definition */
-/* \req DIO015 Parameters of type Dio_ChannelType contain the numeric ID of a
- * DIO channel. The mapping of the ID is implementation specific but not
- * configurable. */
-typedef uint8 Dio_ChannelType;
-
-/** \brief Port type definition */
-/* \req DIO018 Parameters of type Dio_PortType contain the numeric ID of a DIO
- * port. The mapping of ID is implementation specific but not configurable. */
-typedef uint8 Dio_PortType;
-
-/** \brief Channel Group type definition */
-/* \req DIO021 Dio_ChannelGroupType is the type for the definition of a channel
- * group, which consists of several adjoining channels within a port. */
-typedef uint8 Dio_ChannelGroupType;
-
-/** \brief Level type definition */
-/* \req  DIO023 Dio_LevelType is the type for the possible levels that a DIO
- * channel can have (input or output). */
-typedef uint8 Dio_LevelType;
-
-/** \brief Port Level type definition */
-/* \req DIO024 Dio_PortLevelType is the type for the value of a DIO port. */
-typedef uint32 Dio_PortLevelType;
 
 /*==================[external data declaration]==============================*/
 
@@ -118,7 +122,6 @@ typedef uint32 Dio_PortLevelType;
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_ARCH_H_ */
+#endif /* #ifndef _DIO_ARCH_CFG_H_ */
 
