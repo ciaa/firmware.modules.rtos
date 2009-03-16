@@ -38,6 +38,12 @@
 
 /** \page RELEASENOTES RELEASENOTES
  *
+ * v0.2.41	FreeOSEK	Beta Release 200904xx
+ *		- replace arm directory with arm7 or arm9 directories
+ *		- complete implementation of the Dio driver for lpc2469
+ *		- make generate calls him self if at least one generated makefile is
+ *		  modified
+ *
  * v0.2.4	OpenSEK Beta Release 20090314
  *		- port OpenSEK for ARM Architecture (tested on lpc2468)
  *		- first version of the Dio driver (concept phase) is available
@@ -83,9 +89,9 @@
  *
  * v0.1.0	First OpenSEK Pre Beta Release 20080917
  * 	- OpenSEK was only tested with the moduletest01 example.
- * 	- OpenSEK tests are not complet.
- * 	- The following apis are not finished:
- * 		- Resume/SuspendAllInterrupts
+ *		- OpenSEK tests are not complet.
+ *		- The following apis are not finished:
+ *			- Resume/SuspendAllInterrupts
  * 		- Enable/DisableAllInterrupts
  * 		- Resume/SuspendOSInterrupts
  * 	- GetAlarm/SetRelAlarm/SetAbsAlarm/CancelAlarm
