@@ -39,6 +39,7 @@
 /** \page RELEASENOTES RELEASENOTES
  *
  * v0.2.41	FreeOSEK	Beta Release 200904xx
+ *		- example Blinking is running on olimex lpc-e2468 board
  *		- replace arm directory with arm7 or arm9 directories
  *		- complete implementation of the Dio driver for lpc2469
  *		- make generate calls him self if at least one generated makefile is
