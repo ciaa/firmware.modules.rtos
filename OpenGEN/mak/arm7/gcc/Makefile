@@ -31,6 +31,7 @@ LD = arm-ld
 AR = arm-ar
 AS = arm-as
 GDB = arm-gdb
+NM = arm-nm
 
 # debug options #
 GDBO += -x OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr

@@ -28,6 +28,7 @@ LD = gcc
 AR = ar
 AS = as
 GDB = gdb
+NM = nm
 # compiler options for posix with GCC Compiler #
 CFLAGS += -c -Wall -ggdb3
 LFLAGS += $(LINKSCRIPT)
