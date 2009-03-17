@@ -102,7 +102,7 @@ foreach($diochannels as $dioc)
 		if($dir == "OUTPUT")
 		{
 			print "#define Dio_WriteChannel_Arch_" . ($port * 32 + $pin) . "(value) \\\n";
-			print "				((value) == DIO_LOW) ? ( FIO" . $port . "CLR = 1 << " . $pin . " ) : ( FIO" . $port . "SET = 1 << " . $pin . " )\n\n";
+			print "				((value) == DIO_LOW) ? ( FIO" . $port . "CLR = ( 1 << " . $pin . " ) ) : ( FIO" . $port . "SET = ( 1 << " . $pin . " ) )\n\n";
 		}
 		else
 		{

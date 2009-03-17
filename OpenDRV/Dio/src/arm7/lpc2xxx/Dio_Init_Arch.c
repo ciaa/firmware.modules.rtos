@@ -104,7 +104,7 @@ Dio_ReturnType Dio_Init_Arch
 #endif
 #if (DIO_PORT1_STATE == ENABLE)
 	/* set the direction of the Dio pins of ports 1 */
-	FIO1DIR = FIO1DIR & (~DIO_PORT1_MASK) | DIO_PORT0_DIR;
+	FIO1DIR = FIO1DIR & (~DIO_PORT1_MASK) | DIO_PORT1_DIR;
 	/* set the correct mask for port 1 */
 	FIO1MASK = FIO1MASK & (~DIO_PORT1_MASK);
 	/* set init value for port 1 */
@@ -112,7 +112,7 @@ Dio_ReturnType Dio_Init_Arch
 #endif
 #if (DIO_PORT2_STATE == ENABLE)
 	/* set the direction of the Dio pins of ports 2 */
-	FIO2DIR = FIO2DIR & (~DIO_PORT2_MASK) | DIO_PORT0_DIR;
+	FIO2DIR = FIO2DIR & (~DIO_PORT2_MASK) | DIO_PORT2_DIR;
 	/* set the correct mask for port 2 */
 	FIO2MASK = FIO2MASK & (~DIO_PORT2_MASK);
 	/* set init value for port 2 */
@@ -120,7 +120,7 @@ Dio_ReturnType Dio_Init_Arch
 #endif
 #if (DIO_PORT3_STATE == ENABLE)
 	/* set the direction of the Dio pins of ports 3 */
-	FIO3DIR = FIO3DIR & (~DIO_PORT3_MASK) | DIO_PORT0_DIR;
+	FIO3DIR = FIO3DIR & (~DIO_PORT3_MASK) | DIO_PORT3_DIR;
 	/* set the correct mask for port 3 */
 	FIO3MASK = FIO3MASK & (~DIO_PORT3_MASK);
 	/* set init value for port 3 */
@@ -128,7 +128,7 @@ Dio_ReturnType Dio_Init_Arch
 #endif
 #if (DIO_PORT4_STATE == ENABLE)
 	/* set the direction of the Dio pins of ports 4 */
-	FIO4DIR = FIO4DIR & (~DIO_PORT4_MASK) | DIO_PORT0_DIR;
+	FIO4DIR = FIO4DIR & (~DIO_PORT4_MASK) | DIO_PORT4_DIR;
 	/* set the correct mask for port 4 */
 	FIO4MASK = FIO4MASK & (~DIO_PORT4_MASK);
 	/* set init value for port 4 */
