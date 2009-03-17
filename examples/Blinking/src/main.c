@@ -115,13 +115,15 @@ TASK(InitTask)
 	(void)Mcu_InitClock((Mcu_ClockType)0);
 
 	/* init DIO Driver */
-	Dio_Init((Dio_ConfigRefType)NULL);
+	(void)Dio_Init((Dio_ConfigRefType)NULL);
 
-	/* start cyclic alarm to activate task LedsTask */
-	SetRelAlarm(ActivateLedsTask, 10, 10);
+	/* start cyclic alarm to activate task LedsTask every 250ms */
+	SetRelAlarm(ActivateLedsTask, 250, 250);
 
-	/* start cyclic alarm to activate task ButtonsTask */
-	SetRelAlarm(ActivateButtonsTask, 5, 10);
+	/* start cyclic alarm to activate task ButtonsTask every 250ms */
+	/* first time will be called after 125ms to avoid both tasks
+		to be activated on the same moment */
+	SetRelAlarm(ActivateButtonsTask, 125, 250);
 
 	/* Terminate Init Task */
 	TerminateTask();
@@ -136,20 +138,28 @@ TASK(InitTask)
 TASK(LedsTask)
 {
 	static uint8 led0 = 0;
-
+	
+	/* check actual state of the led */
 	switch (led0) {
 		case 0:
+			/* set the led off */
 			SET_LED0(0);
+			/* save led 0 status */
 			led0 = 1;
 			break;
 		case 1:
+			/* set the led on */
 			SET_LED0(1);
+			/* save led 0 status */
 			led0 = 0;
 			break;
 		default:
+			/* shall never happens */
 			break;
 	}
 
+	/* set or clear the led1 depending on led1 variable */
+	/* led1 variable will be set on the ButtonsTask Task */
 	SET_LED1(led1);
 
 	/* Terminate Leds Task */
@@ -162,12 +172,17 @@ TASK(LedsTask)
  **/
 TASK(ButtonsTask)
 {
-	if ( GET_BUT0() == DIO_HIGH )
+
+	/* check if Button 0 is low */
+	if ( GET_BUT0() == DIO_LOW )
 	{
+		/* turn off the led */
 		led1 = 1;
 	}
-	if ( GET_BUT1() == DIO_HIGH )
+	/* check if Button 1 is low */
+	if ( GET_BUT1() == DIO_LOW )
 	{
+		/* turn on the led */
 		led1 = 0;
 	}
 
