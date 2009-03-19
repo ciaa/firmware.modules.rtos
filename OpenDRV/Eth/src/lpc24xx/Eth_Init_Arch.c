@@ -83,7 +83,8 @@ void Eth_Init_Arch
 	Eth_ConfigArchType const * const config
 )
 {
-	
+	/* power on ethernet hardware */
+	PCONP |= PCENET_MASK;
 }
 
 /** @} doxygen end group definition */
