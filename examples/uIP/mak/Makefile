@@ -3,13 +3,13 @@
 #
 OBJ +=	main.o
 
-VPATH += examples$(DIR)Blinking$(DIR)src \
-			examples$(DIR)Blinking$(DIR)asm
+VPATH += examples$(DIR)uIP$(DIR)src \
+			examples$(DIR)uIP$(DIR)asm
 
-INCLUDE += -Iexamples$(DIR)Blinking$(DIR)inc
+INCLUDE += -Iexamples$(DIR)uIP$(DIR)inc
 
-CFGFILES += examples$(DIR)Blinking$(DIR)etc$(DIR)OpenSEK.oil					\
-				examples$(DIR)Blinking$(DIR)etc$(DIR)$(BOARD)$(DIR)OpenDRV.oil
+CFGFILES += examples$(DIR)uIP$(DIR)etc$(DIR)OpenSEK.oil					\
+				examples$(DIR)uIP$(DIR)etc$(DIR)$(BOARD)$(DIR)OpenDRV.oil
 
 CLEAN += blinkingclean
 

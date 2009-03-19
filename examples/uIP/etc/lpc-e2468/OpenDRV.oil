@@ -4,7 +4,7 @@ OpenDRV OpenDRV {
 		StartUp = ENABLE;
 		Mcu = ENABLE;
 		Dio = ENABLE;
-		Eth = DISABLE;
+		Eth = ENABLE;
 	};
 
 	DRIVER StartUp {

@@ -36,7 +36,7 @@
  *
  */
 
-/** \page Blinking Blinking
+/** \page uIP uIP Example
  *
  * The Blinking example shows how to use OpenSEK and OpenDRV (Dio) to read the
  * state of two buttons and to blink 2 leds. The example can work in any boards
@@ -50,7 +50,7 @@
  *
  * BOARD = lpc-e2468
  *
- * MODS +=	examples/Blinking			\
+ * MODS +=	examples/uIP				\
  *				OpenGEN						\
  *				OpenDRV						\
  *				OpenSEK
