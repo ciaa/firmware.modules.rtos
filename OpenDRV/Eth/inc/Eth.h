@@ -42,7 +42,7 @@
  **
  ** This file shall be included by all files using any OpenDRV Ethernet API.
  **
- ** \file eth.h
+ ** \file Eth.h
  **
  **/
 
@@ -65,7 +65,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Gen_Types.h"
+#include "Types.h"
 #include "Eth_Cfg.h"
 #include "Eth_Arch.h"
 

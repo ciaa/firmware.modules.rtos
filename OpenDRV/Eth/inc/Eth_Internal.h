@@ -36,13 +36,11 @@
  *
  */
 
-#ifndef _ETH_H_
-#define _ETH_H_
-/** \brief OpenDRV Ethernet Header File
+#ifndef _ETH_INTERNAL_H_
+#define _ETH_INTERNAL_H_
+/** \brief OpenDRV Ethernet Internal Header File
  **
- ** This file shall be included by all files using any OpenDRV Ethernet API.
- **
- ** \file eth.h
+ ** \file Eth_Internal.h
  **
  **/
 
@@ -65,7 +63,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Gen_Types.h"
+#include "Types.h"
 #include "Eth_Cfg.h"
 #include "Eth_Arch.h"
 
