@@ -32,7 +32,7 @@
 
 /** \addtogroup lwIP
  ** @{ */
-/** \addtogroup OpenSEK_Global OpenSEK Global
+/** \addtogroup FreeOSEK_Global OpenSEK Global
  ** \ingroup lwIP
  ** @{ */
 

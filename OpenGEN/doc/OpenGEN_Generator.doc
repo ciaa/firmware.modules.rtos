@@ -4,20 +4,20 @@
  *
  * \section OpenGEN_G_Int Introduction to the Code Generator
  *
- * The first importan to understand is why OpenSEK needs a code generator.
+ * The first importan to understand is why FreeOSEK needs a code generator.
  * Goal of the project is to offer a software solution for embedded software.
  * But not for one also for all, so you need to configure and decide exact
  * what do you want to have.
  *
- * For example an user may need a OpenSEK OS to have only two tasks and other
- * user may want to have 20 task on the OpenSEK OS, same happens with all
+ * For example an user may need a FreeOSEK OS to have only two tasks and other
+ * user may want to have 20 task on the FreeOSEK OS, same happens with all
  * modules, the user has to configurate the system. And the system will be
  * generated for exactly that configuration trying to save all possibly
  * resources.
  *
- * \section OpenGEN_G_Use Using OpenSEK
+ * \section OpenGEN_G_Use Using FreeOSEK
  *
- * OpenSEK generator is written in php and can be directly be called from
+ * FreeOSEK generator is written in php and can be directly be called from
  * the command line. But is not necesary for you since it is being called
  * automaticaly from the make environment running:
  *
@@ -30,10 +30,10 @@
  * 
  * - TODO run php generator.php -h for more details
  *
- * \section OpenSEK_G_Dev Developing generated code
+ * \section FreeOSEK_G_Dev Developing generated code
  *
  * In this section you will see how to develop new code to be generated with
- * the OpenSEK generator.
+ * the FreeOSEK generator.
  *
  * First of all lets take a look in the internal form of work of the generator.
  * The generator is written in php and is based in 3 type of modules:
@@ -69,7 +69,7 @@
  * about the project configuration and to generate the code in function
  * of this confiugration.
  *
- * \subsection OpenSEK_G_Dev_Func Generator provided functions
+ * \subsection FreeOSEK_G_Dev_Func Generator provided functions
  *
  * There are some commands that are provided from the generator:
  *
@@ -86,7 +86,7 @@
  * is only allowed to be used in cases where a further generation is not
  * possibly.
  *
- * \subsection OpenSEK_G_Dev_Meth Configurator provided methods
+ * \subsection FreeOSEK_G_Dev_Meth Configurator provided methods
  *
  * The configurator provides some methods to allow you to find out what
  * the user has configurate.

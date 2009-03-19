@@ -28,7 +28,7 @@ COMPILER = gcc
 #
 # Available modules are:
 # modBASIC			Basic module which includes: generator, type definitions, architecture dependencies.
-# OpenSEK 			RTOS OSEK OS
+# FreeOSEK 			RTOS OSEK OS
 # TestSuite			Test suite
 # seENC				Small Embedded Encryption Module
 # lwIP				Lightweight TCPIP
@@ -38,9 +38,9 @@ COMPILER = gcc
 MODS +=	examples/Blinking			\
 			OpenGEN						\
 			OpenDRV						\
- 			OpenSEK
+ 			FreeOSEK
 
-all: OpenSEK
+all: FreeOSEK
 
 INCLUDE = 
 OBJ = 
@@ -54,7 +54,7 @@ LIBDIR = out$(DIR)lib
 DOCDIR = out$(DIR)doc
 GENDIR = out$(DIR)gen
 
-PROJECT = OpenSEK
+PROJECT = FreeOSEK
 BIN = $(PROJECT)
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE) -fprofile-arcs -ftest-coverage
@@ -78,7 +78,7 @@ DOC += nm sizedoc reqdoc doxygen
 
 include $(foreach module, $(MODS), $(module)$(DIR)mak$(DIR)Makefile)
 
-OpenSEK : $(OBJ) $(LIB)
+FreeOSEK : $(OBJ) $(LIB)
 	@ echo
 	@ echo Linking $(BINDIR)$(DIR)$(BIN)
 	$(LD) $(foreach obj, $(OBJ), $(OBJDIR)$(DIR)$(obj)) $(foreach lib, $(LIB), $(LIBDIR)$(DIR)$(lib)) $(LFLAGS) -o $(BINDIR)$(DIR)$(BIN)
@@ -135,7 +135,7 @@ info :
 	@echo ++++++++
 	@echo + INFO +
 	@echo ++++++++
-	@echo OpenSEK Make Environment 0.1.0
+	@echo FreeOSEK Make Environment 0.1.0
 	@echo Selected Architecture................: $(ARCH)
 	@echo Selected Cputype.....................: $(CPUTYPE)
 	@echo Selected Cpu.........................: $(CPU)

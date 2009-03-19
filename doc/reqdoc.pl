@@ -2,39 +2,39 @@
 
 # Copyright 2008, 2009, Mariano Cerdeiro
 #
-# This file is part of OpenSEK.
+# This file is part of FreeOSEK.
 #
-# OpenSEK is free software: you can redistribute it and/or modify
+# FreeOSEK is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #             
-# Linking OpenSEK statically or dynamically with other modules is making a
-# combined work based on OpenSEK. Thus, the terms and conditions of the GNU
+# Linking FreeOSEK statically or dynamically with other modules is making a
+# combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
 # General Public License cover the whole combination.
 #
-# In addition, as a special exception, the copyright holders of OpenSEK give
-# you permission to combine OpenSEK program with free software programs or
+# In addition, as a special exception, the copyright holders of FreeOSEK give
+# you permission to combine FreeOSEK program with free software programs or
 # libraries that are released under the GNU LGPL and with independent modules
-# that communicate with OpenSEK solely through the OpenSEK defined interface. 
+# that communicate with FreeOSEK solely through the OpenSEK defined interface. 
 # You may copy and distribute such a system following the terms of the GNU GPL
-# for OpenSEK and the licenses of the other code concerned, provided that you
+# for FreeOSEK and the licenses of the other code concerned, provided that you
 # include the source code of that other code when and as the GNU GPL requires
 # distribution of source code.
 #
-# Note that people who make modified versions of OpenSEK are not obligated to
+# Note that people who make modified versions of FreeOSEK are not obligated to
 # grant this special exception for their modified versions; it is their choice
 # whether to do so. The GNU General Public License gives permission to release
 # a modified version without this exception; this exception also makes it
 # possible to release a modified version which carries forward this exception.
 # 
-# OpenSEK is distributed in the hope that it will be useful,
+# FreeOSEK is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.
+# along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.
 #
 
 $REQ_DEFINITION = "\\reqd";
@@ -140,40 +140,40 @@ sub info
 
 # PROGRAM START
 
-print "OpenSEK Requiremnet Tracing Tool - Copyright 2008, Mariano Cerdeiro - http://www.openosek.com.ar\n\n";
+print "FreeOSEK Requiremnet Tracing Tool - Copyright 2008, Mariano Cerdeiro - http://www.openosek.com.ar\n\n";
 info("------ LICENSE START ------");
-info("OpenSEK Generator is part of OpenOSEK.");
+info("FreeOSEK Generator is part of OpenOSEK.");
 info("");
-info("OpenSEK is free software: you can redistribute it and/or modify");
+info("FreeOSEK is free software: you can redistribute it and/or modify");
 info("it under the terms of the GNU General Public License as published by");
 info("the Free Software Foundation, either version 3 of the License, or");
 info("(at your option) any later version.");
 info("");
-info("Linking OpenSEK statically or dynamically with other modules is making a");
-info("combined work based on OpenSEK. Thus, the terms and conditions of the GNU");
+info("Linking FreeOSEK statically or dynamically with other modules is making a");
+info("combined work based on FreeOSEK. Thus, the terms and conditions of the GNU");
 info("General Public License cover the whole combination.");
 info("");
-info("In addition, as a special exception, the copyright holders of OpenSEK give");
-info("you permission to combine OpenSEK program with free software programs or");
+info("In addition, as a special exception, the copyright holders of FreeOSEK give");
+info("you permission to combine FreeOSEK program with free software programs or");
 info("libraries that are released under the GNU LGPL and with independent modules");
-info("that communicate with OpenSEK solely through the OpenSEK defined interface.");
+info("that communicate with FreeOSEK solely through the OpenSEK defined interface.");
 info("You may copy and distribute such a system following the terms of the GNU GPL");
-info("for OpenSEK and the licenses of the other code concerned, provided that you");
+info("for FreeOSEK and the licenses of the other code concerned, provided that you");
 info("include the source code of that other code when and as the GNU GPL requires");
 info("distribution of source code.");
 info("");
-info("Note that people who make modified versions of OpenSEK are not obligated to");
+info("Note that people who make modified versions of FreeOSEK are not obligated to");
 info("grant this special exception for their modified versions; it is their choice");
 info("whether to do so. The GNU General Public License gives permission to release");
 info("a modified version without this exception; this exception also makes it");
 info("possible to release a modified version which carries forward this exception.");
 info("");
-info("OpenSEK is distributed in the hope that it will be useful,");
+info("FreeOSEK is distributed in the hope that it will be useful,");
 info("but WITHOUT ANY WARRANTY; without even the implied warranty of");
 info("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
 info("GNU General Public License for more details.");
 info("You should have received a copy of the GNU General Public License");
-info("along with OpenSEK. If not, see <http://www.gnu.org/licenses/>.");
+info("along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.");
 info("------- LICENSE END -------");
 
 
@@ -187,8 +187,8 @@ info("Total of parsed header and source files.: " . scalar(@chfiles) );
 info("Total of implemented requirements.......: " . scalar(@reqs));
 info("Total of tested requirements............: " . scalar(@reqt));
 
-open IN, "<OpenSEK/doc/OpenSEK.req" or die $!;
-open OUT, ">out/gen/doc/OpenSEK_Req.doc" or die $!;
+open IN, "<FreeOSEK/doc/OpenSEK.req" or die $!;
+open OUT, ">out/gen/doc/FreeOSEK_Req.doc" or die $!;
 
 my $req;
 my $reqcount=0;

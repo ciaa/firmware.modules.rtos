@@ -1,10 +1,10 @@
 /** \page OpenGEN OpenGEN Documentation
  *
- * OpenGEN is the Generic Module of OpenSEK. It takes generic tasks like
- * the OpenSEK generator and generic files like types and memory allocation
+ * OpenGEN is the Generic Module of FreeOSEK. It takes generic tasks like
+ * the FreeOSEK generator and generic files like types and memory allocation
  * files.
  *
- * For information related to the OpenSEK generator take a look on the 
+ * For information related to the FreeOSEK generator take a look on the 
  * follogwing page:
  *
  * \subpage OpenGEN_Generator
@@ -32,7 +32,7 @@
  * an unsigned int with 8 bytes using the type uint8.
  *
  * If you want to use these types you have only to include Types.h. But if
- * you use any other OpenSEK module you may have this Types being included in
+ * you use any other FreeOSEK module you may have this Types being included in
  * your namespace anyway.
  *
  * The defined types are:

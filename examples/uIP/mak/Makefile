@@ -8,7 +8,7 @@ VPATH += examples$(DIR)uIP$(DIR)src \
 
 INCLUDE += -Iexamples$(DIR)uIP$(DIR)inc
 
-CFGFILES += examples$(DIR)uIP$(DIR)etc$(DIR)OpenSEK.oil					\
+CFGFILES += examples$(DIR)uIP$(DIR)etc$(DIR)FreeOSEK.oil					\
 				examples$(DIR)uIP$(DIR)etc$(DIR)$(BOARD)$(DIR)OpenDRV.oil
 
 CLEAN += blinkingclean
