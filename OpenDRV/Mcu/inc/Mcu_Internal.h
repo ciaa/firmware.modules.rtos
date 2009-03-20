@@ -84,7 +84,7 @@
 /* #define OpenDRV_MCU_START_SEC_CODE
  * #include "MemMap.h" */
 
-extern Mcu_ReturnType Mcu_Init_Arch(Mcu_ConfigRefType Config);
+extern Mcu_ReturnType Mcu_Init_Arch(const Mcu_ConfigType* Config);
 
 /** TODO */
 /* #define OpenDRV_MCU_STOP_SEC_CODE

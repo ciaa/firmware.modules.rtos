@@ -88,7 +88,7 @@
 
 Mcu_ReturnType Mcu_Init_Arch
 (
-	Mcu_ConfigRefType ConfigPtr
+	const Mcu_ConfigType* ConfigPtr
 )
 {
 	/** TODO */
