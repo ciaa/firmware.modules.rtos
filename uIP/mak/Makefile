@@ -1,14 +1,15 @@
 LIB += uIP.a
 
-GEN += 
+GEN +=
 
 LFLAGS +=
 
-UIP_OBJ +=
+UIP_OBJ +=				uip.o			\
+							uip_arp.o
 
 GENFILES += uIP$(DIR)gen$(DIR)inc$(DIR)uip-conf.h.php
 
-VPATH += 
+VPATH += uIP$(DIR)src
 
 INCLUDE += 	-IuIP$(DIR)inc
 

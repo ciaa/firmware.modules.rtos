@@ -118,7 +118,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_LOGGING         1
+#define UIP_CONF_LOGGING         0
 
 /**
  * UDP support on or off
@@ -151,6 +151,8 @@ typedef unsigned short uip_stats_t;
 /*#include "dhcpc.h"*/
 /*#include "resolv.h"*/
 /*#include "webclient.h"*/
+
+#define UIP_APPCALL     TcpIp_CallBack
 
 #endif /* __UIP_CONF_H__ */
 
