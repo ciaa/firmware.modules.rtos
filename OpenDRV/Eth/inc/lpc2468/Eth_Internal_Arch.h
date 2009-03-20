@@ -36,25 +36,19 @@
  *
  */
 
-#ifndef _DIO_INTERNAL_ARCH_H_
-#define _DIO_INTERNAL_ARCH_H_
-/** \brief DIO Internal Arch Header File
+#ifndef _ETH_INTERNAL_ARCH_H_
+#define _ETH_INTERNAL_ARCH_H_
+/** \brief OpenDRV Ethernet Internal Arch Header File
  **
- ** DIO Internal Arch Header File
- **
- ** \file Dio_Internal_Arch.h
+ ** \file Eth_Internal_Arch.h
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Dio
+/** \addtogroup OpenDRV_Eth
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Dio_Internal
- ** \ingroup OpenDRV_Dio
- ** @{ */
-
 
 /*
  * Initials     Name
@@ -65,28 +59,40 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090213 v0.1.1 MaCe raname Io driver to Dio
- * 20090125 v0.1.0 MaCe	initial version
- */  
+ * v0.1.0 20090317 MaCe	initial version
+ */
 
 /*==================[inclusions]=============================================*/
+#include "lpc2468.h"	/* include processor header file */
 
 /*==================[macros]=================================================*/
+/** \brief Ethernet block power/clock control bit */
+#define PCENET_MASK 0x40000000
+
+#define RECEIVE_ENABLE_MASK					0x00000001
+#define PASS_ALL_RECEIVED_FRAMES_MASK		0x00000002
+#define RX_FLOW_CONTROL_MASK					0x00000004
+#define TX_FLOW_CONTROL_MASK					0x00000008
+#define LOOPBACK_MASK							0x00000010
+#define RESET_TX_MASK							0x00000100
+#define RESET_MCS_TX_MASK						0x00000200
+#define RESET_RX_MASK							0x00000400
+#define RESET_MCS_RX_MASK						0x00000800
+#define SIMULATION_RESET_MASK					0x00004000
+#define SOFT_RESET_MASK							0x00008000
 
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-Dio_ReturnType Dio_Init_Arch
+void Eth_Init_Arch
 (
-	Dio_ConfigRefType config
+	void
 );
 
-
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_INTERNAL_ARCH_H_ */
+#endif /* #ifndef _ETH_INTERNAL_ARCH_H_ */
 

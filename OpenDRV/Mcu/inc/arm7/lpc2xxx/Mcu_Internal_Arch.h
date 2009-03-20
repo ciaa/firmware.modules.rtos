@@ -78,6 +78,10 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+Std_ReturnType Mcu_InitClock_Arch
+(
+	Mcu_ClockType ClockSettings
+);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
