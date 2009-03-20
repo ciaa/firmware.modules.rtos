@@ -74,6 +74,7 @@ typedef struct
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+extern void TcpIp_CallBack(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

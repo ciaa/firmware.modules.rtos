@@ -30,12 +30,12 @@ TASK LedsTask {
 	TYPE = BASIC;
 };
 
-TASK ButtonsTask {
+TASK TcpIpTask {
 	PRIORITY = 3;
 	SCHEDULE = NON;
 	ACTIVATION = 1;
 	AUTOSTART = FALSE;
-	STACK = 64;
+	STACK = 128;
 	TYPE = BASIC;
 }
 
@@ -76,10 +76,10 @@ ALARM ActivateLedsTask {
 	AUTOSTART = FALSE;
 };
 
-ALARM ActivateButtonsTask {
+ALARM ActivateTcpIpTask {
 	COUNTER = SoftwareCounter;
 	ACTION = ACTIVATETASK {
-		TASK = ButtonsTask;
+		TASK = TcpIpTask;
 	}
 	AUTOSTART = FALSE;
 };

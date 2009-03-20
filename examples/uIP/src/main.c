@@ -65,6 +65,7 @@
 #include "os.h"		/* OSEK header file */
 #include "Mcu.h"		/* MCU Driver header file */
 #include "Dio.h"		/* DIO Driver header file */
+#include "Eth.h"		/* ETH Driver header file */
 
 /*==================[macros and definitions]=================================*/
 #define SET_LED0(val)	Dio_WriteChannel(LED0, (val == 0 ) ? DIO_LOW : DIO_HIGH)
@@ -117,13 +118,16 @@ TASK(InitTask)
 	/* init DIO Driver */
 	(void)Dio_Init((Dio_ConfigRefType)NULL);
 
+	/* init ETH Driver */
+	Eth_Init();
+
 	/* start cyclic alarm to activate task LedsTask every 250ms */
 	SetRelAlarm(ActivateLedsTask, 250, 250);
 
 	/* start cyclic alarm to activate task ButtonsTask every 250ms */
 	/* first time will be called after 125ms to avoid both tasks
 		to be activated on the same moment */
-	SetRelAlarm(ActivateButtonsTask, 125, 250);
+	SetRelAlarm(ActivateTcpIpTask, 25, 50);
 
 	/* Terminate Init Task */
 	TerminateTask();
@@ -166,28 +170,26 @@ TASK(LedsTask)
 	TerminateTask();
 }
 
-/** \brief Button Task
+/** \brief TcpIp Task
  **
- ** This task get the status of the 2 Buttons of the board.
+ ** This task process the TcpIp Stack
  **/
-TASK(ButtonsTask)
+TASK(TcpIpTask)
 {
 
-	/* check if Button 0 is low */
-	if ( GET_BUT0() == DIO_LOW )
-	{
-		/* turn off the led */
-		led1 = 1;
-	}
-	/* check if Button 1 is low */
-	if ( GET_BUT1() == DIO_LOW )
-	{
-		/* turn on the led */
-		led1 = 0;
-	}
+	/* call Ethernet Main Function */
+	Eth_MainFunction();
 
 	/* Terminate Buttons Task */
 	TerminateTask();
+}
+
+void TcpIp_CallBack
+(
+	void
+)
+{
+	
 }
 
 /** @} doxygen end group definition */
