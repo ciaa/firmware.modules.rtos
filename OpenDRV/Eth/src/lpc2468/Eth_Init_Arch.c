@@ -80,7 +80,7 @@
 /*==================[external functions definition]==========================*/
 void Eth_Init_Arch
 (
-	Eth_ConfigArchType const * const config
+	void
 )
 {
 	/* power on ethernet hardware */

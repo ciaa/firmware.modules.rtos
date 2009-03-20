@@ -126,7 +126,7 @@ void Eth_MainFunction
 			if (uip_len > 0)
 			{
 				uip_arp_out();
-				Eth_Transmit(BUF, uip_len);
+				Eth_Transmit((uint8*)BUF, (uint16)uip_len);
 			}
 		}
 		else if (BUF->type == HTONS(UIP_ETHTYPE_ARP))
@@ -134,7 +134,7 @@ void Eth_MainFunction
 			uip_arp_arpin();
 			if (uip_len > 0)
 			{
-				Eth_Transmit(BUF, uip_len);
+				Eth_Transmit((uint8*)BUF, (uint16)uip_len);
 			}
 		}
 		else
