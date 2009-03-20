@@ -85,6 +85,18 @@ void Eth_Init_Arch
 {
 	/* power on ethernet hardware */
 	PCONP |= PCENET_MASK;
+
+	/* remove soft reset condition from the MAC */
+	MAC_MAC1 &= (uint32)~SOFT_RESET_MASK;
+
+	MAC_MAC1	= 0;
+
+	/* configure phy via MIIM interface of the MAC */
+	
+	/* select RMII or MII mode */
+	/* configure transmit and receive DMA */
+	/* configure MAC1, MAC2 etc. */
+	/* Enable the receive and transmit dataphats */
 }
 
 /** @} doxygen end group definition */

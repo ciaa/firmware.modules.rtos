@@ -79,10 +79,10 @@
 /*==================[external functions definition]==========================*/
 void Eth_Init
 (
-	Eth_ConfigType const * config
+	void
 )
 {
-	Eth_Init_Arch(&(config->Config_Arch));
+	Eth_Init_Arch();
 }
 
 /** @} doxygen end group definition */

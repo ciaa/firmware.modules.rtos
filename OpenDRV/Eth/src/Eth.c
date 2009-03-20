@@ -36,11 +36,9 @@
  *
  */
 
-/** \brief OpenDRV Ethernet Main Function
+/** \brief OpenDRV Etherner
  **
- ** This file implements the Ethernet Main Function service
- **
- ** \file Eth_MainFunction.c
+ ** \file Eth.c
  **
  **/
 
@@ -73,78 +71,11 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+Eth_VarType Eth_Var;
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void Eth_MainFunction
-(
-	void
-)
-{
-	uint8f loopi;
-
-#if (OpenDRV_TCPIP == ENABLE)
-	/* uip functionality for every TCPIP connection */
-	for (loopi = 0; loopi < UIP_CONNS; loopi++)
-	{
-		uip_periodic(loopi);
-		if (uip_len > 0)
-		{
-			uip_arp_out();
-			Eth_Transmit();
-		}
-	}
-#endif /* #if (OpenDRV_TCPIP == ENABLE) */
-
-#if (OpenDRV_UDP == ENABLE)
-	/* uip functionality for every UDP connection */
-	for (loopi = 0; loopi < UIP_UDP_CONNS; loopi++)
-	{
-		uip_udp_periodic(loopi);
-		if(uip_len > 0)
-		{
-			uip_arp_out();
-			Eth_Transmit();
-	}
-#endif /* #if (OpenDRV_UDP == ENABLE) */
-
-	/* ?? TODO check this */
-	/* while (Eth_Var.Flags.TxData > 0)
-	{
-		Eth_Var.TxData--;
-		Eth_Receive;
-	} */
-
-	/* check if new data was received by the driver */
-	while (Eth_Var.RxData > 0)
-	{
-		if(BUF->type == HTONS(UIP_ETHTYPE_IP))
-		{
-			uip_arp_ipin();
-			uip_input();
-			if (uip_len > 0)
-			{
-				uip_arp_out();
-				Eth_Transmit(BUF, uip_len);
-			}
-		}
-		else if (BUF->type == HTONS(UIP_ETHTYPE_ARP))
-		{
-			uip_arp_arpin();
-			if (uip_len > 0)
-			{
-				Eth_Transmit(BUF, uip_len);
-			}
-		}
-		else
-		{
-			/* nothing to do unknown protocol */	
-		}
-		
-		Eth_Var.RxData--;
-	}
-}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

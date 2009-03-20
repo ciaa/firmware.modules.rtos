@@ -76,19 +76,9 @@
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-extern void Eth_ipchksum(void);
-
-extern void Eth_tcpchksum(void);
-
-extern void Eth_add32(void);
-
-extern void Eth_Send(void);
-
-extern void Eth_Receive(void);
-
-extern void Eth_Transmit(void);
-
 extern void Eth_MainFunction(void);
+
+extern void Eth_Init(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

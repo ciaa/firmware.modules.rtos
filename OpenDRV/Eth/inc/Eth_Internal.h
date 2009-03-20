@@ -66,12 +66,20 @@
 #include "Types.h"
 #include "Eth_Cfg.h"
 #include "Eth_Arch.h"
+#include "uip.h"
+#include "uip_arp.h"
 
 /*==================[macros]=================================================*/
+#define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 
 /*==================[typedef]================================================*/
-
+typedef struct {
+	uint8	TxData;
+	uint8 RxData;
+} Eth_VarType;
+	
 /*==================[external data declaration]==============================*/
+extern Eth_VarType Eth_Var;
 
 /*==================[external functions declaration]=========================*/
 extern void Eth_ipchksum(void);
@@ -84,9 +92,11 @@ extern void Eth_Send(void);
 
 extern void Eth_Receive(void);
 
-extern void Eth_Transmit(void);
-
-extern void Eth_MainFunction(void);
+extern void Eth_Transmit
+(
+	char const * const msg,
+	uint16 length
+);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
