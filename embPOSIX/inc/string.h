@@ -70,6 +70,10 @@
 #define memcpy(s1, s2, n) memcpy_arch(s1, s2, n)
 #endif
 
+#if (emPOSIX_STRING_MEMSET == emPOSIX_MACRO)
+#define memset(s, c, n) memset_arch(s, c, n)
+#endif
+
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
@@ -85,13 +89,31 @@
  ** \return The memcpy() function shall return s1; no return value is reserved
  **			to indicate an error.
  **/
-extern void *memcpy
+extern void* memcpy
 (
 	void *restrict s1,
 	const void *restrict s2,
 	size_t n
 );
-#endif
+#endif /* #if (emPOSIX_STRING_MEMCPY == emPOSIX_FUNCTION) */
+
+#if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION)
+/** \brief This function set bytes in memory
+ **
+ ** The memset() function shall copy c (converted to an unsigned char) into
+ ** each of the first n bytes of the object pointed to by s.
+ **
+ ** \return The memset() function shall return s; no return value is reserved
+ ** 			to indicate an error.
+ **/
+extern void* memset
+(
+	void * s,
+	int c,
+	size_t n
+);
+#endif /* #if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION) */
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

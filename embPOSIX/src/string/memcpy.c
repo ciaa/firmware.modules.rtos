@@ -85,8 +85,8 @@ void *memcpy
    size_t n
 )
 {
-	unsigned char *s = s2;
-	unsigned char *d = s1;
+	const uint8 *restrict s = (uint8*) s2;
+	uint8 *restrict d = (uint8*) s1;
 	size_t count;
 
 	/** TODO this function has to be replaced with a architecture specific macro */

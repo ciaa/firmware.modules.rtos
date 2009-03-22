@@ -36,47 +36,68 @@
  *
  */
 
-#ifndef _STRING_ARCH_H_
-#define _STRING_ARCH_H_
-/** \brief arm7 String Header File
+/** \brief memset implementation file
  **
- ** \file arm7/string_Arch.h
- ** \arch arm7
+ ** This file implements the memset posix service.
+ **
+ ** \file memset.c
+ **
  **/
 
-/** \addtogroup embPOSIX embPOSIX
+/** \addtogroup embPOSIX
  ** @{ */
-/** \addtogroup embPOSIX_string embPOSIX string
- ** \ingroup embPOSIX
+/** \addtogroup embPOSIX_string
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090320 MaCe	initial version
- */  
+ * 20090322 v0.1.0 MaCe initial version
+ */
 
 /*==================[inclusions]=============================================*/
+#include "string.h"
 
-/*==================[macros]=================================================*/
-#define emPOSIX_STRING_MEMCPY emPOSIX_FUNCTION
+/*==================[macros and definitions]=================================*/
 
-#define emPOSIX_STRING_MEMSET emPOSIX_FUNCTION
+/*==================[internal data declaration]==============================*/
 
-/*==================[typedef]================================================*/
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal data definition]===============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+#if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION)
+void* memset
+(
+	void * s,
+	int c,
+	size_t n
+)
+{
+	uint8* tmp_s = (uint8*) s;
+	size_t count;
+
+	for(count = 0; count < n; count++)
+	{
+		tmp_s[count] = (uint8) c;
+	}
+
+	return (void*) s;
+}
+#endif /* #if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _STRING_ARCH_H_ */
 

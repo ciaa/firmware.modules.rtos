@@ -9,11 +9,13 @@ GEN +=
 
 LFLAGS +=
 
-embPOSIX_OBJ +=	string$(DIR)memcpy.o													\
+embPOSIX_OBJ +=	memcpy.o													\
+						memset.o
 
 GENFILES += 
 
-VPATH += embPOSIX$(DIR)src
+VPATH += embPOSIX$(DIR)src						\
+			embPOSIX$(DIR)src$(DIR)string
 
 INCLUDE += 	-IembPOSIX$(DIR)inc															\
 				-IembPOSIX$(DIR)inc$(DIR)$(ARCH)
