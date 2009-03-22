@@ -98,7 +98,9 @@ StatusType ReleaseResource
 	StatusType ret = E_OK;
 
 	uint8 loopi;
-	TaskPriorityType priority = 0;
+
+	/* asign the static priority to the task */
+	TaskPriorityType priority = TasksConst[GetRunningTask()].StaticPriority;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	if (ResID > RESOURCES_COUNT)
