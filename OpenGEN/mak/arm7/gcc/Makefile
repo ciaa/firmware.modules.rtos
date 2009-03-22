@@ -38,6 +38,6 @@ GDBO += -x OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
 
 # compiler options for ARM with GCC Compiler #
 #CFLAGS += -c -Wall
-CFLAGS += -c -fno-common -O3 -g -std=c99
+CFLAGS += -c -fno-common -O3 -g -std=c99 -fno-builtin
 LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
 AFLAGS += -mapcs-32
