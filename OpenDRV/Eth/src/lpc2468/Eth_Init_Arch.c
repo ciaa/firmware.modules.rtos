@@ -89,7 +89,15 @@ void Eth_Init_Arch
 	/* remove soft reset condition from the MAC */
 	MAC_MAC1 &= (uint32)~SOFT_RESET_MASK;
 
-	MAC_MAC1	= 0;
+	MAC_MAC1	= 	RECEIVE_ENABLE_MASK |
+					PASS_ALL_RECEIVE_FRAMES_MASK;
+
+	MAC_MAC2 =	CRC_ENABLE_MASK |
+					PAD_CRC_ENABLE |
+					VLAN_PAD_ENABLE_MASK;
+					
+
+	
 
 	/* configure phy via MIIM interface of the MAC */
 	
