@@ -36,34 +36,34 @@
  *
  */
 
-/** \page RELEASENOTES RELEASENOTES
+/** \page CHANGELOG Change Log
  *
- * v0.2.41	FreeOSEK	Beta Release 200904xx
- *		- example Blinking is running on olimex lpc-e2468 board
- *		- replace arm directory with arm7 or arm9 directories
- *		- complete implementation of the Dio driver for lpc2469
- *		- make generate calls him self if at least one generated makefile is
- *		  modified
+ * v0.2.41	FreeOSEK Beta Release 200904xx
+ * 	- example Blinking is running on olimex lpc-e2468 board
+ * 	- replace arm directory with arm7 or arm9 directories
+ * 	- complete implementation of the Dio driver for lpc2469
+ * 	- make generate calls him self if at least one generated makefile is
+ * 	  modified
  *
  * v0.2.4	FreeOSEK Beta Release 20090314
- *		- port FreeOSEK for ARM Architecture (tested on lpc2468)
- *		- first version of the Dio driver (concept phase) is available
- *		- first version of the Mcu Driver (concept phase) is available
- *		- move the tests to the tst folder
- *		- move the examples to the examples folder
- *		- move the generator from the FreeOSEK module to OpenGEN module
- *		- start porting uIP to FreeOSEK environment
- *		- add first sturcture of a Memory Mapping concept based on Autosar
- *		- add a Types.h for all generic types definitions
- *		- some bug fixing work
- *		- add licensing exception if FreeOSEK is used as library
+ * 	- port FreeOSEK for ARM Architecture (tested on lpc2468)
+ * 	- first version of the Dio driver (concept phase) is available
+ * 	- first version of the Mcu Driver (concept phase) is available
+ * 	- move the tests to the tst folder
+ * 	- move the examples to the examples folder
+ * 	- move the generator from the FreeOSEK module to OpenGEN module
+ * 	- start porting uIP to FreeOSEK environment
+ * 	- add first sturcture of a Memory Mapping concept based on Autosar
+ * 	- add a Types.h for all generic types definitions
+ * 	- some bug fixing work
+ * 	- add licensing exception if FreeOSEK is used as library
  *
  * v0.2.3	FreeOSEK Beta Release 20081102
- *		- add Manual Structure
- *		- write first FreeOSEK OS Manual (not yet complete)
- *		- fix win and posix stack probelm (id: 2166476)
- *		- add requirement tracing documentation
- *		- add RAM/ROM memory consumption documentation
+ * 	- add Manual Structure
+ * 	- write first FreeOSEK OS Manual (not yet complete)
+ * 	- fix win and posix stack probelm (id: 2166476)
+ * 	- add requirement tracing documentation
+ * 	- add RAM/ROM memory consumption documentation
  *
  * v0.2.2	FreeOSEK Beta Release 20081012
  * 	- add support for windows (cygwin)
@@ -90,9 +90,9 @@
  *
  * v0.1.0	First FreeOSEK Pre Beta Release 20080917
  * 	- FreeOSEK was only tested with the moduletest01 example.
- *		- FreeOSEK tests are not complet.
- *		- The following apis are not finished:
- *			- Resume/SuspendAllInterrupts
+ * 	- FreeOSEK tests are not complet.
+ * 	- The following apis are not finished:
+ * 		- Resume/SuspendAllInterrupts
  * 		- Enable/DisableAllInterrupts
  * 		- Resume/SuspendOSInterrupts
  * 	- GetAlarm/SetRelAlarm/SetAbsAlarm/CancelAlarm
