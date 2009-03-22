@@ -1,3 +1,7 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
 /* Copyright 2008, 2009, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
@@ -36,20 +40,27 @@
  *
  */
 
-#ifndef _COM_H_
-#define _COM_H_
-/** \brief OpenCOM Header File
+<?php
+/** \brief OpenCOM File to be Generated
  **
- ** This file shall be included by all files using any OpenCOM API
+ ** \file Com_Cfg.h.php
  **
- ** \file com.h
+ **/
+?>
+
+#ifndef _COM_CFG_H_
+#define _COM_CFG_H_
+/** \brief OpenCOM Generated Configuration Header File
+ **
+ ** This file contents the generated configuration of OpenCOM
+ **
+ ** \file Com_Cfg.h
  **
  **/
 
-/** \addtogroup OpenCOM OpenCOM
- ** @{ */
-/** \addtogroup OpenCOM_Global OpenCOM Global
- ** \ingroup FreeOSEK
+/** \addtogroup OpenCOM
+ ** @{ */ 
+/** \addtogroup OpenCOM_Global
  ** @{ */
 
 /*
@@ -61,120 +72,24 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090322 v0.1.0 MaCe initial version
- */
+ * v0.1.0 20090322 MaCe	initial version
+ */  
 
 /*==================[inclusions]=============================================*/
-#include "Types.h"		/* include standard types header file */
-#include "os.h"			/* include os header file */
-#include "Com_Cfg.h"		/* include COM configuration header file */
-#include "Com_Arch.h"	/* include COM Arch header file */
 
 /*==================[macros]=================================================*/
-#ifndef E_OK
-/** \brief Definition return value E_OK */
-#define E_OK					((StatusType)0U)
-#elif (E_OK != ((StatusType)0U))
-#error E_OK defined with a wrong value
-#endif
-/** \brief Definition return value E_COM_ID */
-#define E_COM_ID					((StatusType)1U)
-/** \brief Definition return value E_COM_LENGTH */
-#define E_COM_LENGTH				((StatusType)2U)
-/** \brief Definition return value E_COM_LIMIT */
-#define E_COM_LIMIT				((StatusType)3U)
-/** \brief Definition return value E_COM_NOMSG */
-#define E_COM_NOMSG				((StatusType)4U)
 
 /*==================[typedef]================================================*/
-
+/** \brief Message Identifier data definition */
+/** TODO uint8 or uint16 has to depend on the acount of messages */
+typedef uint8 MessageIdentifier;
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-/** \brief Start COM
- **
- ** TODO add information
- **/
-extern StatusType StartCOM
-(
-	COMApplicationModeType Mode
-);
-
-/** \brief Stop COM
- **
- ** TODO add information
- **/
-extern StatusType StopCOM
-(
-	COMShutdownModeType Mode
-);
-
-/** \brief Get COM Application Mode
- **
- ** TODO add information
- **/
-extern COMApplicationModeType GetCOMApplicationMode
-(
-	void
-);
-
-extern StatusType InitMessage
-(
-	MessageIdentifier Message,
-	ApplicationDataRef DataRef
-);
-
-extern StatusType StartPeriodic
-(
-	void
-);
-
-extern StatusType StopPeriodic
-(
-	void
-);
-
-extern StatusType SendMessage
-(
-	MessageIdentifier Message,
-	ApplicationDataRef DataRef
-);
-
-extern StatusType ReceiveMessage
-(
-	MessageIdentifier Message,
-	ApplicationDataRef DataRef
-);
-
-extern StatusType SendDynamicMessage
-(
-	MessageIdentifier Message,
-	ApplicationDataRef DataRef,
-	LengthRef Length
-);
-
-extern StatusType ReceiveDynamicMessage
-(
-	MessageIdentifier Message,
-	ApplicationDataRef DataRef,
-	LenghtRef Length
-);
-
-extern StatusType SendZeroMessage
-(
-	MessageIdentifier Message
-);
-
-extern StatusType GetMessageState
-(
-	MessageIdentifier Message
-);
-
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _COM_H_ */
+#endif /* #ifndef _COM_CFG_H_ */
 
