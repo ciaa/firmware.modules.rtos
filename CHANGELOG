@@ -39,10 +39,13 @@
 /** \page CHANGELOG Change Log
  *
  * v0.2.41	FreeOSEK Beta Release 200904xx
+ * 	- implement first version of OpenCOM
+ * 	- rename this file to CHANGELOG
+ * 	- create a RELEASENOTES files	
  * 	- example Blinking is running on olimex lpc-e2468 board
  * 	- replace arm directory with arm7 or arm9 directories
- * 	- complete implementation of the Dio driver for lpc2469
- * 	- make generate calls him self if at least one generated makefile is
+ * 	- improve the implementation of the Dio driver for lpc2468
+ * 	- make generate calls him self if one or more generated makefile are
  * 	  modified
  *
  * v0.2.4	FreeOSEK Beta Release 20090314
