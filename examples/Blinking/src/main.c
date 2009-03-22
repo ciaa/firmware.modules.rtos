@@ -36,17 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK CancelAlarm Implementation File
+/** \brief Blinking main
  **
- ** This file implements the CancelAlarm API
+ ** This file implements the Blinking example
  **
- ** \file CancelAlarm.c
+ ** \file main.c
  **
  **/
 
 /** \addtogroup Examples Examples
  ** @{ */
-/** \addtogroup ARMExample ARM Example
+/** \addtogroup Blinking Blinking
  ** @{ */
 
 /*
@@ -58,6 +58,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090322 v0.1.1 MaCe correct comments of the file
  * 20090227 v0.1.0 MaCe initial version based on an LPC-E2468 blinking led demo
  */
 
