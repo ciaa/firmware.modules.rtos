@@ -9,6 +9,7 @@ OpenDRV OpenDRV {
 
 	DRIVER Eth {
 		MAC = lpc2468;
+		PHY = ks8721bl-sl;
 	}
 
 	DRIVER StartUp {
