@@ -76,6 +76,35 @@
 #define ATTRIBUTES(attr)
 #endif
 
+/* check for C99 compiler */
+#if ( ( defined __STDC_VERSION__ ) && 	\
+		( __STDC_VERSION__ >= 199901L ) )
+#define C99_COMPILER
+#else
+#undef  C99_COMPILER
+#endif
+
+/* check for C++-Compiler */
+#if defined(__cplusplus)
+#define CPP_COMPILER
+#else
+#undef  CPP_COMPILER
+#endif
+
+/* define INLINE and RESTRICT depending on _OS_CPP_COMPILER and
+ * _OS_C99_COMPILER 
+ */
+#if (defined C99_COMPILER)
+#define INLINE inline
+#define RESTRICT restrict
+#elif (defined OS_CPP_COMPILER)
+#define INLINE inline
+#define RESTRICT
+#else
+#define INLINE
+#define RESTRICT
+#endif
+
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
