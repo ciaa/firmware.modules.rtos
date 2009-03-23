@@ -1,4 +1,5 @@
 -include OpenDRV$(DIR)Eth$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
+-include OpenDRV$(DIR)Eth$(DIR)Phy$(DIR)mak$(DIR)Makefile
 -include $(GENDIR)$(DIR)mak$(DIR)Make_OpenDRV_Eth.mak
 
 OPENDRV_ETH_OBJ +=		Eth_Init.o														\

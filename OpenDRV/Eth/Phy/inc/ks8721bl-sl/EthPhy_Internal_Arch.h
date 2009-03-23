@@ -36,18 +36,20 @@
  *
  */
 
-#ifndef _ETH_INTERNAL_H_
-#define _ETH_INTERNAL_H_
-/** \brief OpenDRV Ethernet Internal Header File
+#ifndef _ETHPHY_INTERNAL_ARCH_H_
+#define _ETHPHY_INTERNAL_ARCH_H_
+/** \brief OpenDRV Ethernet Physical Internal Arch Header File
  **
- ** \file Eth_Internal.h
+ ** \file EthPhy_Internal_Arch.h
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Eth
+/** \addtogroup OpenDRV_EthPhy
  ** \ingroup OpenDRV
+/** \addtogroup OpenDRV_EthPhy_Internal
+ ** \ingroup OpenDRV_EthPhy
  ** @{ */
 
 /*
@@ -59,49 +61,25 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081129 MaCe	initial version
+ * v0.1.0 20090323 MaCe	initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Eth.h"						/* Eth Header file */
-#include "Eth_Internal_Arch.h"	/* Ethernet Internal Arch header file */
-
-#include "EthPhy.h"					/* Ethernet Physical Layer header file */
-
-#include "uip.h"						/* uIP header file */
-#include "uip_arp.h"					/* uIP ARP header file */
 
 /*==================[macros]=================================================*/
-#define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 
 /*==================[typedef]================================================*/
-typedef struct {
-	uint8	TxData;
-	uint8 RxData;
-} Eth_VarType;
-	
+
 /*==================[external data declaration]==============================*/
-extern Eth_VarType Eth_Var;
+/** \brief Ethernet Physical Init Arch Service
+ **/
+extern void EthPhy_Init_Arch(void);
 
 /*==================[external functions declaration]=========================*/
-extern void Eth_ipchksum(void);
 
-extern void Eth_tcpchksum(void);
-
-extern void Eth_add32(void);
-
-extern void Eth_Send(void);
-
-extern void Eth_Receive(void);
-
-extern void Eth_Transmit
-(
-	char const * const msg,
-	uint16 length
-);
-
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _ETH_H_ */
+#endif /* #ifndef _ETHPHY_INTERNAL_ARCH_H_ */
 

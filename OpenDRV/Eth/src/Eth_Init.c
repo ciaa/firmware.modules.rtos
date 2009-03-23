@@ -82,7 +82,11 @@ void Eth_Init
 	void
 )
 {
+	/* call Eth Init Arch service */
 	Eth_Init_Arch();
+
+	/* init ethernet physical layer */
+	EthPhy_Init();
 }
 
 /** @} doxygen end group definition */

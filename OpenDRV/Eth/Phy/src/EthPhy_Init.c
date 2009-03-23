@@ -36,72 +36,56 @@
  *
  */
 
-#ifndef _ETH_INTERNAL_H_
-#define _ETH_INTERNAL_H_
-/** \brief OpenDRV Ethernet Internal Header File
+/** \brief OpenDRV Etherner Physical Init Service
  **
- ** \file Eth_Internal.h
+ ** This file implements the Ethernet Physical Init Service
+ **
+ ** \file EthPhy_Init.c
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Eth
- ** \ingroup OpenDRV
+/** \addtogroup OpenDRV_EthPhy
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081129 MaCe	initial version
+ * 20090323 v0.1.0 MaCe       - initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Eth.h"						/* Eth Header file */
-#include "Eth_Internal_Arch.h"	/* Ethernet Internal Arch header file */
+#include "EthPhy_Internal.h"
 
-#include "EthPhy.h"					/* Ethernet Physical Layer header file */
+/*==================[macros and definitions]=================================*/
 
-#include "uip.h"						/* uIP header file */
-#include "uip_arp.h"					/* uIP ARP header file */
+/*==================[internal data declaration]==============================*/
 
-/*==================[macros]=================================================*/
-#define BUF ((struct uip_eth_hdr *)&uip_buf[0])
+/*==================[internal functions declaration]=========================*/
 
-/*==================[typedef]================================================*/
-typedef struct {
-	uint8	TxData;
-	uint8 RxData;
-} Eth_VarType;
-	
-/*==================[external data declaration]==============================*/
-extern Eth_VarType Eth_Var;
+/*==================[internal data definition]===============================*/
 
-/*==================[external functions declaration]=========================*/
-extern void Eth_ipchksum(void);
+/*==================[external data definition]===============================*/
 
-extern void Eth_tcpchksum(void);
+/*==================[internal functions definition]==========================*/
 
-extern void Eth_add32(void);
-
-extern void Eth_Send(void);
-
-extern void Eth_Receive(void);
-
-extern void Eth_Transmit
+/*==================[external functions definition]==========================*/
+void EthPhy_Init
 (
-	char const * const msg,
-	uint16 length
-);
+	void
+)
+{
+	
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _ETH_H_ */
 
