@@ -1,8 +1,10 @@
-OPENDRV_ETH_OBJ +=		EthPhy_Init.o
+OPENDRV_ETH_OBJ +=	EthPhy_Init.o										\
+							EthPhy_Init_Arch.o
 
 INCLUDE += 	-IOpenDRV$(DIR)Eth$(DIR)Phy$(DIR)inc					\
 				-IOpenDRV$(DIR)Eth$(DIR)Phy$(DIR)inc$(DIR)$(PHY)
 
-VPATH += OpenDRV$(DIR)Eth$(DIR)Phy$(DIR)src
+VPATH += OpenDRV$(DIR)Eth$(DIR)Phy$(DIR)src							\
+			OpenDRV$(DIR)Eth$(DIR)Phy$(DIR)src$(DIR)$(PHY)
 
 GENFILES +=

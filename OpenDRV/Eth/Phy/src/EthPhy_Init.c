@@ -82,7 +82,7 @@ void EthPhy_Init
 	void
 )
 {
-	
+	EthPhy_Init_Arch();
 }
 
 /** @} doxygen end group definition */
