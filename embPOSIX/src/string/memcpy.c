@@ -78,11 +78,11 @@
 
 /*==================[external functions definition]==========================*/
 #if (emPOSIX_STRING_MEMCPY == emPOSIX_FUNCTION)
-void *memcpy
+extern void* memcpy
 (
-   void *restrict s1,
-   const void *restrict s2,
-   size_t n
+	void *RESTRICT s1,
+	const void *RESTRICT s2,
+	size_t n
 )
 {
 	const uint8 *restrict s = (uint8*) s2;

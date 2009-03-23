@@ -91,8 +91,8 @@
  **/
 extern void* memcpy
 (
-	void *restrict s1,
-	const void *restrict s2,
+	void *RESTRICT s1,
+	const void *RESTRICT s2,
 	size_t n
 );
 #endif /* #if (emPOSIX_STRING_MEMCPY == emPOSIX_FUNCTION) */
