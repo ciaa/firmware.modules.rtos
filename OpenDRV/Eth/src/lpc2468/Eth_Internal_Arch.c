@@ -36,70 +36,136 @@
  *
  */
 
-#ifndef _ETH_H_
-#define _ETH_H_
-/** \brief OpenDRV Ethernet Header File
+/** \brief OpenDRV Etherner lpc2468 Internal Service
  **
- ** This file shall be included by all files using any OpenDRV Ethernet API.
+ ** This file implements the Ethernet lpc2468 Internal Service
  **
- ** \file Eth.h
+ ** \file lpc2468/Eth_Internal_Arch.c
+ ** \arch lpc2468
  **
  **/
 
 /** \addtogroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Eth
- ** \ingroup OpenDRV
+/** \addtogroup OpenDRV_Ethernet
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081129 MaCe	initial version
+ * 20090323 v0.1.0 MaCe       - initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Types.h"
-#include "Eth_Cfg.h"
-#include "Eth_Arch.h"
+#include "Eth_Internal.h"
 
-/*==================[macros]=================================================*/
-/** \brief E_OK definition */
-#ifndef E_OK
-#define E_OK						0
-#endif
+/*==================[macros and definitions]=================================*/
 
-/** \brief Eth timeout error definition */
-#define E_ETH_TIMEOUT			1
+/*==================[internal data declaration]==============================*/
+/** \brief PHY timeout for reading and writing of registers */
+static uint32 Eth_PhyTimeout;
 
-/*==================[typedef]================================================*/
-typedef uint8f Eth_ReturnType;
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal data definition]===============================*/
 
-/*==================[external functions declaration]=========================*/
-/** \brief Ethernet Driver main function
- **
- ** This function shall be called cyclicaly to process all Driver data.
- **/
-extern void Eth_MainFunction(void);
+/*==================[external data definition]===============================*/
 
-/** \brief Ethernet Driver Init Service
- **
- ** This service shall be called before any other Eth Driver service to perform
- ** the Ethernet Driver initialisation. Calling any other Ethernet Driver
- ** service before this one can generate unexpected behaviours. 
- **/
-extern void Eth_Init(void);
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+extern Eth_ReturnType Eth_PhySetTimeout
+(
+	uint32 timeout
+)
+{
+	/* set the timeout */
+	Eth_PhyTimeout = timeout;
+}
+
+extern Eth_ReturnType Eth_PhyWrite
+(
+	uint8 phy,
+	uint8 add,
+	uint16 val
+)
+{
+	Eth_ReturnType ret = E_OK;
+	uint32 timeout = 0;
+
+	/* start write */
+	MAC_MCMD = 0;
+
+	/* select phy addresse and register address to be written */
+	MAC_MADR = ( ( ( phy & 0x1f ) << 8 ) | ( (add & 0x1f ) << 0 ) );
+
+	/* set value to be written */
+	MAC_MWTD = val;
+
+	/* wait until the value was written or timeout */
+	while ( ( MAC_MIND & BUSY_MASK != 0 ) &&
+			  ( timeout < Eth_PhyTimeout ) )
+	{
+		/* increment timeout */
+		timeout++;
+	}
+
+	/* if still busy it was a timeout */
+	if ( MAC_MIND & BUSY_MASK != 0 )
+	{
+		/* set timeout error */
+		ret = E_ETH_TIMEOUT;
+	}
+
+	return ret;	
+}
+
+extern Eth_ReturnType Eth_PhyRead
+(
+	uint8 phy,
+	uint8 add,
+	uint16* val
+)
+{
+	Eth_ReturnType ret = E_OK;
+	uint32 timeout = 0;
+
+	/* start read */
+	MAC_MCMD = 1;
+
+	/* select phy addresse and register addresse to be readed */
+	MAC_MADR = ( ( ( phy & 0x1f ) << 8 ) | ( (add & 0x1f ) << 0 ) );
+
+	/* wait until the value was readed or a timeout occurs */
+	while ( ( MAC_MIND & BUSY_MASK != 0 ) &&
+			  ( timeout < Eth_PhyTimeout ) )
+	{
+		/* increment timeout */
+		timeout++;
+	}
+
+	/* if still busy it was a timeout */
+	if ( MAC_MIND & BUSY_MASK != 0 )
+	{
+		/* set timeout error */
+		ret = E_ETH_TIMEOUT;
+	}
+	else
+	{
+		/* get the value */
+		*val = (uint16) MAC_MRDD;
+	}
+
+	return ret;
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _ETH_H_ */
 

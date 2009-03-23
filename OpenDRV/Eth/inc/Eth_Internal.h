@@ -63,9 +63,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Types.h"
-#include "Eth_Cfg.h"
-#include "Eth_Arch.h"
+#include "Eth.h"
 #include "Eth_Internal_Arch.h"
 
 #include "uip.h"

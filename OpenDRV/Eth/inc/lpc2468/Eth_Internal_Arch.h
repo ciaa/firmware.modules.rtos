@@ -69,6 +69,7 @@
 /** \brief Ethernet block power/clock control bit */
 #define PCENET_MASK 0x40000000
 
+/** \brief Mask values for MAC1 register */
 #define RECEIVE_ENABLE_MASK					0x00000001
 #define PASS_ALL_RECEIVED_FRAMES_MASK		0x00000002
 #define RX_FLOW_CONTROL_MASK					0x00000004
@@ -81,15 +82,97 @@
 #define SIMULATION_RESET_MASK					0x00004000
 #define SOFT_RESET_MASK							0x00008000
 
+/** \brief Mask values for MAC2 register */
+#define FULL_DUPLEX_MASK						0x00000001
+#define FRAME_LENGTH_CHECHKING_MASK			0x00000002
+#define HUGE_FRAME_ENABLE_MASK				0x00000004
+#define DELAY_CRC_MASK							0x00000008
+#define CRC_ENABLE_MASK							0x00000010
+#define PAD_CRC_ENABLE_MASK					0x00000020
+#define VLAN_PAD_ENABLE_MASK					0x00000040
+#define AUTO_DETECT_PAD_ENABLE_MASK			0x00000080
+#define PURE_PREAMBLE_ENFORCEMENT_MASK		0x00000100
+#define LONG_PREAMBLE_ENFORCEMENT_MASK		0x00000200
+#define NO_BACKOFF_MASK							0x00001000
+#define BACK_PRESSURE_NO_BACKOFF_MASK		0x00002000
+#define EXCESS_DEFER_MASK						0x00004000
+
+/** \brief Mask values for MIND register */
+#define BUSY_MASK									0x00000001
+
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-void Eth_Init_Arch
+/** \brief Ethernet Driver Init Service
+ **
+ ** This service shall be called from the Eth_Init service to perform the
+ ** architecture dependent initialisations.
+ **
+ ** This is an internal function, called only by the driver.
+ **/
+extern void Eth_Init_Arch
 (
 	void
 );
+
+/** \brief Set PHY read and write timeout
+ **
+ ** This service set the PHY timeout used for reading and writting.
+ ** The time out is not in second neither other time unit also in
+ ** status read unit.
+ **
+ ** This is an internal function, called only by the driver.
+ **
+ ** \param[in] timeout timeout to be set
+ ** \return E_OK this interface returns always E_OK
+ **/
+extern Eth_ReturnType Eth_PhySetTimeout
+(
+	uint32 timeout
+);
+
+/** \brief Write PHY register
+ **
+ ** This service write the indicated value (val) into the indicated PHY
+ ** address (phy) and register (add).
+ **
+ ** This is an internal function, called only by the driver.
+ **
+ ** \param[in] phy physical address
+ ** \param[in] add register address
+ ** \param[in] val value to be written
+ ** \return E_OK if no error occurs
+ **			E_ETH_TIMEOUT if a timeout occurs
+ **/
+extern Eth_ReturnType Eth_PhyWrite
+(
+	uint8 phy,
+	uint8 add,
+	uint16 val
+);
+
+/** \brief Read PHY register
+ **
+ ** This service read into value (val) from the indicated PHY
+ ** address (phy) and register (add).
+ **
+ ** This is an internal function, called only by the driver.
+ **
+ ** \param[in] phy physical address
+ ** \param[in] add register address
+ ** \param[in] val pointer to save the readed data
+ ** \return E_OK if no error occurs
+ **			E_ETH_TIMEOUT if a timeout occurs
+ **/
+extern Eth_ReturnType Eth_PhyRead
+(
+	uint8 phy,
+	uint8 add,
+	uint16* val
+);
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

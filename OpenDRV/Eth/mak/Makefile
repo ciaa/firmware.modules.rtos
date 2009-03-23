@@ -5,6 +5,7 @@ OPENDRV_ETH_OBJ +=		Eth_Init.o														\
 								Eth_MainFunction.o											\
 								Eth_Transmit.o													\
 								Eth_Init_Arch.o												\
+								Eth_Internal_Arch.o											\
 								Eth.o
 
 INCLUDE += 	-IOpenDRV$(DIR)Eth$(DIR)inc											\
