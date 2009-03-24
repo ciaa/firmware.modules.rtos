@@ -127,17 +127,16 @@
 #if !defined(FALSE)
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
 #define FALSE false
-#else
 #endif
+#else
 #define FALSE ((boolean)0)
 #endif
 
 /** \brief Definiton of TRUE */
 #if !defined(TRUE)
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
-#define TRUE true
+#define TRUE true#endif
 #else
-#endif
 #define TRUE ((boolean)1)
 #endif
 
@@ -174,8 +173,8 @@ typedef int_fast8_t     sint8f;
 typedef uint_fast8_t    uint8f;
 typedef int_fast16_t    sint16f;
 typedef uint_fast16_t   uint16f;
-typedef int_fast32_t    sint32;
-typedef uint_fast32_t   uint32;
+typedef int_fast32_t    sint32f;
+typedef uint_fast32_t   uint32f;
 #endif
 
 #if 0   /* We don't need this anymore (???) */
