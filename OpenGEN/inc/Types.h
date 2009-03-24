@@ -53,19 +53,22 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe                  Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * v0.1.1 20090128 MaCe add DISABLE and ENABLE macros
- * v0.1.0 20081126 MaCe	initial version
+ * v0.1.0 20081126 MaCe initial version
  */  
 
 /*==================[inclusions]=============================================*/
 #include "Compiler.h"
+
+#if 0
 #include "Types_Arch.h"
+#endif
 
 /*==================[macros]=================================================*/
 #ifndef TYPES_NULL
@@ -88,10 +91,97 @@
 #error DISABLE defined somewhere else with a different value
 #endif
 
+/** \brief Check for C99-Compiler */
+#undef  C99_COMPILER
+#if defined(__STDC_VERSION__)
+    #if __STDC_VERSION__>=199901L
+        #define C99_COMPILER
+    #endif
+#endif
+
+/** \brief Check for C++-Compiler */
+#undef  CPP_COMPILER
+#if defined(__cplusplus)
+    #define CPP_COMPILER
+#endif
+
+/** \brief Check for Freestanding-Environment */
+#undef  FREESTANDING_ENV
+#if !defined(__STDC_HOSTED__)    
+    #define FREESTANDING_ENV
+#endif
+
+/** \brief Define INLINE- and RESTRICT-Macros */
+#if defined(C99_COMPILER)
+    #define INLINE inline
+    #define RESTRICT restrict
+#elif defined(CPP_COMPILER)
+    #define INLINE inline
+    #define RESTRICT
+#else
+    #define INLINE
+    #define RESTRICT
+#endif
+
+/** \brief Definition of FALSE */
+#if !defined(FALSE)
+#if defined(C99_COMPILER) || defined(CPP_COMPILER)
+#define FALSE false
+#else
+#endif
+#define FALSE ((boolean)0)
+#endif
+
+/** \brief Definiton of TRUE */
+#if !defined(TRUE)
+#if defined(C99_COMPILER) || defined(CPP_COMPILER)
+#define TRUE true
+#else
+#endif
+#define TRUE ((boolean)1)
+#endif
+
 /*==================[typedef]================================================*/
-#ifndef TYPES_BOOL
-/** \brief bool type type definition */
-typedef unsigned char bool;
+
+#if defined(C99_COMPILER)
+#include <stdint.h>
+#include <stdbool.h>
+#elif defined(CPP_COMPILER)
+#include <cstdint>
+#include <cstdbool>
+#else
+#include "Types_Arch.h"    
+#endif
+
+#if defined(C99_COMPILER) || defined(CPP_COMPILER)
+typedef _Bool           boolean;
+
+typedef int8_t          sint8;
+typedef uint8_t         uint8;
+typedef int16_t         sint16;
+typedef uint16_t        uint16;
+typedef int32_t         sint32;
+typedef uint32_t        uint32;
+
+typedef int_least8_t    sint8_least;
+typedef uint_least8_t   uint8_least;
+typedef int_least16_t   sint16_least;
+typedef uint_least16_t  uint16_least;
+typedef int_least32_t   sint32_least;
+typedef uint_least32_t  uint32_least;
+
+typedef int_fast8_t     sint8f;
+typedef uint_fast8_t    uint8f;
+typedef int_fast16_t    sint16f;
+typedef uint_fast16_t   uint16f;
+typedef int_fast32_t    sint32;
+typedef uint_fast32_t   uint32;
+#endif
+
+#if 0   /* We don't need this anymore (???) */
+#ifndef TYPES_BOOLEAN
+/** \brief boolean type type definition */
+typedef unsigned char boolean;
 #endif
 
 #ifndef TYPES_UINT8
@@ -165,6 +255,8 @@ typedef unsigned int uint32f;
 /** \brief default signed 32 bits fast integer type definition */
 typedef signed int sint32f;
 #endif
+
+#endif  /* #if 0*/
 
 #ifndef TYPES_STD_RETURNTYPE
 #define TYPES_STD_RETURNTYPE

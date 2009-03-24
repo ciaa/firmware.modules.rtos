@@ -104,11 +104,13 @@
 /** \brief Error Checking Extended */
 #define ERROR_CHECKING_EXTENDED   2
 
+#if 0 /* Moved to 'Types.h'.
 /** \brief Definition of FALSE */
 #define FALSE 0
 
 /** \brief Definiton of TRUE */
 #define TRUE 1
+#endif /* #if 0 */
 
 /** \brief Release Internal Resources
  **

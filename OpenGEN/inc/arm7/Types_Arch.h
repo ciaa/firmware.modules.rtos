@@ -54,13 +54,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe                  Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081126 MaCe	initial version
+ * v0.1.0 20081126 MaCe initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -75,12 +75,12 @@
 #endif
 
 /*==================[typedef]================================================*/
-#ifndef TYPES_BOOL
-#define TYPES_BOOL
-/** \brief bool type type definition */
-typedef unsigned char bool;
+#ifndef TYPES_BOOLEAN
+#define TYPES_BOOLEAN
+/** \brief boolean type type definition */
+typedef unsigned char boolean;
 #else
-#error bool defined before
+#error boolean defined before
 #endif
 
 #ifndef TYPES_UINT8
