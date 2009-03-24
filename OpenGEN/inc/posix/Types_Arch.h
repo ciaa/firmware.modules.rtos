@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -161,8 +161,8 @@ typedef unsigned int uint32;
 typedef signed int sint32;
 #else
 #error sint32 defined before
-#endif      
-            
+#endif
+
 #ifndef TYPES_UINT32F
 #define TYPES_UINT32F
 /** \brief unsigned 32 bits fast integer type definition */

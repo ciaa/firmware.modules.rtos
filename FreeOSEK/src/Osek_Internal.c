@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -97,107 +97,107 @@ ContextType ActualContext ATTRIBUTES();
 
 void AddReady(TaskType TaskID)
 {
-        TaskPriorityType priority;
-        TaskRefType readylist;
-        TaskTotalType maxtasks;
-        TaskTotalType position;
+	TaskPriorityType priority;
+	TaskRefType readylist;
+	TaskTotalType maxtasks;
+	TaskTotalType position;
 
-        /* get task priority */
-        priority = TasksConst[TaskID].StaticPriority;
-        /* conver the priority to the array index */
-        /* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
-         * the valida entries for this array are between 0 and 3, so the -1 is needed
-         * since the lower priority is 0.
-         */
-        priority = (READYLISTS_COUNT-1)-priority;
-        
-        /* get ready list */
-        readylist = ReadyConst[priority].TaskRef;
-        /* get max number of entries */
-        maxtasks = ReadyConst[priority].ListLength;
+	/* get task priority */
+	priority = TasksConst[TaskID].StaticPriority;
+	/* conver the priority to the array index */
+	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+	* the valida entries for this array are between 0 and 3, so the -1 is needed
+	* since the lower priority is 0.
+	*/
+	priority = (READYLISTS_COUNT-1)-priority;
 
-        /* get position incrementtion */
-        position = ReadyVar[priority].ListStart + ReadyVar[priority].ListCount;
+	/* get ready list */
+	readylist = ReadyConst[priority].TaskRef;
+	/* get max number of entries */
+	maxtasks = ReadyConst[priority].ListLength;
 
-        /* go arround maxtasks */
-        /* this if works like  % instruction */
-        if (position >= maxtasks)
-        {
-                position -= maxtasks;
-        }
+	/* get position incrementtion */
+	position = ReadyVar[priority].ListStart + ReadyVar[priority].ListCount;
 
-        /* set the task id in ready the list */
-        readylist[position] = TaskID;
-        /* increment the list counter */
-        ReadyVar[priority].ListCount++;
+	/* go arround maxtasks */
+	/* this if works like  % instruction */
+	if (position >= maxtasks)
+	{
+		position -= maxtasks;
+	}
+
+	/* set the task id in ready the list */
+	readylist[position] = TaskID;
+	/* increment the list counter */
+	ReadyVar[priority].ListCount++;
 }
 
 void RemoveTask
 (
-        TaskType TaskID
+	TaskType TaskID
 )
 {
-        TaskPriorityType priority;
-        TaskRefType readylist;
-        TaskTotalType maxtasks;
+	TaskPriorityType priority;
+	TaskRefType readylist;
+	TaskTotalType maxtasks;
 
-        /* get task priority */
-        priority = TasksConst[TaskID].StaticPriority;
-        /* conver the priority to the array index */
-        /* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
-         * the valida entries for this array are between 0 and 3, so the -1 is needed
-         * since the lower priority is 0.
-         */
-        priority = (READYLISTS_COUNT-1)-priority;
+	/* get task priority */
+	priority = TasksConst[TaskID].StaticPriority;
+	/* conver the priority to the array index */
+	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+	* the valida entries for this array are between 0 and 3, so the -1 is needed
+	* since the lower priority is 0.
+	*/
+	priority = (READYLISTS_COUNT-1)-priority;
 
-        /* get ready list */
-        readylist = ReadyConst[priority].TaskRef;
-        /* get max number of entries */
-        maxtasks = ReadyConst[priority].ListLength;
+	/* get ready list */
+	readylist = ReadyConst[priority].TaskRef;
+	/* get max number of entries */
+	maxtasks = ReadyConst[priority].ListLength;
 
-        /* increment the ListStart */
-        ReadyVar[priority].ListStart = ReadyVar[priority].ListStart + 1;
+	/* increment the ListStart */
+	ReadyVar[priority].ListStart = ReadyVar[priority].ListStart + 1;
 
-        /* go arround maxtasks */
-        /* this if works like a % instruction */
-        if (ReadyVar[priority].ListStart >= maxtasks)
-        {
-                ReadyVar[priority].ListStart -= maxtasks;
-        }
+	/* go arround maxtasks */
+	/* this if works like a % instruction */
+	if (ReadyVar[priority].ListStart >= maxtasks)
+	{
+		ReadyVar[priority].ListStart -= maxtasks;
+	}
 
-        /* decrement the count of ready tasks */
-        ReadyVar[priority].ListCount--;
+	/* decrement the count of ready tasks */
+	ReadyVar[priority].ListCount--;
 }
 
 TaskType GetNextTask
 (
-        void
+	void
 )
 {
-        uint8f loopi;
-        boolean found = FALSE;
-        TaskType ret = INVALID_TASK;
+	uint8f loopi;
+	boolean found = FALSE;
+	TaskType ret = INVALID_TASK;
 
-        /* check in all ready lists */
-        for (loopi = 0; ( loopi < READYLISTS_COUNT ) && (!found) ; loopi++)
-        {
-                /* if one or more tasks are ready */
-                if (ReadyVar[loopi].ListCount > 0)
-                {
-                        /* return the first ready task */
-                        ret = ReadyConst[loopi].TaskRef[ReadyVar[loopi].ListStart];
+	/* check in all ready lists */
+	for (loopi = 0; ( loopi < READYLISTS_COUNT ) && (!found) ; loopi++)
+	{
+		/* if one or more tasks are ready */
+		if (ReadyVar[loopi].ListCount > 0)
+		{
+			/* return the first ready task */
+			ret = ReadyConst[loopi].TaskRef[ReadyVar[loopi].ListStart];
 
-                        /* set found true */
-                        found = TRUE;
-                }
-        }
+			/* set found true */
+			found = TRUE;
+		}
+	}
 
-        return ret;
+	return ret;
 }
 
 void OSEK_ISR_NoHandler(void)
 {
-        while(1);
+	while(1);
 }
 
 #if (OSEK_MEMMAP == ENABLE)

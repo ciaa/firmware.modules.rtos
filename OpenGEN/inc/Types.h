@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -94,33 +94,33 @@
 /** \brief Check for C99-Compiler */
 #undef  C99_COMPILER
 #if defined(__STDC_VERSION__)
-    #if __STDC_VERSION__>=199901L
-        #define C99_COMPILER
-    #endif
+#if __STDC_VERSION__>=199901L
+#define C99_COMPILER
+#endif
 #endif
 
 /** \brief Check for C++-Compiler */
 #undef  CPP_COMPILER
 #if defined(__cplusplus)
-    #define CPP_COMPILER
+#define CPP_COMPILER
 #endif
 
 /** \brief Check for Freestanding-Environment */
 #undef  FREESTANDING_ENV
-#if !defined(__STDC_HOSTED__)    
-    #define FREESTANDING_ENV
+#if !defined(__STDC_HOSTED__)
+#define FREESTANDING_ENV
 #endif
 
 /** \brief Define INLINE- and RESTRICT-Macros */
 #if defined(C99_COMPILER)
-    #define INLINE inline
-    #define RESTRICT restrict
+#define INLINE inline
+#define RESTRICT restrict
 #elif defined(CPP_COMPILER)
-    #define INLINE inline
-    #define RESTRICT
+#define INLINE inline
+#define RESTRICT
 #else
-    #define INLINE
-    #define RESTRICT
+#define INLINE
+#define RESTRICT
 #endif
 
 /** \brief Definition of FALSE */
@@ -149,35 +149,53 @@
 #include <cstdint>
 #include <cstdbool>
 #else
-#include "Types_Arch.h"    
+#include "Types_Arch.h"
 #endif
 
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
-typedef _Bool           boolean;
+/** \brief boolean type type definition */
+typedef _Bool				boolean;
 
-typedef int8_t          sint8;
-typedef uint8_t         uint8;
-typedef int16_t         sint16;
-typedef uint16_t        uint16;
-typedef int32_t         sint32;
-typedef uint32_t        uint32;
+/** \brief default usigned 8 bits integer type definition */
+typedef int8_t				sint8;
+/** \brief default signed 8 bits integer type definition */
+typedef uint8_t			uint8;
+/** \brief default signed 16 bits integer type definition */
+typedef int16_t			sint16;
+/** \brief default unsigned 16 bits integer type definition */
+typedef uint16_t			uint16;
+/** \brief default signed 32 bits integer type definition */
+typedef int32_t			sint32;
+/** \brief default unsigned 32 bits integer type definition */
+typedef uint32_t			uint32;
 
-typedef int_least8_t    sint8_least;
+/** \brief default signed 8 bits fast integer type definition */
+typedef int_least8_t		sint8_least;
+/** \brief default usigned 8 bits fast integer type definition */
 typedef uint_least8_t   uint8_least;
+/** \brief default signed 16 bits fast integer type definition */
 typedef int_least16_t   sint16_least;
+/** \brief default unsigned 16 bits fast integer type definition */
 typedef uint_least16_t  uint16_least;
+/** \brief default signed 32 bits fast integer type definition */
 typedef int_least32_t   sint32_least;
+/** \brief default unsigned 32 bits fast integer type definition */
 typedef uint_least32_t  uint32_least;
 
-typedef int_fast8_t     sint8f;
-typedef uint_fast8_t    uint8f;
-typedef int_fast16_t    sint16f;
+/** \brief default signed 8 bits fast integer type definition */
+typedef int_fast8_t		sint8f;
+/** \brief default unsigned 8 bits fast integer type definition */
+typedef uint_fast8_t		uint8f;
+/** \brief default signed 16 bits fast integer type definition */
+typedef int_fast16_t		sint16f;
+/** \brief default unsigned 16 bits fast integer type definition */
 typedef uint_fast16_t   uint16f;
-typedef int_fast32_t    sint32f;
+/** \brief default signed 32 bits fast integer type definition */
+typedef int_fast32_t		sint32f;
+/** \brief default unsigned 32 bits fast integer type definition */
 typedef uint_fast32_t   uint32f;
-#endif
 
-#if 0   /* We don't need this anymore (???) */
+#else /* #if defined(C99_COMPILER) || defined(CPP_COMPILER) */
 #ifndef TYPES_BOOLEAN
 /** \brief boolean type type definition */
 typedef unsigned char boolean;
@@ -241,8 +259,8 @@ typedef unsigned int uint32;
 #define TYPES_SINT32
 /** \brief default signed 32 bits integer type definition */
 typedef signed int sint32;
-#endif      
-            
+#endif
+
 #ifndef TYPES_UINT32F
 #define TYPES_UINT32F
 /** \brief default unsigned 32 bits fast integer type definition */
@@ -255,13 +273,14 @@ typedef unsigned int uint32f;
 typedef signed int sint32f;
 #endif
 
-#endif  /* #if 0*/
+#endif  /* #if defined(C99_COMPILER) || defined(CPP_COMPILER) */
 
 #ifndef TYPES_STD_RETURNTYPE
 #define TYPES_STD_RETURNTYPE
 /** \brief default Standard Return type definition */
 typedef uint8f Std_ReturnType;
 #endif
+
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
