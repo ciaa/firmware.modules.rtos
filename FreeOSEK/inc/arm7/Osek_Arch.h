@@ -43,8 +43,8 @@
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file arm/Osek_Arch.h
- ** \arch ARM
+ ** \file arm7/Osek_Arch.h
+ ** \arch arm7
  **
  **/
 

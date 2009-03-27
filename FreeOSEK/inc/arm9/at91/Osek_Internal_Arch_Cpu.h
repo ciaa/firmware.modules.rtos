@@ -40,8 +40,8 @@
 #define _OSEK_INTERNAL_ARCH_CPU_H_
 /** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
  **
- ** \file arm/Osek_Internal_Arch_Cpu.h
- ** \arch arm/lpc2xxx
+ ** \file arm9/at91/Osek_Internal_Arch_Cpu.h
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup FreeOSEK

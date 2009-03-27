@@ -529,4 +529,6 @@ uip_fw_periodic(void)
     }
   }
 }
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*------------------------------------------------------------------------------*/

@@ -38,8 +38,8 @@
 
 /** \brief FreeOSEK Arch Implementation File
  **
- ** \file arm/Osek_Arch.c
- ** \arch ARM
+ ** \file arm7/Osek_Arch.c
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK

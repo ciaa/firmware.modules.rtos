@@ -40,9 +40,8 @@
 #define _TYPES_ARCH_H_
 /** \brief OpenGEN Architecture Types definition
  **
- ** \file arm/Types_Arch.h
- ** \arch arm
- **
+ ** \file arm7/Types_Arch.h
+ ** \arch arm7
  **/
 
 /** \addtogroup OpenGEN

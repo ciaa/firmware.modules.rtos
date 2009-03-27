@@ -38,8 +38,8 @@
 
 /** \brief FreeOSEK Posix Memory Mapping Header File
  **
- ** \file arm/MemMap_Arch.h
- **
+ ** \file arm7/MemMap_Arch.h
+ ** \arch arm7
  **/
 
 /** \addtogroup OpenGEN

@@ -40,7 +40,8 @@
 #define _TS_ARCH_H_
 /** \brief TestSuite Architecture Header File
  **
- ** \file arm/TS_Arch.h
+ ** \file arm7/TS_Arch.h
+ ** \arch arm7
  **/
 
 /** \addtogroup TestSuite

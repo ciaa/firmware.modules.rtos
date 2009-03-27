@@ -40,8 +40,8 @@
  **
  ** This file implements the StartOs Arch API
  **
- ** \file arm/StartOs_Arch.c
- ** \arch ARM
+ ** \file arm7/StartOs_Arch.c
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK

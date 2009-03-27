@@ -38,8 +38,8 @@
 
 /** \brief FreeOSEK Internal ARCH CPU Dependece Implementation File
  **
- ** \file arm/Osek_Internal_Arch_Cpu.c
- ** \arch arm/lpc2xxx
+ ** \file arm9/at91/Osek_Internal_Arch_Cpu.c
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup FreeOSEK

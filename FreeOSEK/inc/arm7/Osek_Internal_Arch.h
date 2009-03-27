@@ -40,8 +40,8 @@
 #define _OSEK_INTERNAL_ARCH_H_
 /** \brief FreeOSEK Internal Architecture Dependent Header File
  **
- ** \file arm/Osek_Internal_Arch.h
- ** \arch ARM
+ ** \file arm7/Osek_Internal_Arch.h
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK

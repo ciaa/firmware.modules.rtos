@@ -38,8 +38,7 @@
 
 /** \brief FreeOSEK Posix Section Mapping Header File
  **
- ** \file arm/MemMap_Section_Arch.h
- **
+ ** \file gcc/MemMap_Section_Compiler.h
  **/
 
 /** \addtogroup OpenGEN

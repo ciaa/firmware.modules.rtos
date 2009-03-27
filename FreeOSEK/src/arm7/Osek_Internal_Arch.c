@@ -19,8 +19,8 @@
 
 /** \brief FreeOSEK Internal Arch Implementation File
  **
- ** \file arm/Osek_Internal_Arch.c
- ** \arch ARM
+ ** \file arm7/Osek_Internal_Arch.c
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK
