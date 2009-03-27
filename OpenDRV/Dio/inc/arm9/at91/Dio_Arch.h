@@ -42,8 +42,8 @@
  **
  ** DIO Arch Header File
  **
- ** \file Dio_Arch.h
- **
+ ** \file arm9/at91/Dio_Arch.h
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup OpenDRV

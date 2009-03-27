@@ -3,8 +3,8 @@
  * OpenDRV are the Basic Input Output Drivers supported by FreeOSEK
  * At the moment we are working in:
  *
- * - \ref OpenDRV_Io
- * - \ref OpenDRV_Clk
+ * - \ref OpenDRV_Dio
+ * - \ref OpenDRV_Mcu
  *
  * 
  */

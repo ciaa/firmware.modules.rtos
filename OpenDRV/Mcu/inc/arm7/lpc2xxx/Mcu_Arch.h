@@ -42,8 +42,8 @@
  **
  ** Mcu Arch Header File
  **
- ** \file Mcu_Arch.h
- **
+ ** \file arm7/lpc2xxx/Mcu_Arch.h
+ ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup OpenDRV

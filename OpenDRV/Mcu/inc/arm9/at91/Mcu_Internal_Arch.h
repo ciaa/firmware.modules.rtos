@@ -42,8 +42,8 @@
  **
  ** Mcu Internal Header File
  **
- ** \file Mcu_Internal_Arch.h
- **
+ ** \file arm9/at91/Mcu_Internal_Arch.h
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup OpenDRV

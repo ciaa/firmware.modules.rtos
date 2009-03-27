@@ -40,8 +40,8 @@
  **
  ** This file implements the Ethernet lpc24xx Init Service
  **
- ** \file lpc24xx/Eth_Init.c
- ** \arch lpc24xx
+ ** \file lpc2468/Eth_Init_Arch.c
+ ** \arch lpc2468
  **
  **/
 

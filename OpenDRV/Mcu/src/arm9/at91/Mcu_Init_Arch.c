@@ -40,8 +40,8 @@
  **
  ** This file implements the Mcu_Init_Arch API
  **
- ** \file Mcu_Init_Arch.c
- **
+ ** \file arm9/at91/Mcu_Init_Arch.c
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup OpenDRV

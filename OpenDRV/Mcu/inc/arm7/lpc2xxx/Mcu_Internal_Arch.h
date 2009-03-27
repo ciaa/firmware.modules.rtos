@@ -42,8 +42,8 @@
  **
  ** Mcu Internal Header File
  **
- ** \file Mcu_Internal_Arch.h
- **
+ ** \file arm7/lpc2xxx/Mcu_Internal_Arch.h
+ ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup OpenDRV

@@ -248,7 +248,7 @@ extern void Mcu_Init(const Mcu_ConfigType* ConfigPtr);
  **
  ** This service initializes the PLL and other MCU specific clock options.
  **
- ** \param[in] ConfigSettings Clock Settings
+ ** \param[in] ClockSettings Clock Settings
  ** \return E_OK Command has been accepted
  **			E_NOT_OK Command has not been accepted
  **/

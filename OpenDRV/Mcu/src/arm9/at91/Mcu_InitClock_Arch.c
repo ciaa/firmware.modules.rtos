@@ -40,8 +40,8 @@
  **
  ** This file implements the Mcu_InitClock_Arch API
  **
- ** \file Mcu_InitClock_Arch.c
- **
+ ** \file arm9/at91/Mcu_InitClock_Arch.c
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup OpenDRV

@@ -181,7 +181,7 @@ typedef uint8f Dio_ReturnType;
  ** This Dio driver service shall be called to initialize the Dio driver. Calls
  ** to any other Dio driver service before initialization is not allowed.
  **
- ** \param[in] config pointer to the Dio driver configuration
+ ** \param[in] Config pointer to the Dio driver configuration
  ** \return DIO_E_OK	if no error occurs
  ** \return DIO_E_PARAM if the configuration is invalid
  ** \return DIO_E_NOTOK if other error occurs

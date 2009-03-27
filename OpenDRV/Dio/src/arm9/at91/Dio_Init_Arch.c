@@ -40,8 +40,8 @@
  **
  ** This file implements the Dio_Init_Arch API
  **
- ** \file Dio_Init_Arch.c
- **
+ ** \file arm9/at91/Dio_Init_Arch.c
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup OpenDRV

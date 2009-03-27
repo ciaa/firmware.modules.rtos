@@ -42,8 +42,8 @@
  **
  ** DIO Arch Header File
  **
- ** \file Dio_Arch.h
- **
+ ** \file arm7/lpc2xxx/Dio_Arch.h
+ ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup OpenDRV

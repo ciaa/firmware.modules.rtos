@@ -42,8 +42,8 @@
  **
  ** Mcu Arch Header File
  **
- ** \file Mcu_Arch.h
- **
+ ** \file arm9/at91/Mcu_Arch.h
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup OpenDRV

@@ -40,8 +40,8 @@
  **
  ** This file implements the Mcu_Init_Arch API
  **
- ** \file Mcu_Init_Arch.c
- **
+ ** \file arm7/lpc2xxx/Mcu_Init_Arch.c
+ ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup OpenDRV

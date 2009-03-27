@@ -40,8 +40,8 @@
  **
  ** This file implements the Dio_Init_Arch API
  **
- ** \file Dio_Init_Arch.c
- **
+ ** \file arm7/lpc2xxx/Dio_Init_Arch.c
+ ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup OpenDRV
