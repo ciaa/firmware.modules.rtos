@@ -40,7 +40,7 @@
  **
  ** This file implements the Blinking example
  **
- ** \file main.c
+ ** \file Blinking/src/main.c
  **
  **/
 

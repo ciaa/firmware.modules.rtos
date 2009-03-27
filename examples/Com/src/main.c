@@ -40,7 +40,7 @@
  **
  ** This file implements an example using FreeOSEK and OpenCOM
  **
- ** \file main.c
+ ** \file Com/src/main.c
  **/
 
 /** \addtogroup Examples Examples

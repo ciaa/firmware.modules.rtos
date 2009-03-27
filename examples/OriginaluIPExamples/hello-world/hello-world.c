@@ -97,4 +97,5 @@ handle_connection(struct hello_world_state *s)
   
   PSOCK_END(&s->p);
 }
+/** @} doxygen end group definition */
 /*---------------------------------------------------------------------------*/

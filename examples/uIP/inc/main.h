@@ -40,13 +40,12 @@
 #define _MAIN_H_
 /** \brief uIP Main Header File
  **
- ** \file main.h
+ ** \file examples/uIP/inc/main.h
  **/
 
 /** \addtogroup examples
  ** @{ */
 /** \addtogroup uIP
- ** \intogroup examples
  ** @{ */
 
 /*
