@@ -64,6 +64,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090327 v0.1.4 MaCe add declaration of the start task for the app. modes
  * 20090131 v0.1.3 MaCe add extern to CountersVar declaration
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20090128 v0.1.1 MaCe remove ENABLE and DISABLE macro, now defined in OpenGEN
@@ -510,6 +511,30 @@ extern TaskVariableType TasksVar[TASKS_COUNT];
 extern uint8 ApplicationMode;
 
 <?php
+$appmodes = $config->getList("/OSEK", "APPMODE");
+
+foreach ($appmodes as $appmode)
+{
+	$tasksinmode = array();
+	foreach($tasks as $task)
+	{
+		$taskappmodes = $config->getList("/OSEK/" . $task, "APPMODE");
+		foreach ($taskappmodes as $taskappmode)
+		{
+			if ($taskappmode == $appmode)
+			{
+				$tasksinmode[] = $task;
+			}
+		}
+	}
+	if (count($tasksinmode) > 0)
+	{
+		$count = 0;
+		print "/** \brief List of Auto Start Tasks in Application Mode $appmode */\n";
+		print "extern const TaskType TasksAppMode" . $appmode . "[" . count($tasksinmode). "];\n";
+	}
+}
+
 $appmodes = $config->getList("/OSEK","APPMODE");
 print "/** \brief AutoStart Array */\n";
 print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";
