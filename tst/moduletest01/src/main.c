@@ -46,9 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Moduletests OpenSEK Module Tests
+/** \addtogroup FreeOSEK_MT Module Tests
  ** @{ */
-/** \addtogroup FreeOSEK_Moduletests_ModuleTest1 OpenSEK Module Test 1
+/** \addtogroup FreeOSEK_MT_01 Module Test 1
  ** @{ */
 
 /*
