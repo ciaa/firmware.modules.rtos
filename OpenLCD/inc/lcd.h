@@ -46,7 +46,7 @@
  **
  **/
 
-/** \addtogroup Lcd LCD
+/** \addtogroup Lcd OpenLCD
  ** @{ */
 /** \addtogroup Lcd_Global LCD Global
  ** @{ */

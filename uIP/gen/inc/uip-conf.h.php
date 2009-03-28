@@ -1,4 +1,5 @@
 /**
+ * \addtogroup uip
  * \addtogroup uipopt
  * @{
  */
@@ -156,5 +157,6 @@ typedef unsigned short uip_stats_t;
 
 #endif /* __UIP_CONF_H__ */
 
+/** @} */
 /** @} */
 /** @} */

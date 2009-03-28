@@ -34,6 +34,8 @@
  */
 
 /**
+ * \addtogroup uip
+ * @{
  * \defgroup psock Protosockets library
  * @{
  *
@@ -377,4 +379,6 @@ char psock_newdata(struct psock *s);
 
 #endif /* __PSOCK_H__ */
 
+/** @} */
+/** @} */
 /** @} */

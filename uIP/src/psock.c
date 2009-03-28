@@ -33,6 +33,13 @@
  * $Id: psock.c,v 1.2 2006/06/12 08:00:30 adam Exp $
  */
 
+/** 
+ * \addtogroup uip
+ * @{
+ * \addtogroup psock
+ * @{
+ */
+
 #include <stdio.h>
 #include <string.h>
 
@@ -336,3 +343,5 @@ psock_init(register struct psock *psock, char *buffer, unsigned int buffersize)
   PT_INIT(&psock->psockpt);
 }
 /*---------------------------------------------------------------------------*/
+/** @} */
+/** @} */

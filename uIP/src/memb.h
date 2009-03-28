@@ -34,6 +34,8 @@
  */
 
 /**
+ * \addtogroup uip
+ * @{
  * \defgroup memb Memory block management functions
  *
  * The memory block allocation routines provide a simple yet powerful
@@ -140,3 +142,5 @@ char  memb_free(struct memb_blocks *m, void *ptr);
 /** @} */
 
 #endif /* __MEMB_H__ */
+
+/** @} */

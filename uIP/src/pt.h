@@ -34,6 +34,8 @@
  */
 
 /**
+ * \addtogroup uip
+ * @{
  * \addtogroup pt
  * @{
  */
@@ -320,4 +322,5 @@ struct pt {
 
 #endif /* __PT_H__ */
 
+/** @} */
 /** @} */

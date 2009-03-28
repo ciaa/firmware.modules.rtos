@@ -1,4 +1,6 @@
 /**
+ * \addtogroup uip
+ * @{
  * \defgroup clock Clock interface
  *
  * The clock interface is the interface between the \ref timer "timer library"
@@ -85,4 +87,5 @@ clock_time_t clock_time(void);
 
 #endif /* __CLOCK_H__ */
 
+/** @} */
 /** @} */

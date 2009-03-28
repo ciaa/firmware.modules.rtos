@@ -1,4 +1,6 @@
 /**
+ * \addtogroup uip
+ * @{
  * \defgroup timer Timer library
  *
  * The timer library provides functions for setting, resetting and
@@ -83,4 +85,5 @@ int timer_expired(struct timer *t);
 
 #endif /* __TIMER_H__ */
 
+/** @} */
 /** @} */

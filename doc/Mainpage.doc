@@ -53,11 +53,11 @@
 
 /** \page Basic Basic Documentation
  *
+ * - \subpage README
  * - \subpage CREDITS
  * - \subpage RELEASENOTES
  * - \subpage CHANGELOG
  * - \subpage FUTURERELEASES
- * - \subpage README
  *
  */
 
