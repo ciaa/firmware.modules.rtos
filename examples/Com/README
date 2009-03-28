@@ -36,7 +36,7 @@
  *
  */
 
-/** \page Com OSEK COM Example
+/** \page ComExample Com Example
  *
  * The COM example shows how to use FreeOSEK and OpenCOM together. To send
  * and receive message.

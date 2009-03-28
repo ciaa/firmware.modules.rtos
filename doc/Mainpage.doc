@@ -47,6 +47,7 @@
  * - \subpage Basic
  * - \subpage Introduction
  * - \subpage Manuals
+ * - \subpage Examples
  *
  */
 
@@ -73,5 +74,13 @@
  * - \subpage OpenGEN
  * - \subpage OpenDRV
  * - \subpage OpenMAKE
+ * - \subpage OpenBLF
+ *
+ */
+
+/** \page Examples Examples using FreeOSEK
+ *
+ * - \subpage Blinking
+ * - \subpage ComExample
  *
  */
