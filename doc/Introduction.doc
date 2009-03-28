@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the OpenSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -60,12 +60,12 @@
  * for posix arhcitectures simulating the needed hardware of an embedded
  * system.
  *
- * At this moment FreeOSEK is still under development. The goals of OpenSEK
+ * At this moment FreeOSEK is still under development. The goals of FreeOSEK
  * is to be used for educational propuses or as demostrator.
  *
  * FreeOSEK is not designed to be used on a real car and or any
  * other application where human lives were under risk. Take into account that
- * FreeOSEK is released under the terms of GPL. OpenSEK Team will not
+ * FreeOSEK is released under the terms of GPL. FreeOSEK Team will not
  * take ANY responsability of what you do with this software and what it may
  * happens. Please refer you to the GPL License for more information.
  *

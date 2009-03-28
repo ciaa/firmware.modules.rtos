@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the OpenSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -47,9 +47,9 @@
  **
  **/
 
-/** \addtogroup FreeOSEK OpenSEK
+/** \addtogroup FreeOSEK FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global OpenSEK Global
+/** \addtogroup FreeOSEK_Global FreeOSEK Global
  ** \ingroup FreeOSEK
  ** @{ */
 

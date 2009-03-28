@@ -16,7 +16,7 @@
 # In addition, as a special exception, the copyright holders of FreeOSEK give
 # you permission to combine FreeOSEK program with free software programs or
 # libraries that are released under the GNU LGPL and with independent modules
-# that communicate with FreeOSEK solely through the OpenSEK defined interface. 
+# that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
 # You may copy and distribute such a system following the terms of the GNU GPL
 # for FreeOSEK and the licenses of the other code concerned, provided that you
 # include the source code of that other code when and as the GNU GPL requires
@@ -65,7 +65,7 @@ sub wf_start
 	print OUT " * In addition, as a special exception, the copyright holders of FreeOSEK give\n";
 	print OUT " * you permission to combine FreeOSEK program with free software programs or\n";
 	print OUT " * libraries that are released under the GNU LGPL and with independent modules\n";
-	print OUT " * that communicate with FreeOSEK solely through the OpenSEK defined interface.\n";
+	print OUT " * that communicate with FreeOSEK solely through the FreeOSEK defined interface.\n";
 	print OUT " * You may copy and distribute such a system following the terms of the GNU GPL\n";
 	print OUT " * for FreeOSEK and the licenses of the other code concerned, provided that you\n";
 	print OUT " * include the source code of that other code when and as the GNU GPL requires\n";
@@ -253,7 +253,7 @@ info("");
 info("In addition, as a special exception, the copyright holders of FreeOSEK give");
 info("you permission to combine FreeOSEK program with free software programs or");
 info("libraries that are released under the GNU LGPL and with independent modules");
-info("that communicate with FreeOSEK solely through the OpenSEK defined interface.");
+info("that communicate with FreeOSEK solely through the FreeOSEK defined interface.");
 info("You may copy and distribute such a system following the terms of the GNU GPL");
 info("for FreeOSEK and the licenses of the other code concerned, provided that you");
 info("include the source code of that other code when and as the GNU GPL requires");

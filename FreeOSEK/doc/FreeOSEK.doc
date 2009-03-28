@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the OpenSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -36,10 +36,10 @@
  *
  */
 
-/** \page FreeOSEK OpenSEK OS Manual
+/** \page FreeOSEK FreeOSEK OS Manual
  *
  * This is the FreeOSEK manual, here  you will find all information related to
- * the FreeOSEK RTOS. OpenSEK is based on the OSEK-VDX RTOS specifications.
+ * the FreeOSEK RTOS. FreeOSEK is based on the OSEK-VDX RTOS specifications.
  * You may want to take a look on the specification too. You can get the
  * OSEK-VDX RTOS specification from the OSEK-VDX page
  * <a href="http://www.osek-vdx.org/">http://www.osek-vdx.org/</a>.
@@ -232,7 +232,7 @@
  * task or ISR2 can set events of any task. Is not possible to clear events
  * of other tasks or to wait for events of others tasks.
  *
- * \subsection FreeOSEK_Introduction_Resources Resources in OpenSEK
+ * \subsection FreeOSEK_Introduction_Resources Resources in FreeOSEK
  *
  * Resources are used in FreeOSEK to coordinate access of many tasks with
  * different priorities to one resource.
@@ -274,7 +274,7 @@
  *
  * \subsection FreeOSEK_Data_and_Interfaces_DataTypes Data Types
  *
- * \section FreeOSEK_API OpenSEK Services
+ * \section FreeOSEK_API FreeOSEK Services
  *
  * \subsection FreeOSEK_API_Context Call Context
  *
@@ -611,7 +611,7 @@
  *
  * Then you can run FreeOSEK on windows. :)
  *
- * \subsubsection FreeOSEK_Windows_Stack OpenSEK stack size on Windows
+ * \subsubsection FreeOSEK_Windows_Stack FreeOSEK stack size on Windows
  *
  * The size of the stack of your tasks in windows has to be realtive BIG if
  * you are going to use system calls. I hope we can find a better solution
@@ -619,7 +619,7 @@
  * But the problem is not the opensek alos the Cygwin Windows interfaces like
  * usleep and printf.
  *
- * \section FreeOSEK_Porting Porting OpenSEK to new platforms
+ * \section FreeOSEK_Porting Porting FreeOSEK to new platforms
  *
  * This sections explains how to port FreeOSEK to a new platform. Important is
  * that you will need a good background of the platform where you want to port
