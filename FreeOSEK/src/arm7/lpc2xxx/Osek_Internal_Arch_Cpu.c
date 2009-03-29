@@ -56,6 +56,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090329 v0.1.1 MaCe replace binary representation with hex one
  * 20090227 v0.1.0 MaCe initial version
  */
 
@@ -80,7 +81,7 @@ void StartOs_Arch_Cpu
 	void
 )
 {
-	T0CTCR = 0b00;	/* bit 1-0: 00 Timer mode
+	T0CTCR = 0;	/* bit 1-0: 00 Timer mode
 										01 Counter mode at rising edge
 										10 Counter mode at falling edge
 										11 Counter mode both edges
@@ -95,15 +96,15 @@ void StartOs_Arch_Cpu
 						/* 1 incremenet every 1us */
 
 	/* set Timer Control Register TCR */
-	T0TCR = 0b11;	/* bit 0:	enable counter
+	T0TCR = 0x3;	/* bit 0:	enable counter
 							bit 1:	reset counter
 							bit 7-2: reserved */
 
-	T0TCR = 0b01;	/* bit 1:	clear reset now */
+	T0TCR = 0x1;	/* bit 1:	clear reset now */
 
-	T0MR0 = 1000;	/* timer match 0 every 1ms*/
+	T0MR0 = 0x8;	/* timer match 0 every 1ms*/
 
-	T0MCR = 0b11;	/* bit 0: interrupt if MR0 match the TC
+	T0MCR = 0x3;	/* bit 0: interrupt if MR0 match the TC
 							bit 1: reset TC if MR0 match */
 
 	/* enable interrupts */

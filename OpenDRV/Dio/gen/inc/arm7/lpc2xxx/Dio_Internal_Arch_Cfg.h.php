@@ -71,6 +71,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090329 v0.1.2 MaCe replace bin with hex number representation
  * 20090213 v0.1.1 MaCe raname Io driver to Dio
  * 20090125 v0.1.0 MaCe	initial version
  */  
@@ -138,7 +139,7 @@ foreach($port_mask as $pm)
 	print " ** bit n 0 indicate the bit of the port $count is not used\n";
 	print " ** bit n 1 indicate the bit of the port $count is used\n";
 	print " **/\n";
-	print "#define DIO_PORT" . $count . "_MASK	0b" . decbin($pm) . "\n\n";
+	print "#define DIO_PORT" . $count . "_MASK	0x" . dechex($pm) . "\n\n";
 	$count++;
 }
 $count = 0;
@@ -149,7 +150,7 @@ foreach($port_dir as $pd)
 	print " ** bit n 0 indicate the bit of the port $count is an input\n";
 	print " ** bit n 1 indicate the bit of the port $count is an output\n";
 	print " **/\n";
-	print "#define DIO_PORT" . $count . "_DIR	0b" . decbin($pd) . "\n\n";
+	print "#define DIO_PORT" . $count . "_DIR	0x" . dechex($pd) . "\n\n";
 	$count++;
 }
 ?>
