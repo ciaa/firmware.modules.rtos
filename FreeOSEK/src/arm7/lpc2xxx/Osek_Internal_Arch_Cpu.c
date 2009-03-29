@@ -102,7 +102,7 @@ void StartOs_Arch_Cpu
 
 	T0TCR = 0x1;	/* bit 1:	clear reset now */
 
-	T0MR0 = 0x8;	/* timer match 0 every 1ms*/
+	T0MR0 = 1000;	/* timer match 0 every 1ms*/
 
 	T0MCR = 0x3;	/* bit 0: interrupt if MR0 match the TC
 							bit 1: reset TC if MR0 match */
