@@ -141,13 +141,21 @@ if ($taskscount<=0)
 {
 	error("No tasks found in the configuration.\n");
 }
-print "#define TASKS_COUNT	$taskscount" . "U\n";
-?>
+print "#define TASKS_COUNT	$taskscount" . "U\n\n";
 
-/** \brief Count of resources */
-#define RESOURCES_COUNT 31
 
-<?php
+/* Define the Resources */
+$resources = $config->getList("/OSEK","RESOURCE");
+if(count($resources)>31)
+{
+	error("more than 31 resources were defined");
+}
+else
+{
+	print "/** \brief Count of resources */\n";
+	print "#define RESOURCES_COUNT " . count($resources) . "\n\n";
+}
+
 $os = $config->getList("/OSEK","OS");
 if (count($os)>1)
 {
