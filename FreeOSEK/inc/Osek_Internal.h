@@ -98,6 +98,9 @@
 /** \brief Invalid Task State */
 #define TASK_ST_INVALID		((TaskStateType)~0)
 
+/** \brief Task Maximal Priority */
+#define TASK_MAX_PRIORITY ((TaskPriorityType)~0)
+
 /** \brief Error Checking Standard */
 #define ERROR_CHECKING_STANDARD   1
 

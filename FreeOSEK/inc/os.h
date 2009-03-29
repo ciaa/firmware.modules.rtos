@@ -303,6 +303,9 @@
 #define OSServiceId_StartOs							25
 #define OSServiceId_ShutdownOs						26
 
+/** \brief Resource Scheduler */
+#define RES_SCHEDULER									255
+
 /*==================[typedef]================================================*/
 /** \brief Type definition of StatusType
  **

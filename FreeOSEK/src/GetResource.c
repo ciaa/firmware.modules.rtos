@@ -97,7 +97,7 @@ StatusType GetResource
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-	if (ResID > RESOURCES_COUNT)
+	if ( ( ResID > RESOURCES_COUNT ) && ( ResID != RES_SCHEDULER ) )
 	{
 		/* \req OSEK_SYS_3.13.3-1/2 Extra possible return values in Extended mode are
 		 ** E_OS_ID, E_OS_ACCESS */
@@ -116,15 +116,24 @@ StatusType GetResource
 
 		IntSecure_Start();
 
-		/* \req OSEK_SYS_3.13.1 This call serves to enter critical sections in
-		 ** the code that are assigned to the resource referenced by ResID */
-		if ( TasksVar[GetRunningTask()].ActualPriority < ResourcesPriority[ResID])
+		if ( ResID == RES_SCHEDULER )
 		{
-			TasksVar[GetRunningTask()].ActualPriority = ResourcesPriority[ResID];
+			TasksVar[GetRunningTask()].ActualPriority = TASK_MAX_PRIORITY;
 		}
+#if (RESOURCES_COUNT == 0)
+		else
+		{
+			/* \req OSEK_SYS_3.13.1 This call serves to enter critical sections in
+			 ** the code that are assigned to the resource referenced by ResID */
+			if ( TasksVar[GetRunningTask()].ActualPriority < ResourcesPriority[ResID])
+			{
+				TasksVar[GetRunningTask()].ActualPriority = ResourcesPriority[ResID];
+			}
 
-		/* mark resource as set */
-		TasksVar[GetRunningTask()].Resources |= ( 1 << ResID );
+			/* mark resource as set */
+			TasksVar[GetRunningTask()].Resources |= ( 1 << ResID );
+		}
+#endif /* #if (RESOURCES_COUNT == 0) */
 
 		IntSecure_End();
 

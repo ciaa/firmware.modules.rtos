@@ -97,13 +97,15 @@ StatusType ReleaseResource
 	 ** E_OK  */
 	StatusType ret = E_OK;
 
+#if (RESOURCES_COUNT == 0)
 	uint8 loopi;
+#endif /* #if (RESOURCES_COUNT == 0) */
 
 	/* asign the static priority to the task */
 	TaskPriorityType priority = TasksConst[GetRunningTask()].StaticPriority;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-	if (ResID > RESOURCES_COUNT)
+	if ( ( ResID > RESOURCES_COUNT ) && ( ResID != RES_SCHEDULER ) )
 	{
 		/* \req OSEK_SYS_3.14.3-1/2 Extra possible return values in Extended mode are
 		 ** E_OS_ID, E_OS_NOFUNC, E_OS_ACCESS */
@@ -120,7 +122,11 @@ StatusType ReleaseResource
 	{
 		IntSecure_Start();
 
-	   TasksVar[GetRunningTask()].Resources &= ~( 1 << ResID );
+#if (RESOURCES_COUNT == 0)
+		if ( ResID != RES_SCHEDULER )
+		{
+	   	TasksVar[GetRunningTask()].Resources &= ~( 1 << ResID );
+		}
 
 		for (loopi = 0; loopi < RESOURCES_COUNT; loopi++)
 		{
@@ -132,6 +138,7 @@ StatusType ReleaseResource
 				}
 			}
 		}
+#endif /* #if (RESOURCES_COUNT == 0) */
 
 		/* \req OSEK_SYS_3.14.1 ReleaseResource is the counterpart of GetResource
 		 ** and serves to leave critical sections in the code that are assigned to
