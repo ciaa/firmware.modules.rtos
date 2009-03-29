@@ -64,6 +64,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090329 v0.1.4 MaCe add RES_SCHEDULER
  * 20090129 v0.1.3 MaCe add OSEK_MEMMAP check
  * 20081214 v0.1.2 AsKa Fix mistaken comments for SetRelAlarm
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
