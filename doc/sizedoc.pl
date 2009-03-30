@@ -290,14 +290,27 @@ while ($line = <IN>)
 		my $sym = @el[0]; $sym =~ s/^\s+//; $sym =~ s/\s+$//; # remove leading and trailing spaces
 		my $add = @el[1]; $add =~ s/^\s+//; $add =~ s/\s+$//; # remove leading and trailing spaces
 		my $size = @el[4]; $size =~ s/^\s+//; $size =~ s/\s+$//; # remove leading and trailing spaces
-		my $type = substr(@el[6],0,index(@el[6],"\t"));
-		my $file = substr(@el[6],index(@el[6],"\t")+1,index(@el[6],":")-index(@el[6],"\t")-1);
-		my $file = substr($file,length($pwd)+1);
-		my $module = substr($file,0,index($file,"/"));
-		my $file = substr($file,index($file,"/")+1);
-		my $line = substr(@el[6],index(@el[6],":")+1);
+		my $type = "";
+		my $file = "";
+		my $module = "";
+		my $line = "";
+		#print "@el[6]\n"
+		if( index(@el[6],"\t")!= -1 )
+		{
+			$type = substr(@el[6],0,index(@el[6],"\t"));
+			$file = substr(@el[6],index(@el[6],"\t")+1,index(@el[6],":")-index(@el[6],"\t")-1);
+			$file = substr($file,length($pwd)+1);
+			$module = substr($file,0,index($file,"/"));
+			$file = substr($file,index($file,"/")+1);
+			$line = substr(@el[6],index(@el[6],":")+1);
+		}
+		else
+		{
+			$type = @el[6];
+		}
 
 		@el = ($sym, $add, $size, $type, $module, $file, $line);
+		#print "$sym - $add - $size - $type - $module - $file - $line\n";
 
 		push(@symbols, \@el);
 	}
