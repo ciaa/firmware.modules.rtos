@@ -59,7 +59,9 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090329 v0.1.3 MaCe add RES_SCHEDULER and imp. code if RESOURCE_COUNT is 0
+ * 20090330 v0.1.4 MaCe correct errors done in v0.1.3
+ * 20090329 v0.1.3 MaCe add RES_SCHEDULER and imp. code if RESOURCE_COUNT is
+ *								different than 0
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080909 v0.1.0 MaCe	initial version
@@ -104,24 +106,31 @@ StatusType GetResource
 		 ** E_OS_ID, E_OS_ACCESS */
 		ret = E_OS_ID;
 	}
-	else if ( ( TasksVar[GetRunningTask()].Resources & ( 1 << ResID ) ) ||
-				 ( ( TasksConst[GetRunningTask()].ResourcesMask & ( 1 << ResID ) ) == 0 ) )
+	else if ( ResID != RES_SCHEDULER )
 	{
-		/* \req OSEK_SYS_3.13.3-2/2 Extra possible return values in Extended mode are
-		 ** E_OS_ID, E_OS_ACCESS */
-		ret = E_OS_ACCESS;
+		if ( ( TasksVar[GetRunningTask()].Resources & ( 1 << ResID ) ) ||
+					 ( ( TasksConst[GetRunningTask()].ResourcesMask & ( 1 << ResID ) ) == 0 ) )
+		{
+			/* \req OSEK_SYS_3.13.3-2/2 Extra possible return values in Extended mode are
+			 ** E_OS_ID, E_OS_ACCESS */
+			ret = E_OS_ACCESS;
+		}
 	}
 	else
+	{
+		/* nothing to do */
+	}
+
+	if ( ret == E_OK )
 #endif
 	{
-
 		IntSecure_Start();
 
 		if ( ResID == RES_SCHEDULER )
 		{
 			TasksVar[GetRunningTask()].ActualPriority = TASK_MAX_PRIORITY;
 		}
-#if (RESOURCES_COUNT == 0)
+#if (RESOURCES_COUNT != 0)
 		else
 		{
 			/* \req OSEK_SYS_3.13.1 This call serves to enter critical sections in
@@ -134,25 +143,28 @@ StatusType GetResource
 			/* mark resource as set */
 			TasksVar[GetRunningTask()].Resources |= ( 1 << ResID );
 		}
-#endif /* #if (RESOURCES_COUNT == 0) */
+#endif /* #if (RESOURCES_COUNT != 0) */
 
 		IntSecure_End();
-
 	}
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
-		(HOOK_ERRORHOOK == ENABLE) )
+		(HOOK_ERRORHOOK == ENABLE) )	
 	/* \req OSEK_ERR_1.3-6/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-6/xx The hook routine ErrorHook is not called if a
 	 ** system service is called from the ErrorHook itself. */
-   if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+   else if ( ( ErrorHookRunning != 1 ) )
 	{
 		SetError_Api(OSServiceId_GetResource);
 		SetError_Param1(ResID);
 		SetError_Ret(ret);
 		SetError_Msg("GetResource returns != E_OK");
 		SetError_ErrorHook();
+	}
+	else
+	{
+		/* nothing to do */
 	}
 #endif
 
