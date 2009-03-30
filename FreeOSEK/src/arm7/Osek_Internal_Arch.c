@@ -38,7 +38,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20081116 v0.1.0 MaCe       - initial version
+ * 20090330 v0.1.1 MaCe add NO_EVENTS evaluation
+ * 20081116 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -120,10 +121,12 @@ void CounterInterrupt(CounterType CounterID)
 							AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
 						}
 						break;
+#if (NO_EVENTS == DISABLE)
 					case SETEVENT:
 						/* set event */
 						SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Event);
 						break;
+#endif /* #if (NO_EVENTS == DISABLE) */
 					default:
 						/* some error ? */
 						break;

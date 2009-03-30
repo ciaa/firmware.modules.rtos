@@ -40,6 +40,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.4 MaCe add NO_EVENTS evaluation
  * 20090330 v0.1.3 MaCe add support to NON_PREEMPTIVE systems and add non
  *								preemptive check
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -63,6 +64,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#if (NO_EVENTS == DISABLE)
+
 #if (OSEK_MEMMAP == ENABLE)
 #define FreeOSEK_START_SEC_CODE
 #include "MemMap.h"
@@ -180,6 +183,8 @@ StatusType SetEvent
 #define FreeOSEK_STOP_SEC_CODE
 #include "MemMap.h"
 #endif
+
+#endif /* #if (NO_EVENTS == DISABLE) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.3 MaCe add NO_EVENTS evaluation
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080814 v0.1.0 MaCe	initial version
@@ -80,6 +81,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#if (NO_EVENTS == DISABLE)
+
 #if (OSEK_MEMMAP == ENABLE)
 #define FreeOSEK_START_SEC_CODE
 #include "MemMap.h"
@@ -193,6 +196,8 @@ StatusType WaitEvent
 #define FreeOSEK_STOP_SEC_CODE
 #include "MemMap.h"
 #endif
+
+#endif /* #if (NO_EVENTS == DISABLE) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

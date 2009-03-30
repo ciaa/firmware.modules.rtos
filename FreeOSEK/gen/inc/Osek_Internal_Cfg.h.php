@@ -64,6 +64,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.5 MaCe add NO_EVENTS macro
  * 20090327 v0.1.4 MaCe add declaration of the start task for the app. modes
  * 20090131 v0.1.3 MaCe add extern to CountersVar declaration
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -332,11 +333,28 @@ foreach($tasks as $task)
 		$preemptive = true;
 	}
 }
+
+print "/** \brief NON_PREEMPTIVE macro definition */\n";
 if ($preemptive == false)
 {
-	print "/** \brief NON_PREEMPTIVE macro definition */\n";
 	print "#define NON_PREEMPTIVE	ENABLE\n\n";
 }
+else
+{
+	print "#define NON_PREEMPTIVE	DISABLE\n\n";
+}
+
+$events = $config->getList("/OSEK","EVENT");
+print "/** \brief NO_EVENTS macro definition */\n";
+if(count($events) == 0)
+{
+	print "#define NO_EVENTS ENABLE\n\n";
+}
+else
+{
+	print "#define NO_EVENTS DISABLE\n\n";
+}
+
 
 ?>
 
