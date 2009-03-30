@@ -118,17 +118,18 @@
 #if !defined(FALSE)
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
 #define FALSE false
-#endif
 #else
 #define FALSE ((boolean)0)
+#endif
 #endif
 
 /** \brief Definiton of TRUE */
 #if !defined(TRUE)
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
-#define TRUE true#endif
+#define TRUE true
 #else
 #define TRUE ((boolean)1)
+#endif
 #endif
 
 /*==================[typedef]================================================*/
