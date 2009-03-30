@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.3 MaCe separate ifs that may be interpreted in a wrong order
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe initial version
@@ -172,14 +173,16 @@ StatusType ActivateTask
 
 		IntSecure_End();
 
-
-		if (	( GetCallingContext() ==  CONTEXT_TASK ) &&
-			( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
-			( ret == E_OK )	)
+		/* check if called from a Task Context */
+		if ( GetCallingContext() ==  CONTEXT_TASK )
 		{
-			/* \req OSEK_SYS_3.1.4 Rescheduling shall take place only if called from a
-			 * preemptable task. */
-			(void)Schedule();
+			if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
+				  ( ret == E_OK )	)
+			{
+				/* \req OSEK_SYS_3.1.4 Rescheduling shall take place only if called from a
+				 * preemptable task. */
+				(void)Schedule();
+			}
 		}
 	}
 
