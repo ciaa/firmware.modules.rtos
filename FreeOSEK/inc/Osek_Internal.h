@@ -127,6 +127,8 @@
 #define CONTEXT_ISR1 ((ContextType)2U)
 /** \brief ISR Category 2 Context */
 #define CONTEXT_ISR2 ((ContextType)3U)
+/** \brief SYS Context */
+#define CONTEXT_SYS	((ContextType)4U)
 
 /** \brief Get Context at Calling point
  **
