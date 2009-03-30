@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.2 20090330 MaCe improve Types.h (many changes)
  * v0.1.1 20090128 MaCe add DISABLE and ENABLE macros
  * v0.1.0 20081126 MaCe initial version
  */  
@@ -66,17 +67,7 @@
 /*==================[inclusions]=============================================*/
 #include "Compiler.h"
 
-#if 0
-#include "Types_Arch.h"
-#endif
-
 /*==================[macros]=================================================*/
-#ifndef TYPES_NULL
-#define TYPES_NULL
-/** \brief NULL definition */
-#define NULL ((void *)0)
-#endif
-
 #ifndef ENABLE
 /** \brief ENABLE macro with the value 1 */
 #define ENABLE 1
@@ -195,7 +186,13 @@ typedef int_fast32_t		sint32f;
 /** \brief default unsigned 32 bits fast integer type definition */
 typedef uint_fast32_t   uint32f;
 
-#else /* #if defined(C99_COMPILER) || defined(CPP_COMPILER) */
+#else /* #if defined(C99_COMPILER) || defined(CPP_COMPILER) */
+
+#ifndef TYPES_NULL
+#define TYPES_NULL
+/** \brief NULL definition */
+#define NULL ((void *)0)
+#endif
 #ifndef TYPES_BOOLEAN
 /** \brief boolean type type definition */
 typedef unsigned char boolean;
