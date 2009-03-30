@@ -59,9 +59,11 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.5 MaCe correct errors done in v0.1.3
  * 20090330 v0.1.4 MaCe add support to NON_PREEMPTIVE systems and add non
  *								preemptive check
- * 20090329 v0.1.3 MaCe add RES_SCHEDULER and imp. code if RESOURCE_COUNT is 0
+ * 20090329 v0.1.3 MaCe add RES_SCHEDULER and imp. code if RESOURCE_COUNT is
+ *								different than 0
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080909 v0.1.0 MaCe	initial version
@@ -100,9 +102,9 @@ StatusType ReleaseResource
 	 ** E_OK  */
 	StatusType ret = E_OK;
 
-#if (RESOURCES_COUNT == 0)
+#if (RESOURCES_COUNT != 0)
 	uint8 loopi;
-#endif /* #if (RESOURCES_COUNT == 0) */
+#endif /* #if (RESOURCES_COUNT != 0) */
 
 	/* asign the static priority to the task */
 	TaskPriorityType priority = TasksConst[GetRunningTask()].StaticPriority;
@@ -125,7 +127,7 @@ StatusType ReleaseResource
 	{
 		IntSecure_Start();
 
-#if (RESOURCES_COUNT == 0)
+#if (RESOURCES_COUNT != 0)
 		if ( ResID != RES_SCHEDULER )
 		{
 	   	TasksVar[GetRunningTask()].Resources &= ~( 1 << ResID );
@@ -141,7 +143,7 @@ StatusType ReleaseResource
 				}
 			}
 		}
-#endif /* #if (RESOURCES_COUNT == 0) */
+#endif /* #if (RESOURCES_COUNT != 0) */
 
 		/* \req OSEK_SYS_3.14.1 ReleaseResource is the counterpart of GetResource
 		 ** and serves to leave critical sections in the code that are assigned to
