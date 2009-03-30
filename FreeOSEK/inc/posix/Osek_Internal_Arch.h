@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.2 MaCe update CallTask macro
  * 20090130 v0.1.1 MaCe remove std type definitions, now in Types.h
  * 20080725 v0.1.0 MaCe	initial version
  */  
@@ -100,16 +101,14 @@
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(task)															\
+#define CallTask(actualtask, nexttask)										\
 	{																					\
 		uint8 jmp = 1;																\
-		(void)getcontext(TasksConst[GetRunningTask()].TaskContext);	\
+		(void)getcontext(TasksConst[(actualtask)].TaskContext);		\
 		jmp--;																		\
 		if (jmp == 0)																\
 		{																				\
-			/* set as running task */											\
-			SetRunningTask(task);												\
-			(void)setcontext(TasksConst[(task)].TaskContext);			\
+			(void)setcontext(TasksConst[(nexttask)].TaskContext);		\
 		}																				\
 	}
 

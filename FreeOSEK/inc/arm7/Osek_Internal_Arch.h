@@ -97,11 +97,10 @@
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(task)																			\
+#define CallTask(actualtask, nexttask)														\
 	{																									\
-		Osek_OldTaskPtr_Arch = (void*)TasksConst[GetRunningTask()].TaskContext;	\
-		SetRunningTask(task);																	\
-		Osek_NewTaskPtr_Arch = (void*)TasksConst[task].TaskContext;					\
+		Osek_OldTaskPtr_Arch = (void*)TasksConst[actualtask].TaskContext;			\
+		Osek_NewTaskPtr_Arch = (void*)TasksConst[nexttask].TaskContext;			\
 																										\
 		__asm__ __volatile__ (																	\
 			/* save the R0 reg on the stack */												\
@@ -273,6 +272,40 @@
  **/
 #define PostCallService()
 
+/** \brief Normal User Mode */
+#define MODE_USR			0x10
+/** \brief FIQ Processing Fast Interrupts Mode */
+#define MODE_FIQ			0x11     
+/** \brief IRQ Processing Standard Interrupts Mode */
+#define MODE_IRQ			0x12
+/** \brief Supervisor Processing Software Interrupts Mode */
+#define MODE_SVC			0x13
+/** \brief Abort Processing memory Faults Mode */
+#define MODE_ABT			0x17
+/** \brief Undefined Processing Undefined Instructions Mode */
+#define MODE_UND			0x1B
+/** \brief System Running Priviledged Operating System Tasks Mode */
+#define MODE_SYS			0x1F
+
+/** \brief Set ARM7 Mode
+ **
+ ** \param[in] mode can be:
+ **					MODE_USR to set to user mode
+ **					MODE_FIQ to set to fast interrut mode
+ **					MODE_IRQ to set to interrupt mode
+ **					MODE_SVC to set to supervisor processing mode
+ **					MODE_ABT to set to abort mode
+ **					MODE_UND to set to undefined mode
+ **					MODE_SYS to set to system mode
+ **/
+#define SetArm7Mode(mode)			\
+	{										\
+		__asm__ __volatile__ (		\
+			"MRS R7, CPSR_c	\t\n"	\
+			"ORR R7, R7, mode	\t\n"	\
+			"MSR CPSR_c, R7	\t\n"	\
+		);									\
+	}
 
 /*==================[typedef]================================================*/
 
