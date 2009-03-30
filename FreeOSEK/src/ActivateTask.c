@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.4 MaCe add support to NON_PREEMPTIVE systems
  * 20090330 v0.1.3 MaCe separate ifs that may be interpreted in a wrong order
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
@@ -173,6 +174,7 @@ StatusType ActivateTask
 
 		IntSecure_End();
 
+#if (NON_PREEMPTIVE == ENABLE)
 		/* check if called from a Task Context */
 		if ( GetCallingContext() ==  CONTEXT_TASK )
 		{
@@ -184,6 +186,7 @@ StatusType ActivateTask
 				(void)Schedule();
 			}
 		}
+#endif /* #if (NON_PREEMPTIVE == ENABLE) */
 	}
 
 

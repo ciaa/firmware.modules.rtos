@@ -40,6 +40,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.3 MaCe add support to NON_PREEMPTIVE systems and add non
+ *								preemptive check
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080814 v0.1.0 MaCe	initial version
@@ -127,7 +129,20 @@ StatusType SetEvent
 
 				IntSecure_End();
 
+#if (NON_PREEMPTIVE == ENABLE)
+		/* check if called from a Task Context */
+		if ( GetCallingContext() ==  CONTEXT_TASK )
+		{
+			if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
+				  ( ret == E_OK )	)
+			{
+				/* \req OSEK_SYS_3.15.4 Rescheduling shall take place only if called from a
+				 * preemptable task. */
 				(void)Schedule();
+			}
+		}
+#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+
 			}
 			else
 			{

@@ -323,6 +323,21 @@ $alarms = $config->getList("/OSEK","ALARM");
 print "/** \brief ALARMS_COUNT define */\n";
 print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
 
+$preemptive = false;
+foreach($tasks as $task)
+{
+	$schedule = $config->getValue("/OSEK/" .$task, "SCHEDULE");
+	if($schedule == "FULL")
+	{
+		$preemptive = true;
+	}
+}
+if ($preemptive == false)
+{
+	print "/** \brief NON_PREEMPTIVE macro definition */\n";
+	print "#define NON_PREEMPTIVE	ENABLE\n\n";
+}
+
 ?>
 
 /*==================[typedef]================================================*/
