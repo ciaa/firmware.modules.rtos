@@ -133,7 +133,6 @@
 #endif
 
 /*==================[typedef]================================================*/
-
 #if defined(C99_COMPILER)
 #include <stdint.h>
 #include <stdbool.h>
@@ -142,6 +141,12 @@
 #include <cstdbool>
 #else
 #include "Types_Arch.h"
+#endif
+
+#ifndef TYPES_NULL
+#define TYPES_NULL
+/** \brief NULL definition */
+#define NULL ((void *)0)
 #endif
 
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
@@ -189,11 +194,6 @@ typedef uint_fast32_t   uint32f;
 
 #else /* #if defined(C99_COMPILER) || defined(CPP_COMPILER) */
 
-#ifndef TYPES_NULL
-#define TYPES_NULL
-/** \brief NULL definition */
-#define NULL ((void *)0)
-#endif
 #ifndef TYPES_BOOLEAN
 /** \brief boolean type type definition */
 typedef unsigned char boolean;
