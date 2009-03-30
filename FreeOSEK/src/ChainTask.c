@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.3 MaCe add set actual context to SYS when chaining task
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe initial version
@@ -153,7 +154,6 @@ StatusType ChainTask
 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_READY;
 		}
 
-
 		/* set entry point for this task again */
 		/* \req OSEK_SYS_3.1.2-1/3 The operating system shall ensure that the task
  		 ** code is being executed from the first statement. */
@@ -162,6 +162,8 @@ StatusType ChainTask
 		RemoveTask(GetRunningTask());
 		/* set running task to invalid */
 		SetRunningTask(INVALID_TASK);
+		/* set actual context task */
+		SetActualContext(CONTEXT_SYS);
 		/* increment activations */
 		TasksVar[taskid].Activations++;
 		/* activate task */

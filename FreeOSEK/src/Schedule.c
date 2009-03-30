@@ -37,6 +37,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.3 MaCe use new CallTask macro and add use of SetActualContext
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080810 v0.1.0 MaCe initial version
@@ -79,7 +80,8 @@ StatusType Schedule
 	/* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode are E_OS
 	 ** CALLEVEL, E_OS_RESOURCE  */
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-   if ( GetCallingContext() != CONTEXT_TASK )
+   if ( ( GetCallingContext() != CONTEXT_TASK ) &&
+		  ( GetCallingContext() != CONTEXT_SYS ) )
    {
 		/* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
 		 ** are E_OS_CALLEVEL, E_OS_RESOURCE */
@@ -124,8 +126,13 @@ StatusType Schedule
 		{
 			/* set task state to running */
 			TasksVar[nexttask].Flags.State = TASK_ST_RUNNING;
+
 			/* set as running task */
 			SetRunningTask(nexttask);
+
+			/* set actual context task */
+			SetActualContext(CONTEXT_TASK);
+
 			/* jmp tp the next task */
 			JmpTask(nexttask);
 		}
@@ -147,9 +154,12 @@ StatusType Schedule
 				/* set the new task to running */
 			 	TasksVar[nexttask].Flags.State = TASK_ST_RUNNING;
 
+				/* set as running task */
+				SetRunningTask(nexttask);
+
 				/* \req OSEK_SYS_3.4.1.3 its context is saved */
 				/* \req OSEK_SYS_3.4.1.4 and the higher-priority task is executed */
-				CallTask(nexttask);
+				CallTask(actualtask, nexttask);
 			}
 			else
 			{

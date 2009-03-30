@@ -132,7 +132,7 @@ StatusType SetEvent
 
 				IntSecure_End();
 
-#if (NON_PREEMPTIVE == ENABLE)
+#if (NON_PREEMPTIVE == DISABLE)
 		/* check if called from a Task Context */
 		if ( GetCallingContext() ==  CONTEXT_TASK )
 		{
@@ -144,7 +144,7 @@ StatusType SetEvent
 				(void)Schedule();
 			}
 		}
-#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+#endif /* #if (NON_PREEMPTIVE == DISABLE) */
 
 			}
 			else

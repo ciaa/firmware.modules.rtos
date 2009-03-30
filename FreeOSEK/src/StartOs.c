@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.3 MaCe use ActivateTast instead of AddReady
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080810 v0.1.0 MaCe initial version
@@ -114,12 +115,18 @@ void StartOs
 		SetEntryPoint(loopi); /* set task entry point */
 	}
 
+	/* set sys context */
+	SetActualContext(CONTEXT_SYS);
+
+	/* set actual task to invalid task */
+	SetRunningTask(INVALID_TASK);
+
 	/* add to ready the corresponding tasks for this
     * Application Mode */
 	for (loopi = 0; loopi < AutoStart[Mode].TotalTasks; loopi++)
 	{
-		/* Add Tasks to the ready list */
-		AddReady(AutoStart[Mode].TasksRef[loopi]);
+		/* activate task */
+		ActivateTask(AutoStart[Mode].TasksRef[loopi]);
 	}
 
 	for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
@@ -129,13 +136,6 @@ void StartOs
 			(void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[loopi].AlarmCycleTime);
 		}
 	}
-
-	/* set actual task to invalid task */
-	SetRunningTask(INVALID_TASK);
-
-	/* set task context, in other case the call
-    * to schedule may return with error */
-	SetActualContext(CONTEXT_TASK);
 
 #if (HOOK_STARTUPHOOK == ENABLE)
 	StartupHook();
@@ -149,7 +149,6 @@ void StartOs
 	/* enable interrupts */
 	EnableInterrupts();
 	
-
 	/* call Scheduler */
 	(void)Schedule();
 

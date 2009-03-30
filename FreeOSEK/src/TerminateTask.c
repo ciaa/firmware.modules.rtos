@@ -41,6 +41,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090330 v0.1.4 MaCe set system context when terminate task
  * 20090130 v0.1.3 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080810 v0.1.0 MaCe initial version
@@ -129,6 +130,8 @@ StatusType TerminateTask
 		RemoveTask(GetRunningTask());
 		/* set running task to invalid */
 		SetRunningTask(INVALID_TASK);
+		/* set actual context SYS */
+		SetActualContext(CONTEXT_SYS);
 
 		IntSecure_End();
 
