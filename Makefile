@@ -27,18 +27,33 @@ COMPILER = gcc
 # MODULES
 #
 # Available modules are:
-# modBASIC			Basic module which includes: generator, type definitions, architecture dependencies.
-# FreeOSEK 			RTOS OSEK OS
-# TestSuite			Test suite
-# seENC				Small Embedded Encryption Module
-# lwIP				Lightweight TCPIP
-# moduletest01		Module tests for all modules
+# OpenGEN				Generator and include files
+# FreeOSEK 				RTOS OSEK OS
+# TestSuite				Test suite
+# seENC					Small Embedded Encryption Module
+# OpenDRV				Drivers
+# tst/moduletest01	Module tests for all modules
+# examples/Blinking	Blinking Leds Example
 #
 
 MODS +=	examples/Blinking			\
 			OpenGEN						\
 			OpenDRV						\
- 			FreeOSEK
+			FreeOSEK
+
+#MODS += 	tst/moduletest01		\
+#			OpenGEN						\
+#			OpenDRV						\
+#			FreeOSEK						\
+#			TestSuite
+
+#MODS +=	tst/moduletest01			\
+#			OpenGEN						\
+#			OpenDRV						\
+#			FreeOSEK						\
+#			TestSuite
+#			uIP							
+#			embPOSIX
 
 all: FreeOSEK
 
