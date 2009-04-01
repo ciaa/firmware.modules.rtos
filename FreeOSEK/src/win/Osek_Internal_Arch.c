@@ -190,26 +190,24 @@ uint8 ReceiveMessage(MessageQueueType *Msg, uint8 *Val)
 }
 
 /*==================[external functions definition]==========================*/
-void CallTask(TaskType NewTask)
+void CallTask(TaskType OldTask, TaskType NewTask)
 {
    /* save actual esp */
-   __asm__ __volatile__ ("movl %%esp, %%eax; addl $12, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(GetRunningTask())].TaskContext->tss_esp) : : "%eax" );
+   __asm__ __volatile__ ("movl %%esp, %%eax; addl $12, %%eax; movl %%eax, %0;" : "=g" (TasksConst[OldTask].TaskContext->tss_esp) : : "%eax" );
   
    /* save actual ebp */ 
-   __asm__ __volatile__ ("movl %%ebp, %%eax; addl $16, %%eax; movl %%eax, %0;" : "=g" (TasksConst[(GetRunningTask())].TaskContext->tss_ebp) : : "%eax" );
+   __asm__ __volatile__ ("movl %%ebp, %%eax; addl $16, %%eax; movl %%eax, %0;" : "=g" (TasksConst[OldTask].TaskContext->tss_ebp) : : "%eax" );
    
    /* save return eip */
-   __asm__ __volatile__ ("movl 4(%%ebp), %%eax; movl %%eax, %0" : "=g" (TasksConst[(GetRunningTask())].TaskContext->tss_eip) : : "%eax");
-   
-   SetRunningTask(NewTask);
+   __asm__ __volatile__ ("movl 4(%%ebp), %%eax; movl %%eax, %0" : "=g" (TasksConst[OldTask].TaskContext->tss_eip) : : "%eax");
    
    /* load new stack pointer */
-   __asm__ __volatile__ ("movl %0, %%esp;" : :  "g" (TasksConst[(NewTask)].TaskContext->tss_esp));
+   __asm__ __volatile__ ("movl %0, %%esp;" : :  "g" (TasksConst[NewTask].TaskContext->tss_esp));
    
    /* load new ebp and jmp to the new task */
    __asm__ __volatile__ ("movl %0, %%ebx;" \
                          "movl %1, %%ebp;" \
-                         "jmp *%%ebx;" : :  "g" (TasksConst[(NewTask)].TaskContext->tss_eip), "g" (TasksConst[(NewTask)].TaskContext->tss_ebp));   
+                         "jmp *%%ebx;" : :  "g" (TasksConst[NewTask].TaskContext->tss_eip), "g" (TasksConst[NewTask].TaskContext->tss_ebp));   
 }
 
 void CounterInterrupt(CounterType CounterID)
