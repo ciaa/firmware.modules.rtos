@@ -26,11 +26,11 @@ ENTRY(_startup)
 MEMORY 
 {
 	flash     		: ORIGIN = 0,          LENGTH = 512K
-	ram   			: ORIGIN = 0x40000200, LENGTH = 64K
+	ram   			: ORIGIN = 0x40000000, LENGTH = 65136
 }
 
 /* we may get averwritten by the ISP/IAP */
-_stack_end = 0x4000FEDC;
+_stack_end = 0x4000FFFC;
 
 SECTIONS 
 {

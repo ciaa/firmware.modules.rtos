@@ -9,11 +9,11 @@
   *************************************************************************************************************** */
 
 /* Stack Sizes */
-.set  UND_STACK_SIZE, 0x00000030		/* stack for "undefined instruction" interrupts is 4 bytes  */
-.set  ABT_STACK_SIZE, 0x00000030		/* stack for "abort" interrupts is 4 bytes                  */
-.set  FIQ_STACK_SIZE, 0x00000030		/* stack for "FIQ" interrupts  is 4 bytes         			*/
-.set  IRQ_STACK_SIZE, 0X00000030		/* stack for "IRQ" normal interrupts is 4 bytes    			*/
-.set  SVC_STACK_SIZE, 0x00000030		/* stack for "SVC" supervisor mode is 4 bytes  				*/
+.set  UND_STACK_SIZE, 0x00000004		/* stack for "undefined instruction" interrupts is 4 bytes  */
+.set  ABT_STACK_SIZE, 0x00000004		/* stack for "abort" interrupts is 4 bytes                  */
+.set  FIQ_STACK_SIZE, 0x00000100		/* stack for "FIQ" interrupts  is 256 bytes         			*/
+.set  IRQ_STACK_SIZE, 0X00000080		/* stack for "IRQ" normal interrupts is 128 bytes    			*/
+.set  SVC_STACK_SIZE, 0x00000004		/* stack for "SVC" supervisor mode is 4 bytes  					*/
 
 
 
