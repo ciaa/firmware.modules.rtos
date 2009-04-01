@@ -38,7 +38,7 @@
 
 /** \page RELEASENOTES Release Notes
  *
- * FreeOSEK (called before FreeOSEK) is still under development. You may find
+ * FreeOSEK (called before OpenSEK) is still under development. You may find
  * bugs on the code, so please if so inform us about it in our forum or in
  * reporting it as bug in the SourceForge.net tracker of our project.
  * Of couse before reporting anythinkg try to check if the bug was reported
@@ -49,5 +49,16 @@
  *
  * FreeOSEK forum in SourceForge.net:
  * 	- https://sourceforge.net/forum/?group_id=240313
+ *
+ * This release was tested for following architectures:
+ *		- ARM7 LPC2468 on lpc-e2468 Olimex Board
+ * 	- Linux
+ *
+ * NOTE: This version was not tested on WINDOWS, if you are interested contact
+ * FreeOSEK Team.
+ *
+ * Please refear you to the \ref CHANGELOG to see updates since the last releases.
+ *
+ * If you have do not hesitate to contact FreeOSEK Team.
  *
  */

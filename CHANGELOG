@@ -38,7 +38,7 @@
 
 /** \page CHANGELOG Change Log
  *
- * v0.2.41	FreeOSEK Beta Release 200904xx
+ * v0.2.41	FreeOSEK Beta Release 20090401
  * 	- start the implementation of of OpenCOM
  * 	- rename this file to CHANGELOG
  * 	- create a RELEASENOTES files	
@@ -48,6 +48,12 @@
  * 	- make generate calls him self if one or more generated makefile are
  * 	  modified
  * 	- improve doxygen documentation
+ * 	- many bugfixes: 2722478, 2722187, 2721976, 2720941, 2720873, 2720439
+ * 	  2717252, 2710405, 2698264, 2698130, 2698004, 2690399, 2687851, 2687798
+ * 	  2687634. 
+ * 	- still pending possibly bugs: 2722419, 2703034, 2680415
+ * 	- new features: 2725135, 2725087, 2725073, 2722153, 2721988, 2720780,
+ * 	  2706825, 2703029, 2698279, 2694915, 2690446, 2687827
  *
  * v0.2.4	FreeOSEK Beta Release 20090314
  * 	- port FreeOSEK for ARM Architecture (tested on lpc2468)
