@@ -64,6 +64,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090331 v0.1.6 MaCe add USERESSCHEDULER evaluation
  * 20090330 v0.1.5 MaCe add NO_EVENTS macro
  * 20090327 v0.1.4 MaCe add declaration of the start task for the app. modes
  * 20090131 v0.1.3 MaCe add extern to CountersVar declaration
@@ -353,6 +354,22 @@ if(count($events) == 0)
 else
 {
 	print "#define NO_EVENTS DISABLE\n\n";
+}
+
+$schedulerpolicy = $config->getValue("/OSEK/" . $os[0],"USERESSCHEDULER");
+print "/** \brief NO_RES_SCHEDULER macro definition */\n";
+switch($schedulerpolicy)
+{
+	case "FALSE":
+		print "#define NO_RES_SCHEDULER ENABLE\n\n";
+		break;
+	case "TRUE":
+		print "#define NO_RES_SCHEDULER DISABLE\n\n";
+		break;
+	default :
+		warning("USERESSCHEDULER not defined on the configuration, using FALSE as default");
+		print "#define NO_RES_SCHEDULER ENABLE\n\n";
+		break;
 }
 
 

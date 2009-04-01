@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090331 v0.1.5 MaCe add support to NO_RES_SCHEDULER
  * 20090330 v0.1.4 MaCe correct errors done in v0.1.3
  * 20090329 v0.1.3 MaCe add RES_SCHEDULER and imp. code if RESOURCE_COUNT is
  *								different than 0
@@ -83,6 +84,10 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+/* only compile this function if RESOURCE_COUNT != 0 or if RES_SCHEDULER is
+ * used */
+#if ( (NO_RES_SCHEDULER == DISABLE) || (RESOURCES_COUNT != 0) )
+
 #if (OSEK_MEMMAP == ENABLE)
 #define FreeOSEK_START_SEC_CODE
 #include "MemMap.h"
@@ -94,47 +99,75 @@ StatusType GetResource
 )
 {
 	/* \req OSEK_SYS_3.13 The system service StatusType
-	 ** GetResource ( ResourceType ResID ) shall be defined */
+	 * GetResource ( ResourceType ResID ) shall be defined */
 
 	/* \req OSEK_SYS_3.13.2: Possible return values in Standard mode is E_OK */
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-	if ( ( ResID > RESOURCES_COUNT ) && ( ResID != RES_SCHEDULER ) )
+	if ( 
+/* only if one or more resources were defined */
+#if (RESOURCES_COUNT != 0)
+			( ResID > RESOURCES_COUNT )
+#endif /* (RESOURCES_COUNT != 0) */
+#if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) )
+				&&
+#endif /* #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) ) */
+/* check RES_SCHEDULER only if used */
+#if (NO_RES_SCHEDULER == DISABLE)
+			( ResID != RES_SCHEDULER )
+#endif /* #if (NO_RES_SCHEDULER == DISABLE) */
+		)
+
 	{
 		/* \req OSEK_SYS_3.13.3-1/2 Extra possible return values in Extended mode are
-		 ** E_OS_ID, E_OS_ACCESS */
+		 * E_OS_ID, E_OS_ACCESS */
 		ret = E_OS_ID;
 	}
+/* check RES_SCHEDULER only if used */
+#if (NO_RES_SCHEDULER == DISABLE)
 	else if ( ResID != RES_SCHEDULER )
 	{
+#endif /* #if (NO_RES_SCHEDULER == DISABLE) */
+/* only if one or more resources were defined */
+#if (RESOURCES_COUNT != 0)
 		if ( ( TasksVar[GetRunningTask()].Resources & ( 1 << ResID ) ) ||
-					 ( ( TasksConst[GetRunningTask()].ResourcesMask & ( 1 << ResID ) ) == 0 ) )
+			  ( ( TasksConst[GetRunningTask()].ResourcesMask & ( 1 << ResID ) ) == 0 ) )
+#endif /* #if (RESOURCES_COUNT != 0) */
 		{
 			/* \req OSEK_SYS_3.13.3-2/2 Extra possible return values in Extended mode are
-			 ** E_OS_ID, E_OS_ACCESS */
+			 * E_OS_ID, E_OS_ACCESS */
 			ret = E_OS_ACCESS;
 		}
+#if (NO_RES_SCHEDULER == DISABLE)
 	}
 	else
 	{
 		/* nothing to do */
 	}
+#endif /* #if (NO_RES_SCHEDULER == DISABLE) */
 
 	if ( ret == E_OK )
-#endif
+#endif /* #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) */
 	{
 		IntSecure_Start();
 
+/* check RES_SCHEDULER only if used */
+#if (NO_RES_SCHEDULER == DISABLE)
 		if ( ResID == RES_SCHEDULER )
 		{
 			TasksVar[GetRunningTask()].ActualPriority = TASK_MAX_PRIORITY;
 		}
-#if (RESOURCES_COUNT != 0)
+#endif /* #if (NO_RES_SCHEDULER == DISABLE) */
+#if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) )
 		else
+#endif /* #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) ) */
+
+/* only if one or more resources were defined */
+#if (RESOURCES_COUNT != 0)
 		{
 			/* \req OSEK_SYS_3.13.1 This call serves to enter critical sections in
-			 ** the code that are assigned to the resource referenced by ResID */
+			 * the code that are assigned to the resource referenced by ResID */
 			if ( TasksVar[GetRunningTask()].ActualPriority < ResourcesPriority[ResID])
 			{
 				TasksVar[GetRunningTask()].ActualPriority = ResourcesPriority[ResID];
@@ -151,9 +184,9 @@ StatusType GetResource
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
 		(HOOK_ERRORHOOK == ENABLE) )	
 	/* \req OSEK_ERR_1.3-6/xx The ErrorHook hook routine shall be called if a
-	 ** system service returns a StatusType value not equal to E_OK.*/
+	 * system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-6/xx The hook routine ErrorHook is not called if a
-	 ** system service is called from the ErrorHook itself. */
+	 * system service is called from the ErrorHook itself. */
    else if ( ( ErrorHookRunning != 1 ) )
 	{
 		SetError_Api(OSServiceId_GetResource);
@@ -175,6 +208,8 @@ StatusType GetResource
 #define FreeOSEK_STOP_SEC_CODE
 #include "MemMap.h"
 #endif
+
+#endif /* #if ( (NO_RES_SCHEDULER == DISABLE) || (RESOURCES_COUNT != 0) ) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
