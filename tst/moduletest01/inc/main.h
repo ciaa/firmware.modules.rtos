@@ -70,9 +70,9 @@
 /*==================[macros]=================================================*/
 #define MAIN_MEMMAP DISABLE
 
-#define INVALID_TASK 0xFF
+#define INVALID_TASK 0xFE
 
-#define INVALID_RESOURCE 0xFF
+#define INVALID_RESOURCE 0xFE
 
 #define INVALID_ALARM 0xFF
 
