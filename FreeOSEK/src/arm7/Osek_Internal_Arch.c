@@ -38,7 +38,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090330 v0.1.1 MaCe add NO_EVENTS evaluation
+ * 20090330 v0.1.1 MaCe add NO_EVENTS and NON_PREEMPTIVE evaluation and
+ *								improvement of FIQ_Routine
  * 20081116 v0.1.0 MaCe initial version
  */
 
@@ -136,25 +137,76 @@ void CounterInterrupt(CounterType CounterID)
 	}
 }
 
-void IRQ_Routine (void) {
+void IRQ_Routine
+(
+	void
+)
+{
    while (1);
 }
 
-void FIQ_Routine (void)  {
-	static uint32 fiq_flag = 0;
+void FIQ_Routine
+(
+	void
+)
+{
+	/* to save the context during the interrupt */
+	ContextType context;
 
+	/* increment the disable interrupt conter to avoid enable the interrupts */
+	SuspendAllInterrupts_Counter++;
+
+	/* save actual context */
+	context = GetCallingContext();
+
+	/* set context to CONTEXT_SYS */
+	SetActualContext(CONTEXT_DBG);
+
+	/* call counter interrupt handler */
+	CounterInterrupt(0);
+
+	/* set context back */
+	SetActualContext(context);
+
+	/* set the disable interrupt conter back */
+	SuspendAllInterrupts_Counter--;
+
+	/* enable counter interrupt again */
 	T0IR |= 1;
 
-	CounterInterrupt(0);
-	
+#if 0 /* TODO */
+#if (NON_PREEMPTIVE == DISABLE)
+		/* check if interrupt a Task Context */
+		if ( GetCallingContext() ==  CONTEXT_TASK )
+		{
+			if ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )
+			{
+				/* \req TODO Rescheduling shall take place only if interrupt a
+				 * preemptable task. */
+				(void)Schedule();
+			}
+		}
+#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+#endif
+
 }
 
-void SWI_Routine (void)  {
+void SWI_Routine
+(
+	void
+)
+{
    while (1);
 }
 
-void UNDEF_Routine (void) {
-   while (1);
+void UNDEF_Routine
+(
+	void
+)
+{
+	volatile uint8 foo = 1;
+
+   while (foo);
 }
 
 /** @} doxygen end group definition */
