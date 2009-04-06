@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -104,7 +104,14 @@ void CounterInterrupt(CounterType CounterID)
 	AlarmType AlarmID;
 
 	/* increment counter */
-	CountersVar[CounterID].Time = ( CountersVar[CounterID].Time + 1 ) % CountersConst[CounterID].MaxAllowedValue;
+	CountersVar[CounterID].Time++;
+
+	/* check if the timer has an overvlow */
+	if ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
+	{
+		/* reset counter */
+		CountersVar[CounterID].Time = 0;
+	}
 
 	/* for alarms on this counter */
 	for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
@@ -151,10 +158,12 @@ void CounterInterrupt(CounterType CounterID)
 							AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
 						}
 						break;
+#if (NO_EVENTS == DISABLE)
 					case SETEVENT:
 						/* set event */
 						SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Event);
 						break;
+#endif /* #if (NO_EVENTS == DISABLE) */
 					default:
 						/* some error ? */
 						break;

@@ -41,6 +41,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090406 v0.1.5 MaCe add support to RES_SCHEDULER
  * 20090330 v0.1.4 MaCe set system context when terminate task
  * 20090130 v0.1.3 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
@@ -88,15 +89,28 @@ StatusType TerminateTask
 		 ** E_OS_RESOURCE or E_OS_CALLEVEL */
 		ret = E_OS_CALLEVEL;
 	}
+
+#if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == DISABLE) )
 	/* check if on or more resources are ocupied */
-	else if ( TasksVar[GetRunningTask()].Resources != 0 )
+	else if ( 
+#if (RESOURCES_COUNT != 0)
+				 ( TasksVar[GetRunningTask()].Resources != 0 ) 
+#endif /* #if (RESOURCES_COUNT != 0) */
+#if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) )
+					||
+#endif /* #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) ) */
+#if (NO_RES_SCHEDULER == DISABLE)
+				 ( TasksVar[GetRunningTask()].ActualPriority == TASK_MAX_PRIORITY )
+#endif /* #if (NO_RES_SCHEDULER == DISABLE) */
+			  )
 	{
 		/* \req OSEK_SYS_3.2.7-2/2 Possibly return values in Extended mode are
 		 ** E_OS_RESOURCE or E_OS_CALLEVEL */
 		ret = E_OS_RESOURCE;
 	}
+#endif /* #if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == DISABLE) ) */
 	else
-#endif
+#endif /* #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) */
 	{
 
 		IntSecure_Start();

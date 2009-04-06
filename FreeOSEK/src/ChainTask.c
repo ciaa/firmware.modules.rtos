@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090406 v0.1.4 MaCe add support to RES_SCHEDULER
  * 20090330 v0.1.3 MaCe add set actual context to SYS when chaining task
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
@@ -110,13 +111,25 @@ StatusType ChainTask
 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_CALLEVEL;
 	}
+#if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == DISABLE) )
 	/* check if any resource is still reserved for this task */
-	else if ( TasksVar[GetRunningTask()].Resources != 0 )
+	else if (
+#if (RESOURCES_COUNT != 0)
+				 ( TasksVar[GetRunningTask()].Resources != 0 ) 
+#endif /* #if (RESOURCES_COUNT != 0) */
+#if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) )
+					||
+#endif /* #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == DISABLE) ) */
+#if (NO_RES_SCHEDULER == DISABLE)
+				 ( TasksVar[GetRunningTask()].ActualPriority == TASK_MAX_PRIORITY )
+#endif /* #if (NO_RES_SCHEDULER == DISABLE) */
+			  )
 	{
 		/* \req OSEK_SYS_3.3.10-3/3 Added possible return values in Extended mode
 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
 		ret = E_OS_RESOURCE;
 	}
+#endif /* #if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == DISABLE) ) */
 	else
 #endif
 	if ( ( (TasksVar[taskid].Activations + 1) > TasksConst[taskid].MaxActivations) && 
