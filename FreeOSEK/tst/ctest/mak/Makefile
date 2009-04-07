@@ -8,7 +8,7 @@ VPATH += FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)src
 
 INCLUDE += -IFreeOSEK$(DIR)tst$(DIR)ctest$(DIR)inc
 
-CFGFILES += FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)etc$(DIR)ctest_tm_01_01.oil			\
+CFGFILES += FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)etc$(DIR)$(PROJECT).oil			\
 				FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)etc$(DIR)OpenDRV.oil
 
 GENFILES += FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)gen$(DIR)inc$(DIR)ctest_cfg.h.php

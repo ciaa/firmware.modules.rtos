@@ -36,11 +36,11 @@
  *
  */
 
-#ifndef _CTEST_TM_01_H_
-#define _CTEST_TM_01_H_
-/** \brief Free OSEK Conformance Test 
+#ifndef _CTEST_TM_05_H_
+#define _CTEST_TM_05_H_
+/** \brief Free OSEK Conformance Test Task Management, Test Sequence 5
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_tm_01.h
+ ** \file FreeOSEK/tst/ctest/inc/ctest_tm_05.h
  **/
 
 /** \addtogroup FreeOSEK
@@ -49,7 +49,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_TM Task Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_01 Test Sequence 1
+/** \addtogroup FreeOSEK_CT_TM_05 Test Sequence 5
  ** @{ */
 
 /*
@@ -73,7 +73,7 @@
  **
  ** Defines the total amount of sequence points in this test sequence
  **/
-#define MAX_SEQUENCE 17
+#define MAX_SEQUENCE 6
 
 /*==================[typedef]================================================*/
 
@@ -86,5 +86,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CTEST_TM_01_H_ */
+#endif /* #ifndef _CTEST_TM_05_H_ */
 

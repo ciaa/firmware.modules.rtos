@@ -216,19 +216,6 @@
 
 #define INVALID_ALARM 0xFE
 
-#define ASSERT(tc, cond)													\
-   {																				\
-      if (cond)																\
-      {																			\
-			TestResults[(tc)>>2] |=	FAILED << ( ( tc & 3 ) * 2 );	\
-			while(1);															\
-      }																			\
-		else																		\
-		{																			\
-			TestResults[(tc)>>2] |=	OK << ( ( tc & 3 ) * 2 );		\
-		}																			\
-   }
-
 /** \brief Conformance Test INIT value */
 #define INIT		0
 
@@ -275,6 +262,9 @@
 /** \brief Conformance Test Non Preemptive */
 #define CT_NON_PREEMPTIVE				2
 
+/** \brief Bit used to indicate that the sequence is invalid */
+#define SEQUENCE_INVALID ((uint32f)0x80000000)
+
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
@@ -313,10 +303,24 @@ extern const uint8 TestResultsOk[35];
  **
  ** This variable will be set to 0xff 0x80 after calling ConfTestEvaluation
  ** function. If all test results are equal between TestResutls and
- ** TestResultsOk this variable will be set to 0xff. In other case will be
- ** set to 0x80. The variable is initalisied after startup to 0.
+ ** TestResultsOk and the SequenceCounter is equal to the SequenceCounterOk
+ ** this variable will be set to 0xff. In other case will be set to 0x80.
+ ** The variable is initalisied to 0.
  **/
 extern uint8 ConfTestResult;
+
+/** \brief Sequencer Counter
+ **
+ ** This variable is used to analyse the sequence of the tested functions
+ **/
+extern uint32f SequenceCounter;
+
+/** \brief Sequencer Counter Ok
+ **
+ ** This value represent the correct counter of sequences after the
+ ** test execuction.
+ **/
+extern const uint32f SequenceCounterOk;
 
 /*==================[external functions declaration]=========================*/
 /** \brief main function
@@ -341,6 +345,24 @@ void ConfTestEvaluation
 (
 	void
 ) ATTRIBUTES();
+
+/** \brief ASSERT
+ **
+ ** This service is used to assert one condition.
+ **
+ ** \param[in] tc represent the test case
+ ** \param[in] cond condition to be tested
+ **/
+extern void ASSERT
+(
+	uint8f tc,
+	boolean cond
+);
+
+void Sequence
+(
+	uint32f seq
+);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

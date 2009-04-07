@@ -36,11 +36,9 @@
  *
  */
 
-#ifndef _CTEST_TM_01_H_
-#define _CTEST_TM_01_H_
-/** \brief Free OSEK Conformance Test 
+/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 4
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_tm_01.h
+ ** \file FreeOSEK/tst/ctest/src/ctest_tm_04.c
  **/
 
 /** \addtogroup FreeOSEK
@@ -49,42 +47,99 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_TM Task Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_01 Test Sequence 1
+/** \addtogroup FreeOSEK_CT_TM_04 Test Sequence 4
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090403 v0.1.0 MaCe	initial version based on module tests
- */  
+ * 20090413 v0.1.0 MaCe initial version
+ */
 
 /*==================[inclusions]=============================================*/
-#include "Types.h"
-#include "ctest.h"
+#include "os.h"				/* include os header file */
+#include "ctest_tm_04.c"	/* include test header file */
+#include "ctest.h"			/* include ctest header file */
 
-/*==================[macros]=================================================*/
-/** \brief Maximal Sequence
- **
- ** Defines the total amount of sequence points in this test sequence
- **/
-#define MAX_SEQUENCE 17
+/*==================[macros and definitions]=================================*/
 
-/*==================[typedef]================================================*/
+/*==================[internal data declaration]==============================*/
 
-/*==================[external data declaration]==============================*/
+/*==================[internal functions declaration]=========================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+int main
+(
+	void
+)
+{
+	/* start OS in AppMode 1 */
+	StartOs(AppMode1);
+
+	/* shall never return */
+	while(1);
+
+	return 0;
+}
+
+TASK(Task1)
+{
+	StatusType ret;
+	EventType event;
+
+	Sequence(0);
+	/* \treq TM_06 nm E1E2 se Call ActivateTask() from non-preemptive
+ 	 * task on suspend extended task
+	 *
+	 * \result No preemption of running task. Activated task becomes ready
+	 * and it's events become cleared. Service Returns E_OK
+	 */
+	ret = ActivateTask(Task2);
+	ASSERT(TM_06, ret != E_OK)
+
+	Sequence(1);
+	ret = GetEvent(Task1, &event);
+	ASSERT(TM_06, ret != E_OK);
+	ASSERT(TM_06, event != 0);
+
+	Sequence(2);
+	ret = GetEvent(Task2, &event);
+	ASSERT(TM_06, ret != E_OK);
+	ASSERT(TM_06, event != 0);
+	
+	Sequence(3);
+	Schedule();
+
+	Sequence(5);
+
+	/* evaluate conformance tests */
+	ConfTestEvaluation();
+
+	/* ShutdownOs without any error */
+	ShutdownOs(E_OK);
+}
+
+TASK(Task2)
+{
+	Sequence(4);
+	TerminateTask();
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CTEST_TM_01_H_ */
 

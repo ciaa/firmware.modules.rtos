@@ -36,15 +36,20 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test 
+/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 1
  **
- ** \file FreeOSEK/tst/ctest/src/ctest.c
+ ** \file FreeOSEK/tst/ctest/src/ctest_tm_01.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_CT Conformance Test
  ** @{ */
+/** \addtogroup FreeOSEK_CT_TM Task Management
+ ** @{ */
+/** \addtogroup FreeOSEK_CT_TM_01 Test Sequence 1
+ ** @{ */
+
 
 /*
  * Initials     Name
@@ -59,8 +64,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"			/* include os header file */
-#include "ctest.h"		/* include ctest header file */
+#include "os.h"				/* include os header file */
+#include "ctest_tm_01.c"	/* include test header file */
+#include "ctest.h"			/* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -96,7 +102,12 @@ TASK(Task1)
 	TaskStateType State;
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
+	Sequence(0);
+	/* enable interrupts ISR2 and ISR3 */
+	/* nothing to do */
+
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(1);
 	/* \treq TM_01 nmf B1B2E1E2 e Call ActivateTask() from a task level with
 	 * an invalid task ID (task doesn't exist) 
 	 *
@@ -107,6 +118,7 @@ TASK(Task1)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(2);
 	/* \treq TM_40 nmf B1B2E1E2 e Call GetTaskState() with an invalid task ID
 	 * (task doesn't exist)
 	 *
@@ -117,6 +129,7 @@ TASK(Task1)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(3);
 	/* \treq TM_24 nmf B1B2E1E2 e Call ChainTask() from task level. Task-ID is
 	 * invalid (does not exist).
 	 *
@@ -127,17 +140,20 @@ TASK(Task1)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 	/* activate task 2 */
+	Sequence(4);
 	ActivateTask(Task2);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
 	/* force scheduling */
 	Schedule();
 #endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
-	
+
+	Sequence(9);	
 	/* get scheduler resource */
 	GetResource(RES_SCHEDULER);
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(10);
 	/* \treq TM_22 nmf B1B2E1E2 e Call TerminateTask() while still occuping a
 	 * resource
 	 *
@@ -148,6 +164,7 @@ TASK(Task1)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 	
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(11);
 	/* \treq TM_27 nmf B1B2E1E2 e Call ChainTask() while still occuping a
 	 * resource
 	 *
@@ -157,6 +174,7 @@ TASK(Task1)
 	ASSERT(TM_27, ret != E_OS_RESOURCE);
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
+	Sequence(12);
 	/*  trigger ISR 2 */
 	TriggerISR2();
 
@@ -165,6 +183,7 @@ TASK(Task1)
 	TriggerISR3();
 #endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
+	Sequence(17);
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
 
@@ -180,6 +199,7 @@ TASK(Task2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(5);
 	/* \treq TM_10 nmf B1B2E1E2 e Call ActivateTask() on ready basic task which
 	 * has reached max. number of activations.
 	 *
@@ -190,6 +210,7 @@ TASK(Task2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(6);
 	/* \treq TM_15 nmf B1B2E1E2 e Call ActivateTask() on running basic task
 	 * which has reached max. number of activations
 	 *
@@ -200,6 +221,7 @@ TASK(Task2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(7);
 	/* \treq TM_30 nmf B1B2E1E2 e Call ChainTask() on ready basic task which has
 	 * reached max. number of activations
 	 *
@@ -209,8 +231,8 @@ TASK(Task2)
 	ASSERT(TM_30, ret != E_OS_LIMIT);
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
+	Sequence(8);
 	TerminateTask();
-
 }
 
 ISR(ISR2)
@@ -221,6 +243,7 @@ ISR(ISR2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(13);
 	/* \treq TM_20 nmf B1B2E1E2 e Call TerminateTask() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -230,6 +253,7 @@ ISR(ISR2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(14);
 	/* \treq TM_25 nmf B1B2E1E2 e Call ChainTask() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -239,6 +263,7 @@ ISR(ISR2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(15);
 	/* \treq TM_35 nmf B1B2E1E2 e Call Schedule() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -248,6 +273,7 @@ ISR(ISR2)
 #endif /* #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC) */
 
 #if (CT_ERROR_CHECKING_TYPE != CT_ERROR_CHECKING_BASIC)
+	Sequence(16);
 	/* \treq TM_37 nmf B1B2E1E2 e Call GetTaskID() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -306,6 +332,8 @@ ISR(ISR3)
 }
 #endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

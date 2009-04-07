@@ -45,10 +45,6 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM Task Management
- ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_01 Test Sequence 1
- ** @{ */
 
 /*
  * Initials     Name
@@ -80,105 +76,154 @@ uint8 TestResults[35];
 const uint8 TestResultsOk[35] =
 	{
 #if (defined CT_TM_01)
-	  ( OK << 0 )			/* CT_TM_01 */
+	  ( OK << 0 )			/* TM_01 */
 #else
-	  ( INIT << 0 )		/* CT_TM_01 */
+	  ( INIT << 0 )		/* TM_01 */
 #endif
-	| ( INIT << 2 )		/* CT_TM_02 */
-	| ( INIT << 4 )		/* CT_TM_03 */
-	| ( INIT << 6 ),		/* CT_TM_04 */
-	  ( INIT << 0 )		/* CT_TM_05 */
-	| ( INIT << 2 )		/* CT_TM_06 */
-	| ( INIT << 4 )		/* CT_TM_07 */
-	| ( INIT << 6 ),		/* CT_TM_08 */
-	  ( INIT << 0 )		/* CT_TM_09 */
+#if (defined CT_TM_02)
+	| ( OK << 2 )			/* TM_02 */
+#else
+	| ( INIT << 2 )		/* TM_02 */
+#endif
+#if (defined CT_TM_03)
+	| ( OK << 4 )			/* TM_03 */
+#else
+	| ( INIT << 4 )		/* TM_03 */
+#endif
+#if (defined CT_TM_03)
+	| ( OK << 6 ),			/* TM_04 */
+#else
+	| ( INIT << 6 ),		/* TM_04 */
+#endif
+	  ( INIT << 0 )		/* TM_05 */
+#if (defined CT_TM_04)
+	| ( OK << 2 )			/* TM_06 */
+#else
+	| ( INIT << 2 )		/* TM_06 */
+#endif
+#if (defined CT_TM_05)
+	| ( OK << 4 )			/* TM_07 */
+#else
+	| ( INIT << 4 )		/* TM_07 */
+#endif
+#if (defined CT_TM_05)
+	| ( OK << 6 ),			/* TM_08 */
+#else
+	| ( INIT << 6 ),		/* TM_08 */
+#endif
+	  ( INIT << 0 )		/* TM_09 */
 #if (defined CT_TM_01)
-	| ( OK << 2 )			/* CT_TM_10 */
+	| ( OK << 2 )			/* TM_10 */
 #else
-	| ( INIT << 2 )		/* CT_TM_10 */
+	| ( INIT << 2 )		/* TM_10 */
 #endif
-	| ( INIT << 4 )		/* CT_TM_11 */
-	| ( INIT << 6 ),		/* CT_TM_12 */
-	  ( INIT << 0 )		/* CT_TM_13 */
-	| ( INIT << 2 )		/* CT_TM_14 */
+	| ( INIT << 4 )		/* TM_11 */
+	| ( INIT << 6 ),		/* TM_12 */
+	  ( INIT << 0 )		/* TM_13 */
+	| ( INIT << 2 )		/* TM_14 */
 #if (defined CT_TM_01)
-	| ( OK << 4 )			/* CT_TM_15 */
+	| ( OK << 4 )			/* TM_15 */
 #else
-	| ( INIT << 4 )		/* CT_TM_15 */
+	| ( INIT << 4 )		/* TM_15 */
 #endif
-	| ( INIT << 6 ),		/* CT_TM_16 */
-	  ( INIT << 0 )		/* CT_TM_17 */
-	| ( INIT << 2 )		/* CT_TM_18 */
-	| ( INIT << 4 )		/* CT_TM_19 */
-	| ( INIT << 6 ),		/* CT_TM_20 */
+	| ( INIT << 6 ),		/* TM_16 */
+	  ( INIT << 0 )		/* TM_17 */
+	| ( INIT << 2 )		/* TM_18 */
+	| ( INIT << 4 )		/* TM_19 */
+	| ( INIT << 6 ),		/* TM_20 */
 #if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
-	  ( OK << 0 )			/* CT_TM_21 */
+	  ( OK << 0 )			/* TM_21 */
 #else
-	  ( INIT << 0 )		/* CT_TM_21 */
+	  ( INIT << 0 )		/* TM_21 */
 #endif
 #if (defined CT_TM_01)
-	| ( OK << 2 )			/* CT_TM_22 */
+	| ( OK << 2 )			/* TM_22 */
 #else
-	| ( INIT << 2 )		/* CT_TM_22 */
+	| ( INIT << 2 )		/* TM_22 */
 #endif
-	| ( INIT << 4 )		/* CT_TM_23 */
+	| ( INIT << 4 )		/* TM_23 */
 #if (defined CT_TM_01)
-	| ( OK << 6 ),			/* CT_TM_24 */
+	| ( OK << 6 ),			/* TM_24 */
 #else
-	| ( INIT << 6 ),		/* CT_TM_24 */
+	| ( INIT << 6 ),		/* TM_24 */
 #endif
-	  ( INIT << 0 )		/* CT_TM_25 */
+	  ( INIT << 0 )		/* TM_25 */
 #if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
-	| ( OK << 2 )				/* CT_TM_26 */
+	| ( OK << 2 )			/* TM_26 */
 #else
-	| ( INIT << 2 )			/* CT_TM_26 */
+	| ( INIT << 2 )		/* TM_26 */
 #endif
-
 #if (defined CT_TM_01)
-	| ( OK << 4 )			/* CT_TM_27 */
+	| ( OK << 4 )			/* TM_27 */
 #else
-	| ( INIT << 4 )		/* CT_TM_27 */
+	| ( INIT << 4 )		/* TM_27 */
 #endif
-	| ( INIT << 6 ),		/* CT_TM_28 */
-	  ( INIT << 0 )		/* CT_TM_29 */
+	| ( INIT << 6 ),		/* TM_28 */
+	  ( INIT << 0 )		/* TM_29 */
 #if (defined CT_TM_01)
-	| ( OK << 2 )			/* CT_TM_30 */
+	| ( OK << 2 )			/* TM_30 */
 #else
-	| ( INIT << 2 )		/* CT_TM_30 */
+	| ( INIT << 2 )		/* TM_30 */
 #endif
-	| ( INIT << 4 )		/* CT_TM_31 */
-	| ( INIT << 6 ),		/* CT_TM_32 */
-	  ( INIT << 0 )		/* CT_TM_33 */
-	| ( INIT << 2 )		/* CT_TM_34 */
-	| ( INIT << 4 )		/* CT_TM_35 */
+	| ( INIT << 4 )		/* TM_31 */
+	| ( INIT << 6 ),		/* TM_32 */
+	  ( INIT << 0 )		/* TM_33 */
+#if (defined CT_TM_02)
+	| ( OK << 2 )			/* TM_34 */
+#else
+	| ( INIT << 2 )		/* TM_34 */
+#endif
+	| ( INIT << 4 )		/* TM_35 */
 #if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
-	| ( OK << 6 ),			/* CT_TM_36 */
+	| ( OK << 6 ),			/* TM_36 */
 #else
-	| ( INIT << 6 ),		/* CT_TM_36 */
+	| ( INIT << 6 ),		/* TM_36 */
 #endif
-	  ( INIT << 0 )		/* CT_TM_37 */
+	  ( INIT << 0 )		/* TM_37 */
 #if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
-	| ( OK << 2 )			/* CT_TM_38 */
+	| ( OK << 2 )			/* TM_38 */
 #else
-	| ( INIT << 2 )		/* CT_TM_38 */
+	| ( INIT << 2 )		/* TM_38 */
 #endif
-	| ( INIT << 4 )		/* CT_TM_39 */
+	| ( INIT << 4 )		/* TM_39 */
 #if (defined CT_TM_01)
-	| ( OK << 6 ),			/* CT_TM_40 */
+	| ( OK << 6 ),			/* TM_40 */
 #else
-	| ( INIT << 6 ),		/* CT_TM_40 */
+	| ( INIT << 6 ),		/* TM_40 */
 #endif
-	  ( INIT << 0 )		/* CT_TM_41 */
-	| ( INIT << 2 )		/* CT_IP_01 */
-	| ( INIT << 4 )		/* CT_IP_02 */
-	| ( INIT << 6 ),		/* CT_IP_03 */
+	  ( INIT << 0 )		/* TM_41 */
+	| ( INIT << 2 )		/* IP_01 */
+	| ( INIT << 4 )		/* IP_02 */
+	| ( INIT << 6 ),		/* IP_03 */
 	};
 
 uint8 ConfTestResult;
 
+const uint32f SequenceCounterOk = MAX_SEQUENCE;
+
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+void ASSERT
+(
+	uint8f tc,
+	boolean cond
+)
+{
+   if (cond)
+   {
+		TestResults[(tc)>>2] |=	FAILED << ( ( tc & 3 ) * 2 );
+		while(1);
+   }
+	else
+	{
+		if ( ( TestResults[(tc)>>2] >> ( (tc & 3 ) * 2 ) ) != FAILED )
+		{
+			TestResults[(tc)>>2] |=	OK << ( ( tc & 3 ) * 2 );
+		}
+	}
+}
+
 void ConfTestEvaluation
 (
 	void
@@ -195,16 +240,34 @@ void ConfTestEvaluation
 		}
 	}
 
-	if ( testok == TRUE )
+	if ( ( testok == TRUE ) && ( SequenceCounter == SequenceCounterOk ) )
 	{
 		ConfTestResult = 255;
 	}
-
-	if ( testok == FALSE )
+	else
 	{
 		ConfTestResult = 128;
 	}
 
+}
+
+void Sequence
+(
+	uint32f seq
+)
+{
+   if ( (seq) == 0 )
+   {
+      SequenceCounter = 0;
+   }
+   else if ( (SequenceCounter+1) == (seq) )
+   {
+      SequenceCounter++;
+   }
+   else
+   {
+		SequenceCounter |= SEQUENCE_INVALID;
+   }
 }
 
 /** @} doxygen end group definition */
