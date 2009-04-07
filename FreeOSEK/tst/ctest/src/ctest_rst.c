@@ -199,7 +199,7 @@ const uint8 TestResultsOk[35] =
 
 uint8 ConfTestResult;
 
-const uint32f SequenceCounterOk = MAX_SEQUENCE;
+uint32f SequenceCounter;
 
 /*==================[internal functions definition]==========================*/
 

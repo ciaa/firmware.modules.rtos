@@ -19,4 +19,7 @@ CFLAGS += -DCT_TM_01
 
 ctestclean :
 
+ctest :
+	.$(DIR)FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)bin$(DIR)ctest.pl
+
 

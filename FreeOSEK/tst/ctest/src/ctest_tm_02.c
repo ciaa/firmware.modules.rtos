@@ -64,7 +64,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "os.h"				/* include os header file */
-#include "ctest_tm_02.c"	/* include test header file */
+#include "ctest_tm_02.h"	/* include test header file */
 #include "ctest.h"			/* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
@@ -76,6 +76,7 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+const uint32f SequenceCounterOk = MAX_SEQUENCE;
 
 /*==================[internal functions definition]==========================*/
 
