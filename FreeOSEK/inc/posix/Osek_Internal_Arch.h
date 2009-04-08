@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090408 v0.1.2 Mace add ShutdownOs_Arch
  * 20090330 v0.1.2 MaCe update CallTask macro
  * 20090130 v0.1.1 MaCe remove std type definitions, now in Types.h
  * 20080725 v0.1.0 MaCe	initial version
@@ -210,6 +211,15 @@
 		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (OsekStack) ); \
 	}
 
+/** \brief ShutdownOs Arch service
+ **/
+#define	ShutdownOs_Arch()		\
+	{									\
+		PreCallService();			\
+		mq_unlink("/FreeOSEK");	\
+		PostCallService();		\
+	}
+
 
 /*==================[typedef]================================================*/
 
@@ -246,8 +256,18 @@ extern struct sigevent SignalEvent;
  **/
 extern uint32 OsekHWTimer0;
 
+/** \brief Posix Stack
+ **
+ ** This variable is used to save the posix stack used to call the system
+ ** (linux) services from FreeOSEK
+ **/
 extern uint32 PosixStack;
 
+/** \brief Osek Stack
+ **
+ ** This variable is used to save the Osek stack while calling a posix
+ ** service
+ **/
 extern uint32 OsekStack;
 
 /*==================[external functions declaration]=========================*/

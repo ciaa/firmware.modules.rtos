@@ -59,7 +59,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20080725 MaCe	initial version
+ * 20090408 v0.1.1 Mace add ShutdownOs_Arch
+ * 20080725 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -212,7 +213,9 @@
 		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (OsekStack) ); \
 	}
 
-
+/** \brief ShutdownOs Arch service
+ **/
+#define	ShutdownOs_Arch()
 
 /*==================[typedef]================================================*/
 /** \brief Message Queue type definition */

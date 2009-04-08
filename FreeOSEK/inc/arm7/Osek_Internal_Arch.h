@@ -59,8 +59,9 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.1 20090221 MaCe port this file to ARM7 architecture
- * v0.1.0 20081116 MaCe	initial version
+ * 20090408 v0.1.2 Mace add ShutdownOs_Arch
+ * 20090221 v0.1.1 MaCe port this file to ARM7 architecture
+ * 20081116 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -306,6 +307,10 @@
 			"MSR CPSR_c, R7	\t\n"	\
 		);									\
 	}
+
+/** \brief ShutdownOs Arch service
+ **/
+#define	ShutdownOs_Arch()
 
 /*==================[typedef]================================================*/
 
