@@ -107,7 +107,7 @@ TASK(Task1)
 	 * Service returns E_OK
 	 */
 	ret = ActivateTask(Task2);
-	ASSERT(TM_02, ret != E_OK)
+	ASSERT(TM_02, ret != E_OK);
 
 	Sequence(1);
 	/* \treq TM_02 nm B1B2E1E2 se Call ActivateTask() from non-preemptive
@@ -117,7 +117,7 @@ TASK(Task1)
 	 * Service returns E_OK
 	 */
 	ret = ActivateTask(Task3);
-	ASSERT(TM_02, ret != E_OK)
+	ASSERT(TM_02, ret != E_OK);
 
 	Sequence(2);
 	/* \treq TM_34 nmf B1B2E1E2 se Call Schedule() from task

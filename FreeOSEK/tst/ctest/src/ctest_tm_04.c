@@ -98,7 +98,7 @@ int main
 TASK(Task1)
 {
 	StatusType ret;
-	EventType event;
+	EventMaskType event;
 
 	Sequence(0);
 	/* \treq TM_06 nm E1E2 se Call ActivateTask() from non-preemptive
@@ -108,7 +108,7 @@ TASK(Task1)
 	 * and it's events become cleared. Service Returns E_OK
 	 */
 	ret = ActivateTask(Task2);
-	ASSERT(TM_06, ret != E_OK)
+	ASSERT(TM_06, ret != E_OK);
 
 	Sequence(1);
 	ret = GetEvent(Task1, &event);

@@ -44,10 +44,175 @@ use Switch;
 				"ctest_tm_04",
 				"ctest_tm_05"	);
 
+$errors = 0;
+$warnings = 0;
+$fatalerrors = 0;
+
+sub htons
+{
+	$val = 0;
+	$mul = 1;
+	foreach (split(//,@_[0]))
+	{
+		$val += $mul * ord($_);
+		$mul *= 256;
+	}
+
+	return $val;
+}
+
+sub GetTestCases
+{
+	open TC, "<@_[0]" or die "@_[0] can not be openned: $!";
+	my $val;
+	my @ret;
+	read(TC, $val, 35, 0);
+	close(TC);
+	foreach (split(//,$val))
+	{
+		$tc = ( ( $_ >> 0 ) & 3 );
+		push(@ret, ord($tc));
+		$tc = ( ( $_ >> 2 ) & 3 );
+		push(@ret, ord($tc));
+		$tc = ( ( $_ >> 4 ) & 3 );
+		push(@ret, ord($tc));
+		$tc = ( ( $_ >> 6 ) & 3 );
+		push(@ret, ord($tc));
+	}
+
+	return @ret;
+}
+
+sub EvaluateResults
+{
+	my $failed = 0;
+	my $failedtotal = 0;
+
+	open SC, "<out/dbg/SequenceCounter.bin" or die "SequenceCounter.bin can not be openned: $!";
+	read(SC, $sc, 4, 0);
+	close(SC);
+	open SC, "<out/dbg/SequenceCounterOk.bin" or die "SequenceCounterOk.bin can not be openned: $!";
+	read(SC, $scok, 4, 0);
+	close(SC);
+	$scerror = htons($sc) >> 31;
+	$sc= ( htons($sc) & 0x7fffffff );
+	$scok=htons($scok);
+	if ( ($sc == $scok) && ($scerror == 0) )
+	{
+		$sctc = "OK";
+	}
+	else
+	{
+		$failed = 1;
+		$failedtotal = 1;
+		$sctc = "FAILED";
+	}
+	info("Sequence: $scerror-$sc - SequenceOk: $scok - Sequence Result: $sctc");
+
+	$failed = 0;
+	$failedcounter = 0;
+	@ts = GetTestCases("out/dbg/TestResults.bin");
+	@tsok = GetTestCases("out/dbg/TestResultsOk.bin");
+
+	for($loopi = 0; $loopi < @ts; $loopi++)
+	{
+		#info("Loop: " . $loopi);
+		if(@ts[$loopi] != @tsok[$loopi])
+		{
+			$failed = 1;
+			$failedtotal = 1;
+			$failedcounter++;
+			info("Test Case $loop doesn't mach - Result: " . @ts[$loopi] . " ResultOk: " . @tsok[$loopi]);
+		}
+	}
+
+	if($failed == 1)
+	{
+		info("$failedcounter testcases failed");
+	}
+	else
+	{
+		info("Test cases executed in the right form");
+	}
+
+}
+
+sub readparam
+{
+	open CFG, "<@_[0]" or die "Config file @_[0] can not be openned: $!";
+	while (my $line = <CFG>)
+	{
+		chomp($line);
+		($var,$val) = split(/:/,$line);
+		switch ($var)
+		{
+			case "GDB" { $GDB = $val; }
+			case "BINDIR" { $BINDIR = $val; }
+			case "ARCH" { $ARCH = $val; }
+			case "CPUTYPE" { $CPUTYPE = $val; }
+			case "CPU" { $CPU = $val; }
+			case "DIR" { $DIR = $val; }
+			case "LOG" { $logfile = $val; }
+			case "LOGFULL" { $logfilefull = $val; }
+			else { }
+		}
+	}
+
+	close CFG;
+}
+
 sub info
 {
 	print "INFO: " . @_[0] . "\n";
+	logf("INFO: " . @_[0]);
 }
+
+sub warning
+{
+	print "WARNING: " . @_[0] . "\n";
+	logf("WARNING: " . @_[0]);
+	$warnings++;
+}
+
+sub error
+{
+	print "ERROR " . @_[0] . "\n";
+	logf("INFO: " . @_[0]);
+	$errors++;
+}
+
+sub halt
+{
+	print "FATAL ERROR: " . @_[0] . "\n";
+	logf("FATAL ERROR: " . @_[0]);
+	$errors;
+	$fatalerrors++;
+	finish();
+}
+
+sub finish
+{
+	info("Warnings: $warnings - Errors: $errors");
+	if ( ($errors > 0) || ($fatalerrors > 0) )
+	{
+		exit(1);
+	}
+	exit(0);
+}
+
+sub logf
+{
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+	printf LOGFILE "%4d-%02d-%02d %02d:%02d:%02d %s\n",$year+1900,$mon+1,$mday,$hour,$min,$sec,@_[0];
+	printf LOGFILEFULL "%4d-%02d-%02d %02d:%02d:%02d %s\n",$year+1900,$mon+1,$mday,$hour,$min,$sec,@_[0];
+}
+
+sub logffull
+{
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+	printf LOGFILEFULL "%4d-%02d-%02d %02d:%02d:%02d %s\n",$year+1900,$mon+1,$mday,$hour,$min,$sec,@_[0];
+}
+
 
 print "FreeOSEK Conformance Test Runner - Copyright 2008-2009, Mariano Cerdeiro - http://opensek.sf.net\n\n";
 info("------ LICENSE START ------");
@@ -85,16 +250,70 @@ info("You should have received a copy of the GNU General Public License");
 info("along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.");
 info("------- LICENSE END -------");
 
+if ($#ARGV + 1 != 2)
+{
+	info("ctest.pl -f ctest.cfg");
+}
+
+$cfgfile = $ARGV[1];
+
+readparam($cfgfile);
+
+open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
+open LOGFILEFULL, "> $logfilefull" or die "can not open $logfile for append: $!";
+
+info("Starting FreeOSEK Conformance Test Runner");
+
 foreach (@tests)
 {
 	$test = $_;
-	system("make clean");
-	if ($? == 0)
+	info("Testing $test");
+
+	$error = "";
+
+	info("make clean of $test");
+	$outmakeclean = `make clean`;
+	$outmakecleanstatus = $?;
+	info("make clean status: $outmakecleanstatus");
+	logffull("make clean output:\n$outmakeclean");
+
+	if ($outmakecleanstatus == 0)
 	{
-		system("make generate PROJECT=$test");
-	}
-	if ($? == 0)
-	{
-		system("make PROJECT=$test");
+		info("make generate of $test");
+		$outmakegenerate = `make generate PROJECT=$test`;
+		$outmakegeneratestatus = $?;
+		info("make generate status: $outmakegeneratestatus");
+		logffull("make generate output:\n$outmakegenerate");
+		if ($outmakegeneratestatus == 0)
+		{
+			info("make of $test");
+			$outmake = `make PROJECT=$test`;
+			$outmakestatus = $?;
+			info("make status: $outmakestatus");
+			logffull("make output:\n$outmake");
+			if ($outmakestatus == 0)
+			{
+				$out = $BINDIR . "/" . $test;
+				info("debug of $test");
+				$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
+				info("$GDB $out -x $dbgfile");
+				#$outdbg = `$GDB $out -x $dbgfile`;
+				system("$GDB $out -x $dbgfile");
+				`rm /dev/mqueue/*`;
+				$outdbg = "";
+				$outdbgstatus = $?;
+				info("debug status: $outdbgstatus");
+				logffull("debug output:\n$outdbg");
+				if ($outdbgstatus == 0)
+				{
+					EvaluateResults();
+				}
+			}
+		}
 	}
 }
+
+close(LOGFILE);
+close(LOGFILEFULL);
+
+

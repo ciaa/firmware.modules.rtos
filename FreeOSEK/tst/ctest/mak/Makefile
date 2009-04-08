@@ -2,7 +2,7 @@
 # add library
 #
 OBJ += 	ctest_rst.o			\
-			ctest_tm_01.o
+			$(PROJECT).o
 
 VPATH += FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)src
 
@@ -20,6 +20,14 @@ CFLAGS += -DCT_TM_01
 ctestclean :
 
 ctest :
-	.$(DIR)FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)bin$(DIR)ctest.pl
+	@echo GDB:$(GDB)> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo BINDIR:$(BINDIR)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo DIR:$(DIR)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo ARCH:$(ARCH)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo CPUTYPE:$(CPUTYPE)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo CPU:$(CPU)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo LOG:out/doc/ctest/ctest.log>>out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	@echo LOGFULL:out/doc/ctest/ctestfull.log>>out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
+	.$(DIR)FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)bin$(DIR)ctest.pl -f out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
 
 

@@ -108,7 +108,7 @@ TASK(Task1)
 	 * Service returns E_OK
 	 */
 	ret = ActivateTask(Task3);
-	ASSERT(TM_03, ret != E_OK)
+	ASSERT(TM_03, ret != E_OK);
 
 	Sequence(4);
 
@@ -127,6 +127,8 @@ TASK(Task2)
 
 TASK(Task3)
 {
+	StatusType ret;
+
 	Sequence(1);
 	/* \treq TM_04 mf B1B2E1E2 se Call ActivateTask() from preemptive
  	 * task on suspend basic task which has lower priority than running
@@ -136,7 +138,7 @@ TASK(Task3)
 	 * Service returns E_OK
 	 */
 	ret = ActivateTask(Task3);
-	ASSERT(TM_03, ret != E_OK)
+	ASSERT(TM_03, ret != E_OK);
 
 	Sequence(2);
 	TerminateTask();

@@ -108,7 +108,7 @@ TASK(Task1)
 	 * its events are cleared. Service returns E_OK
 	 */
 	ret = ActivateTask(Task3);
-	ASSERT(TM_07, ret != E_OK)
+	ASSERT(TM_07, ret != E_OK);
 	
 	Sequence(6);
 
@@ -128,7 +128,7 @@ TASK(Task2)
 TASK(Task3)
 {
 	StatusType ret;
-	EventType event;
+	EventMaskType event;
 
 	Sequence(1);
 	ret = GetEvent(Task3, &event);
