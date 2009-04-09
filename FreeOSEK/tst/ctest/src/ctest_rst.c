@@ -127,8 +127,16 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* TM_12 */
 #endif
+#if (defined ctest_tm_08)
+	  ( OK << 0 )			/* TM_13 */
+#else
 	  ( INIT << 0 )		/* TM_13 */
+#endif
+#if (defined ctest_tm_08)
+	| ( OK << 2 )			/* TM_14 */
+#else
 	| ( INIT << 2 )		/* TM_14 */
+#endif
 #if (defined ctest_tm_01)
 	| ( OK << 4 )			/* TM_15 */
 #else
@@ -144,7 +152,11 @@ const uint8 TestResultsOk[35] =
 #else
 	  ( INIT << 0 )		/* TM_17 */
 #endif
+#if (defined ctest_tm_08)
+	| ( OK << 2 )			/* TM_18 */
+#else
 	| ( INIT << 2 )		/* TM_18 */
+#endif
 #if (defined ctest_tm_06)
 	| ( OK << 4 )			/* TM_19 */
 #else
