@@ -117,7 +117,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 2 )		/* TM_10 */
 #endif
+#if (defined CT_TM_06)
+	| ( OK << 4 )			/* TM_11 */
+#else
 	| ( INIT << 4 )		/* TM_11 */
+#endif
 	| ( INIT << 6 ),		/* TM_12 */
 	  ( INIT << 0 )		/* TM_13 */
 	| ( INIT << 2 )		/* TM_14 */
@@ -126,10 +130,18 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 4 )		/* TM_15 */
 #endif
+#if (defined CT_TM_06)
+	| ( OK << 6 ),			/* TM_16 */
+#else
 	| ( INIT << 6 ),		/* TM_16 */
+#endif
 	  ( INIT << 0 )		/* TM_17 */
 	| ( INIT << 2 )		/* TM_18 */
+#if (defined CT_TM_06)
+	| ( OK << 4 )			/* TM_19 */
+#else
 	| ( INIT << 4 )		/* TM_19 */
+#endif
 	| ( INIT << 6 ),		/* TM_20 */
 #if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
 	  ( OK << 0 )			/* TM_21 */
@@ -165,9 +177,17 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 2 )		/* TM_30 */
 #endif
+#if (defined CT_TM_06)
+	| ( OK << 4 )			/* TM_31 */
+#else
 	| ( INIT << 4 )		/* TM_31 */
+#endif
 	| ( INIT << 6 ),		/* TM_32 */
+#if (defined CT_TM_06)
+	  ( OK << 0 )			/* TM_33 */
+#else
 	  ( INIT << 0 )		/* TM_33 */
+#endif
 #if (defined CT_TM_02)
 	| ( OK << 2 )			/* TM_34 */
 #else

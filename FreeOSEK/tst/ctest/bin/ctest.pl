@@ -386,12 +386,23 @@ info("You should have received a copy of the GNU General Public License");
 info("along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.");
 info("------- LICENSE END -------");
 
-if ($#ARGV + 1 != 2)
+if ($#ARGV + 1 < 2)
 {
 	info("ctest.pl -f ctest.cfg");
 }
 
+$onlytc = $ARGV[3];
+
 $cfgfile = $ARGV[1];
+
+if ($ARGV[4] eq "--debug")
+{
+	$debug = 1;
+}
+else
+{
+	$debug = 0;
+}
 
 readparam($cfgfile);
 
@@ -403,15 +414,29 @@ info("Starting FreeOSEK Conformance Test Runner");
 
 @tests = GetTestSequences($TESTS);
 
-foreach (@tests)
+if($onlytc ne "")
 {
-	$testfn = $_;
+	@tmptests = @tests;
+	@tests = ();
+	
+	foreach (@tmptests)
+	{
+		if(index($_,$onlytc)>-1)
+		{
+			push(@tests, $_);
+		}
+	}
+}
+
+foreach $testfn (@tests)
+{
 	@test = split(/:/,$testfn);
 	$test = @test[0];
 	
 	info("Testing $test");
 
 	@configs = GetTestSequencesConfigs($TESTS, $testfn);
+
 	foreach $config (@configs)
 	{
 		print "Config: $config\n";
@@ -460,8 +485,15 @@ foreach (@tests)
 					$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
 					info("$GDB $out -x $dbgfile");
 					`rm /dev/mqueue/*`;
-					#$outdbg = `$GDB $out -x $dbgfile`;
-					system("$GDB $out -x $dbgfile");
+					if($debug == 0)
+					{
+						#$outdbg = `$GDB $out -x $dbgfile`;
+						system("$GDB $out -x $dbgfile");
+					}
+					else
+					{
+						exec("$GDB $out");
+					}
 					`rm /dev/mqueue/*`;
 					$outdbg = "";
 					$outdbgstatus = $?;
