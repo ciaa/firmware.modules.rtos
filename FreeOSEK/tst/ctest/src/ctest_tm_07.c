@@ -98,7 +98,6 @@ int main
 TASK(Task1)
 {
 	StatusType ret;
-	TaskStateType state;
 	static uint8 count = 0;
 
 	switch (count)

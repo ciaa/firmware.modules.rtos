@@ -125,7 +125,7 @@ TASK(Task1)
 	 * \result Service returns E_OS_LIMIT
 	 */
 	ret = ChainTask(Task2);
-	ASSERT(TM_19,ret != E_OS_LIMIT);
+	ASSERT(TM_33,ret != E_OS_LIMIT);
 
 	Sequence(7);
 	ret = SetEvent(Task2,Event2);	

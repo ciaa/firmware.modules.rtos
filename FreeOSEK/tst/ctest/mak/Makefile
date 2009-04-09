@@ -15,7 +15,7 @@ GENFILES += FreeOSEK$(DIR)tst$(DIR)ctest$(DIR)gen$(DIR)inc$(DIR)ctest_cfg.h.php
 
 CLEAN += ctestclean
 
-CFLAGS += -DCT_TM_01
+CFLAGS += -D$(PROJECT)
 
 ctestclean :
 

@@ -138,7 +138,7 @@ TASK(Task3)
 	 * Service returns E_OK
 	 */
 	ret = ActivateTask(Task2);
-	ASSERT(TM_03, ret != E_OK);
+	ASSERT(TM_04, ret != E_OK);
 
 	Sequence(2);
 	TerminateTask();

@@ -65,14 +65,15 @@ sub GetTestCases
 	close(TC);
 	foreach (split(//,$val))
 	{
-		$tc = ( ( $_ >> 0 ) & 3 );
-		push(@ret, ord($tc));
-		$tc = ( ( $_ >> 2 ) & 3 );
-		push(@ret, ord($tc));
-		$tc = ( ( $_ >> 4 ) & 3 );
-		push(@ret, ord($tc));
-		$tc = ( ( $_ >> 6 ) & 3 );
-		push(@ret, ord($tc));
+		$v = ord($_);
+		$tc = ( ( $v >> 0 ) & 3 );
+		push(@ret, $tc);
+		$tc = ( ( $v >> 2 ) & 3 );
+		push(@ret, $tc);
+		$tc = ( ( $v >> 4 ) & 3 );
+		push(@ret, $tc);
+		$tc = ( ( $v >> 6 ) & 3 );
+		push(@ret, $tc);
 	}
 
 	return @ret;
@@ -216,15 +217,21 @@ sub EvaluateResults
 	my $failed = 0;
 	my $failedtotal = 0;
 
-	open SC, "<out/dbg/SequenceCounter.bin" or die "SequenceCounter.bin can not be openned: $!";
+	$tsseqfile = "out/dbg/SequenceCounter.bin";
+	$tsseqfileok = "out/dbg/SequenceCounterOk.bin";
+	open SC, "<$tsseqfile" or die "$tsseqfile can not be openned: $!";
 	read(SC, $sc, 4, 0);
 	close(SC);
-	open SC, "<out/dbg/SequenceCounterOk.bin" or die "SequenceCounterOk.bin can not be openned: $!";
+	open SC, "<$tsseqfile" or die "$tsseqfile can not be openned: $!";
 	read(SC, $scok, 4, 0);
 	close(SC);
+
+	`rm $tsseqfile`;
+	`rm $tsseqfileok`;
+
 	$scerror = htons($sc) >> 31;
-	$sc= ( htons($sc) & 0x7fffffff );
-	$scok=htons($scok);
+	$sc = ( htons($sc) & 0x7fffffff );
+	$scok = htons($scok);
 	if ( ($sc == $scok) && ($scerror == 0) )
 	{
 		$sctc = "OK";
@@ -239,19 +246,28 @@ sub EvaluateResults
 
 	$failed = 0;
 	$failedcounter = 0;
-	@ts = GetTestCases("out/dbg/TestResults.bin");
-	@tsok = GetTestCases("out/dbg/TestResultsOk.bin");
+	$tsfile = "out/dbg/TestResults.bin";
+	$tsfileok = "out/dbg/TestResultsOk.bin";
+	@ts = GetTestCases($tsfile);
+	@tsok = GetTestCases($tsfileok);
+	#print "@ts\n";
+	#print "@tsok\n";
+	`hexdump -C $tsfile`;
+	`hexdump -C $tsfileok`;
+	`rm $tsfile`;
+	`rm $tsfileok`;
+	
 
 	for($loopi = 0; $loopi < @ts; $loopi++)
 	{
-		#info("Loop: " . $loopi);
 		if(@ts[$loopi] != @tsok[$loopi])
 		{
 			$failed = 1;
 			$failedtotal = 1;
 			$failedcounter++;
-			results("Test Case $loop doesn't mach - Result: " . @ts[$loopi] . " ResultOk: " . @tsok[$loopi]);
+			results("Test Case $loopi doesn't mach - Result: " . @ts[$loopi] . " ResultOk: " . @tsok[$loopi]);
 		}
+		#info("Loop: " . $loopi . " - " . @ts[$loopi] . " - " . @tsok[$loopi]);
 	}
 
 	if($failed == 1)

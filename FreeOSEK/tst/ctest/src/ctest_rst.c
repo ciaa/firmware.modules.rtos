@@ -75,138 +75,150 @@ uint8 TestResults[35];
 
 const uint8 TestResultsOk[35] =
 	{
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	  ( OK << 0 )			/* TM_01 */
 #else
 	  ( INIT << 0 )		/* TM_01 */
 #endif
-#if (defined CT_TM_02)
+#if (defined ctest_tm_02)
 	| ( OK << 2 )			/* TM_02 */
 #else
 	| ( INIT << 2 )		/* TM_02 */
 #endif
-#if (defined CT_TM_03)
+#if (defined ctest_tm_03)
 	| ( OK << 4 )			/* TM_03 */
 #else
 	| ( INIT << 4 )		/* TM_03 */
 #endif
-#if (defined CT_TM_03)
+#if (defined ctest_tm_03)
 	| ( OK << 6 ),			/* TM_04 */
 #else
 	| ( INIT << 6 ),		/* TM_04 */
 #endif
 	  ( INIT << 0 )		/* TM_05 */
-#if (defined CT_TM_04)
+#if (defined ctest_tm_04)
 	| ( OK << 2 )			/* TM_06 */
 #else
 	| ( INIT << 2 )		/* TM_06 */
 #endif
-#if (defined CT_TM_05)
+#if (defined ctest_tm_05)
 	| ( OK << 4 )			/* TM_07 */
 #else
 	| ( INIT << 4 )		/* TM_07 */
 #endif
-#if (defined CT_TM_05)
+#if (defined ctest_tm_05)
 	| ( OK << 6 ),			/* TM_08 */
 #else
 	| ( INIT << 6 ),		/* TM_08 */
 #endif
 	  ( INIT << 0 )		/* TM_09 */
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 2 )			/* TM_10 */
 #else
 	| ( INIT << 2 )		/* TM_10 */
 #endif
-#if (defined CT_TM_06)
+#if (defined ctest_tm_06)
 	| ( OK << 4 )			/* TM_11 */
 #else
 	| ( INIT << 4 )		/* TM_11 */
 #endif
+#if (defined ctest_tm_07)
+	| ( OK << 6 ),			/* TM_12 */
+#else
 	| ( INIT << 6 ),		/* TM_12 */
+#endif
 	  ( INIT << 0 )		/* TM_13 */
 	| ( INIT << 2 )		/* TM_14 */
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 4 )			/* TM_15 */
 #else
 	| ( INIT << 4 )		/* TM_15 */
 #endif
-#if (defined CT_TM_06)
+#if (defined ctest_tm_06)
 	| ( OK << 6 ),			/* TM_16 */
 #else
 	| ( INIT << 6 ),		/* TM_16 */
 #endif
+#if (defined ctest_tm_07)
+	  ( OK << 0 )			/* TM_17 */
+#else
 	  ( INIT << 0 )		/* TM_17 */
+#endif
 	| ( INIT << 2 )		/* TM_18 */
-#if (defined CT_TM_06)
+#if (defined ctest_tm_06)
 	| ( OK << 4 )			/* TM_19 */
 #else
 	| ( INIT << 4 )		/* TM_19 */
 #endif
 	| ( INIT << 6 ),		/* TM_20 */
-#if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
+#if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	  ( OK << 0 )			/* TM_21 */
 #else
 	  ( INIT << 0 )		/* TM_21 */
 #endif
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 2 )			/* TM_22 */
 #else
 	| ( INIT << 2 )		/* TM_22 */
 #endif
 	| ( INIT << 4 )		/* TM_23 */
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 6 ),			/* TM_24 */
 #else
 	| ( INIT << 6 ),		/* TM_24 */
 #endif
 	  ( INIT << 0 )		/* TM_25 */
-#if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
+#if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	| ( OK << 2 )			/* TM_26 */
 #else
 	| ( INIT << 2 )		/* TM_26 */
 #endif
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 4 )			/* TM_27 */
 #else
 	| ( INIT << 4 )		/* TM_27 */
 #endif
 	| ( INIT << 6 ),		/* TM_28 */
 	  ( INIT << 0 )		/* TM_29 */
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 2 )			/* TM_30 */
 #else
 	| ( INIT << 2 )		/* TM_30 */
 #endif
-#if (defined CT_TM_06)
+#if (defined ctest_tm_06)
 	| ( OK << 4 )			/* TM_31 */
 #else
 	| ( INIT << 4 )		/* TM_31 */
 #endif
+#if (defined ctest_tm_07)
+	| ( OK << 6 ),			/* TM_32 */
+#else
 	| ( INIT << 6 ),		/* TM_32 */
-#if (defined CT_TM_06)
+#endif
+#if (defined ctest_tm_06)
 	  ( OK << 0 )			/* TM_33 */
 #else
 	  ( INIT << 0 )		/* TM_33 */
 #endif
-#if (defined CT_TM_02)
+#if (defined ctest_tm_02)
 	| ( OK << 2 )			/* TM_34 */
 #else
 	| ( INIT << 2 )		/* TM_34 */
 #endif
 	| ( INIT << 4 )		/* TM_35 */
-#if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
+#if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	| ( OK << 6 ),			/* TM_36 */
 #else
 	| ( INIT << 6 ),		/* TM_36 */
 #endif
 	  ( INIT << 0 )		/* TM_37 */
-#if ( (defined CT_TM_01) && (ISR_CATEGORY_3 == ENABLE) )
+#if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	| ( OK << 2 )			/* TM_38 */
 #else
 	| ( INIT << 2 )		/* TM_38 */
 #endif
 	| ( INIT << 4 )		/* TM_39 */
-#if (defined CT_TM_01)
+#if (defined ctest_tm_01)
 	| ( OK << 6 ),			/* TM_40 */
 #else
 	| ( INIT << 6 ),		/* TM_40 */
