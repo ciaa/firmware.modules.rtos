@@ -213,7 +213,6 @@ void ASSERT
    if (cond)
    {
 		TestResults[(tc)>>2] |=	FAILED << ( ( tc & 3 ) * 2 );
-		while(1);
    }
 	else
 	{

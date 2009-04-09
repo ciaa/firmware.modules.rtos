@@ -137,10 +137,16 @@ TASK(Task3)
 	 * \result Non preemption of running task. Activated task becomes ready.
 	 * Service returns E_OK
 	 */
-	ret = ActivateTask(Task3);
+	ret = ActivateTask(Task2);
 	ASSERT(TM_03, ret != E_OK);
 
 	Sequence(2);
+	TerminateTask();
+}
+
+/* This task is not used, only to change the scheduling police */
+TASK(Task4)
+{
 	TerminateTask();
 }
 

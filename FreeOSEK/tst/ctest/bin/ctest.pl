@@ -37,12 +37,7 @@
 # along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.
 #
 use Switch;
-
-@tests = (	"ctest_tm_01",
-				"ctest_tm_02",
-				"ctest_tm_03",
-				"ctest_tm_04",
-				"ctest_tm_05"	);
+use File::Copy;
 
 $errors = 0;
 $warnings = 0;
@@ -83,6 +78,139 @@ sub GetTestCases
 	return @ret;
 }
 
+sub GetTestSequences
+{
+	my $file = @_[0];
+	my @tc = ();
+
+	open TSF, "<" . $file;
+
+	while (my $line = <TSF>)
+	{
+		chomp($line);
+		if ($line ne "")
+		{
+			$tabcount = ($line =~ tr/\t//);
+			if ($tabcount == 0)
+			{
+				push(@tc, $line);
+			}
+		}
+	}
+
+	close(TSF);
+
+	return @tc;
+}
+
+sub GetTestSequencesConfigs
+{
+	my $file = @_[0];
+	my $tc = @_[1];
+	my @tcs = ();
+	my $startcount = 0;
+
+	open TSF, "<" . $file;
+
+	while (my $line = <TSF>)
+	{
+		chomp($line);
+		if ($line ne "")
+		{
+			$tabcount = ($line =~ tr/\t//);
+			$line =~ s/\t+//;
+			if ($tabcount == 0)
+			{
+				if ($tc eq $line)
+				{
+					#print "LINE: $line\n";
+					$startcount = 1;
+				}
+				else
+				{
+					#print "LINE END: $line\n";
+					$startcount = 0;
+				}
+			}
+			if ( ($tabcount == 1) && ( $startcount == 1 ) )
+			{
+				#print "$line\n";
+				push(@tcs, $line);
+			}
+		}
+	}
+
+	close(TSF);
+
+	return @tcs;
+}
+
+sub GetTestSequencesCon
+{
+	my $file = @_[0];
+	my $tc = @_[1];
+	my $tcc = @_[2];
+	my @ret = ();
+	my $stc1 = 0;
+	my $stc2 = 0;
+
+	open TSF, "<" . $file;
+
+	while (my $line = <TSF>)
+	{
+		chomp($line);
+		if ($line ne "")
+		{
+			$tabcount = ($line =~ tr/\t//);
+			$line =~ s/\t+//;
+			if ($tabcount == 0)
+			{
+				if ($tc eq $line)
+				{
+					#print "LINE: $line\n";
+					$stc1 = 1;
+				}
+				else
+				{
+					#print "LINE END: $line\n";
+					$stc1 = 0;
+				}
+			}
+			if ( ($tabcount == 1) && ( $stc1 == 1 ) )
+			{
+				if ($line eq $tcc)
+				{
+					$stc2 = 1;
+				}
+				else
+				{
+					$stc2 = 0;
+				}
+			}
+			if ( ($tabcount == 2) && ( $stc1 == 1 ) && ( $stc2 == 1 ) )
+			{
+				#print "LINE YES: $line\n";
+				push(@ret, $line);
+			}
+		}
+	}
+
+	close(TSF);
+
+	return @ret;
+}
+
+sub searchandreplace
+{
+	$file = @_[0];
+	$s = @_[1];
+	$r = @_[2];
+
+	`perl -pi -e 's/$s/$r/' $file`;
+
+	close(OUT);
+}
+
 sub EvaluateResults
 {
 	my $failed = 0;
@@ -107,7 +235,7 @@ sub EvaluateResults
 		$failedtotal = 1;
 		$sctc = "FAILED";
 	}
-	info("Sequence: $scerror-$sc - SequenceOk: $scok - Sequence Result: $sctc");
+	results("Sequence: $scerror-$sc - SequenceOk: $scok - Sequence Result: $sctc");
 
 	$failed = 0;
 	$failedcounter = 0;
@@ -122,17 +250,17 @@ sub EvaluateResults
 			$failed = 1;
 			$failedtotal = 1;
 			$failedcounter++;
-			info("Test Case $loop doesn't mach - Result: " . @ts[$loopi] . " ResultOk: " . @tsok[$loopi]);
+			results("Test Case $loop doesn't mach - Result: " . @ts[$loopi] . " ResultOk: " . @tsok[$loopi]);
 		}
 	}
 
 	if($failed == 1)
 	{
-		info("$failedcounter testcases failed");
+		results("$failedcounter testcases failed");
 	}
 	else
 	{
-		info("Test cases executed in the right form");
+		results("Test cases executed in the right form");
 	}
 
 }
@@ -154,11 +282,19 @@ sub readparam
 			case "DIR" { $DIR = $val; }
 			case "LOG" { $logfile = $val; }
 			case "LOGFULL" { $logfilefull = $val; }
+			case "TESTS" { $TESTS = $val; }
+			case "RES" { $RES = $val; }
 			else { }
 		}
 	}
 
 	close CFG;
+}
+
+sub results
+{
+	print RESFILE "@_[0]\n";
+	info(@_[0]);
 }
 
 sub info
@@ -261,53 +397,86 @@ readparam($cfgfile);
 
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
 open LOGFILEFULL, "> $logfilefull" or die "can not open $logfile for append: $!";
+open RESFILE, "> $RES" or die "can not open $RES for append: $!";
 
 info("Starting FreeOSEK Conformance Test Runner");
 
+@tests = GetTestSequences($TESTS);
+
 foreach (@tests)
 {
-	$test = $_;
+	$testfn = $_;
+	@test = split(/:/,$testfn);
+	$test = @test[0];
+	
 	info("Testing $test");
 
-	$error = "";
-
-	info("make clean of $test");
-	$outmakeclean = `make clean`;
-	$outmakecleanstatus = $?;
-	info("make clean status: $outmakecleanstatus");
-	logffull("make clean output:\n$outmakeclean");
-
-	if ($outmakecleanstatus == 0)
+	@configs = GetTestSequencesConfigs($TESTS, $testfn);
+	foreach $config (@configs)
 	{
-		info("make generate of $test");
-		$outmakegenerate = `make generate PROJECT=$test`;
-		$outmakegeneratestatus = $?;
-		info("make generate status: $outmakegeneratestatus");
-		logffull("make generate output:\n$outmakegenerate");
-		if ($outmakegeneratestatus == 0)
+		print "Config: $config\n";
+	
+		$error = "";
+
+		info("make clean of $test");
+		$outmakeclean = `make clean`;
+		$outmakecleanstatus = $?;
+		info("make clean status: $outmakecleanstatus");
+		logffull("make clean output:\n$outmakeclean");
+
+		mkdir("out/gen/etc/");
+
+		$org = "FreeOSEK/tst/ctest/etc/" . $test . ".oil";
+		$dst = "out/gen/etc/" . $test . ".oil";
+		copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
+
+		@replace = GetTestSequencesCon($TESTS, $testfn, $config);
+		foreach $rep (@replace)
 		{
-			info("make of $test");
-			$outmake = `make PROJECT=$test`;
-			$outmakestatus = $?;
-			info("make status: $outmakestatus");
-			logffull("make output:\n$outmake");
-			if ($outmakestatus == 0)
+			info("Replacing: $rep");
+			@rep = split (/:/,$rep);
+			searchandreplace($dst,@rep[0],@rep[1]);
+		}
+
+		if ($outmakecleanstatus == 0)
+		{
+			info("make generate of $test");
+			$outmakegenerate = `make generate PROJECT=$test`;
+			$outmakegeneratestatus = $?;
+			info("make generate status: $outmakegeneratestatus");
+			logffull("make generate output:\n$outmakegenerate");
+			#print "$outmakegenerate";
+			if ($outmakegeneratestatus == 0)
 			{
-				$out = $BINDIR . "/" . $test;
-				info("debug of $test");
-				$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
-				info("$GDB $out -x $dbgfile");
-				#$outdbg = `$GDB $out -x $dbgfile`;
-				system("$GDB $out -x $dbgfile");
-				`rm /dev/mqueue/*`;
-				$outdbg = "";
-				$outdbgstatus = $?;
-				info("debug status: $outdbgstatus");
-				logffull("debug output:\n$outdbg");
-				if ($outdbgstatus == 0)
+				info("make of $test");
+				$outmake = `make PROJECT=$test`;
+				$outmakestatus = $?;
+				info("make status: $outmakestatus");
+				logffull("make output:\n$outmake");
+				if ($outmakestatus == 0)
 				{
-					EvaluateResults();
+					$out = $BINDIR . "/" . $test;
+					info("debug of $test");
+					$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
+					info("$GDB $out -x $dbgfile");
+					`rm /dev/mqueue/*`;
+					#$outdbg = `$GDB $out -x $dbgfile`;
+					system("$GDB $out -x $dbgfile");
+					`rm /dev/mqueue/*`;
+					$outdbg = "";
+					$outdbgstatus = $?;
+					info("debug status: $outdbgstatus");
+					logffull("debug output:\n$outdbg");
+					if ($outdbgstatus == 0)
+					{
+						results("Test: $test - Config: $config");
+						EvaluateResults();
+					}
 				}
+			}
+			else
+			{
+				exit();
 			}
 		}
 	}
@@ -315,5 +484,6 @@ foreach (@tests)
 
 close(LOGFILE);
 close(LOGFILEFULL);
+close(RESFILE);
 
 

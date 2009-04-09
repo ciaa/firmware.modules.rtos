@@ -154,6 +154,12 @@ TASK(Task3)
 	TerminateTask();
 }
 
+/* This task is not used, only to change the scheduling police */
+TASK(Task4)
+{
+	TerminateTask();
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
