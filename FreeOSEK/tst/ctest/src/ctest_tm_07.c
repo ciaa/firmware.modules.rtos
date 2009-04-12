@@ -47,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_TM Task Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_05 Test Sequence 7
+/** \addtogroup FreeOSEK_CT_TM_07 Test Sequence 7
  ** @{ */
 
 /*

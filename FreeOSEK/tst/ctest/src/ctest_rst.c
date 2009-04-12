@@ -162,7 +162,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 4 )		/* TM_19 */
 #endif
+#if (defined ctest_tm_01)
+	| ( OK << 6 ),			/* TM_20 */
+#else
 	| ( INIT << 6 ),		/* TM_20 */
+#endif
 #if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	  ( OK << 0 )			/* TM_21 */
 #else
@@ -173,13 +177,21 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 2 )		/* TM_22 */
 #endif
+#if (defined ctest_tm_09)
+	| ( OK << 4 )			/* TM_23 */
+#else
 	| ( INIT << 4 )		/* TM_23 */
+#endif
 #if (defined ctest_tm_01)
 	| ( OK << 6 ),			/* TM_24 */
 #else
 	| ( INIT << 6 ),		/* TM_24 */
 #endif
+#if (defined ctest_tm_01)
+	  ( OK << 0 )			/* TM_25 */
+#else
 	  ( INIT << 0 )		/* TM_25 */
+#endif
 #if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	| ( OK << 2 )			/* TM_26 */
 #else
@@ -190,8 +202,16 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 4 )		/* TM_27 */
 #endif
+#if (defined ctest_tm_09)
+	| ( OK << 6 ),			/* TM_28 */
+#else
 	| ( INIT << 6 ),		/* TM_28 */
+#endif
+#if (defined ctest_tm_09)
+	  ( OK << 0 )			/* TM_29 */
+#else
 	  ( INIT << 0 )		/* TM_29 */
+#endif
 #if (defined ctest_tm_01)
 	| ( OK << 2 )			/* TM_30 */
 #else
@@ -217,25 +237,41 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 2 )		/* TM_34 */
 #endif
+#if (defined ctest_tm_01)
+	| ( OK << 4 )			/* TM_35 */
+#else
 	| ( INIT << 4 )		/* TM_35 */
+#endif
 #if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	| ( OK << 6 ),			/* TM_36 */
 #else
 	| ( INIT << 6 ),		/* TM_36 */
 #endif
+#if (defined ctest_tm_01)
+	  ( OK << 0 )			/* TM_37 */
+#else
 	  ( INIT << 0 )		/* TM_37 */
+#endif
 #if ( (defined ctest_tm_01) && (ISR_CATEGORY_3 == ENABLE) )
 	| ( OK << 2 )			/* TM_38 */
 #else
 	| ( INIT << 2 )		/* TM_38 */
 #endif
+#if (defined ctest_tm_09)
+	| ( OK << 4 )			/* TM_39 */
+#else
 	| ( INIT << 4 )		/* TM_39 */
+#endif
 #if (defined ctest_tm_01)
 	| ( OK << 6 ),			/* TM_40 */
 #else
 	| ( INIT << 6 ),		/* TM_40 */
 #endif
+#if (defined ctest_tm_09)
+	  ( OK << 0 )			/* TM_41 */
+#else
 	  ( INIT << 0 )		/* TM_41 */
+#endif
 	| ( INIT << 2 )		/* IP_01 */
 	| ( INIT << 4 )		/* IP_02 */
 	| ( INIT << 6 ),		/* IP_03 */

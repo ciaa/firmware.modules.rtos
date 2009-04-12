@@ -36,11 +36,11 @@
  *
  */
 
-#ifndef _CTEST_TM_08_H_
-#define _CTEST_TM_08_H_
-/** \brief Free OSEK Conformance Test Task Management, Test Sequence 8
+#ifndef _CTEST_TM_09_H_
+#define _CTEST_TM_09_H_
+/** \brief Free OSEK Conformance Test Task Management, Test Sequence 9
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_tm_08.h
+ ** \file FreeOSEK/tst/ctest/inc/ctest_tm_09.h
  **/
 
 /** \addtogroup FreeOSEK
@@ -49,7 +49,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_TM Task Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_08 Test Sequence 8
+/** \addtogroup FreeOSEK_CT_TM_09 Test Sequence 9
  ** @{ */
 
 /*
@@ -61,7 +61,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090409 v0.1.0 MaCe	initial version based on module tests
+ * 20090412 v0.1.0 MaCe	initial version based on module tests
  */  
 
 /*==================[inclusions]=============================================*/
@@ -86,5 +86,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CTEST_TM_08_H_ */
+#endif /* #ifndef _CTEST_TM_09_H_ */
 

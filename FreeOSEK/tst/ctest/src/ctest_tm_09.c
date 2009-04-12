@@ -36,9 +36,9 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 6
+/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 9
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_tm_06.c
+ ** \file FreeOSEK/tst/ctest/src/ctest_tm_09.c
  **/
 
 /** \addtogroup FreeOSEK
@@ -47,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_TM Task Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_06 Test Sequence 6
+/** \addtogroup FreeOSEK_CT_TM_09 Test Sequence 9
  ** @{ */
 
 /*
@@ -64,7 +64,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "os.h"				/* include os header file */
-#include "ctest_tm_06.h"	/* include test header file */
+#include "ctest_tm_09.h"	/* include test header file */
 #include "ctest.h"			/* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
@@ -98,85 +98,120 @@ int main
 TASK(Task1)
 {
 	StatusType ret;
-	TaskStateType state;
-	
-	Sequence(0);
-	ret = ActivateTask(Task2);
+	TaskType TaskID;
+	TaskStateType TaskState;
+
+		Sequence(0);
+		/* \treq TM_39 nmf B1B2E1E2 se Call GetTaskID() from task
+		 *
+		 * \result Return task ID of cruently running task. Service returns E_OK
+		 */
+		ret = GetTaskID(&TaskID);
+		ASSERT(TM_39, TaskID != Task1);
+		ASSERT(TM_39, ret != E_OK);
+
+		Sequence(1);
+		/* \treq TM_41 nmf B1B2E1E2 se Call GetTaskState()
+		 *
+		 * \result Returns state of queried task. Service returns E_OK
+		 */
+		ret = GetTaskState(Task1, &TaskState);
+		ASSERT(TM_41, TaskState != RUNNING);
+		ASSERT(TM_41, ret != E_OK);
+
+		Sequence(2);
+		/* \treq TM_41 nmf B1B2E1E2 se Call GetTaskState()
+		 *
+		 * \result Returns state of queried task. Service returns E_OK
+		 */
+		ret = GetTaskState(Task2, &TaskState);
+		ASSERT(TM_41, TaskState != SUSPENDED);
+		ASSERT(TM_41, ret != E_OK);
+
+		Sequence(3);
+		ActivateTask(Task2);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
-#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
-	
-	Sequence(4);
-	ret = GetTaskState(Task2, &state);
-
-	Sequence(5);
-	/* \treq TM_19 nmf E1E2 e Call ActivateTask() on waiting extended task
-	 *
-	 * \result Service returns E_OS_LIMIT
-	 */
-	ret = ActivateTask(Task2);
-	ASSERT(TM_19,ret != E_OS_LIMIT);
-
-	Sequence(6);
-	/* \treq TM_33 nmf E1E2 e Call ChainTask() on waiting extended task
-	 *
-	 * \result Service returns E_OS_LIMIT
-	 */
-	ret = ChainTask(Task2);
-	ASSERT(TM_33,ret != E_OS_LIMIT);
-
-	Sequence(7);
-	ret = SetEvent(Task2,Event2);	
-
-#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
+		/* force scheduling */
+		Schedule();
 #endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
 
-	Sequence(10);
-
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
-
-	/* ShutdownOs without any error */
-	ShutdownOs(E_OK);
+		Sequence(6);
+		ASSERT(TM_28, 0);
+		/* \treq TM_28 nmf B1B2E1E2 se Call ChainTask() on suspended task
+		 *
+		 * \result Running task is terminated, chained task becomes ready and
+		 * and ready task with higher priority is executed
+		 */
+		ChainTask(Task3);
+		ASSERT(TM_28, 1);
+		while(1);
 }
 
 TASK(Task2)
 {
 	StatusType ret;
+	TaskStateType TaskState;
 
-	Sequence(1);
-	/* \treq TM_11 nmf B1B2E1E2 e Call ActivateTask() on ready extended task
+	Sequence(4);
+	/* \treq TM_41 nmf B1B2E1E2 se Call GetTaskState()
 	 *
-	 * \result Service returns E_OS_LIMIT
+	 * \result Returns state of queried task. Service returns E_OK
 	 */
-	ret = ActivateTask(Task1);
-	ASSERT(TM_11,ret != E_OS_LIMIT);
+	ret = GetTaskState(Task1, &TaskState);
+	ASSERT(TM_41, TaskState != READY);
+	ASSERT(TM_41, ret != E_OK);
 
-	Sequence(2);
-	/* \treq TM_16 nmf B1B2E1E2 e Call ActivateTask() on running extended task
+	Sequence(5);
+	ASSERT(TM_23, 0);
+	/* \treq TM_23 nmf B1B2E1E2 se Call TerminateTask()
 	 *
-	 * \result Service returns E_OS_LIMIT
+	 * \result Running task is terminated, and ready task with highest priority
+	 * is executed
 	 */
-	ret = ActivateTask(Task2);
-	ASSERT(TM_16,ret != E_OS_LIMIT);
-
-	Sequence(3);
-	WaitEvent(Event2);
-
-	Sequence(8);
-	/* \treq TM_31 nmf E1E2 e Call ChainTask() on ready extended task
-	 *
-	 * \result Running task is not terminated. Service returns E_OS_LIMIT
-	 */
-	ret = ChainTask(Task1);
-	ASSERT(TM_31,ret != E_OS_LIMIT);
-	
-	Sequence(9);
+	/** TODO this test case is performed out of order */
 	TerminateTask();
+	ASSERT(TM_23, 1);
+	while(1);
+}
+
+TASK(Task3)
+{
+	static uint8 count = 0;
+
+	switch (count)
+	{
+		case 0:
+			/* increment task call counter */
+			count++;
+
+			Sequence(7);
+			ASSERT(TM_29, 0);
+			/* \treq TM_29 nmf B1B2E1E2 se Call ChainTask() on running task
+			 *
+			 * \result Running task is terminated, chained task becomes ready and
+			 * and ready task with higher priority is executed
+			 */
+			ChainTask(Task3);
+			ASSERT(TM_29, 0);
+			while(1);
+			break;
+		case 1:
+			/* increment task call counter */
+			count++;
+
+			Sequence(8);
+
+			/* evaluate conformance tests */
+			ConfTestEvaluation();
+
+			/* ShutdownOs without any error */
+			ShutdownOs(E_OK);
+			break;
+		default:
+			while(1);
+			break;
+	}
 }
 
 /** @} doxygen end group definition */

@@ -49,7 +49,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_TM Task Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_05 Test Sequence 6
+/** \addtogroup FreeOSEK_CT_TM_06 Test Sequence 6
  ** @{ */
 
 /*
