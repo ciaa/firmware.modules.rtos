@@ -38,6 +38,9 @@
 
 /** \page CHANGELOG Change Log
  *
+ * v0.3.0	FreeOSEK Release 2009xxxx
+ * 	- implement FreeOSEK OS conformance tests
+ *
  * v0.2.41	FreeOSEK Beta Release 20090401
  * 	- start the implementation of of OpenCOM
  * 	- rename this file to CHANGELOG
