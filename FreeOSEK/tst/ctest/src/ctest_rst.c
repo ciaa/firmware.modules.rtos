@@ -340,7 +340,11 @@ const uint8 TestResultsOk[35] =
 #else
 	  ( INIT << 0 )		/* RM_06 index 84 */
 #endif
+#if (defined ctest_rm_03)
+	| ( OK << 2 )			/* RM_07 index 85 */
+#else
 	| ( INIT << 2 )		/* RM_07 index 85 */
+#endif
 	| ( INIT << 4 )		/* RM_08 index 86 */
 #if (defined ctest_rm_01)
 	| ( OK << 6 ),			/* RM_09 index 87 */
@@ -363,7 +367,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* RM_13 index 91 */
 #endif
+#if (defined ctest_rm_03)
+	  ( OK << 0 )			/* RM_14 index 92 */
+#else
 	  ( INIT << 0 )		/* RM_14 index 92 */
+#endif
 	| ( INIT << 2 )		/* RM_15 index 93 */
 	| ( INIT << 4 )		/* RM_16 index 94 */
 	| ( INIT << 6 ),		/* AL_01 index 95 */
