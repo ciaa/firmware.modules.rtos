@@ -36,11 +36,11 @@
  *
  */
 
-#ifndef _CTEST_RM_01_H_
-#define _CTEST_RM_01_H_
+#ifndef _CTEST_RM_02_H_
+#define _CTEST_RM_02_H_
 /** \brief Free OSEK Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_rm_01.h
+ ** \file FreeOSEK/tst/ctest/inc/ctest_rm_02.h
  **/
 
 /** \addtogroup FreeOSEK
@@ -49,7 +49,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_RM Resource Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_RM_01 Test Sequence 1
+/** \addtogroup FreeOSEK_CT_RM_02 Test Sequence 2
  ** @{ */
 
 /*
@@ -73,7 +73,7 @@
  **
  ** Defines the total amount of sequence points in this test sequence
  **/
-#define MAX_SEQUENCE 20
+#define MAX_SEQUENCE 6
 
 /*==================[typedef]================================================*/
 
@@ -86,5 +86,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CTEST_RM_01_H_ */
+#endif /* #ifndef _CTEST_RM_02_H_ */
 

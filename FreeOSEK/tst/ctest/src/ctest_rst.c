@@ -335,7 +335,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* RM_05 index 83 */
 #endif
+#if (defined ctest_rm_02)
+	  ( OK << 0 )			/* RM_06 index 84 */
+#else
 	  ( INIT << 0 )		/* RM_06 index 84 */
+#endif
 	| ( INIT << 2 )		/* RM_07 index 85 */
 	| ( INIT << 4 )		/* RM_08 index 86 */
 #if (defined ctest_rm_01)
@@ -354,7 +358,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 4 )		/* RM_12 index 90 */
 #endif
+#if (defined ctest_rm_02)
+	| ( OK << 6 ),			/* RM_13 index 91 */
+#else
 	| ( INIT << 6 ),		/* RM_13 index 91 */
+#endif
 	  ( INIT << 0 )		/* RM_14 index 92 */
 	| ( INIT << 2 )		/* RM_15 index 93 */
 	| ( INIT << 4 )		/* RM_16 index 94 */
@@ -421,6 +429,7 @@ void ASSERT
    if (cond)
    {
 		TestResults[(tc)>>2] |=	FAILED << ( ( tc & 3 ) * 2 );
+		while(1);
    }
 	else
 	{
