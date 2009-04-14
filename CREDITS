@@ -40,8 +40,18 @@
  *
  * The following persons have contribute to FreeOSEK:
  *
- * v0_2_41
+ * Contributers not related to a special FreeOSEK version:
+ *
+ * - WebPage
+ *   - Sergio Rey Calvete
+ *
+ * FreeOSEK versions:
+ *
+ * v0_3_0
  *  - Mariano Cerdeiro
+ *
+ * v0_2_41
+ *	 - Mariano Cerdeiro
  *  - Kang Li
  *  - Christoph Schüler
  *	 - Robert Russell
