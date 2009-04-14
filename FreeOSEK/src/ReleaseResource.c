@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090414 v0.1.7 MaCe fix optmization for NO_RES_SCHEDULER
  * 20090414 v0.1.6 MaCe bugfix NON_PREEMPTIVE == DISABLE and not ENABLE
  * 20090331 v0.1.5 MaCe add support to NO_RES_SCHEDULER
  * 20090330 v0.1.5 MaCe correct errors done in v0.1.3
@@ -134,22 +135,19 @@ StatusType ReleaseResource
 		 * E_OS_ID, E_OS_NOFUNC, E_OS_ACCESS */
 		ret = E_OS_ID;
 	}
-/* check RES_SCHEDULER only if used */
+	else
 #if (NO_RES_SCHEDULER == DISABLE)
-	else if ( ResID != RES_SCHEDULER )
-	{
+		if ( ResID != RES_SCHEDULER )
 #endif /* #if (NO_RES_SCHEDULER == DISABLE) */
-/* only if one or more resources were defined */
-#if (RESOURCES_COUNT != 0)
+	{
 		if ( ( TasksVar[GetRunningTask()].Resources & ( 1 << ResID ) ) == 0 )
-#endif /* #if (RESOURCES_COUNT != 0) */
 		{
 			/* \req OSEK_SYS_3.14.3-2/2 Extra possible return values in Extended mode are
 			 ** E_OS_ID, E_OS_NOFUNC, E_OS_ACCESS */
 			ret = E_OS_NOFUNC;
 		}
-#if (NO_RES_SCHEDULER == DISABLE)
 	}
+#if (NO_RES_SCHEDULER == DISABLE)
 	else
 	{
 		/* nothing to do */
