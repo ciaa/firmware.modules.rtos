@@ -100,7 +100,8 @@ TASK(Task1)
 	StatusType ret;
 
 	Sequence(0);
-	ActivateTask(Task2);
+	ret = ActivateTask(Task2);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(6);
 
@@ -114,7 +115,7 @@ TASK(Task1)
 TASK(Task2)
 {
 	StatusType ret;
-	EventMaskType;
+	EventMaskType EventMask;
 
 	Sequence(1);
 	GetEvent(Task1, &EventMask);
@@ -137,6 +138,9 @@ TASK(Task2)
 
 TASK(Task3)
 {
+	StatusType ret;
+	EventMaskType EventMask;
+
 	Sequence(4);
 	GetEvent(Task3, &EventMask);
 	ASSERT(OTHER, EventMask != 0);
