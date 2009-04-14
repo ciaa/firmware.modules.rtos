@@ -36,9 +36,9 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Resource Managment, Test Sequence 2
+/** \brief Free OSEK Conformance Test for the Resource Managment, Test Sequence 5
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_rm_02.c
+ ** \file FreeOSEK/tst/ctest/src/ctest_rm_05.c
  **/
 
 /** \addtogroup FreeOSEK
@@ -47,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_RM Resource Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_RM_02 Test Sequence 2
+/** \addtogroup FreeOSEK_CT_RM_05 Test Sequence 5
  ** @{ */
 
 
@@ -65,7 +65,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "os.h"				/* include os header file */
-#include "ctest_rm_02.h"	/* include test header file */
+#include "ctest_rm_05.h"	/* include test header file */
 #include "ctest.h"			/* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
@@ -101,52 +101,48 @@ TASK(Task1)
 	StatusType ret;
 
 	Sequence(0);
-	/* \treq RM_06 nm B1B2E1E2 se Test Priority Ceiling Protocol: Call
-	 * GetResource() rom non-preemptive task, activate task with priority
-	 * higher than the running task but lower than ceiling priority, and force
-	 * rescheduling
-	 *
-	 * \result Resource is occupied and running task's priority is set to the
-	 * resource's ceiling priority. Service returns E_OK. No preemption occurrs
-	 * after activating the task with higher priotiy and rescheduling
-	 */
-	ret = GetResource(Resource1);
-	ASSERT(RM_06, ret != E_OK);
+	/* enable interrupts ISR2 and ISR3 */
+	/* nothing to do */
 
 	Sequence(1);
-	ret = ActivateTask(Task2);
-	ASSERT(OTHER, ret != E_OK);
-
-#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
-#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
+	/* \treq RM_02 nmf B1B2E1E2 e Call GetResource() from a task with invalid
+	 * resource ID
+	 *
+	 * \result Service returns E_OS_ID
+	 */
+	ret = GetResource(INVALID_RESOURCE);
+	ASSERT(RM_02, ret != E_OS_ID);
 
 	Sequence(2);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+	/*  trigger ISR 2 */
+	TriggerISR2();
 
-#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
-#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
+#if ( ISR_CATEGORY_3 == ENABLE )
+	/* trigger ISR 3 */
+	TriggerISR3();
+#endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
-	Sequence(4);
-	/* \treq RM_13 nm B1B2E1E2 se Call ReleaseResource() from a non-preemptive
-	 * task
+	Sequence(5);
+	/* \treq RM_12 nmf B1B2E1E2 e Call ReleaseResource() from a task with a resource
+	 * which is not occupied
 	 *
-	 * \result Resource is released and running task's priority is reset. No
-	 * preemption of running task. Service returns E_OK
+	 * \result Service returns E_OS_NOFUNC
 	 */
 	ret = ReleaseResource(Resource1);
-	ASSERT(RM_13, ret != E_OK);
-
-#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
-#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
-
+	ASSERT(RM_12, ret != E_OS_NOFUNC);
+	
 	Sequence(6);
+	/* \treq RM_09 nmf B1B2E1E2 e Call ReleaseResource() from a task with an
+	 * invalid resource ID
+	 *
+	 * \result Service returns E_OS_ID
+	 */
+	ret = ReleaseResource(INVALID_RESOURCE);
+	ASSERT(RM_09, ret != E_OS_ID);
+
+	ASSERT(OTHER, 0);
+
+	Sequence(7);
 
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
@@ -155,23 +151,46 @@ TASK(Task1)
 	ShutdownOs(E_OK);
 }
 
+/* This task is not used, only to change the scheduling police */
 TASK(Task2)
 {
-	Sequence(5);
+	while(1);
 	TerminateTask();
 }
 
-TASK(Task3)
+ISR(ISR2)
 {
+	StatusType ret;
+
 	Sequence(3);
-	TerminateTask();
+	/* \treq RM_03 nmf B1B2E1E2 e Call GetResource() from ISR category 2
+	 *
+	 * \result Service returns E_OS_CALLEVEL
+	 */
+	ret = GetResource(Resource1);
+	ASSERT(RM_03, ret != E_OS_CALLEVEL);
+
+	Sequence(4);
+	/* \treq RM_10 nmf B1B2E1E2 e Call ReleaseResource() from ISR category 2
+	 *
+	 * \result Service returns E_OS_CALLEVEL
+	 */
+	ret = ReleaseResource(Resource1);
+	ASSERT(RM_10, ret != E_OS_CALLEVEL);
 }
 
-/* This task is not used, only to change the scheduling police */
-TASK(Task4)
+#if ( ISR_CATEGORY_3 == ENABLE )
+ISR(ISR3)
 {
-	TerminateTask();
+	StatusType ret;
+
+	EnterISR();
+
+	/* ISR3 are not supported by FreeOSEK OS*/
+
+	LeaveISR();
 }
+#endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
