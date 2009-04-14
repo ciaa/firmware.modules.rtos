@@ -6,6 +6,7 @@ dump value out/dbg/TestResultsOk.bin TestResultsOk
 dump value out/dbg/SequenceCounter.bin SequenceCounter
 dump value out/dbg/SequenceCounterOk.bin SequenceCounterOk
 dump value out/dbg/ConfTestResult.bin ConfTestResult
+kill
 quit
 
 

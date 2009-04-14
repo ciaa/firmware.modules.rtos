@@ -222,7 +222,7 @@ sub EvaluateResults
 	open SC, "<$tsseqfile" or die "$tsseqfile can not be openned: $!";
 	read(SC, $sc, 4, 0);
 	close(SC);
-	open SC, "<$tsseqfile" or die "$tsseqfile can not be openned: $!";
+	open SC, "<$tsseqfileok" or die "$tsseqfileok can not be openned: $!";
 	read(SC, $scok, 4, 0);
 	close(SC);
 
