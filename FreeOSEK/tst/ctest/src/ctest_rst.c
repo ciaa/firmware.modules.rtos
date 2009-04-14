@@ -314,18 +314,46 @@ const uint8 TestResultsOk[35] =
 	  ( INIT << 0 )		/* EM_24 index 76 */
 	| ( INIT << 2 )		/* EM_25 index 77 */
 	| ( INIT << 4 )		/* EM_26 index 78 */
+#if (defined ctest_rm_01)
+	| ( OK << 6 ),			/* RM_01 index 79 */
+#else
 	| ( INIT << 6 ),		/* RM_01 index 79 */
+#endif
+#if (defined ctest_rm_01)
+	  ( OK << 0 )			/* RM_02 index 80 */
+#else
 	  ( INIT << 0 )		/* RM_02 index 80 */
+#endif
+#if (defined ctest_rm_01)
+	| ( OK << 2 )			/* RM_03 index 81 */
+#else
 	| ( INIT << 2 )		/* RM_03 index 81 */
+#endif
 	| ( INIT << 4 )		/* RM_04 index 82 */
+#if (defined ctest_rm_01)
+	| ( OK << 6 ),			/* RM_05 index 83 */
+#else
 	| ( INIT << 6 ),		/* RM_05 index 83 */
+#endif
 	  ( INIT << 0 )		/* RM_06 index 84 */
 	| ( INIT << 2 )		/* RM_07 index 85 */
 	| ( INIT << 4 )		/* RM_08 index 86 */
+#if (defined ctest_rm_01)
+	| ( OK << 6 ),			/* RM_09 index 87 */
+#else
 	| ( INIT << 6 ),		/* RM_09 index 87 */
+#endif
+#if (defined ctest_rm_01)
+	  ( OK << 0 )			/* RM_10 index 88 */
+#else
 	  ( INIT << 0 )		/* RM_10 index 88 */
+#endif
 	| ( INIT << 2 )		/* RM_11 index 89 */
+#if (defined ctest_rm_01)
+	| ( OK << 4 )			/* RM_12 index 90 */
+#else
 	| ( INIT << 4 )		/* RM_12 index 90 */
+#endif
 	| ( INIT << 6 ),		/* RM_13 index 91 */
 	  ( INIT << 0 )		/* RM_14 index 92 */
 	| ( INIT << 2 )		/* RM_15 index 93 */

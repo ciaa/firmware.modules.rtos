@@ -36,18 +36,18 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 1
+/** \brief Free OSEK Conformance Test for the Resource Managment, Test Sequence 1
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_tm_01.c
+ ** \file FreeOSEK/tst/ctest/src/ctest_rm_01.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM Task Management
+/** \addtogroup FreeOSEK_CT_RM Resource Management
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_01 Test Sequence 1
+/** \addtogroup FreeOSEK_CT_RM_01 Test Sequence 1
  ** @{ */
 
 
@@ -60,12 +60,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090413 v0.1.0 MaCe initial version based on old moduletest
+ * 20090414 v0.1.0 MaCe initial version based on old moduletest
  */
 
 /*==================[inclusions]=============================================*/
 #include "os.h"				/* include os header file */
-#include "ctest_tm_01.h"	/* include test header file */
+#include "ctest_rm_01.h"	/* include test header file */
 #include "ctest.h"			/* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
@@ -99,71 +99,84 @@ int main
 TASK(Task1)
 {
 	StatusType ret;
-	TaskStateType State;
 
 	Sequence(0);
 	/* enable interrupts ISR2 and ISR3 */
 	/* nothing to do */
 
 	Sequence(1);
-	/* \treq TM_01 nmf B1B2E1E2 e Call ActivateTask() from a task level with
-	 * an invalid task ID (task doesn't exist) 
+	/* \treq RM_01 nmf B1B2E1E2 e Call GetResource() from a task which has no
+	 * access to this resource
 	 *
-	 * \result Service returns E_OS_ID
+	 * \result Service returns E_OS_ACCESS
 	 */
-	ret = ActivateTask(INVALID_TASK);
-	ASSERT(TM_01, ret != E_OS_ID);
+	ret = GetResource(ResourceA);
+	ASSERT(RM_01, ret != E_OS_ACCESS);
 
 	Sequence(2);
-	/* \treq TM_40 nmf B1B2E1E2 e Call GetTaskState() with an invalid task ID
-	 * (task doesn't exist)
+	/* \treq RM_02 nmf B1B2E1E2 e Call GetResource() from a task with invalid
+	 * resource ID
 	 *
 	 * \result Service returns E_OS_ID
 	 */
-	ret = GetTaskState(INVALID_TASK, &State);
-	ASSERT(TM_40, ret != E_OS_ID);
+	ret = GetResource(INVALID_RESOURCE);
+	ASSERT(RM_02, ret != E_OS_ID);
 
 	Sequence(3);
-	/* \treq TM_24 nmf B1B2E1E2 e Call ChainTask() from task level. Task-ID is
-	 * invalid (does not exist).
-	 *
-	 * \result Service returns E_OS_ID
-	 */
-	ret = ChainTask(INVALID_TASK);
-	ASSERT(TM_24, ret != E_OS_ID);
+	ret = GetResource(Resource1);
+	ASSERT(OTHER, ret != E_OK);
 
-	/* activate task 2 */
 	Sequence(4);
-	ActivateTask(Task2);
+	ret = GetResource(Resource2);
+	ASSERT(OTHER, ret != E_OK);
 
-#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
-#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
+	Sequence(5);
+	ret = GetResource(Resource3);
+	ASSERT(OTHER, ret != E_OK);
 
-	Sequence(9);	
-	/* get scheduler resource */
-	GetResource(RES_SCHEDULER);
+	Sequence(6);
+	ret = GetResource(Resource4);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(7);
+	ret = GetResource(Resource5);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(8);
+	/* \treq RM_05 nmf B1B2E1E2 e Call GetResource() from a task with too many
+	 * resources occupied in parallel. This req do not affect FreeOSEK whera upto 32
+	 * resources can be occupied by a task
+	 *
+	 * \result Service returns E_OK
+	 */
+	ret = GetResource(Resource6);
+	ASSERT(RM_05, ret != E_OK);
+
+	Sequence(9);
+	ret = ReleaseResource(Resource6);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(10);
-	/* \treq TM_22 nmf B1B2E1E2 e Call TerminateTask() while still occuping a
-	 * resource
-	 *
-	 * \result Running task is not terminated. Service returns E_OS_RESOURCE
-	 */
-	ret = TerminateTask();
-	ASSERT(TM_22, ret != E_OS_RESOURCE);
+	ret = ReleaseResource(Resource5);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(11);
-	/* \treq TM_27 nmf B1B2E1E2 e Call ChainTask() while still occuping a
-	 * resource
-	 *
-	 * \result Running task is not terminated. Service returns E_OS_RESOURCE
-	 */
-	ret = ChainTask(Task2);
-	ASSERT(TM_27, ret != E_OS_RESOURCE);
+	ret = ReleaseResource(Resource4);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(12);
+	ret = ReleaseResource(Resource3);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(13);
+	ret = ReleaseResource(Resource2);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(14);
+	ret = ReleaseResource(Resource1);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(15);
 	/*  trigger ISR 2 */
 	TriggerISR2();
 
@@ -172,7 +185,26 @@ TASK(Task1)
 	TriggerISR3();
 #endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
-	Sequence(17);
+	Sequence(18);
+	/* \treq RM_12 nmf B1B2E1E2 e Call ReleaseResource() from a task with a resource
+	 * which is not occupied
+	 *
+	 * \result Service returns E_OS_NOFUNC
+	 */
+	ret = ReleaseResource(Resource1);
+	ASSERT(RM_12, ret != E_OS_NOFUNC);
+	
+	Sequence(19);
+	/* \treq RM_09 nmf B1B2E1E2 e Call ReleaseResource() from a task with an
+	 * invalid resource ID
+	 *
+	 * \result Service returns E_OS_ID
+	 */
+	ret = ReleaseResource(INVALID_RESOURCE);
+	ASSERT(RM_09, ret != E_OS_ID);
+
+	Sequence(20);
+
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
 
@@ -182,76 +214,29 @@ TASK(Task1)
 
 TASK(Task2)
 {
-	StatusType ret;
-	TaskStateType State;
-
-	Sequence(5);
-	/* \treq TM_10 nmf B1B2E1E2 e Call ActivateTask() on ready basic task which
-	 * has reached max. number of activations.
-	 *
-	 * \result Service returns E_OS_LIMIT
-	 */
-	ret = ActivateTask(Task1);
-	ASSERT(TM_10, ret != E_OS_LIMIT);
-
-	Sequence(6);
-	/* \treq TM_15 nmf B1B2E1E2 e Call ActivateTask() on running basic task
-	 * which has reached max. number of activations
-	 *
-	 * \result Service returns E_OS_LIMIT
-	 */
-	ret = ActivateTask(Task2);
-	ASSERT(TM_15, ret != E_OS_LIMIT);
-
-	Sequence(7);
-	/* \treq TM_30 nmf B1B2E1E2 e Call ChainTask() on ready basic task which has
-	 * reached max. number of activations
-	 *
-	 * \result Running task is not terminated. Service returns E_OS_LIMIT
-	 */
-	ret = ChainTask(Task1);
-	ASSERT(TM_30, ret != E_OS_LIMIT);
-
-	Sequence(8);
+	while(1);
 	TerminateTask();
 }
 
 ISR(ISR2)
 {
 	StatusType ret;
-	TaskType TaskID;
-
-	Sequence(13);
-	/* \treq TM_20 nmf B1B2E1E2 e Call TerminateTask() from ISR category 2
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = TerminateTask();
-	ASSERT(TM_20, ret != E_OS_CALLEVEL);
-
-	Sequence(14);
-	/* \treq TM_25 nmf B1B2E1E2 e Call ChainTask() from ISR category 2
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = ChainTask(Task2);
-	ASSERT(TM_25, ret != E_OS_CALLEVEL);
-
-	Sequence(15);
-	/* \treq TM_35 nmf B1B2E1E2 e Call Schedule() from ISR category 2
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = Schedule();
-	ASSERT(TM_35, ret != E_OS_CALLEVEL);
 
 	Sequence(16);
-	/* \treq TM_37 nmf B1B2E1E2 e Call GetTaskID() from ISR category 2
+	/* \treq RM_03 nmf B1B2E1E2 e Call GetResource() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
 	 */
-	ret = GetTaskID(&TaskID);
-	ASSERT(TM_37, ret != E_OS_CALLEVEL);
+	ret = GetResource(Resource1);
+	ASSERT(RM_03, ret != E_OS_CALLEVEL);
+
+	Sequence(17);
+	/* \treq RM_10 nmf B1B2E1E2 e Call ReleaseResource() from ISR category 2
+	 *
+	 * \result Service returns E_OS_CALLEVEL
+	 */
+	ret = ReleaseResource(Resource1);
+	ASSERT(RM_10, ret != E_OS_CALLEVEL);
 }
 
 #if ( ISR_CATEGORY_3 == ENABLE )
@@ -261,36 +246,9 @@ ISR(ISR3)
 
 	EnterISR();
 
-	/* \treq TM_21 nmf B1B2E1E2 e Call TerminateTask() from ISR category 3
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = TerminateTask();
-	ASSERT(TM_21, ret != E_OS_CALLEVEL);
-
-	/* \treq TM_26 nmf B1B2E1E2 e Call ChainTask() from ISR category 3
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = ChainTask(Task2);
-	ASSERT(TM_26, ret != E_OS_CALLEVEL);
-
-	/* \treq TM_36 nmf B1B2E1E2 e Call Schedule() from ISR category 3
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = Schedule();
-	ASSERT(TM_36, ret != E_OS_CALLEVEL);
-
-	/* \treq TM_38 nmf B1B2E1E2 e Call GetTaskID() from ISR category 3
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = GetTaskID();
-	ASSERT(TM_38, ret != E_OS_CALLEVEL);
+	/* ISR3 are not supported by FreeOSEK OS*/
 
 	LeaveISR();
-
 }
 #endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
