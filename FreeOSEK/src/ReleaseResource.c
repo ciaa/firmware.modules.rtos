@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090414 v0.1.6 MaCe bugfix NON_PREEMPTIVE == DISABLE and not ENABLE
  * 20090331 v0.1.5 MaCe add support to NO_RES_SCHEDULER
  * 20090330 v0.1.5 MaCe correct errors done in v0.1.3
  * 20090330 v0.1.4 MaCe add support to NON_PREEMPTIVE systems and add non
@@ -188,7 +189,7 @@ StatusType ReleaseResource
 
 		IntSecure_End();
 
-#if (NON_PREEMPTIVE == ENABLE)
+#if (NON_PREEMPTIVE == DISABLE)
 		/* check if called from a Task Context */
 		if ( GetCallingContext() ==  CONTEXT_TASK )
 		{
@@ -200,7 +201,7 @@ StatusType ReleaseResource
 				(void)Schedule();
 			}
 		}
-#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+#endif /* #if (NON_PREEMPTIVE == DISABLE) */
 
 	}
 
