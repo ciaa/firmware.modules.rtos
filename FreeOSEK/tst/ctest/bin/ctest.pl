@@ -414,10 +414,12 @@ $cfgfile = $ARGV[1];
 if ($ARGV[4] eq "--debug")
 {
 	$debug = 1;
+	$subtestcase = $ARGV[5];
 }
 else
 {
 	$debug = 0;
+	$subtestcase = -1;
 }
 
 readparam($cfgfile);
@@ -455,76 +457,95 @@ foreach $testfn (@tests)
 
 	foreach $config (@configs)
 	{
-		print "Config: $config\n";
-	
-		$error = "";
+		$runthistestcase = 1;
 
-		info("make clean of $test");
-		$outmakeclean = `make clean`;
-		$outmakecleanstatus = $?;
-		info("make clean status: $outmakecleanstatus");
-		logffull("make clean output:\n$outmakeclean");
+		$testcasecount++;
 
-		mkdir("out/gen/etc/");
-
-		$org = "FreeOSEK/tst/ctest/etc/" . $test . ".oil";
-		$dst = "out/gen/etc/" . $test . ".oil";
-		copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
-
-		@replace = GetTestSequencesCon($TESTS, $testfn, $config);
-		foreach $rep (@replace)
+		if($subtestcase>0)
 		{
-			info("Replacing: $rep");
-			@rep = split (/:/,$rep);
-			searchandreplace($dst,@rep[0],@rep[1]);
-		}
-
-		if ($outmakecleanstatus == 0)
-		{
-			info("make generate of $test");
-			$outmakegenerate = `make generate PROJECT=$test`;
-			$outmakegeneratestatus = $?;
-			info("make generate status: $outmakegeneratestatus");
-			logffull("make generate output:\n$outmakegenerate");
-			#print "$outmakegenerate";
-			if ($outmakegeneratestatus == 0)
+			if($subtestcase == $testcasecount)
 			{
-				info("make of $test");
-				$outmake = `make PROJECT=$test`;
-				$outmakestatus = $?;
-				info("make status: $outmakestatus");
-				logffull("make output:\n$outmake");
-				if ($outmakestatus == 0)
-				{
-					$out = $BINDIR . "/" . $test;
-					info("debug of $test");
-					$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
-					info("$GDB $out -x $dbgfile");
-					`rm /dev/mqueue/*`;
-					if($debug == 0)
-					{
-						#$outdbg = `$GDB $out -x $dbgfile`;
-						system("$GDB $out -x $dbgfile");
-					}
-					else
-					{
-						exec("$GDB $out");
-					}
-					`rm /dev/mqueue/*`;
-					$outdbg = "";
-					$outdbgstatus = $?;
-					info("debug status: $outdbgstatus");
-					logffull("debug output:\n$outdbg");
-					if ($outdbgstatus == 0)
-					{
-						results("Test: $test - Config: $config");
-						EvaluateResults();
-					}
-				}
+				$runthistestcase = 1;
 			}
 			else
 			{
-				exit();
+				$runthistestcase = 0;
+			}
+		}
+
+		if ($runthistestcase)
+		{
+			print "Config: $config\n";
+	
+			$error = "";
+
+			info("make clean of $test");
+			$outmakeclean = `make clean`;
+			$outmakecleanstatus = $?;
+			info("make clean status: $outmakecleanstatus");
+			logffull("make clean output:\n$outmakeclean");
+
+			mkdir("out/gen/etc/");
+
+			$org = "FreeOSEK/tst/ctest/etc/" . $test . ".oil";
+			$dst = "out/gen/etc/" . $test . ".oil";
+			copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
+
+			@replace = GetTestSequencesCon($TESTS, $testfn, $config);
+			foreach $rep (@replace)
+			{
+				info("Replacing: $rep");
+				@rep = split (/:/,$rep);
+				searchandreplace($dst,@rep[0],@rep[1]);
+			}
+
+			if ($outmakecleanstatus == 0)
+			{
+				info("make generate of $test");
+				$outmakegenerate = `make generate PROJECT=$test`;
+				$outmakegeneratestatus = $?;
+				info("make generate status: $outmakegeneratestatus");
+				logffull("make generate output:\n$outmakegenerate");
+				#print "$outmakegenerate";
+				if ($outmakegeneratestatus == 0)
+				{
+					info("make of $test");
+					$outmake = `make PROJECT=$test`;
+					$outmakestatus = $?;
+					info("make status: $outmakestatus");
+					logffull("make output:\n$outmake");
+					if ($outmakestatus == 0)
+					{
+						$out = $BINDIR . "/" . $test;
+						info("debug of $test");
+						$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
+						info("$GDB $out -x $dbgfile");
+						`rm /dev/mqueue/*`;
+						if($debug == 0)
+						{
+							#$outdbg = `$GDB $out -x $dbgfile`;
+							system("$GDB $out -x $dbgfile");
+						}
+						else
+						{
+							exec("$GDB $out");
+						}
+						`rm /dev/mqueue/*`;
+						$outdbg = "";
+						$outdbgstatus = $?;
+						info("debug status: $outdbgstatus");
+						logffull("debug output:\n$outdbg");
+						if ($outdbgstatus == 0)
+						{
+							results("Test: $test - Config: $config");
+							EvaluateResults();
+						}
+					}
+				}
+				else
+				{
+					exit();
+				}
 			}
 		}
 	}
