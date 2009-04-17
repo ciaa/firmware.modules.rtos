@@ -303,12 +303,24 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* EM_03 index 55 */
 #endif
+#if (defined ctest_em_03)
+	  ( OK << 0 )			/* EM_04 index 56 */
+#else
 	  ( INIT << 0 )		/* EM_04 index 56 */
+#endif
+#if (defined ctest_em_03)
+	| ( OK << 2 )			/* EM_05 index 57 */
+#else
 	| ( INIT << 2 )		/* EM_05 index 57 */
+#endif
 	| ( INIT << 4 )		/* EM_06 index 58 */
 	| ( INIT << 6 ),		/* EM_07 index 59 */
 	  ( INIT << 0 )		/* EM_08 index 60 */
+#if (defined ctest_em_03)
+	| ( OK << 2 )			/* EM_09 index 61 */
+#else
 	| ( INIT << 2 )		/* EM_09 index 61 */
+#endif
 	| ( INIT << 4 )		/* EM_10 index 62 */
 #if (defined ctest_em_01)
 	| ( OK << 6 ),			/* EM_11 index 63 */
