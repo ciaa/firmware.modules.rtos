@@ -288,9 +288,21 @@ const uint8 TestResultsOk[35] =
 	| ( INIT << 4 )		/* IP_10 index 50 */
 	| ( INIT << 6 ),		/* IP_11 index 51 */
 	  ( INIT << 0 )		/* IP_12 index 52 */
+#if (defined ctest_em_01)
+	| ( OK << 2 )			/* EM_01 index 53 */
+#else
 	| ( INIT << 2 )		/* EM_01 index 53 */
+#endif
+#if (defined ctest_em_01)
+	| ( OK << 4 )			/* EM_02 index 54 */
+#else
 	| ( INIT << 4 )		/* EM_02 index 54 */
+#endif
+#if (defined ctest_em_01)
+	| ( OK << 6 ),			/* EM_03 index 55 */
+#else
 	| ( INIT << 6 ),		/* EM_03 index 55 */
+#endif
 	  ( INIT << 0 )		/* EM_04 index 56 */
 	| ( INIT << 2 )		/* EM_05 index 57 */
 	| ( INIT << 4 )		/* EM_06 index 58 */
@@ -298,19 +310,51 @@ const uint8 TestResultsOk[35] =
 	  ( INIT << 0 )		/* EM_08 index 60 */
 	| ( INIT << 2 )		/* EM_09 index 61 */
 	| ( INIT << 4 )		/* EM_10 index 62 */
+#if (defined ctest_em_01)
+	| ( OK << 6 ),			/* EM_11 index 63 */
+#else
 	| ( INIT << 6 ),		/* EM_11 index 63 */
+#endif
+#if (defined ctest_em_01)
+	  ( OK << 0 )			/* EM_12 index 64 */
+#else
 	  ( INIT << 0 )		/* EM_12 index 64 */
+#endif
 	| ( INIT << 2 )		/* EM_13 index 65 */
 	| ( INIT << 4 )		/* EM_14 index 66 */
+#if (defined ctest_em_01)
+	| ( OK << 6 ),			/* EM_15 index 67 */
+#else
 	| ( INIT << 6 ),		/* EM_15 index 67 */
+#endif
+#if (defined ctest_em_01)
+	  ( OK << 0 )			/* EM_16 index 68 */
+#else
 	  ( INIT << 0 )		/* EM_16 index 68 */
+#endif
+#if (defined ctest_em_01)
+	| ( OK << 2 )			/* EM_17 index 69 */
+#else
 	| ( INIT << 2 )		/* EM_17 index 69 */
+#endif
 	| ( INIT << 4 )		/* EM_18 index 70 */
 	| ( INIT << 6 ),		/* EM_19 index 71 */
 	  ( INIT << 0 )		/* EM_20 index 72 */
+#if (defined ctest_em_01)
+	| ( OK << 2 )			/* EM_21 index 73 */
+#else
 	| ( INIT << 2 )		/* EM_21 index 73 */
+#endif
+#if (defined ctest_em_01)
+	| ( OK << 4 )			/* EM_22 index 74 */
+#else
 	| ( INIT << 4 )		/* EM_22 index 74 */
+#endif
+#if (defined ctest_em_01)
+	| ( OK << 6 ),			/* EM_23 index 75 */
+#else
 	| ( INIT << 6 ),		/* EM_23 index 75 */
+#endif
 	  ( INIT << 0 )		/* EM_24 index 76 */
 	| ( INIT << 2 )		/* EM_25 index 77 */
 	| ( INIT << 4 )		/* EM_26 index 78 */
