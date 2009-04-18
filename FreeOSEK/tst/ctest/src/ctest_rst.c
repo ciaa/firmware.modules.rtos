@@ -518,9 +518,17 @@ const uint8 TestResultsOk[35] =
 	  ( INIT << 0 )		/* AL_34 index 128 */
 	| ( INIT << 2 )		/* AL_35 index 129 */
 	| ( INIT << 4 )		/* AL_36 index 130 */
+#if (defined ctest_eh_02)
+	| ( OK << 6 ),			/* EH_01 index 131 */
+#else
 	| ( INIT << 6 ),		/* EH_01 index 131 */
+#endif
 	  ( INIT << 0 )		/* EH_02 index 132 */
+#if (defined ctest_eh_02)
+	| ( OK << 2 )			/* EH_03 index 133 */
+#else
 	| ( INIT << 2 )		/* EH_03 index 133 */
+#endif
 #if (defined ctest_eh_01)
 	| ( OK << 4 )			/* EH_04 index 134 */
 #else
@@ -536,7 +544,11 @@ const uint8 TestResultsOk[35] =
 #else
 	  ( INIT << 0 )		/* EH_06 index 136 */
 #endif
+#if (defined ctest_eh_02)
+	| ( OK << 2 )			/* EH_07 index 137 */
+#else
 	| ( INIT << 2 )		/* EH_07 index 137 */
+#endif
 	| ( INIT << 4 )		/* EH_08 index 138 */
 	| ( OK << 6 )			/* OTHER index 139 */
 	};

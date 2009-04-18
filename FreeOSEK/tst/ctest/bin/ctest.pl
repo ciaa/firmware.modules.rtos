@@ -535,6 +535,7 @@ foreach $testfn (@tests)
 						$outdbgstatus = $?;
 						info("debug status: $outdbgstatus");
 						logffull("debug output:\n$outdbg");
+						$outdbgstatus = 0;
 						if ($outdbgstatus == 0)
 						{
 							results("Test: $test - Config: $config");
