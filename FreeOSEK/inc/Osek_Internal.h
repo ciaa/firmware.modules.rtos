@@ -228,7 +228,7 @@ extern TaskType RunningTask;
 
 /** \brief Architecture Dependnece Start Os function
  **
- ** This function is called from the StartOs function
+ ** This function is called from the StartOS function
  **/
 extern void StartOs_Arch(void) ATTRIBUTES();
 

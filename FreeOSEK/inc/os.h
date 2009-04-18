@@ -64,6 +64,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090418 v0.1.5 MaCe bugfix correct StartOS and ShutdownOS services names
  * 20090329 v0.1.4 MaCe add RES_SCHEDULER
  * 20090129 v0.1.3 MaCe add OSEK_MEMMAP check
  * 20081214 v0.1.2 AsKa Fix mistaken comments for SetRelAlarm
@@ -301,8 +302,8 @@
 #define OSServiceId_SetAbsAlarm						22
 #define OSServiceId_CancelAlarm						23
 #define OSServiceId_GetActiveApplicationMode		24
-#define OSServiceId_StartOs							25
-#define OSServiceId_ShutdownOs						26
+#define OSServiceId_StartOS							25
+#define OSServiceId_ShutdownOS						26
 
 /** \brief Resource Scheduler */
 #define RES_SCHEDULER									255
@@ -576,7 +577,7 @@ extern StatusType ReleaseResource(ResourceType ResID) ATTRIBUTES();
  ** \param[in] Mode Application Mode
  ** \return never
  **/
-extern void StartOs(AppModeType Mode) ATTRIBUTES();
+extern void StartOS(AppModeType Mode) ATTRIBUTES();
 
 /** \brief Set Event 
  **
@@ -629,13 +630,13 @@ extern StatusType GetEvent(TaskType TaskID, EventMaskRefType Event) ATTRIBUTES()
  **/
 extern StatusType WaitEvent(EventMaskType Mask) ATTRIBUTES();
 
-/** \brief ShutdownOs
+/** \brief ShutdownOS
  **
  ** This api stops the os.
  **
  ** \param[in] Error shutdown error
  **/
-extern void ShutdownOs(StatusType Error) ATTRIBUTES();
+extern void ShutdownOS(StatusType Error) ATTRIBUTES();
 
 /** \brief Get Active Application Mode
  **

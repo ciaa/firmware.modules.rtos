@@ -328,8 +328,8 @@ extern const uint32f SequenceCounterOk;
 /** \brief main function
  **
  ** Project main function. This function is called after the c conformance
- ** initialisation. This function shall call the StartOs in the right
- ** Application Mode. The StartOs API shall never return.
+ ** initialisation. This function shall call the StartOS in the right
+ ** Application Mode. The StartOS API shall never return.
  **
  **/
 int main
@@ -365,6 +365,12 @@ void Sequence
 (
 	uint32f seq
 );
+
+void ConfTestFinish
+(
+	void
+);
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

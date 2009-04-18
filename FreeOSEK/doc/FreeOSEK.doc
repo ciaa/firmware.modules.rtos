@@ -88,8 +88,8 @@
  * 		- \ref FreeOSEK_API_Ref_SetAbsAlarm <br>
  * 		- \ref FreeOSEK_API_Ref_SetEvent <br>
  * 		- \ref FreeOSEK_API_Ref_SetRelAlarm <br>
- * 		- \ref FreeOSEK_API_Ref_ShutdownOs <br>
- * 		- \ref FreeOSEK_API_Ref_StartOs <br>
+ * 		- \ref FreeOSEK_API_Ref_ShutdownOS <br>
+ * 		- \ref FreeOSEK_API_Ref_StartOS <br>
  * 		- \ref FreeOSEK_API_Ref_SuspendAllInterrupts <br>
  * 		- \ref FreeOSEK_API_Ref_SuspendOSInterrupts <br>
  * 		- \ref FreeOSEK_API_Ref_TerminateTask <br>
@@ -220,7 +220,7 @@
  * least one Application Mode has to be defined. For every Application
  * Mode the user can select some tasks and alarms to be started autmaticaly.
  * The user has to take care to select the adequate Application Mode after
- * every reset and call the StartOs OS interfaces indicating the Application
+ * every reset and call the StartOS OS interfaces indicating the Application
  * Mode.
  *
  * \subsection FreeOSEK_Introduction_Events Event Mechanism
@@ -360,10 +360,10 @@
  *			<td>\ref GetActiveApplicationMode</td><td>X</td><td>-</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>-</td>
  *		</tr>
  *		<tr align="center">
- *			<td>\ref StartOs</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+ *			<td>\ref StartOS</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
  *		</tr>
  *    <tr align="center">
- *       <td>\ref ShutdownOs</td><td>X</td><td>-</td><td>X</td><td>X</td><td>-</td><td>-</td><td>X</td><td>-</td><td>-</td>
+ *       <td>\ref ShutdownOS</td><td>X</td><td>-</td><td>X</td><td>X</td><td>-</td><td>-</td><td>X</td><td>-</td><td>-</td>
  *    </tr>
  * </table>
  *
@@ -527,13 +527,13 @@
  *
  * \copydetails SetRelAlarm
  *
- * \subsubsection FreeOSEK_API_Ref_ShutdownOs ShutdownOs Service
+ * \subsubsection FreeOSEK_API_Ref_ShutdownOS ShutdownOS Service
  *
- * \copydetails ShutdownOs
+ * \copydetails ShutdownOS
  *
- * \subsubsection FreeOSEK_API_Ref_StartOs StartOs Service
+ * \subsubsection FreeOSEK_API_Ref_StartOS StartOS Service
  *
- * \copydetails StartOs
+ * \copydetails StartOS
  *
  * \b Example:
  *
@@ -545,8 +545,8 @@
  * 	/* get the actual mode from a user specific function */
  * 	Mode = GetMode();
  * 	/* start the OS indicating the mode */
- * 	StartOs(Mode);
- * 	/* StartOs shall never return but in case we put a while(1); */
+ * 	StartOS(Mode);
+ * 	/* StartOS shall never return but in case we put a while(1); */
  * 	while(1);
  * }
  * \endcode

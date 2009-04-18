@@ -87,7 +87,7 @@ int main
 )
 {
 	/* start OS in AppMode 1 */
-	StartOs(AppMode1);
+	StartOS(AppMode1);
 
 	/* shall never return */
 	while(1);
@@ -140,8 +140,8 @@ TASK(Task1)
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
 
-	/* ShutdownOs without any error */
-	ShutdownOs(E_OK);
+	/* finish the conformance test */
+	ConfTestFinish();
 }
 
 TASK(Task2)

@@ -1,5 +1,5 @@
 run
-break ShutdownOs
+break ConfTestFinish
 cont
 dump value out/dbg/TestResults.bin TestResults
 dump value out/dbg/TestResultsOk.bin TestResultsOk

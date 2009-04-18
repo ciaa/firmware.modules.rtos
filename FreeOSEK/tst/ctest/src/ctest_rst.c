@@ -614,6 +614,14 @@ void Sequence
    }
 }
 
+void ConfTestFinish
+(
+	void
+)
+{
+	while(1);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

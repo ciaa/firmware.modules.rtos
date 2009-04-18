@@ -36,11 +36,11 @@
  *
  */
 
-/** \brief FreeOSEK ShutdownOs Implementation File
+/** \brief FreeOSEK ShutdownOS Implementation File
  **
- ** This file implements the ShutdownOs API
+ ** This file implements the ShutdownOS API
  **
- ** \file ShutdownOs.c
+ ** \file ShutdownOS.c
  **
  **/
 
@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090418 v0.1.5 MaCe bugfix function name to ShutdownOS
  * 20090417 v0.1.4 MaCe upadte license
  * 20090408 v0.1.3 MaCe add ShutdownOs_Arch service call
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -87,7 +88,7 @@
 #include "MemMap.h"
 #endif
 
-void ShutdownOs
+void ShutdownOS
 (
 	StatusType Error
 )

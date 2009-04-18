@@ -21,9 +21,9 @@ OPENOSEK_OBJ +=	ActivateTask.o							\
 						SetEvent.o								\
 						SetRelAlarm.o							\
 						SetAbsAlarm.o							\
-						StartOs.o								\
+						StartOS.o								\
 						Schedule.o								\
-						ShutdownOs.o							\
+						ShutdownOS.o							\
 						WaitEvent.o								\
 						GetAlarmBase.o							\
 						GetAlarm.o								\
