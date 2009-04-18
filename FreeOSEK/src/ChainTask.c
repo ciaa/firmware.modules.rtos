@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090418 v0.1.5 MaCe add PostTaskHook handling
  * 20090406 v0.1.4 MaCe add support to RES_SCHEDULER
  * 20090330 v0.1.3 MaCe add set actual context to SYS when chaining task
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -142,6 +143,10 @@ StatusType ChainTask
 	}
 	else
 	{
+
+#if (HOOK_POSTTASKHOOK == ENABLE)
+		PostTaskHook();
+#endif /* #if (HOOK_POSTTASKHOOK == ENABLE) */
 		
 		IntSecure_Start();
 

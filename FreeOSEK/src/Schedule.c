@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090418 v0.1.5 MaCe add Pre/Post TaskHook handling
  * 20090417 v0.1.4 MaCe update license
  * 20090330 v0.1.3 MaCe use new CallTask macro and add use of SetActualContext
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -156,6 +157,10 @@ StatusType Schedule
 			/* set actual context task */
 			SetActualContext(CONTEXT_TASK);
 
+#if (HOOK_PRETASKHOOK == ENABLE)
+			PreTaskHook();
+#endif /* #if (HOOK_PRETASKHOOK == ENABLE) */
+
 			/* jmp tp the next task */
 			JmpTask(nexttask);
 		}
@@ -167,6 +172,11 @@ StatusType Schedule
 			 ** the priority of the calling task is ready */
 			if ( TasksConst[nexttask].StaticPriority > TasksVar[actualtask].ActualPriority )
 			{
+
+#if (HOOK_POSTTASKHOOK == ENABLE)
+				PostTaskHook();
+#endif /* #if (HOOK_POSTTASKHOOK == ENABLE) */
+
 				/* \req OSEK_SYS_3.4.1.1 the internal resource of the task shall be
 				 ** released */
 
@@ -179,6 +189,10 @@ StatusType Schedule
 
 				/* set as running task */
 				SetRunningTask(nexttask);
+
+#if (HOOK_PRETASKHOOK == ENABLE)
+				PreTaskHook();
+#endif /* #if (HOOK_PRETASKHOOK == ENABLE) */
 
 				/* \req OSEK_SYS_3.4.1.3 its context is saved */
 				/* \req OSEK_SYS_3.4.1.4 and the higher-priority task is executed */

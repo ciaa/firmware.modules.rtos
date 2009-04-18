@@ -60,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090418 v0.1.7 MaCe add PostTaskHook handling
  * 20090417 v0.1.6 MaCe update license
  * 20090406 v0.1.5 MaCe add support to RES_SCHEDULER
  * 20090330 v0.1.4 MaCe set system context when terminate task
@@ -132,6 +133,10 @@ StatusType TerminateTask
 	else
 #endif /* #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) */
 	{
+
+#if (HOOK_POSTTASKHOOK == ENABLE)
+		PostTaskHook();
+#endif /* #if (HOOK_POSTTASKHOOK == ENABLE) */
 
 		IntSecure_Start();
 
