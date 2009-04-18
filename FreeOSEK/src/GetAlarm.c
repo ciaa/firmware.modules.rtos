@@ -60,6 +60,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090418 v0.1.3 MaCe bugfix E_OS_NOFUNC can be always returned, not only in
+ *						 extended mode.
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe initial version
@@ -106,23 +108,24 @@ StatusType GetAlarm
 		 ** are E_OS_NOFUNC, E_OS_ID */
 		ret = E_OS_ID;
 	}
+	else
+#endif /* #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) */
 	/* check if the alarm is running */
-	else if(AlarmsVar[AlarmID].AlarmState == 0)
+	if(AlarmsVar[AlarmID].AlarmState == 0)
 	{
 		/* \req OSEK_SYS_3.20.3-2/2 Extra possible return values in Extended mode
 		 ** are E_OS_NOFUNC, E_OS_ID */
 		ret = E_OS_NOFUNC;
 	}
 	else
-#endif
+
 	{
 		/* \req OSEK_SYS_3.20.1 The system service GetAlarm shall return the
 		 ** relative value in ticks before the alarm AlarmID expires */
 		*Tick = AlarmsVar[AlarmID].AlarmTime;
 	}
 
-#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
-		(HOOK_ERRORHOOK == ENABLE) )
+#if (HOOK_ERRORHOOK == ENABLE)
 	/* \req OSEK_ERR_1.3-12/xx The ErrorHook hook routine shall be called if a
 	 ** system service returns a StatusType value not equal to E_OK.*/
 	/* \req OSEK_ERR_1.3.1-12/xx The hook routine ErrorHook is not called if a
@@ -136,7 +139,7 @@ StatusType GetAlarm
       SetError_Msg("GetAlarm returns != than E_OK");
       SetError_ErrorHook();
    }
-#endif
+#endif /* #if (HOOK_ERRORHOOK == ENABLE) */
 	
 	return ret;
 }
