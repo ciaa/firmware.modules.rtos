@@ -106,6 +106,8 @@ TASK(Task1)
 			/* increment task call counter */
 			count++;
 
+			ASSERT(OTHER, 0);
+
 			Sequence(0);
 			/* \treq TM_07 mf B1E2 s,e Call ActivateTask() from preemptive
 			 * task on suspended basic task which has equal priority as running

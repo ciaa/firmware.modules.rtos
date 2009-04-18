@@ -108,6 +108,7 @@ TASK(Task1)
 
 			Sequence(0);
 			ret = ActivateTask(Task2);
+			ASSERT(OTHER, ret != E_OK);
 
 			Sequence(1);
 			/* \treq TM_12 nm B1B2 s,e Call ActivateTask() from non-preemptive
@@ -121,7 +122,8 @@ TASK(Task1)
 			ASSERT(TM_12, ret != E_OK);
 
 			Sequence(2);
-			Schedule();
+			ret = Schedule();
+			ASSERT(OTHER, ret != E_OK);
 
 			Sequence(5);
 			/* \treq TM_17 nm B1B2 s,e Call ActivateTask() from non-preemptive
@@ -136,6 +138,7 @@ TASK(Task1)
 
 			Sequence(6);
 			ret = ActivateTask(Task3);
+			ASSERT(OTHER, ret != E_OK);
 
 			Sequence(7);
 			/* \treq TM_32 nm B1B2 s,e Call ChainTask() from non-preemptive
@@ -155,6 +158,7 @@ TASK(Task1)
 			count++;
 			Sequence(10);
 			ret = ActivateTask(Task1);
+			ASSERT(OTHER, ret != E_OK);
 
 			Sequence(11);
 			TerminateTask();

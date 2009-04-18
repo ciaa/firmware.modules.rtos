@@ -129,11 +129,13 @@ TASK(Task1)
 		ASSERT(TM_41, ret != E_OK);
 
 		Sequence(3);
-		ActivateTask(Task2);
+		ret = ActivateTask(Task2);
+		ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
 		/* force scheduling */
-		Schedule();
+		ret = Schedule();
+		ASSERT(OTHER, ret != E_OK);
 #endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
 
 		Sequence(6);

@@ -110,7 +110,7 @@ TASK(Task1)
 	ret = ActivateTask(Task3);
 	ASSERT(TM_07, ret != E_OK);
 	
-	Sequence(6);
+	Sequence(7);
 
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
@@ -121,7 +121,15 @@ TASK(Task1)
 
 TASK(Task2)
 {
+	StatusType ret;
+	EventMaskType event;
+
 	Sequence(5);
+	ret = GetEvent(Task2, &event);
+	ASSERT(OTHER, ret != E_OK);
+	ASSERT(OTHER, event != 0);
+
+	Sequence(6);
 	TerminateTask();
 }
 
@@ -132,8 +140,8 @@ TASK(Task3)
 
 	Sequence(1);
 	ret = GetEvent(Task3, &event);
-	ASSERT(TM_07, ret != E_OK);
-	ASSERT(TM_07, event != 0);
+	ASSERT(OTHER, ret != E_OK);
+	ASSERT(OTHER, event != 0);
 
 	Sequence(2);
 	/* \treq TM_08 mf E1E2 se Call ActivateTask() from preemptive task on

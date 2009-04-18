@@ -95,7 +95,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* TM_04 index 03*/
 #endif
-	  ( INIT << 0 )		/* TM_05 index 04 */
+#if (defined ctest_tm_08)
+	  ( OK << 0 )			/* TM_05 index 04 */
+#else
+	  ( INIT << 0 )		/* TM_05 index 04*/
+#endif
 #if (defined ctest_tm_04)
 	| ( OK << 2 )			/* TM_06 index 05 */
 #else

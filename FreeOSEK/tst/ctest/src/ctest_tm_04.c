@@ -112,16 +112,17 @@ TASK(Task1)
 
 	Sequence(1);
 	ret = GetEvent(Task1, &event);
-	ASSERT(TM_06, ret != E_OK);
-	ASSERT(TM_06, event != 0);
+	ASSERT(OTHER, ret != E_OK);
+	ASSERT(OTHER, event != 0);
 
 	Sequence(2);
 	ret = GetEvent(Task2, &event);
-	ASSERT(TM_06, ret != E_OK);
-	ASSERT(TM_06, event != 0);
+	ASSERT(OTHER, ret != E_OK);
+	ASSERT(OTHER, event != 0);
 	
 	Sequence(3);
-	Schedule();
+	ret = Schedule();
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(5);
 

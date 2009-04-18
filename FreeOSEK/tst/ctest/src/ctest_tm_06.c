@@ -102,6 +102,7 @@ TASK(Task1)
 	
 	Sequence(0);
 	ret = ActivateTask(Task2);
+	ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
 	/* force scheduling */
@@ -110,6 +111,8 @@ TASK(Task1)
 	
 	Sequence(4);
 	ret = GetTaskState(Task2, &state);
+	ASSERT(OTHER, ret != E_OK);
+	ASSERT(OTHER, state != WAITING);
 
 	Sequence(5);
 	/* \treq TM_19 nmf E1E2 e Call ActivateTask() on waiting extended task
@@ -128,7 +131,8 @@ TASK(Task1)
 	ASSERT(TM_33,ret != E_OS_LIMIT);
 
 	Sequence(7);
-	ret = SetEvent(Task2,Event2);	
+	ret = SetEvent(Task2,Event2);
+	ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
 	/* force scheduling */
@@ -165,7 +169,8 @@ TASK(Task2)
 	ASSERT(TM_16,ret != E_OS_LIMIT);
 
 	Sequence(3);
-	WaitEvent(Event2);
+	ret = WaitEvent(Event2);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(8);
 	/* \treq TM_31 nmf E1E2 e Call ChainTask() on ready extended task

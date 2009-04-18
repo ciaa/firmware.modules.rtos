@@ -99,6 +99,8 @@ TASK(Task1)
 {
 	StatusType ret;
 
+	ASSERT(OTHER, 0);
+
 	Sequence(0);
 	/* \treq TM_03 mf B1B2E1E2 se Call ActivateTask() from preemptive
  	 * task on suspend basic task which has higher priority than running

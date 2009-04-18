@@ -134,7 +134,8 @@ TASK(Task1)
 
 	/* activate task 2 */
 	Sequence(4);
-	ActivateTask(Task2);
+	ret = ActivateTask(Task2);
+	ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
 	/* force scheduling */
@@ -143,7 +144,8 @@ TASK(Task1)
 
 	Sequence(9);	
 	/* get scheduler resource */
-	GetResource(RES_SCHEDULER);
+	ret = GetResource(RES_SCHEDULER);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(10);
 	/* \treq TM_22 nmf B1B2E1E2 e Call TerminateTask() while still occuping a
@@ -164,6 +166,10 @@ TASK(Task1)
 	ASSERT(TM_27, ret != E_OS_RESOURCE);
 
 	Sequence(12);
+	ret = ReleaseResource(RES_SCHEDULER);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(13);
 	/*  trigger ISR 2 */
 	TriggerISR2();
 
@@ -172,7 +178,7 @@ TASK(Task1)
 	TriggerISR3();
 #endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
-	Sequence(17);
+	Sequence(18);
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
 
@@ -183,7 +189,6 @@ TASK(Task1)
 TASK(Task2)
 {
 	StatusType ret;
-	TaskStateType State;
 
 	Sequence(5);
 	/* \treq TM_10 nmf B1B2E1E2 e Call ActivateTask() on ready basic task which
@@ -221,7 +226,7 @@ ISR(ISR2)
 	StatusType ret;
 	TaskType TaskID;
 
-	Sequence(13);
+	Sequence(14);
 	/* \treq TM_20 nmf B1B2E1E2 e Call TerminateTask() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -229,7 +234,7 @@ ISR(ISR2)
 	ret = TerminateTask();
 	ASSERT(TM_20, ret != E_OS_CALLEVEL);
 
-	Sequence(14);
+	Sequence(15);
 	/* \treq TM_25 nmf B1B2E1E2 e Call ChainTask() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -237,7 +242,7 @@ ISR(ISR2)
 	ret = ChainTask(Task2);
 	ASSERT(TM_25, ret != E_OS_CALLEVEL);
 
-	Sequence(15);
+	Sequence(16);
 	/* \treq TM_35 nmf B1B2E1E2 e Call Schedule() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
@@ -245,7 +250,7 @@ ISR(ISR2)
 	ret = Schedule();
 	ASSERT(TM_35, ret != E_OS_CALLEVEL);
 
-	Sequence(16);
+	Sequence(17);
 	/* \treq TM_37 nmf B1B2E1E2 e Call GetTaskID() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
