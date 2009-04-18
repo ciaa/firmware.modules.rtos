@@ -114,7 +114,7 @@ int main
 	void
 )
 {
-	StartOs(AppMode1);
+	StartOS(AppMode1);
 
 	/* shall never return */
 	while(1);
@@ -161,8 +161,8 @@ TEST(OS_0001)
 	ASSERT(OSServiceId_SetAbsAlarm					!= 22);
 	ASSERT(OSServiceId_CancelAlarm					!= 23);
 	ASSERT(OSServiceId_GetActiveApplicationMode	!= 24);
-	ASSERT(OSServiceId_StartOs							!= 25);
-	ASSERT(OSServiceId_ShutdownOs						!= 26);
+	ASSERT(OSServiceId_StartOS							!= 25);
+	ASSERT(OSServiceId_ShutdownOS						!= 26);
 
 	return TS_OK;
 }
@@ -827,7 +827,7 @@ TASK(InitTask)
 {
 	TS_RunTestSuite();
 
-	ShutdownOs(0);
+	ShutdownOS(0);
 	TerminateTask();
 }
 
