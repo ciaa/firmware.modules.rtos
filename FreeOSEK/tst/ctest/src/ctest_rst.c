@@ -521,9 +521,21 @@ const uint8 TestResultsOk[35] =
 	| ( INIT << 6 ),		/* EH_01 index 131 */
 	  ( INIT << 0 )		/* EH_02 index 132 */
 	| ( INIT << 2 )		/* EH_03 index 133 */
+#if (defined ctest_eh_01)
+	| ( OK << 4 )			/* EH_04 index 134 */
+#else
 	| ( INIT << 4 )		/* EH_04 index 134 */
+#endif
+#if (defined ctest_eh_01)
+	| ( OK << 6 ),			/* EH_05 index 135 */
+#else
 	| ( INIT << 6 ),		/* EH_05 index 135 */
+#endif
+#if (defined ctest_eh_01)
+	  ( OK << 0 )			/* EH_06 index 136 */
+#else
 	  ( INIT << 0 )		/* EH_06 index 136 */
+#endif
 	| ( INIT << 2 )		/* EH_07 index 137 */
 	| ( INIT << 4 )		/* EH_08 index 138 */
 	| ( OK << 6 )			/* OTHER index 139 */
