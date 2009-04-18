@@ -81,8 +81,8 @@
 /** \brief main function
  **
  ** Project main function. This function is called after the c conformance
- ** initialisation. This function shall call the StartOs in the right
- ** Application Mode. The StartOs API shall never return.
+ ** initialisation. This function shall call the StartOS in the right
+ ** Application Mode. The StartOS API shall never return.
  **
  **/
 int main
@@ -90,7 +90,7 @@ int main
 	void
 )
 {
-	StartOs(AppMode1);
+	StartOS(AppMode1);
 
 	/* shall never return */
 	while(1);
@@ -102,7 +102,7 @@ void ErrorHook(void)
 {
 	printf("ErrorHook was called\n");
 	printf("Service: %d, P1: %d, P2: %d, P3: %d, RET: %d\n", OSErrorGetServiceId(), OSErrorGetParam1(), OSErrorGetParam2(), OSErrorGetParam3(), OSErrorGetRet());
-	ShutdownOs(0);
+	ShutdownOS(0);
 }
 
 ISR(CanRx)
