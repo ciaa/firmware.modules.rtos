@@ -531,6 +531,7 @@ foreach $testfn (@tests)
 							exec("$GDB $out");
 						}
 						`rm /dev/mqueue/*`;
+						`killall $test`;
 						$outdbg = "";
 						$outdbgstatus = $?;
 						info("debug status: $outdbgstatus");

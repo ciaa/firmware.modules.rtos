@@ -174,8 +174,8 @@ TASK(Task8)
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
 
-	/* ShutdownOS without any error */
-	ShutdownOS(E_OK);
+	/* finish the conformance test */
+	ConfTestFinish();
 }
 
 /** @} doxygen end group definition */

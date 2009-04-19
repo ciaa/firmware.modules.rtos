@@ -101,7 +101,7 @@ TASK(Task1)
 
 	Sequence(2);
 	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret =! E_OK);
+	ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
 	/* force scheduling */
@@ -127,7 +127,7 @@ TASK(Task2)
 
 	Sequence(1);
 	ret = WaitEvent(Event2);
-	ASSERT(OTHER, ret =! E_OK);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(7);	
 	TerminateTask();
@@ -139,7 +139,7 @@ TASK(Task3)
 
 	Sequence(3);
 	ret = ActivateTask(Task4);
-	ASSERT(OTHER, ret =! E_OK);
+	ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task3 == CT_NON_PREEMPTIVE)
 	/* force scheduling */
@@ -156,7 +156,7 @@ TASK(Task4)
 
 	Sequence(4);
 	ret = SetEvent(Task2, Event2);
-	ASSERT(OTHER, ret =! E_OK);
+	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(5);
 	TerminateTask();
