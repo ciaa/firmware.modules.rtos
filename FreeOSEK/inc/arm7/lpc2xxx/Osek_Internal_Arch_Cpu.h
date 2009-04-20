@@ -164,6 +164,8 @@
 #error CPU is not defined
 #elif (CPU == lpc2468)
 #include "lpc2468.h"
+#elif (CPU == lpc2378)
+#include "lpc23xx.h"
 #else
 #error not defined CPU
 #endif
@@ -172,6 +174,11 @@
 #if (CPU == lpc2468)
 /** \brief Size of the VIC entries */
 #define VICVectAddrSIZE	32
+#elif (CPU == lpc2378)
+/** TODO check this */
+#define VICVectAddrSIZE	16
+#else
+#error VICVectAddrSIZE not defined
 #endif
 
 /*==================[typedef]================================================*/
