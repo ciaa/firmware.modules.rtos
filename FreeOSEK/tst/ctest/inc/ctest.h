@@ -243,6 +243,12 @@
  **/
 #define TriggerISR2()
 
+/** \brief Increment Alarm Counter Macro
+ **
+ ** This macro shall implement a mechanismus increment the alarm counter
+ **/
+#define IncAlarmCounter()
+
 #if (ISR_CATEGORY_3 == ENABLE)
 /** \brief ISR3 Trigger Macro
  **
