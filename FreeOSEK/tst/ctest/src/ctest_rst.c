@@ -627,7 +627,11 @@ const uint8 TestResultsOk[35] =
 	| ( INIT << 4 )		/* AL_28 index 122 */
 #endif
 	| ( INIT << 6 ),		/* AL_29 index 123 */
+#if (defined ctest_al_04)
+	  ( OK <<  0 )			/* AL_30 index 124 */
+#else
 	  ( INIT << 0 )		/* AL_30 index 124 */
+#endif
 	| ( INIT << 2 )		/* AL_31 index 125 */
 	| ( INIT << 4 )		/* AL_32 index 126 */
 	| ( INIT << 6 ),		/* AL_33 index 127 */
