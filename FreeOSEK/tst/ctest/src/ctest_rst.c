@@ -511,7 +511,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* AL_05 index 99 */
 #endif
+#if (defined ctest_al_03)
+	  ( OK << 0 )			/* AL_06 index 100 */
+#else
 	  ( INIT << 0 )		/* AL_06 index 100 */
+#endif
 #if (defined ctest_al_01)
 	| ( OK << 2 )			/* AL_07 index 101 */
 #else
@@ -522,7 +526,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 4 )		/* AL_08 index 102 */
 #endif
+#if (defined ctest_al_03)
+	| ( OK << 6 ),			/* AL_09 index 103 */
+#else
 	| ( INIT << 6 ),		/* AL_09 index 103 */
+#endif
 #if (defined ctest_al_01)
 	  ( OK <<  0 )			/* AL_10 index 104 */
 #else
@@ -548,7 +556,11 @@ const uint8 TestResultsOk[35] =
 #else
 	  ( INIT << 0 )		/* AL_14 index 108 */
 #endif
+#if (defined ctest_al_03)
+	| ( OK << 2 )			/* AL_15 index 109 */
+#else
 	| ( INIT << 2 )		/* AL_15 index 109 */
+#endif
 #if (defined ctest_al_01)
 	| ( OK << 4 )			/* AL_16 index 110 */
 #else
@@ -559,7 +571,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 6 ),		/* AL_17 index 111 */
 #endif
+#if (defined ctest_al_03)
+	  ( OK <<  0 )			/* AL_18 index 112 */
+#else
 	  ( INIT << 0 )		/* AL_18 index 112 */
+#endif
 #if (defined ctest_al_01)
 	| ( OK << 2 )			/* AL_19 index 113 */
 #else
@@ -585,7 +601,11 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 2 )		/* AL_23 index 117 */
 #endif
+#if (defined ctest_al_03)
+	| ( OK <<  4 )			/* AL_24 index 118 */
+#else
 	| ( INIT << 4 )		/* AL_24 index 118 */
+#endif
 #if (defined ctest_al_01)
 	| ( OK << 6 ),			/* AL_25 index 119 */
 #else
@@ -601,13 +621,21 @@ const uint8 TestResultsOk[35] =
 #else
 	| ( INIT << 2 )		/* AL_27 index 121 */
 #endif
+#if (defined ctest_al_03)
+	| ( OK <<  4 )			/* AL_28 index 122 */
+#else
 	| ( INIT << 4 )		/* AL_28 index 122 */
+#endif
 	| ( INIT << 6 ),		/* AL_29 index 123 */
 	  ( INIT << 0 )		/* AL_30 index 124 */
 	| ( INIT << 2 )		/* AL_31 index 125 */
 	| ( INIT << 4 )		/* AL_32 index 126 */
 	| ( INIT << 6 ),		/* AL_33 index 127 */
+#if ( (defined ctest_al_03) && (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE) )
+	  ( OK <<  0 )			/* AL_34 index 128 */
+#else
 	  ( INIT << 0 )		/* AL_34 index 128 */
+#endif
 	| ( INIT << 2 )		/* AL_35 index 129 */
 	| ( INIT << 4 )		/* AL_36 index 130 */
 #if (defined ctest_eh_02)

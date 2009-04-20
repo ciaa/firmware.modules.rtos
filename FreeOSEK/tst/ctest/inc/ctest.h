@@ -243,9 +243,15 @@
  **/
 #define TriggerISR2()
 
+/** \brief Initialise Alarm Counter Macro
+ **
+ ** This macro shall implement a mechanismus to initialise the alarm counter
+ **/
+#define InitAlarmCounter()
+
 /** \brief Increment Alarm Counter Macro
  **
- ** This macro shall implement a mechanismus increment the alarm counter
+ ** This macro shall implement a mechanismus to increment the alarm counter
  **/
 #define IncAlarmCounter()
 
