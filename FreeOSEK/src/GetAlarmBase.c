@@ -60,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090420 v0.1.4 MaCe correct AlarmBaseType members to lower cases
  * 20090417 v0.1.3 MaCe update license
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
@@ -119,9 +120,9 @@ StatusType GetAlarmBase
 		/* \req OSEK_SYS_3.19.1 The system service GetAlarmBase reads the alarm base
 		 ** characteristics. The return value Info is a structure in which the
 		 ** information of data type AlarmBaseType is stored */
-		Info->MaxAllowedValue = CountersConst[counter].MaxAllowedValue;
-		Info->TicksPerBase = CountersConst[counter].TicksPerBase;
-		Info->MinCycle = CountersConst[counter].MinCycle;
+		Info->maxallowedvalue = CountersConst[counter].MaxAllowedValue;
+		Info->ticksperbase = CountersConst[counter].TicksPerBase;
+		Info->mincycle = CountersConst[counter].MinCycle;
 	}
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \

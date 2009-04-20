@@ -64,6 +64,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090420 v0.1.6 MaCe correct AlarmBaseType members to lower cases
  * 20090418 v0.1.5 MaCe bugfix correct StartOS and ShutdownOS services names
  * 20090329 v0.1.4 MaCe add RES_SCHEDULER
  * 20090129 v0.1.3 MaCe add OSEK_MEMMAP check
@@ -388,9 +389,9 @@ typedef TickType* TickRefType;
  ** This type is used to represent references to AlarmBase
  **/
 typedef struct {
-	TickType MaxAllowedValue;
-	TickType TicksPerBase;
-	TickType MinCycle;
+	TickType maxallowedvalue;
+	TickType ticksperbase;
+	TickType mincycle;
 } AlarmBaseType;
 
 /** \brief Type definition of AlarmBaseRefType
