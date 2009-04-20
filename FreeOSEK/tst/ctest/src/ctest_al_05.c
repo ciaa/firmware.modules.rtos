@@ -36,9 +36,9 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Alarms, Test Sequence 4
+/** \brief Free OSEK Conformance Test for the Alarms, Test Sequence 5
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_al_04.c
+ ** \file FreeOSEK/tst/ctest/src/ctest_al_05.c
  **/
 
 /** \addtogroup FreeOSEK
@@ -47,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_AL Alarms
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL_04 Test Sequence 4
+/** \addtogroup FreeOSEK_CT_AL_05 Test Sequence 5
  ** @{ */
 
 
@@ -65,7 +65,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "os.h"				/* include os header file */
-#include "ctest_al_04.h"	/* include test header file */
+#include "ctest_al_05.h"	/* include test header file */
 #include "ctest.h"			/* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
@@ -99,46 +99,90 @@ int main
 TASK(Task1)
 {
 	StatusType ret;
-	TaskStateType TaskState;
 
 	Sequence(0);
+
 	ret = SetRelAlarm(Alarm1, 1, 0);
 	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(1);
-	/* \treq AL_30 nm B1B2E1E2 se Expiration of alarm wich activates a task
-	 * while no tasks are currently running
+	/* \treq AL_31 mf B1B2E1E2 se Expiration of alarm wich activates a task
+	 * with higher priority than running task while running task is preemptive
 	 *
-	 * \result Task is activated
+	 * \result Task is activated. Task with highest priority is executed
 	 */
 	IncAlarmCounter();
-	ASSERT(AL_30, 0);
-
-	Sequence(2);
-	ret = GetTaskState(Task2, &TaskState);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, TaskState != READY);
+	ASSERT(AL_31, 0);
 
 	Sequence(3);
-	TerminateTask();
+	ChainTask(Task3);
 }
 
 TASK(Task2)
 {
-	Sequence(4);
-	
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+	static uint8 count = 0;
 
-	/* finish the conformance test */
-	ConfTestFinish();
+	switch (count)
+	{
+		case 0:
+			/* increment call count */
+			count++;
+
+			Sequence(2);
+			TerminateTask();
+		case 1:
+			/* increment call count */
+			count++;
+
+			Sequence(8);
+	
+			/* evaluate conformance tests */
+			ConfTestEvaluation();
+
+			/* finish the conformance test */
+			ConfTestFinish();
+			break;
+		default:
+			while(1);
+			break;
+
+	}
+}
+
+TASK(Task3)
+{
+	StatusType ret;
+	TaskStateType TaskState;
+	
+
+	Sequence(4);
+	ret = SetRelAlarm(Alarm1, 1, 0);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(5);
+	/* \treq AL_32 mf B1B2E1E2 se Expiration of alarm wich activates a task
+	 * with lower priority than running task while running task is preemptive
+	 *
+	 * \result Task is activated. No preemption of running task
+	 */
+	IncAlarmCounter();
+	ASSERT(AL_31, 0);
+
+	Sequence(6);
+	ret = GetTaskState(Task2, &TaskState);
+	ASSERT(OTHER, ret != E_OK);
+	ASSERT(OTHER, TaskState != READY);
+
+	Sequence(7);
+	TerminateTask();
 }
 
 /* This task is not used, only to change the scheduling police */
-TASK(Task3)
+TASK(Task4)
 {
 	TerminateTask();
 }
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

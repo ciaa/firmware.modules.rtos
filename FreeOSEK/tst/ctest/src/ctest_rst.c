@@ -632,8 +632,16 @@ const uint8 TestResultsOk[35] =
 #else
 	  ( INIT << 0 )		/* AL_30 index 124 */
 #endif
+#if (defined ctest_al_05)
+	| ( OK <<  2 )			/* AL_31 index 125 */
+#else
 	| ( INIT << 2 )		/* AL_31 index 125 */
+#endif
+#if (defined ctest_al_05)
+	| ( OK <<  4 )			/* AL_32 index 126 */
+#else
 	| ( INIT << 4 )		/* AL_32 index 126 */
+#endif
 	| ( INIT << 6 ),		/* AL_33 index 127 */
 #if ( (defined ctest_al_03) && (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE) )
 	  ( OK <<  0 )			/* AL_34 index 128 */

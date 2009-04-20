@@ -36,9 +36,11 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Alarms, Test Sequence 4
+#ifndef _CTEST_AL_05_H_
+#define _CTEST_AL_05_H_
+/** \brief Free OSEK Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_al_04.c
+ ** \file FreeOSEK/tst/ctest/inc/ctest_al_05.h
  **/
 
 /** \addtogroup FreeOSEK
@@ -47,102 +49,42 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_AL Alarms
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL_04 Test Sequence 4
+/** \addtogroup FreeOSEK_CT_AL_05 Test Sequence 5
  ** @{ */
-
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
+ * MaCe			 Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090420 v0.1.0 MaCe initial version based on old moduletest
- */
+ * 20090420 v0.1.0 MaCe	initial version based on module tests
+ */  
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_al_04.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "Types.h"
+#include "ctest.h"
 
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
+/** \brief Maximal Sequence
+ **
+ ** Defines the total amount of sequence points in this test sequence
+ **/
+#define MAX_SEQUENCE 8
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal data definition]===============================*/
-
-/*==================[external data definition]===============================*/
-const uint32f SequenceCounterOk = MAX_SEQUENCE;
-
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-int main
-(
-	void
-)
-{
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
-
-	/* shall never return */
-	while(1);
-
-	return 0;
-}
-
-TASK(Task1)
-{
-	StatusType ret;
-	TaskStateType TaskState;
-
-	Sequence(0);
-	ret = SetRelAlarm(Alarm1, 1, 0);
-	ASSERT(OTHER, ret != E_OK);
-
-	Sequence(1);
-	/* \treq AL_30 nm B1B2E1E2 se Expiration of alarm wich activates a task
-	 * while no tasks are currently running
-	 *
-	 * \result Task is activated
-	 */
-	IncAlarmCounter();
-	ASSERT(AL_30, 0);
-
-	Sequence(2);
-	ret = GetTaskState(Task2, &TaskState);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, TaskState != READY);
-
-	Sequence(3);
-	TerminateTask();
-}
-
-TASK(Task2)
-{
-	Sequence(4);
-	
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
-
-	/* finish the conformance test */
-	ConfTestFinish();
-}
-
-/* This task is not used, only to change the scheduling police */
-TASK(Task3)
-{
-	TerminateTask();
-}
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _CTEST_AL_05_H_ */
 
