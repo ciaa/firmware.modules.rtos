@@ -60,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090424 v0.1.3 MaCe correct the calculation of the alarm time
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe initial version
@@ -137,7 +138,7 @@ StatusType SetAbsAlarm
 		AlarmsVar[AlarmID].AlarmState = 1;
 
 		/* set abs alarm */
-		AlarmsVar[AlarmID].AlarmTime = GetCounter(AlarmsConst[AlarmID].Counter) - Start;
+		AlarmsVar[AlarmID].AlarmTime = GetCounter(AlarmsConst[AlarmID].Counter) + Start;
 		AlarmsVar[AlarmID].AlarmCycleTime = Cycle;
 
 		IntSecure_End();
