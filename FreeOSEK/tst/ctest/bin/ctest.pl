@@ -214,6 +214,7 @@ sub searchandreplace
 
 sub EvaluateResults
 {
+	my $status = "OK";
 	my $failed = 0;
 	my $failedtotal = 0;
 
@@ -241,8 +242,9 @@ sub EvaluateResults
 		$failed = 1;
 		$failedtotal = 1;
 		$sctc = "FAILED";
+		$status = "FAILED";
 	}
-	results("Sequence: $scerror-$sc - SequenceOk: $scok - Sequence Result: $sctc");
+	results("Test Result: $sctc - Sequence: $scerror-$sc - SequenceOk: $scok");
 
 	$failed = 0;
 	$failedcounter = 0;
@@ -265,20 +267,18 @@ sub EvaluateResults
 			$failed = 1;
 			$failedtotal = 1;
 			$failedcounter++;
-			results("Test Case $loopi doesn't mach - Result: " . @ts[$loopi] . " ResultOk: " . @tsok[$loopi]);
+			$status = "FAILED";
+			$sctc = "FAILED";
+			results("Test Result: $sctc - Case $loopi - Result: " . @ts[$loopi] . " - ResultOk: " . @tsok[$loopi]);
 		}
-		#info("Loop: " . $loopi . " - " . @ts[$loopi] . " - " . @tsok[$loopi]);
+		elsif ( (@ts[$loopi] == @tsok[$loopi]) && (@ts[$loopi] == 3) )
+		{
+			$sctc = "OK";
+			results("Test Result: $sctc - Case $loopi - Result: " . @ts[$loopi] . " - ResultOk: " . @tsok[$loopi]);
+		}
 	}
 
-	if($failed == 1)
-	{
-		results("$failedcounter testcases failed");
-	}
-	else
-	{
-		results("Test cases executed in the right form");
-	}
-
+	return $status;
 }
 
 sub readparam
@@ -540,7 +540,8 @@ foreach $testfn (@tests)
 						if ($outdbgstatus == 0)
 						{
 							results("Test: $test - Config: $config");
-							EvaluateResults();
+							$status = EvaluateResults();
+							results("Test: $test - Config: $config - Status: $status");
 						}
 					}
 				}
