@@ -31,31 +31,11 @@ TASK Task2 {
 	TYPE = BASIC;
 };
 
-COUNTER HardwareCounter {
-	MAXALLOWEDVALUE = 100000;
-	TICKSPERBASE = 10;
-	MINCYCLE = 1;
-	TYPE = HARDWARE;
-	COUNTER = HWCOUNTER0;
-};
-
 COUNTER Counter1 {
 	MAXALLOWEDVALUE = 16;
 	TICKSPERBASE = 1;
 	MINCYCLE = 2;
 	TYPE = SOFTWARE;
-};
-
-ALARM IncrementSWCounter {
-	COUNTER = HardwareCounter;
-	ACTION = INCREMENT {
-		COUNTER = Counter1;
-	};
-	AUTOSTART = TRUE {
-		APPMODE = AppMode1;
-		ALARMTIME = 1;
-		CYCLETIME = 1;
-	};
 };
 
 ALARM Alarm1 {

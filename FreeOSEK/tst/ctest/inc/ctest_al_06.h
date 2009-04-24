@@ -73,7 +73,7 @@
  **
  ** Defines the total amount of sequence points in this test sequence
  **/
-#define MAX_SEQUENCE 10
+#define MAX_SEQUENCE 11
 
 /*==================[typedef]================================================*/
 

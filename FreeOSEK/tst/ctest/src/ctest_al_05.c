@@ -166,7 +166,7 @@ TASK(Task3)
 	 * \result Task is activated. No preemption of running task
 	 */
 	IncAlarmCounter();
-	ASSERT(AL_31, 0);
+	ASSERT(AL_32, 0);
 
 	Sequence(6);
 	ret = GetTaskState(Task2, &TaskState);

@@ -130,6 +130,10 @@ TASK(Task1)
 	ASSERT(OTHER, ret != E_OK);
 
 	Sequence(7);
+	ret = SetRelAlarm(Alarm1, 1, 0);
+	ASSERT(OTHER, ret != E_OK);
+
+	Sequence(8);
 	/* \treq AL_34 nm B1B2E1E2 se Expiration of alarm wich sets an event
 	 * while running task is non-preemptive. Task which owns the event is
 	 * waiting for this event
@@ -140,12 +144,12 @@ TASK(Task1)
 	IncAlarmCounter();
 	ASSERT(AL_34, 0);
 
-	Sequence(8);
+	Sequence(9);
 	ret = GetTaskState(Task2, &TaskState);
 	ASSERT(OTHER, ret != E_OK);
 	ASSERT(OTHER, TaskState != READY);
 
-	Sequence(9);
+	Sequence(10);
 	TerminateTask();
 }
 
@@ -161,7 +165,7 @@ TASK(Task2)
 	ret = WaitEvent(Event1);
 	ASSERT(OTHER, ret != E_OK);
 
-	Sequence(10);
+	Sequence(11);
 
 	/* evaluate conformance tests */
 	ConfTestEvaluation();
