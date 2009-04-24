@@ -57,6 +57,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090424 v0.1.2 MaCe use the right counter macros
  * 20090130 v0.1.1 MaCe change type uint8_least to uint8f
  * 20080713 v0.1.0 MaCe initial version
  */
@@ -100,12 +101,16 @@ uint32 OsekStack;
 /*==================[external functions definition]==========================*/
 void OSEK_ISR_HWTimer0(void)
 {
-	IncrementCounter(0, 1);
+#if (defined HWCOUNTER0)
+	IncrementCounter(HWCOUNTER0, 1);
+#endif /* #if (defined HWCOUNTER0) */
 }
 
 void OSEK_ISR_HWTimer1(void)
 {
-	IncrementCounter(1, 1);
+#if (defined HWCOUNTER1)
+	IncrementCounter(HWCOUNTER1, 1);
+#endif /* #if (defined HWCOUNTER1) */
 }
 
 void PosixInterruptHandler(int status)
