@@ -56,6 +56,19 @@ sub htons
 	return $val;
 }
 
+
+sub getTestcaseName
+{
+	my $index = @_[0];
+	my @testcasename;
+
+	open TESTCASES, $TESTCASES or die "$TESTCASES can not be openned: $!";
+	@testcasename = <TESTCASES>;
+	close (TESTCASES);
+	chomp(@testcasename[$index]);
+	return @testcasename[$index];
+}
+
 sub GetTestCases
 {
 	open TC, "<@_[0]" or die "@_[0] can not be openned: $!";
@@ -269,12 +282,12 @@ sub EvaluateResults
 			$failedcounter++;
 			$status = "FAILED";
 			$sctc = "FAILED";
-			results("Test Result: $sctc - Case $loopi - Result: " . @ts[$loopi] . " - ResultOk: " . @tsok[$loopi]);
+			results("Test Result: $sctc - Test Case: " . getTestcaseName($loopi) . " - Result: " . @ts[$loopi] . " - ResultOk: " . @tsok[$loopi]);
 		}
 		elsif ( (@ts[$loopi] == @tsok[$loopi]) && (@ts[$loopi] == 3) )
 		{
 			$sctc = "OK";
-			results("Test Result: $sctc - Case $loopi - Result: " . @ts[$loopi] . " - ResultOk: " . @tsok[$loopi]);
+			results("Test Result: $sctc - Test Case: " . getTestcaseName($loopi) . " - Result: " . @ts[$loopi] . " - ResultOk: " . @tsok[$loopi]);
 		}
 	}
 
@@ -300,6 +313,7 @@ sub readparam
 			case "LOGFULL" { $logfilefull = $val; }
 			case "TESTS" { $TESTS = $val; }
 			case "RES" { $RES = $val; }
+			case "TESTCASES" { $TESTCASES = $val; }
 			else { }
 		}
 	}
