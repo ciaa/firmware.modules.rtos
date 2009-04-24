@@ -56,6 +56,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090424 v0.1.3 MaCe correct initial task priority
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
  * 20080713 v0.1.0 MaCe initial version
@@ -104,6 +105,10 @@ void AddReady(TaskType TaskID)
 
 	/* get task priority */
 	priority = TasksConst[TaskID].StaticPriority;
+
+	/* set the start priority for this task */
+	TasksVar[TaskID].ActualPriority = priority;
+
 	/* conver the priority to the array index */
 	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
 	* the valida entries for this array are between 0 and 3, so the -1 is needed
