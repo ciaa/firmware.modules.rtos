@@ -39,7 +39,6 @@
  * along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 <?php
 /** \brief FreeOSEK File to be Generated
  **
@@ -72,6 +71,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.2 20090424 MaCe add counters defines
  * v0.1.1 20090128 MaCe add MEMMAP off configuration
  * v0.1.0 20080810 MaCe	initial version
  */  
@@ -133,6 +133,16 @@ foreach ($alarms as $alarm)
 {
    print "/** \brief Definition of the Alarm $alarm */\n";
    print "#define " . $alarm . " " . $count++ . "\n";
+}
+print "\n";
+
+/* Define the Counters */
+$counters = $config->getList("/OSEK","COUNTER");
+$count = 0;
+foreach ($counters as $counter)
+{
+   print "/** \brief Definition of the Counter $counter */\n";
+   print "#define " . $counter . " " . $count++ . "\n";
 }
 print "\n";
 
