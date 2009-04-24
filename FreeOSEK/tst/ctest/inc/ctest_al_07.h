@@ -36,11 +36,11 @@
  *
  */
 
-#ifndef _CTEST_AL_06_H_
-#define _CTEST_AL_06_H_
+#ifndef _CTEST_AL_07_H_
+#define _CTEST_AL_07_H_
 /** \brief Free OSEK Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_al_06.h
+ ** \file FreeOSEK/tst/ctest/inc/ctest_al_07.h
  **/
 
 /** \addtogroup FreeOSEK
@@ -49,7 +49,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_CT_AL Alarms
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL_06 Test Sequence 6
+/** \addtogroup FreeOSEK_CT_AL_07 Test Sequence 7
  ** @{ */
 
 /*
@@ -73,7 +73,7 @@
  **
  ** Defines the total amount of sequence points in this test sequence
  **/
-#define MAX_SEQUENCE 10
+#define MAX_SEQUENCE 13
 
 /*==================[typedef]================================================*/
 
@@ -86,5 +86,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CTEST_AL_06_H_ */
+#endif /* #ifndef _CTEST_AL_07_H_ */
 

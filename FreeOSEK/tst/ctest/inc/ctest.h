@@ -40,7 +40,7 @@
 #define _CTEST_H_
 /** \brief Free OSEK Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest.h
+ ** \file FreeOSEK/tst/ctest/</ctest.h
  **/
 
 /** \addtogroup FreeOSEK
@@ -253,7 +253,7 @@
  **
  ** This macro shall implement a mechanismus to increment the alarm counter
  **/
-#define IncAlarmCounter()
+#define IncAlarmCounter() (void)IncrementCounter(Counter1, 1);
 
 #if (ISR_CATEGORY_3 == ENABLE)
 /** \brief ISR3 Trigger Macro
@@ -373,16 +373,21 @@ extern void ASSERT
 	boolean cond
 );
 
-void Sequence
+extern void Sequence
 (
 	uint32f seq
 );
 
-void ConfTestFinish
+extern void ConfTestFinish
 (
 	void
 );
 
+extern uint32 IncrementCounter
+(
+	uint32 CounterID,
+	uint32 Increment
+);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
