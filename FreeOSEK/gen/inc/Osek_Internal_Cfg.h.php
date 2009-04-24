@@ -487,6 +487,12 @@ typedef uint32 AlarmCycleTimeType;
 /** \brief Counter Type */
 typedef uint8 CounterType;
 
+/** \brief Counter Increment Type */
+typedef uint32f CounterIncrementType;
+
+/** \brief Alarm Increment Type */
+typedef uint32f AlarmIncrementType;
+
 /** \brief Alarm Action Type */
 typedef enum {
 	ALARMCALLBACK = 0,

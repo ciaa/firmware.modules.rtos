@@ -266,6 +266,19 @@ extern void AddReady(TaskType TaskID) ATTRIBUTES();
  **/ 
 extern void OSEK_ISR_NoHandler(void) ATTRIBUTES();
 
+/** \brief Increment Counter Service
+ **
+ ** This service is called to increment a specific counter an Increment amount
+ ** of times.
+ **
+ ** \param[in] CounterID id of the counter to be incremented
+ ** \param[in] Increment amount of times to increment the counter
+ ** \return after how many increments of the CounterID the function has to be
+ ** called. If the function is called again later as should with a grater
+ ** increment some events may be executed together.
+ **/
+extern CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementType Increment);
+
 #if (OSEK_MEMMAP == ENABLE)
 #define FreeOSEK_STOP_SEC_CODE
 #include "MemMap.h"

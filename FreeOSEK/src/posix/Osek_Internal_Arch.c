@@ -98,89 +98,14 @@ uint32 OsekStack;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void CounterInterrupt(CounterType CounterID)
-{
-	uint8f loopi;
-	AlarmType AlarmID;
-
-	/* increment counter */
-	CountersVar[CounterID].Time++;
-
-	/* check if the timer has an overvlow */
-	if ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
-	{
-		/* reset counter */
-		CountersVar[CounterID].Time = 0;
-	}
-
-	/* for alarms on this counter */
-	for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
-	{
-		/* get alarm id */
-		AlarmID = CountersConst[CounterID].AlarmRef[loopi];
-
-		/* check if the alarm is eanble */
-		if (AlarmsVar[AlarmID].AlarmState == 1)
-		{
-			/* decrement alarm time */
-			AlarmsVar[AlarmID].AlarmTime--;
-
-			/* check if alarm time was reached */
-			if (AlarmsVar[AlarmID].AlarmTime == 0)
-			{
-				/* check if new alarm time has to be set */
-				if(AlarmsVar[AlarmID].AlarmCycleTime == 0)
-				{
-					/* disable alarm if no cycle was configured */
-					AlarmsVar[AlarmID].AlarmState = 0;
-				}
-				else
-				{
-					/* set new alarm cycle */
-					AlarmsVar[AlarmID].AlarmTime = AlarmsVar[AlarmID].AlarmCycleTime;
-				}
-
-				/* check the alarm action */
-				switch(AlarmsConst[AlarmID].AlarmAction)
-				{
-					case INCREMENT:
-						/* call counter function */
-						CounterInterrupt(AlarmsConst[AlarmID].AlarmActionInfo.Counter);
-						break;
-					case ACTIVATETASK:
-						/* activate task */
-						ActivateTask(AlarmsConst[AlarmID].AlarmActionInfo.TaskID);
-						break;
-					case ALARMCALLBACK:
-						/* callback */
-						if(AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction != NULL)
-						{
-							AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
-						}
-						break;
-#if (NO_EVENTS == DISABLE)
-					case SETEVENT:
-						/* set event */
-						SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Event);
-						break;
-#endif /* #if (NO_EVENTS == DISABLE) */
-					default:
-						/* some error ? */
-						break;
-				}
-			}
-		}
-	}
-}
-
 void OSEK_ISR_HWTimer0(void)
 {
-	CounterInterrupt(0);
+	IncrementCounter(0, 1);
 }
 
 void OSEK_ISR_HWTimer1(void)
 {
-	CounterInterrupt(1);
+	IncrementCounter(1, 1);
 }
 
 void PosixInterruptHandler(int status)
