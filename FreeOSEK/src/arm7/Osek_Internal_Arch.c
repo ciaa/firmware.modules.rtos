@@ -94,6 +94,7 @@ void FIQ_Routine
 	void
 )
 {
+#if (ALARMS_COUNT != 0)
 	/* to save the context during the interrupt */
 	ContextType context;
 	/* counter increment */
@@ -119,6 +120,7 @@ void FIQ_Routine
 
 	/* set the disable interrupt conter back */
 	SuspendAllInterrupts_Counter--;
+#endif /* #if (ALARMS_COUNT != 0) */
 
 	/* enable counter interrupt again */
 	T0IR |= 1;

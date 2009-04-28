@@ -205,6 +205,7 @@ void OSEK_ISR_NoHandler(void)
 	while(1);
 }
 
+#if (ALARMS_COUNT != 0)
 AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Increment)
 {
 	AlarmIncrementType RestIncrements;
@@ -310,7 +311,9 @@ AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Incremen
 
 	return RestIncrements;
 }
+#endif /* #if (ALARMS_COUNT != 0) */
 
+#if (ALARMS_COUNT != 0)
 CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementType Increment)
 {
 	uint8f loopi;
@@ -352,6 +355,7 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
 	/* return the minimal increment */
 	return (CounterIncrementType)MinimalCount;
 }
+#endif /* #if (ALARMS_COUNT != 0) */
 
 #if (OSEK_MEMMAP == ENABLE)
 #define FreeOSEK_STOP_SEC_CODE

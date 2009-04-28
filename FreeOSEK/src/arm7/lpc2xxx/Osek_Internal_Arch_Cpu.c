@@ -81,6 +81,8 @@ void StartOs_Arch_Cpu
 	void
 )
 {
+#if (ALARMS_COUNT != 0)
+	/* TODO this has to be improved */
 	T0CTCR = 0;	/* bit 1-0: 00 Timer mode
 										01 Counter mode at rising edge
 										10 Counter mode at falling edge
@@ -107,6 +109,13 @@ void StartOs_Arch_Cpu
 	T0MCR = 0x3;	/* bit 0: interrupt if MR0 match the TC
 							bit 1: reset TC if MR0 match */
 
+	/* set the TIMER0 as FIQ Interrupt */
+	((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
+
+	/* enable TIMER0 interrupt */
+	((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
+#endif /* #if (ALARMS_COUNT != 0) */
+
 	/* enable interrupts */
 	__asm__ __volatile__
 	("											\
@@ -114,13 +123,6 @@ void StartOs_Arch_Cpu
 		AND R7, R7, #0xFFFFFF9F \n\t	\
 		MSR CPSR, R7				\n\t	\
 	 " : : : "r7" );
-
-	/* set the TIMER0 as FIQ Interrupt */
-	((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
-
-	/* enable TIMER0 interrupt */
-	((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
-
 }
 
 /** @} doxygen end group definition */

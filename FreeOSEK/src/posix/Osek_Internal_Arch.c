@@ -102,14 +102,18 @@ uint32 OsekStack;
 void OSEK_ISR_HWTimer0(void)
 {
 #if (defined HWCOUNTER0)
+#if (ALARMS_COUNT != 0)
 	IncrementCounter(HWCOUNTER0, 1);
+#endif /* #if (ALARMS_COUNT != 0) */
 #endif /* #if (defined HWCOUNTER0) */
 }
 
 void OSEK_ISR_HWTimer1(void)
 {
 #if (defined HWCOUNTER1)
+#if (ALARMS_COUNT != 0)
 	IncrementCounter(HWCOUNTER1, 1);
+#endif /* #if (ALARMS_COUNT != 0) */
 #endif /* #if (defined HWCOUNTER1) */
 }
 
