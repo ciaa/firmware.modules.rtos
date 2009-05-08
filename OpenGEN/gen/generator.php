@@ -350,6 +350,10 @@ foreach ($genfiles as $file)
 	if(file_exists($outfile))
 	{
 		$exits = true;
+		if(file_exists($outfile . ".old"))
+		{
+			unlink($outfile . ".old");
+		}
 		rename($outfile, $outfile . ".old");
 	}
 	$ob_file = fopen($outfile, "w");
