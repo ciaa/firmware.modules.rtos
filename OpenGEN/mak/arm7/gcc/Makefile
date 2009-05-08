@@ -40,4 +40,4 @@ GDBO += -x OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
 #CFLAGS += -c -Wall
 CFLAGS += -c -fno-common -O3 -g -std=c99 -fno-builtin
 LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
-AFLAGS += -mapcs-32
+AFLAGS += -mapcs-32 -mfpu=softfpa
