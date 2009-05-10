@@ -156,6 +156,7 @@ info :
 	@echo Selected Cpu.........................: $(CPU)
 	@echo Selected Board.......................: $(BOARD)
 	@echo Selected Compiler....................: $(COMPILER)
+	@echo Toolchains executables...............: cc: $(CC) asm: $(AS) ld: $(LD)
 	@echo Enabled Modules......................: $(MODS)
 	@echo Output directory for object files....: $(OBJDIR)
 	@echo Output directory for binary files....: $(BINDIR)
