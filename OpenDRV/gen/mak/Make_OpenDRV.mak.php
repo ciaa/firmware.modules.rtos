@@ -10,7 +10,7 @@ else
 {
 	$drvconfig = $drvconfig[0];
 	print "# include sub drivers\n";
-	$drivers = array ("StartUp", "Dio", "Eth", "Mcu");
+	$drivers = array ("StartUp", "Dio", "Eth", "Mcu", "Pwm");
 	foreach($drivers as $driver)
 	{
 		$value = $config->getValue("/OpenDRV/" . $drvconfig , $driver);
@@ -22,7 +22,7 @@ else
 			case "DISABLE":
 				break;
 			default:
-				error("$driver driver is not configured as ENABLE neither as DISABLE");
+				warning("$driver driver is not configured as ENABLE neither as DISABLE, disabled as default");
 				break;
 		}
 	}
