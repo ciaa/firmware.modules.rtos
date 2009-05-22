@@ -1,0 +1,123 @@
+OSEK OSEK {
+
+OS	ExampleOS {
+	STATUS = EXTENDED;
+   STARTUPHOOK = FALSE;
+   ERRORHOOK = FALSE;
+   SHUTDOWNHOOK = FALSE;
+	PRETASKHOOK = FALSE;
+	POSTTASKHOOK = FALSE;
+	MEMMAP = FALSE;
+	USERESSCHEDULER = FALSE;
+};
+
+TASK InitTask {
+   PRIORITY = 1;
+   SCHEDULE = NON;
+   ACTIVATION = 1;
+   AUTOSTART = TRUE {
+      APPMODE = AppMode1;
+      };
+   STACK = 128;
+   TYPE = EXTENDED;
+};
+
+TASK BlinkingLedsTask {
+	PRIORITY = 1;
+	SCHEDULE = NON;
+	ACTIVATION = 1;
+	AUTOSTART = FALSE;
+	STACK = 64;
+	TYPE = BASIC;
+}
+
+TASK CombiTask {
+   PRIORITY = 2;
+   SCHEDULE = NON;
+   ACTIVATION = 1;
+   AUTOSTART = FALSE;
+	STACK = 64;
+	TYPE = BASIC;
+}
+
+TASK GearTask {
+	PRIORITY = 2;
+	SCHEDULE = NON;
+	ACTIVATION = 1;
+	AUTOSTART = FALSE;
+	STACK = 64;
+	TYPE = BASIC;
+}
+
+TASK SetCarTask {
+	PRIORITY = 2;
+	SCHEDULE = NON;
+	ACTIVATION = 1;
+	AUTOSTART = FALSE;
+	STACK = 64;
+	TYPE = BASIC;
+}
+
+TASK CarSimulationTask {
+	PRIORITY = 3;
+	SCHEDULE = NON;
+	ACTIVATION = 1;
+	AUTOSTART = FALSE;
+	STACK = 64;
+	TYPE = BASIC;
+}
+
+APPMODE AppMode1;
+
+COUNTER HardwareCounter {
+	MAXALLOWEDVALUE = 100000;
+	TICKSPERBASE = 1000;
+	MINCYCLE = 1;
+	TYPE = HARDWARE;
+	COUNTER = HWCOUNTER0;
+};
+
+COUNTER SoftwareCounter {
+	MAXALLOWEDVALUE = 100000;
+	TICKSPERBASE = 100;
+	MINCYCLE = 1;
+	TYPE = SOFTWARE;
+};
+
+ALARM IncrementSWCounter {
+	COUNTER = HardwareCounter;
+	ACTION = INCREMENT {
+		COUNTER = SoftwareCounter;
+	};
+	AUTOSTART = TRUE {
+		APPMODE = AppMode1;
+		ALARMTIME = 1;
+		CYCLETIME = 1;
+	};
+};
+
+ALARM ActivateBlinkingLedsTask {
+	COUNTER = SoftwareCounter;
+	ACTION = ACTIVATETASK {
+		TASK = BlinkingLedsTask;
+	}
+	AUTOSTART = FALSE;
+};
+
+ALARM ActivateCombiTask {
+	COUNTER = SoftwareCounter;
+	ACTION = ACTIVATETASK {
+		TASK = CombiTask;
+	}
+	AUTOSTART = FALSE;
+};
+
+ALARM ActivateCarSimulationTask {
+	COUNTER = SoftwareCounter;
+	ACTION = ACTIVATETASK {
+		TASK = CarSimulationTask;
+	}
+	AUTOSTART = FALSE;
+};
+
+};

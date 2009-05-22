@@ -1,0 +1,98 @@
+OpenDRV OpenDRV {
+
+	GENERAL GenConfig {
+		StartUp = ENABLE;
+		Mcu = ENABLE;
+		Dio = ENABLE;
+		Eth = DISABLE;
+		Pwm = ENABLE;
+	};
+
+	DRIVER StartUp {
+	};
+
+	DRIVER Pwm {
+		GENERAL PwmGeneral {
+			DET = FALSE;
+		}
+
+		CONFIG PwmCOnfig01 {
+
+			CHANNEL PWM0 {
+				NAME = PWM0;
+				CHANNEL = 0;
+				FREQ = 50;
+				DUTY = 1;
+				DUTYUNIT = MS;
+			}
+		
+		}
+
+	}
+
+	DRIVER Dio {
+		GENERAL DioGeneral {
+			DET = FALSE;
+		}
+
+		CONFIG DioConfig01 {
+
+			CHANNEL LIGHT_GEAR_R {
+				NAME = LIGHT_GEAR_1;
+				PORT = 4;
+				PIN = 16;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL LIGHT_GEAR_N {
+				NAME = LIGHT_GEAR_N;
+				PORT = 4;
+				PIN = 17;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL LIGHT_GEAR_1 {
+				NAME = LIGHT_GEAR_1;
+				PORT = 4;
+				PIN = 16;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL LIGHT_GEAR_2 {
+				NAME = LIGHT_GEAR_2;
+				PORT = 4;
+				PIN = 16;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL LIGHT_GEAR_3 {
+				NAME = LIGHT_GEAR_1;
+				PORT = 4;
+				PIN = 16;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL LIGHT_GEAR_4 {
+				NAME = LIGHT_GEAR_1;
+				PORT = 4;
+				PIN = 16;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL BUTTON_GEAR_UP {
+				NAME = BUTTON_GEAR_UP;
+				PORT = 2;
+				PIN = 13;
+				DIRECTION = INPUT;
+			}
+
+			CHANNEL BUTTON_GEAR_DOWN {
+				NAME = BUTTON_GEAR_DOWN;
+				PORT = 2;
+				PIN = 21;
+				DIRECTION = INPUT;
+			}
+			
+		}
+	}
+};
