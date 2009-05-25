@@ -114,25 +114,23 @@ else
 }
 
 
-$Pwmconfig = $config->getList("/OpenDRV/Pwm","CONFIG");
+$pwmconfig = $config->getList("/OpenDRV/Pwm","CONFIG");
 
-if(count($Pwmconfig)!=1)
+if(count($pwmconfig)!=1)
 {
 	error("Wrong count of Pwm Driver configurations, at the moment only 1 config is allowed for the Pwm driver");
 }
 
-$Pwmchannels = $config->getList("/OpenDRV/Pwm/" . $Pwmconfig[0],"CHANNEL");
-$count = 0;
-foreach($Pwmchannels as $Pwmc)
+$pwmchannels = $config->getList("/OpenDRV/Pwm/" . $pwmconfig[0],"CHANNEL");
+
+foreach($pwmchannels as $pwmc)
 {
-	$name = $config->getValue("/OpenDRV/Pwm/" . $Pwmconfig[0] . "/" . $Pwmc, "NAME");
-	$port = $config->getValue("/OpenDRV/Pwm/" . $Pwmconfig[0] . "/" . $Pwmc, "PORT");
-	$pin = $config->getValue("/OpenDRV/Pwm/" . $Pwmconfig[0] . "/" . $Pwmc, "PIN");
-	$dir = $config->getValue("/OpenDRV/Pwm/" . $Pwmconfig[0] . "/" . $Pwmc, "DIRECTION");
-	print "/** \brief Define Pwm Channel $Pwmc - port: $port - pin: $pin */\n";
-	print "#define " . $name . "	" . (($port*32)+$pin) . "\n\n";
-	$count++;
+	$name = $config->getValue("/OpenDRV/Pwm/" . $pwmconfig[0] . "/" . $pwmc, "PWM_CHANNEL_NAME");
+	$channel = $config->getValue("/OpenDRV/Pwm/" . $pwmconfig[0] . "/" . $pwmc, "PWM_CHANNEL");
+	print "/** \brief Channel definition for PWM $pwmc */\n";
+	print "#define $name $channel\n\n";
 }
+
 
 ?>
 

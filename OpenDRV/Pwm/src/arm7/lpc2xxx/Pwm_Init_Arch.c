@@ -90,8 +90,130 @@ void Pwm_Init_Arch
 	const Pwm_ConfigType * config
 )
 {
-/* TODO */
+#if (PWM_PWM0 == ENABLE)
+	/* set PWM0TCR:	bit 0 enable counter 
+							bit 1 reset rounter 
+							bit 2 reserved
+							bit 3 PWM enable
+							bit 4 master disable
+							bit 7.5 reserved */
+	PWM0TCR = 1;
+
+	/* set PWM0CTCR:	bit 1.0 mode 00	timer mode
+											 01	counter mode
+											 10	counter mode
+											 11	counter mode
+							bit 3.2 counter input */
+	PWM0CTCR = 0;
+
+	/* set PWM0MCR:	bit 0 interrupt PWMMR0
+							bit 1 reset PWMMR0
+							bit 2 stop PWMMR0 */
+	PWM0MCR = PWM_PWM0MCR;
+
+	/* set PWM0CCR */
+	PWM0CCR = 0;
+
+	/* set PWM0PCR */
+	PWM0PCR = PWM_PWM0PCR;
+
+	/* set PWM0LER */
+	PWM0LER = PWM_PWM0LER;
+
+	/* set PWM0PR */
+	PWM0PR = 12;
+
+	/* set PWM0MR0 */
+	PWM0MR0 = PWM_PWM0MR0;
+
+#if (defined PWM_PWM0_0_ENABLE)
+	PWM0MR1 = PWM_PWM0_0_DUTY;
+#endif 
+
+#if (defined PWM_PWM0_1_ENABLE)
+	PWM0MR2 = PWM_PWM0_1_DUTY;
+#endif 
+
+#if (defined PWM_PWM0_2_ENABLE)
+	PWM0MR3 = PWM_PWM0_2_DUTY;
+#endif 
+
+#if (defined PWM_PWM0_3_ENABLE)
+	PWM0MR4 = PWM_PWM0_3_DUTY;
+#endif 
+
+#if (defined PWM_PWM0_4_ENABLE)
+	PWM0MR5 = PWM_PWM0_4_DUTY;
+#endif 
+
+#if (defined PWM_PWM0_5_ENABLE)
+	PWM0MR6 = PWM_PWM0_5_DUTY;
+#endif 
+#endif
+
+#if (PWM_PWM1 == ENABLE)
+	/* set PWM1TCR:	bit 0 enable counter 
+							bit 1 reset rounter 
+							bit 2 reserved
+							bit 3 PWM enable
+							bit 4 master disable
+							bit 7.5 reserved */
+	PWM1TCR = 1;
+
+	/* set PWM1CTCR:	bit 1.0 mode 00	timer mode
+											 01	counter mode
+											 10	counter mode
+											 11	counter mode
+							bit 3.2 counter input */
+	PWM1CTCR = 0;
+
+	/* set PWM1MCR:	bit 0 interrupt PWMMR0
+							bit 1 reset PWMMR0
+							bit 2 stop PWMMR0 */
+	PWM1MCR = PWM_PWM1MCR;
+
+	/* set PWM1CCR */
+	PWM1CCR = 0;
+
+	/* set PWM1PCR */
+	PWM1PCR = PWM_PWM1PCR;
+
+	/* set PWM1LER */
+	PWM1LER = PWM_PWM1LER;
+
+	/* set PWM1PR */
+	PWM1PR = 12;
+
+	/* set PWM1MR0 */
+	PWM1MR0 = PWM_PWM1MR0;
+
+#if (defined PWM_PWM1_0_ENABLE)
+	PWM1MR1 = PWM_PWM1_0_DUTY;
+#endif 
+
+#if (defined PWM_PWM1_1_ENABLE)
+	PWM1MR2 = PWM_PWM1_1_DUTY;
+#endif 
+
+#if (defined PWM_PWM1_2_ENABLE)
+	PWM1MR3 = PWM_PWM1_2_DUTY;
+#endif 
+
+#if (defined PWM_PWM1_3_ENABLE)
+	PWM1MR4 = PWM_PWM1_3_DUTY;
+#endif 
+
+#if (defined PWM_PWM1_4_ENABLE)
+	PWM1MR5 = PWM_PWM1_4_DUTY;
+#endif 
+
+#if (defined PWM_PWM1_5_ENABLE)
+	PWM1MR6 = PWM_PWM1_5_DUTY;
+#endif 
+#endif
 }
+
+
 
 /** TODO */
 /* #define OpenDRV_Pwm_STOP_SEC_CODE
