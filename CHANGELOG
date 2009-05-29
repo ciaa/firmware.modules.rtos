@@ -38,13 +38,20 @@
 
 /** \page CHANGELOG Change Log
  *
+ * v0.3.1	FreeOSEK Release 200906xx
+ * 	- 2795348 add first PWM Driver
+ * 	- 2795355 add the CarCombi example
+ * 	- 2797017 add FreeOSEK OS template for new architectures
+ * 	- 2796524 add first ADC Driver
+ * 	- 2798376 start porting for s12x
+ *
  * v0.3.0	FreeOSEK Release 20090511
  * 	- 2727954 add FreeOSEK OS conformance tests
- *		- 2736985 add RES_SCHEDULER support to ChainTask and to TerminateTask
- *		- 2772633 add Pre/Post-TaskHook handling
- *		- 2779609 improve alarm/counter mechanism and make it hw independent
- *		- 2783062 improve alarms mechanism ROM consumption
- *		- bugfixes: 2762634, 2762854, 2771306, 2772650, 2772771, 2775832
+ * 	- 2736985 add RES_SCHEDULER support to ChainTask and to TerminateTask
+ * 	- 2772633 add Pre/Post-TaskHook handling
+ * 	- 2779609 improve alarm/counter mechanism and make it hw independent
+ * 	- 2783062 improve alarms mechanism ROM consumption
+ * 	- bugfixes: 2762634, 2762854, 2771306, 2772650, 2772771, 2775832
  * 	- still pending possibly bugs: 2761785, 2703034, 2680415
  *
  * v0.2.41	FreeOSEK Beta Release 20090401
