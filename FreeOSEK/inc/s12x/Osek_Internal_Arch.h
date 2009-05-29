@@ -1,3 +1,14 @@
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * add your copyright notice
+ * Copyright <year>, <your name>
+ *
+ * Please do not change the license on a single file, if you want to change it
+ * discuss it with the development team.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
+
 /* Copyright 2008, 2009, Mariano Cerdeiro
  * Copyright 2008, Kang Li
  *
@@ -54,8 +65,8 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
- * KLi                        Kang Li
+ * MaCe			Mariano Cerdeiro
+ * KLi			Kang Li
  */
 
 /*
@@ -65,26 +76,63 @@
  */  
 
 /*==================[inclusions]=============================================*/
-
-#include <MC9S12XEP100.h>
-#include <stddef.h>
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * add any needed include, please take into account that normaly NO INCLUDE
+ * shall be included here, but in case you can do it, but discuss the reason
+ * with the project manager.
+ * Normaly nothing shall be included here
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 
 /*==================[macros]=================================================*/
-/** \brief Lenght of the Message Queue */
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * Please define here all needed macros that will be visible to the OS user
+ * for this architecutre. This means that anyone including os.h will have
+ * access to this definitions if the actual architecutre is used.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 
+#error update the following macro and remove this comment
+/** \brief Osek_Internal_Arch_Cpu.h inclusion needed macro
+ **
+ ** This define makes the Osek_Internal.h file to include the
+ ** Osek_Internal_Arch_Cpu file which is not standard for all architectures.
+ ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
+ ** remove the macro and this comment.
+ **/
+#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+
+#error update the following macro and remove this comment
 /** \brief Interrupt Secure Start Macro
  **
- ** This macro shall be used to disable the interrupts
+ ** This macro will be used internaly by the OS in any part of code that
+ ** has to be executed atomic.
  **/
 #define IntSecure_Start() SuspendAllInterrupts()
 
+#error update the following macro and remove this comment
 /** \brief Interrupt Secure End Macro
  **
- ** This macro shall be used to restore the interrupts
+ ** This macro is the countra part of IntSecure_Start()
  **/
 #define IntSecure_End() ResumeAllInterrupts()
 
+#error update the following macro and remove this comment
 /** \brief osekpause
+ **
+ ** This macro is called by the scheduler when not task has to be executed.
+ ** If a background task is configured by the user (a full preemptive task
+ ** with lower priority and which never ends) this macro will never be called.
+ ** In other case the macro will be called any time that the OS has nothing
+ ** else to execute. The macro may sleep the cpu for a short time to avoid
+ ** overheating and full power consumption or may halt the processor always
+ ** that all wakeup reasons are right configured. If nothing is running
+ ** nothing my activate any task so we will keep sleeping until anything
+ ** occurs, like for example an interrupt.
  **
  **/
 #define osekpause()  		\
@@ -92,15 +140,18 @@
 	   __asm WAI;		\
    }
 
-/** \brief Jmp to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-void JmpTask(TaskType task); 
-
+#error update the following macro and remove this comment
 /** \brief Call to an other Task
  **
- ** This function jmps to the indicated task.
+ ** This function jmps to the indicated nexttask and saves the running context
+ ** on the actualtask context.
+ **
+ ** The Tasks context can be found under the following variables:
+ **	- TasksConst[actualtask].TaskContext
+ ** 	- TasksConst[nexttask].TaskContext
+ **
+ ** \param[in] actualtask actual running task id
+ ** \param[in] nexttask next task task id
  **/
 #define CallTask(task)															\
 	{																					\
@@ -108,15 +159,56 @@ void JmpTask(TaskType task);
 	   __asm SWI;                                                  \
 	}
 
-/** \brief Save context */
-#define SaveContext(task) \
-   {                                   \
-   }
-   
+#error update the following macro and remove this comment
+/** \brief Jmp to an other Task
+ **
+ ** This function jmps to the indicated task. Same as call task but is not
+ ** necessary to save the actual task state since the task was finished.
+ **
+ ** The Tasks context can be found under the following variable:
+ **	- TasksConst[task].TaskContext
+ **
+ ** \param[in] task task id of the task to be executed
+ **/
+#define JmpTask(task)															\
+	{																					\
+	}
+
+#error update the following macro and remove this comment
+/** \brief Save context
+ **
+ ** This function has to save the context when calling it. This is used
+ ** for example when a function calls waitevent. The task will be resumed
+ ** with a JmpTask or CallTask macro.
+ **
+ ** The task context can be found under the following variable:
+ **	- TasksConst[task].TaskContext
+ **
+ ** \param[in] task task id to save the task context
+ **/ 
+#define SaveContext(task) 														\
+	{																					\
+	}
+
 #define GET_PPAGE(far_fn_ptr)   ((uint8)(far_fn_ptr))
 #define GET_RPAGE(far_data_ptr) ((uint8)((uint32)(far_data_ptr) >> 12))
 #define GET_DATA_LOCAL_ADDR(far_data_ptr) ((uint16)(((uint32)(far_data_ptr) & 0x00000FFF))|0x00001000)
-/** \brief Set the entry point for a task */
+
+#error update the following macro and remove this comment
+/** \brief Reset the entry point for a task 
+ **
+ ** This macro reset the entry point of a specific task. The entry
+ ** point of a task is updated every time when a task is completed.
+ **
+ ** The task context can be found under the following variable:
+ **	- TasksConst[task].TaskContext
+ **
+ ** The start configured task entry point can be found on the following
+ ** variable:
+ **	- TasksConst[task].EntryPoint
+ **
+ ** \param[in] task task id to reset the task entry point
+ **/
 #define SetEntryPoint(task)   \
    {                          \
       TasksConst[(task)].TaskContext->ppage = GET_PPAGE(TasksConst[(task)].EntryPoint); \
@@ -124,108 +216,94 @@ void JmpTask(TaskType task);
       TasksConst[(task)].TaskContext->sp = GET_DATA_LOCAL_ADDR((uint32)TasksConst[(task)].StackPtr + (uint32)TasksConst[(task)].StackSize - 10); \
    }
 
-/** \brief */
-void ResetStack(TaskType task);
+#error update the following macro and remove this comment
+/** \brief Reset stack task 
+ **
+ ** This macro reset the stack of a specific task. The stack
+ ** point of a task is updated every time when a task is completed.
+ **
+ ** The task context can be found under the following variable:
+ **	- TasksConst[task].TaskContext
+ **
+ ** The start configured stack can be found on the following
+ ** variables:
+ **	- TasksConst[task].StackPtr
+ **	- TasksConst[task].StackSize
+ **
+ ** \param[in] task task id to reset the stack
+ **/
+#define ResetStack(task)											\
+	{																		\
+   }
 
-#define ISR_NMI      0
-#define ISR_CTR      1
-#define ISR_CANRX    2
-#define ISR_CANTX    3
+#error update the following macro and remove this comment
+/** \brief Enable OS Interruptions
+ **
+ ** Enable OS configured interrupts (ISR1 and ISR2). This macro
+ ** is called only ones in StartUp.c function.
+ **/
+#define EnableOSInterrupts()															\
+	{																							\
+	}
 
-#define EnableOSInterrupts()
-
-#define EnableInterrupts()	{ __asm CLI; }
+#error update the following macro and remove this comment
+/** \brief Enable Interruptions
+ **
+ ** Enable not OS configured interrupts (ISR1 and ISR2). This macro
+ ** is called only ones in StartUp.c function.
+ **
+ ** This macro may be empty. Maybe will be removed on the future,
+ ** please use it only if necessary, in other case use EnableOSInterrupts.
+ **/
+#define EnableInterrupts()	\
+	{						\
+		 __asm CLI; 		\
+	}
 
 /** \brief Get Counter Actual Value
  **
- ** This macro returns the actual value of the counter
+ ** This macro returns the actual value of the a counter
  **
  ** \param[in] CounterID id of the counter to be readed
  ** \return Actual value of the counter
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
 
-/** \brief Pre ISR Macro
+#error update the following macro and remove this comment
+/** \brief ShutdownOs Arch service
  **
- ** This macro is called every time that an ISR Cat 2 is started
+ ** This macro is called on the ShutdownOS to perform the architecture
+ ** dependent shutdown actions.
  **/
-#define PreIsr2_Arch(isr)
-
-/** \brief Post ISR Macro
- **
- ** This macro is called every time that an ISR Cat 2 is finished
- **/
-#define PostIsr2_Arch(isr)
-
+#define ShutdownOs_Arch()
 
 /*==================[typedef]================================================*/
-/** \brief uint8 type definition */
-typedef unsigned char uint8;
-
-/** \brief sint8 type definition */
-typedef signed char sint8;
-
-/** \brief uint16 type definition */
-typedef unsigned short uint16;
-
-/** \brief sint16 type definition */
-typedef signed short sint16;
-
-/** \brief uint32 type definition */
-typedef unsigned long uint32;
-
-/** \brief sint32 type definition */
-typedef signed long sint32;
-
-/** \brief uint8_least type definition */
-typedef unsigned int uint8_least;
-
-/** \brief sint8_least type definition */
-typedef signed int sint8_least;
-
-/** \brief uint16_least type definition */
-typedef unsigned int uint16_least;
-
-/** \brief sint16_least type definition */
-typedef signed int sint16_least;
-
-/** \brief uint32_least type definition */
-typedef unsigned long uint32_least;
-
-/** \brief sint32_least type definition */
-typedef signed long sint32_least;
-
-/** \brief falg type definition */
-typedef unsigned char flag;
-
-typedef union
-{
-   void (* far far_fn_ptr)(void);
-   struct
-   {
-      uint16 pc;
-      uint8 ppage;
-   } context;
-} far_fn_ptr_type;
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * Please define here all needed types that will be used only internal by
+ * the OS and only for this architecture and which will not depend on the
+ * configuraiton. Normaly this section shall be empty.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 
 /*==================[external data declaration]==============================*/
-/** \brief Signal Event
- **/
-/* extern struct sigevent SignalEvent; */
-
-/** \brief Osek Hardware Timer 0
- **/
-/* extern uint32 OsekHWTimer0; */
-
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * Please declare here all exported data defined in Osek_Internal_Arch.c
+ * that will be visible only internal to the OS for this architectire.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
-
-extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
-
-
-extern void OSEK_ISR_HWTimer0(void);
-
-extern void OSEK_ISR_HWTimer1(void);
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * Please declare here all exported functions defined in Osek_Internal_Arch.c
+ * that will be visible only internaly to the OS user for this architectire.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

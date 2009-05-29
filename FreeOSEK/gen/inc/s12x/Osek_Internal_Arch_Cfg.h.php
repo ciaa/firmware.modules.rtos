@@ -1,3 +1,7 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * add your copyright notice
@@ -10,7 +14,6 @@
  *****************************************************************************/
 
 /* Copyright 2008, 2009, Mariano Cerdeiro
- * Copyright 2008, Kang Li
  *
  * This file is part of FreeOSEK.
  *
@@ -48,90 +51,99 @@
  *
  */
 
-#ifndef _OSEK_ARCH_H_
-#define _OSEK_ARCH_H_
-/** \brief FreeOSEK Architecture Dependent Header File
+#ifndef _OSEK_INTERNAL_ARCH_CFG_H_
+#define _OSEK_INTERNAL_ARCH_CFG_H_
+
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * update the tmparch directory on the \file doxygen comment with your
+ * architecture
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
+/** \brief FreeOSEK Generated Internal Architecture Configuration Header File
  **
- ** This file is included form os.h and defines macros
- ** and types which depends on the architecture.
+ ** This file content the internal generated architecture dependent
+ ** configuration of FreeOSEK.
  **
- ** \file s12x/Osek_Arch.h
- ** \arch s12x
- **
+ ** \file tmparch/Osek_Internal_Arch_Cfg.h
+ ** \arch tmparch
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Internal
  ** @{ */
 
-
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * add your name to the developers and create for you a nick with
+ * 3 or 4 letters. Please do not use any given nick.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 /*
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
- * KLi                        Kang Li
  */
 
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * add a new version to this file, add the date, your initials and the main
+ * changes, only main changes shall be listed here. A detailed message log
+ * is saved in svn log and on the tracker system since every svn login message
+ * shalle indicate the related tracker id.
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081101 KLi	initial version
- */  
+ * v0.1.0 20090526 MaCe	FreeOSEK architecture template file
+ */
 
-/*==================[inclusions]=============================================*/
-
-/*==================[macros]=================================================*/
-/** \brief Enable All Interrupts Arch */
-#define EnableAllInterrupts_Arch()	{__asm CLI;}
-
-/** \brief Disable All Interrupts Arch */
-#define DisableAllInterrupts_Arch() {__asm SEI;}
-
-/** \brief Resume All Interrupts Arch */
-#define ResumeAllInterrupts_Arch()						                        \
-	{																                        \
-	   if ((ConditionCodeRegType)0 == (Suspended_CCR & 0x10))               \
-      {                                                                    \
-         __asm CLI;                                                        \
-      }                                                                    \
-	}
-
-/** \brief Suspend All Interrupts Arch */
-#define SuspendAllInterrupts_Arch()						                        \
-	{																                        \
-	   if ((InterruptCounterType)1 == SuspendAllInterrupts_Counter)       \
-      {                                                                    \
-         __asm TPA;                                                        \
-         __asm STAA Suspended_CCR;                                         \
-         __asm SEI;                                                        \
-      }                                                                    \
-	}
-
-/** \brief Resume OS Interrupts Arch */
-#define ResumeOSInterrupts_Arch()	
-
-/** \brief Suspend OS Interrupts Arch */
-#define SuspendOSInterrupts_Arch()
-
-/*==================[typedef]================================================*/
+/*==================[inclusions]=============================================*/ 
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
- * Please define here all needed types that will be visible to the OS user
- * for this architecutre. This means that anyone including os.h will have
- * access to these type definitions if the actual architecutre is used.
- * Normaly no type has to be declared here.
+ * add any needed include, please take into account that normaly NO INCLUDE
+ * shall be included here, but in case you can do it, but discuss the reason
+ * with the project manager.
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
 
+/*==================[macros]=================================================*/
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * Please define here all needed macros of your configuration that can
+ * be configured or are used in Osek_Internal_Arch_Cfg.c.php
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
+
+/*==================[typedef]================================================*/
+#error this is a remember to remove the comment on the following line
+/*****************************************************************************
+ * Please define here all needed types to be configured or used in
+ * Osek_Internal_Arch_Cfg.c.php
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
+
+/** \brief Task Context Type */
+#error Define the TaskContextType structure and remove this error message
+typedef struct {
+} TaskContextType;
+
+/** \brief Task Context Type */
+typedef TaskContextType* TaskContextRefType;
+
 /*==================[external data declaration]==============================*/
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
- * Please declare here all exported data defined in Osek_Arch.c that will
- * be visible to the OS user for this architectire. This means that anyone
- * including os.h will have access to these variables, if the actual
- * architecutre is used. Normaly no variables has to be declared here.
+ * Please declare here all exported data defined
+ * Osek_Internal_Arch_Cfg.c.php
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
@@ -139,10 +151,8 @@
 /*==================[external functions declaration]=========================*/
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
- * Please declare here all exported functions defined in Osek_Arch.c that will
- * be visible to the OS user for this architectire. This means that anyone
- * including os.h will have access to these variables, if the actual
- * architecutre is used. Normaly no variables has to be declared here.
+ * Please declare here all exported functions defined
+ * Osek_Internal_Arch_Cfg.c.php
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
@@ -150,5 +160,5 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_ARCH_H_ */
+#endif /* #ifndef _OSEK_INTERNAL_ARCH_CFG_H_ */
 
