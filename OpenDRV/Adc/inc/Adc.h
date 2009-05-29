@@ -244,7 +244,7 @@ typedef enum {
 typedef enum {
 	ADC_GROUP_REPL_ABORT_RESTART,
 	ADC_GROUP_REPL_SUSPEND_RESUME
-};
+} Adc_GroupReplacementType;
 
 /*==================[external data declaration]==============================*/
 

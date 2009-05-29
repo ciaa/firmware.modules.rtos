@@ -36,14 +36,12 @@
  *
  */
 
-#ifndef _ADC_ARCH_H_
-#define _ADC_ARCH_H_
-/** \brief ADC Arch Header File
+/** \brief OpenDRV ADC GetGroupStatus implementation file
  **
- ** ADC Arch Header File
+ ** This file implements the Adc_GetGroupStatus API
  **
- ** \file arm7/lpc2xxx/Adc_Arch.h
- ** \arch arm7/lpc2xxx
+ ** \file Adc_GetGroupStatus.c
+ **
  **/
 
 /** \addtogroup OpenDRV
@@ -51,91 +49,52 @@
 /** \addtogroup OpenDRV_Adc
  ** \ingroup OpenDRV
  ** @{ */
-/** \addtogroup OpenDRV_Adc_Internal
- ** \ingroup OpenDRV_Adc
- ** @{ */
-
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090528 v0.1.0 MaCe	initial version
- */  
+ * 20090529 v0.1.0 MaCe initial version
+ */
 
 /*==================[inclusions]=============================================*/
-#include "lpc2468.h"
-#include "Adc_Arch_Cfg.h"
+#include "Adc_Internal.h"
 
-/*==================[macros]=================================================*/
-#if (AdcDevErrorDetect == DISABLE)
-#endif /* #if (AdcDevErrorDetect == DISABLE) */
-/*==================[typedef]================================================*/
-/** \brief Numeric ID of an ADC channel
- **/
-typedef uint8 Adc_ChannelType;
+/*==================[macros and definitions]=================================*/
 
-/** \brief Numeric ID of an ADC channel group
- **/
-typedef uint8 Adc_GroupType;
+/*==================[internal data declaration]==============================*/
 
-/** \brief Type for reading the converted values of a channel group (raw,
- ** without further scaling, right aligned).
- **/
-typedef uint8 Adc_ValueGroupType;
+/*==================[internal functions declaration]=========================*/
 
-/** \brief Type of clock input for the conversion unit to select different
- ** clock sources, if provided by hardware. (This is not an API type).
- **/
-typedef uint8 Adc_ClockSourceType;
+/*==================[internal data definition]===============================*/
 
-/** \breif Type of clock prescaler factor. (This is not an API type).
- **/
-typedef uint8 Adc_PrescalerType;
+/*==================[external data definition]===============================*/
 
-/** \brief Type of conversion time, i.e. the time during which the sampled
- ** analoge value is converted into digital representation. (This is not an
- ** API type). */
-typedef uint8 Adc_ConversionTimeType;
+/*==================[internal functions definition]==========================*/
 
-/** \brief Type of sampling time, i.e. the time during which the is sampled,
- ** (in clock-cycles). (This is not an API type).
- **/
-typedef uint32 Adc_SamplingTimeType;
+/*==================[external functions definition]==========================*/
+/** TODO */
+/* #define OpenDRV_Adc_START_SEC_CODE
+ * #include "MemMap.h" */
 
-/** \brief Type of reference voltage source. (This is not an API type).
- **/
-typedef uint16 Adc_VoltageSourceType;
+Adc_StatusType Adc_GetGroupStatus
+(
+	Adc_GroupType Group
+)
+{
 
-/** \brief Type for configuring the number of group conversions in streaming
- ** access mode (in single acess mode, parameter is 1).
- **/
-typedef uint8 Adc_StreamNumSampleType;
+}
 
-/** \brief Type for the reload value of the ADC module embedded timer (only
- ** if supported by the ADC hardware).
- **/
-typedef uint8 Adc_HwTriggerTimerType;
+/** TODO */
+/* #define OpenDRV_Adc_STOP_SEC_CODE
+ * #include "MemMap.h" */
 
-/** \brief This is the type of data structure containing the initialization
- ** data for the ADC driver which is hardware specific
- **/
-typedef struct {
-} Adc_ConfigArchType;
-
-
-/*==================[external data declaration]==============================*/
-
-/*==================[external functions declaration]=========================*/
-
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _ADC_ARCH_H_ */
 

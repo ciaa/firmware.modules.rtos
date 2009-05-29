@@ -1,7 +1,10 @@
 -include OpenDRV$(DIR)Adc$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
 OPENDRV_ADC_OBJ +=		Adc_Init.o														\
-								Adc_Init_Arch.o												
+								Adc_Init_Arch.o												\
+								Adc_GetGroupStatus.o											\
+								Adc_ReadGroup.o												\
+								Adc_StartGroupConversion.o
 
 INCLUDE += 	-IOpenDRV$(DIR)Adc$(DIR)inc											\
 				-IOpenDRV$(DIR)Adc$(DIR)inc$(DIR)$(ARCH)							\
