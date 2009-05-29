@@ -65,6 +65,8 @@
 #include "os.h"		/* OSEK header file */
 #include "Mcu.h"		/* MCU Driver header file */
 #include "Dio.h"		/* DIO Driver header file */
+#include "Pwm.h"		/* PWM Driver header file */
+#include "Adc.h"		/* ADC Driver header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -106,10 +108,16 @@ TASK(InitTask)
 	Mcu_Init((Mcu_ConfigRefType)NULL);
 
 	/* init Clock */
-	(void)Mcu_InitClock((Mcu_ClockType)0);
+	(void)Mcu_InitClock((Mcu_ClockType)NULL);
 
 	/* init DIO Driver */
-	(void)Dio_Init((Dio_ConfigRefType)NULL);
+	(void)Dio_Init((Dio_ConfigType*)NULL);
+
+	/* init PWM Driver */
+	Pwm_Init((Pwm_ConfigType*)NULL);
+	
+	/* init ADC Driver */
+	Adc_Init((Adc_ConfigType*)NULL);
 
 	/* Task Activations oder:
 	 *

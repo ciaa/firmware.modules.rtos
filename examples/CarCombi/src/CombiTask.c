@@ -63,8 +63,9 @@
 
 /*==================[inclusions]=============================================*/
 #include "os.h"		/* OSEK header file */
-#include "Mcu.h"		/* MCU Driver header file */
 #include "Dio.h"		/* DIO Driver header file */
+#include "Pwm.h"		/* PWM Driver header file */
+#include "Adc.h"		/* ADC Driver header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -85,6 +86,9 @@
  **/
 TASK(CombiTask)
 {
+	/* get ADC values */
+	
+	/* set PWM values */
 
 	/* Chain to GearTask */
 	ChainTask(GearTask);
