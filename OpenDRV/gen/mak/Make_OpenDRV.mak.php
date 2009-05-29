@@ -10,7 +10,7 @@ else
 {
 	$drvconfig = $drvconfig[0];
 	print "# include sub drivers\n";
-	$drivers = array ("StartUp", "Dio", "Eth", "Mcu", "Pwm");
+	$drivers = array ("StartUp", "Dio", "Eth", "Mcu", "Pwm", "Adc");
 	foreach($drivers as $driver)
 	{
 		$value = $config->getValue("/OpenDRV/" . $drvconfig , $driver);
