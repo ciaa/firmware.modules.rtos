@@ -5,6 +5,7 @@
 <book>
 
 <bookinfo><title>FreeOSEK Manual</title>
+	<subtitle>Scalable Solution for your Embedded System</subtitle>
 	<authorgroup>
 		<author>
 			<firstname>Mariano</firstname>
@@ -12,9 +13,8 @@
 			<email>cerdeiro@users.sourceforge.net</email>
 		</author>
 	</authorgroup>
-	<date>31/05/2009</date>
-	<releaseinfo>0.1.0</releaseinfo>
-
+	<corpname>The FreeOSEK Project</corpname>
+	<releaseinfo>Version 0.1.0 - 31/05/2009</releaseinfo>
 	<abstract>
 		<para><application>FreeOSEK</application> is a scalable software solution for embedded software which main part is
 		the FreeOSEK RTOS based on OSEK-VDX RTOS specification. OSEK-VDX RTOS standard has been used successfully for more
@@ -41,41 +41,94 @@
 
 <chapter><title>Introduction</title>
 		<sect1><title>About this Manual</title>
-			<para>This is the FreeOSEK Project Manual. The FreeOSEK Project is a scalable software solution for embedded
-			software which main part is the FreeOSEK RTOS based on OSEK-VDX RTOS specification. This Manual do not
-			replace the OSEK-VDX RTOS specification which you may want to read <citation>OSEK</citation>.</para>
+			<para>This is the FreeOSEK Project Manual. This Manual do not replace other
+			available documentation, like for example the OSEK-VDX RTOS specification which
+			you may want to read <citation>OSEK</citation>.</para>
+		</sect1>
+		<sect1><title>Project history</title>
+			<para>The project started as an idea many years ago on my university years. At that moment (2004) I had only
+			few knowledge of embedded systems and no idea how to create a code generator which is an indispensable
+			part for an OSEK implementation. Some time aftar that in Jun 2008 I had the idea to use php as generator
+			and I start programming the first FreeOSEK version which was available in September 2008 for posix
+			arhcitectures by simulating the needed hardware of an embedded system.</para>
+			<para>After creating the first release I dicide to create a SourceForge.org project to try to find other
+			developers to help me with the work to do. The project was first registred as OpenSEK and now we are
+			waiting to be reanmed to FreeOSEK.</para>
 		</sect1>
 		<sect1><title>How to read this manual</title>
-			<para></para>
+			<para>You can choose how to read this manual but you have to know that the manual was not written to be
+			readed from top to bottom at ones. You can use it more as a reference book. Other important point
+			is that you may need to read other documentation indicated on the releated documents.</para>
 		</sect1>
 </chapter>
 
 <chapter><title>Getting Started</title>
 		<sect1><title>Get FreeOSEK</title>
-			<sect2><title>Check out from SVN server</title>
-				<para></para>
-			</sect2>
 			<sect2><title>Download an official release</title>
-				<para></para>
+				<para>The official <application>FreeOSEK</application> releases can be downloaded from
+				<ulink url="http://sourceforge.net/project/platformdownload.php?group_id=240313">SourceForge.net</ulink>
+				</para>
+			</sect2>
+			<sect2><title>Check out from SVN server</title>
+				<para>You can download FreeOSEK from the <glossterm linkend="svn">SVN</glossterm> server.
+				The repository is divided in 3 folders to know:</para>
+				<itemizedlist>
+					<listitem><para>trunk</para></listitem>
+					<listitem><para>releases</para></listitem>
+					<listitem><para>branches</para></listitem>
+				</itemizedlist>
+				<para>In <emphasis>trunk</emphasis> you can find the version of FreeOSEK under development. The trunk folder is
+				not always working, neither tested. So if you decide to help on the project development you may want to try it,
+				in other case we recommend you to take the realese folder where you can find stable FreeOSEK versions.</para>
+				<para>From <emphasis>releases</emphasis> folder you can check all releases.</para>
+				<para>We try to avoid using the <emphasis>branches</emphasis> folder, but not always is possible. Goal of this
+				is to perform paralel developments which can not be performed together on trunk, so the trunk is branched to a
+				folder under branches and when the paralel development is finished the result is merged to the trunk. If you are
+				not a developer member of the project do not check out from this folder.</para>
+				<para>To check out from <glossterm linkend="svn">SVN</glossterm> you can use any svn tool. In a unix-like
+				system or cygwin on windows we recommend you to use the <command>svn</command> command in following way:
+				<screen>
+				<prompt>bash$ </prompt><userinput>make freeosek</userinput> 
+				<prompt>bash$ </prompt><userinput>svn co https://opensek.svn.sourceforge.net/svnroot/opensek/trunk freeosek</userinput>
+				</screen>
+				If you are a windows user you may want to use <citation>Tortoise SVN</citation></para>
 			</sect2>
 		</sect1>
-		<sect1><title>Installing FreeOSEK</title>
-			<sect2><title>Installing on Windows</title>
-				<para></para>
-			</sect2>
-			<sect2><title>Installing on unix-like system</title>
-				<para></para>
-			</sect2>
+		<sect1><title>Installing and running</title>
+			<para>If you have download on FreeOSEK release you have to untar it before doing anything else:
+			<screen>
+				<prompt>bash$ </prompt><userinput>tar -xzf FreeOSEK_rel_x_x_x_YYYYMMDD_name</userinput>
+			</screen>
+			After this you have to edit the Makefile on the root directory and set the make variable ARCH
+			to the arch that you want to compile for. Valid ARCH are at the moment are:</para>
+			<itemizedlist>
+				<listitem><para>win</para></listitem>
+				<listitem><para>posix</para></listitem>
+				<listitem><para>arm7</para></listitem>
+			</itemizedlist>
+			<para>After selecting the right architecture you can execute the followings commands:
+			<screen>
+				<prompt>bash$ </prompt><userinput>make generate</userinput>
+				<prompt>bash$ </prompt><userinput>make</userinput>
+			</screen>
+			the binary file will be linked on /out/bin/FreeOSEK. If you dont change the original makefile you
+			will generate and compile the basic module tests for FreeOSEK. If you execute the executable after
+			compiling it for windows or posix you shall see the test cases number and OK, FAILED or NOTRUN on
+			the screen. If one or more of the test cases results are other than OK you are having problems.
+			You can contact the FreeOSEK team for support or try to debug by your self.</para>
 		</sect1>
 		<sect1><title>Getting Support</title>
+			<para>There are many ways to get free support. You can choose the way that you prefer, but we asked you
+			to check before if nobody else asks the same question before.</para>
 			<sect2><title>Forum</title>
-				<para></para>
+				<para>You can start a forum discussion about any problem you have under:
+				<ulink url="http://opensek.sourceforge.net/links/support-forum.php"></ulink>.</para>
 			</sect2>
 			<sect2><title>Mailing List</title>
-				<para></para>
+				<para>You can write a mail to the mailing list: <ulink url="https://opensek.sourceforge.net/links/support-mailinglist.php"></ulink></para>
 			</sect2>
 			<sect2><title>Support over Tracker</title>
-				<para></para>
+				<para>You can open a tracker: <ulink url="http://opensek.sourceforge.net/links/support-tracker.php"></ulink></para>
 			</sect2>
 		</sect1>
 		<sect1><title>Improving FreeOSEK</title>
@@ -228,6 +281,13 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			<para>Real Time Operating System</para>
 		</glossdef>
 	</glossentry>
+	
+	<glossentry id="svn"><glossterm>SVN</glossterm>
+		<acronym>SVN</acronym>
+		<glossdef>
+			<para>Subversion</para>
+		</glossdef>
+	</glossentry>
 </glossary>
 
 <appendix><title>FAQ</title>
@@ -310,6 +370,23 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			</publisher>
 			<title>OIL: OSEK Implementation Language - Version 2.5</title>
 			<pubdate>01.07.2004</pubdate>
+		</biblioentry>
+	</bibliodiv>
+	<bibliodiv><title>Tools</title>
+		<biblioentry>
+			<abbrev>Tortoise SVN</abbrev>
+			<!--authorgroup>
+				<author><surname>OSEK/VDX</surname></author>
+			</authorgroup-->
+			<!--copyright><holder>OSEK/VDX steering committee</holder></copyright-->
+			<!--editor><surname>OSEK</surname></editor-->
+			<!--isbn>0-201-10088-6</isbn-->
+			<publisher>
+				<publishername>Tigris.org</publishername>
+			</publisher>
+			<title><ulink url="http://tortoisesvn.net/docs/release/TortoiseSVN_en/index.html">TortoiseSVN</ulink></title>
+			<subtitle>A Subversion client for Windows - Version 1.6.1</subtitle>
+			<pubdate>17.02.2005</pubdate>
 		</biblioentry>
 	</bibliodiv>
 </bibliography>
