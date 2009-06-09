@@ -5,7 +5,7 @@
 <book>
 
 <bookinfo><title>FreeOSEK Manual</title>
-	<subtitle>Scalable Solution for your Embedded System</subtitle>
+	<subtitle> Scalable Solution for your Embedded System</subtitle>
 	<authorgroup>
 		<author>
 			<firstname></firstname>
@@ -13,7 +13,7 @@
 			<email>http://opensek.sourceforge.net</email>
 		</author>
 	</authorgroup>
-	<corpname>FreeOSEK Project</corpname>
+	<corpname>FreeOSEK Team</corpname>
 	<releaseinfo>Version 0.1.0 - 31/05/2009</releaseinfo>
 	<abstract>
 		<para><application>FreeOSEK</application> is a scalable software solution for embedded software which main part is
@@ -227,37 +227,90 @@
 	</sect1>
 </chapter>
 
-<chapter id="modules"><title>Modules</title>
-	<para>FreeOSEK Project is based on modules. Every module is a direcotry on the root FreeOSEK root
-	directory. Today available modules are:</para>
-	<itemizedlist>
-		<listitem><para><emphasis>FreeOSEK</emphasis>: FreeOSEK RTOS Module</para></listitem>
-		<listitem><para><emphasis>OpenGEN</emphasis>: Generator and Generic Files</para></listitem>
-		<listitem><para><emphasis>OpenDRV</emphasis>: Drivers</para></listitem>
-		<listitem><para><emphasis>TestSuite</emphasis>: Test Suite Module</para></listitem>
-		<listitem><para><emphasis>examples</emphasis>: Module containing some FreeOSEK examples</para></listitem>
-	</itemizedlist>
-	<para>Modules are not always active. To use a module on a specific project the makefile shall include it.
-	To find more details how to include a module please refer you to the next chapter.</para>
-	<sect1><title>Module Structure</title>
-		<para></para>
-	</sect1>
-</chapter>
-
 <chapter id="opengen"><title>Generic Files and Make Environment</title>
-	<para>TODO</para>
+	<sect1><title>Modules</title>
+		<para>FreeOSEK Project is based on modules. Every module is a direcotry on the root FreeOSEK root
+		directory. Today available modules are:</para>
+		<itemizedlist>
+			<listitem><para><emphasis>FreeOSEK</emphasis>: FreeOSEK RTOS Module</para></listitem>
+			<listitem><para><emphasis>OpenGEN</emphasis>: Generator and Generic Files</para></listitem>
+			<listitem><para><emphasis>OpenDRV</emphasis>: Drivers</para></listitem>
+			<listitem><para><emphasis>TestSuite</emphasis>: Test Suite Module</para></listitem>
+			<listitem><para><emphasis>examples</emphasis>: Module containing some FreeOSEK examples</para></listitem>
+		</itemizedlist>
+		<para>Modules are not always active. To use a module on a specific project the makefile shall include it.
+		To find more details how to include a module please refer you to the next chapter.</para>
+		<sect2><title>Module Structure</title>
+			<para>All modules are based on the same structure with the followings directories:</para>
+			<itemizedlist>
+				<listitem><para><emphasis>doc</emphasis>: documentation</para></listitem>
+				<listitem><para><emphasis>gen</emphasis>: generated files</para></listitem>
+				<listitem><para><emphasis>inc</emphasis>: header files</para></listitem>
+				<listitem><para><emphasis>mak</emphasis>: makefiles</para></listitem>
+				<listitem><para><emphasis>src</emphasis>: source files</para></listitem>
+				<listitem><para><emphasis>tst</emphasis>: test files</para></listitem>
+			</itemizedlist>
+			<para>Important is that the <emphasis>mak</emphasis> directory shall include the main <emphasis>Makefile</emphasis> for
+			the module which shall:</para>
+			<itemizedlist>
+				<listitem><para>include all other needed makefiles</para></listitem>
+				<listitem><para>set the files to be generated</para></listitem>
+				<listitem><para>set the path to the header files to be included</para></listitem>
+				<listitem><para>set the source files to be compiled</para></listitem>
+			</itemizedlist>
+		</sect2>
+	</sect1>
 </chapter>
 
 <chapter id="opendrv"><title>Drivers</title>
-	<para>TODO</para>
-		<sect1><title>Digital Input Output Driver</title>
-		<para></para>
+	<para>The Drivers on FreeOSEK Project can be found in the OpenDRV Module. There are many drivers planed for the future
+	and some of them actual on development.</para>
+	<sect1><title>Analog Digital Converter Driver</title>
+		<para>This driver controls the analog digital converter pins available on the processor. The driver is based on
+		<citation>AUTOSAR-ADC</citation> ADC Driver specification but is not 100% conform neither complete.</para>
+		<sect2><title>Types</title>
+			<para></para>
+		</sect2>
+		<sect2><title>Services</title>
+			<para></para>
+		</sect2>
+		<sect2><title>Configuration</title>
+			<para></para>
+		</sect2>
+	</sect1>
+	<sect1><title>Digital Input Output Driver</title>
+		<para>This driver controls the digital input and output pins available on the processor. The driver is based on
+		<citation>AUTOSAR-DIO</citation> DIO Driver specification but is not 100% conform neither complete.</para>
+		<sect2><title>Types</title>
+			<para></para>
+		</sect2>
+		<sect2><title>Services</title>
+			<funcsynopsis>
+				<funcprototype>
+					<funcdef>Dio_LevelType <function>Dio_ReadChannel</function></funcdef>
+					<paramdef>
+						Dio_ChannelType <parameter>ChannelID</parameter>,
+						DioDio_LevelType <parameter>Level</parameter>
+					</paramdef>
+				</funcprototype>
+			</funcsynopsis>
+		</sect2>
+		<sect2><title>Configuration</title>
+			<para></para>
+		</sect2>
 	</sect1>
 	<sect1><title>Pulse Width Modulator Driver</title>
-		<para></para>
-	</sect1>
-	<sect1><title>Analog Digital Converter Driver</title>
-		<para></para>
+		<para>This driver controls the pulse width modulated output pins available on the processor. The driver is based on
+		<citation>AUTOSAR-PWM</citation> PWM Driver specification but is not 100% conform neither complete.</para>
+		<sect2><title>Types</title>
+			<para></para>
+		</sect2>
+		<sect2><title>Services</title>
+			<para></para>
+		</sect2>
+		<sect2><title>Configuration</title>
+			<para></para>
+		</sect2>
 	</sect1>
 </chapter>
 
@@ -445,6 +498,24 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 </chapter>
 
 <glossary>
+	<glossentry id="adc"><glossterm>ADC</glossterm>
+		<acronym>ADC</acronym>
+		<glossdef>
+			<para>Analog Digital Converter</para>
+		</glossdef>
+	</glossentry>
+	<glossentry id="autosar"><glossterm>AUTOSAR</glossterm>
+		<acronym>AUTOSAR</acronym>
+		<glossdef>
+			<para><ulink url="http://www.autosar.org">Automotive Open System Architecture</ulink></para>
+		</glossdef>
+	</glossentry>
+	<glossentry id="dio"><glossterm>DIO</glossterm>
+		<acronym>DIO</acronym>
+		<glossdef>
+			<para>Digital Input/Output</para>
+		</glossdef>
+	</glossentry>
 	<glossentry id="hal"><glossterm>HAL</glossterm>
 		<acronym>HAL</acronym>
 		<glossdef>
@@ -467,6 +538,12 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 	</glossentry>
 	<glossentry id="osek-vdx"><glossterm>OSEK-VDX</glossterm>
 		<glosssee otherterm="osek"/>
+	</glossentry>
+	<glossentry id="pwm"><glossterm>PWM</glossterm>
+		<acronym>PWM</acronym>
+		<glossdef>
+			<para>Pulse Widht Modulation</para>
+		</glossdef>
 	</glossentry>
 	<glossentry id="rtos"><glossterm>RTOS</glossterm>
 		<acronym>RTOS</acronym>
@@ -536,6 +613,34 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 
 <bibliography><title>Related Documentation</title>
 	<bibliodiv><title>Specifications</title>
+		<biblioentry>
+			<abbrev>AUTOSAR-ADC</abbrev>
+			<publisher>
+				<publishername>AUTOSAR</publishername>
+			</publisher>
+			<title><ulink url="http://www.autosar.org/download/specs_aktuell/AUTOSAR_SWS_ADC_Driver.pdf">Specification of ADC Driver
+			- Document Version: 3.0.3</ulink></title>
+			<pubdate>15.08.2008</pubdate>
+		</biblioentry>
+		<biblioentry>
+			<abbrev>AUTOSAR-DIO</abbrev>
+			<publisher>
+				<publishername>AUTOSAR</publishername>
+			</publisher>
+			<title><ulink url="http://www.autosar.org/download/specs_aktuell/AUTOSAR_SWS_PWM_Driver.pdf">Specification of PWM Driver
+			- Document Version: 2.2.2</ulink></title>
+			<pubdate>15.08.2008</pubdate>
+		</biblioentry>
+		<biblioentry>
+			<abbrev>AUTOSAR-PWM</abbrev>
+			<publisher>
+				<publishername>AUTOSAR</publishername>
+			</publisher>
+			<title><ulink url="http://www.autosar.org/download/specs_aktuell/AUTOSAR_SWS_DIO_Driver.pdf">Specification of DIO Driver
+			- Document Version: 2.2.2</ulink></title>
+			<pubdate>15.08.2008</pubdate>
+		</biblioentry>
+
 		<biblioentry>
 			<abbrev>OSEK</abbrev>
 			<!--authorgroup>
