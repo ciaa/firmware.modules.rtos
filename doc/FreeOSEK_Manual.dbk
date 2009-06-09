@@ -8,12 +8,12 @@
 	<subtitle>Scalable Solution for your Embedded System</subtitle>
 	<authorgroup>
 		<author>
-			<firstname>Mariano</firstname>
-			<surname>Cerdeiro</surname>
-			<email>cerdeiro@users.sourceforge.net</email>
+			<firstname></firstname>
+			<surname>FreeOSEK Team</surname>
+			<email>http://opensek.sourceforge.net</email>
 		</author>
 	</authorgroup>
-	<corpname>The FreeOSEK Project</corpname>
+	<corpname>FreeOSEK Project</corpname>
 	<releaseinfo>Version 0.1.0 - 31/05/2009</releaseinfo>
 	<abstract>
 		<para><application>FreeOSEK</application> is a scalable software solution for embedded software which main part is
@@ -133,32 +133,102 @@
 		</sect1>
 		<sect1><title>Improving FreeOSEK</title>
 			<sect2><title>Report Bugs</title>
-				<para></para>
+				<para>Bugs can be reported in the bug tracker of FreeOSEK Project in SourceForge.net:
+				<ulink url="http://opensek.sourceforge.net/externlink.php?LINK=http%3A%2F%2Fsourceforge.net%2Ftracker%2F%3Ffunc%3Dadd%26amp%3Bgroup_id%3D240313%26amp%3Batid%3D1112670"></ulink>.</para>
 			</sect2>
 			<sect2><title>Request Improvements</title>
-				<para></para>
+				<para>Improvements or new features can be reported in the feature requested of FreeOSEK Project in SourceForge.net:
+				<ulink url="http://opensek.sourceforge.net/externlink.php?LINK=https%3A%2F%2Fsourceforge.net%2Ftracker%2F%3Ffunc%3Dadd%26amp%3Bgroup_id%3D240313%26amp%3Batid%3D1112673"></ulink>.</para>
 			</sect2>
 			<sect2><title>Get Involved</title>
-				<para></para>
+				<para>We are always seeking for new and motivated developers, users and anyone with new ideas to support and cooperate with FreeOSEK Project.
+				You don't need to have all listed skills to participate, but at least one of two of them may help.</para>
+				<itemizedlist>
+					<listitem><para>c</para></listitem>
+					<listitem><para>php</para></listitem>
+					<listitem><para>perl</para></listitem>
+					<listitem><para>gnu make</para></listitem>
+					<listitem><para>microcontrollers porters</para></listitem>
+					<listitem><para>bus experts (tcpip/can/etc.)</para></listitem>
+				</itemizedlist>
+				<para>By coding you may help the project with for example one of the following tasks:</para>
+				<itemizedlist>
+					<listitem><para>Porting FreeOSEK to new architectures</para></listitem>
+					<listitem><para>Writing new FreeOSEK modules</para></listitem>
+					<listitem><para>Testing FreeOSEK</para></listitem>
+				</itemizedlist>
+				<para>In case that you want to support the project but wihtout coding, you can do it too, for example by:</para>
+				<itemizedlist>
+					<listitem><para>Using FreeOSEK</para></listitem>
+					<listitem><para>Writing Documentation</para></listitem>
+					<listitem><para>Correcting the Documentation</para></listitem>
+					<listitem><para>Promoting FreeOSEK in your company, university, etc.</para></listitem>
+					<listitem><para>Writing a review of FreeOSEK</para></listitem>
+					<listitem><para>Linking us</para></listitem>
+					<listitem><para>Asking for new Features</para></listitem>
+					<listitem><para>Leaving your opinion of FreeOSEK</para></listitem>
+				</itemizedlist>
+				<para>And at last but not at least you may want to contribute with the project with a donation:</para>
+				<itemizedlist>
+					<listitem><para>Direct money donation in SoruceForge</para></listitem>
+					<listitem><para>Contact the team for special donations</para></listitem>
+					<listitem><para>Providing new Development Boards</para></listitem>
+					<listitem><para>Providing Debugger or other Hardware</para></listitem>
+				</itemizedlist>
 			</sect2>
 		</sect1>
 </chapter>
 
 <chapter><title>Generation Concept</title>
-	<para></para>
+	<para>FreeOSEK is a pre configurable system. This means that the FreeOSEK RTOS and
+	all other componets (modules and drivers) are generated in based on the 
+	confiugration. Goal is to keep the system a small as necesary but with all
+	necesary features.</para>
+	<sect1><title>Configuration</title>
+		<para>Today only the OIL format (see <citation>OIL</citation>) is supported for the
+		configuration. In the future new	formats are planed, like for example a xml based
+		configurations.</para>
+		<para>FreeOSEK itselfs do not provide any confiugration tool, so the configuration
+		can be written manually by de user or using an other configuration tool. We
+		recommend to perform it manually or using a OIL configurator, like for example
+		<citation>GOBX</citation>.</para>
+		<para>The OIL format is specified by OSEK-VDA, refer you to todo OIL, anyway
+		the OIL format used by FreeOSEK is not 100% conform to
+		the specification, at least not right now. And the Language has extensions,
+		since there is no specification of OIL for for example the HAL (drivers).</para>
+		<para>To have an overview of the OIL statements for every FreeOSEK Module
+		to refer you to the todo Configuration chapter of the module that you want
+		to configure.</para>
+	</sect1>
+	<sect1><title>Generation</title>
+		<para>With the configuration complete the generation process can be started.
+		This process takes the project OIL configurations files which are referred over
+		the makefiles and parse them in the following way:</para>
+		<itemizedlist>
+			<listitem><para>parser</para></listitem>
+			<listitem><para>config</para></listitem>
+			<listitem><para>generator</para></listitem>
+			<listitem><para>files to be generated 1..n</para></listitem>
+		</itemizedlist>
+		<para>The first step of the generation is the parser, today only an OIL format
+		parser is available. The parser takes the input files and parse the parameters and
+		values.</para>
+		<para>The parsed information is communicated to the config class which saves all
+		configured information in a standard way. The idea behind this is to have a generic
+		configuration class for any type of parser.</para>
+		<para>With the user configuration available into the config class the generator will
+		execute one by one all files to be generated. Each file to be generated may take information
+		of the config class to generate the right code for the system. The generator will
+		report all the errors and warnings found by the generated files to the user. One extra
+		feature of the generator is that all generated files will be checked for changes, if at least
+		one file was updated the generator will be called again. This allows the generator to generate
+		for example makefiles which will change the generation process the next time that the generator
+		is called</para>
+	</sect1>
 </chapter>
 
 <chapter><title>Modules</title>
-		<sect1>
-		<title>Getting FreeOSEK</title>
-			<para>You can download</para>
-
-		</sect1>
-		<sect1>
-		<title>Installing FreeOSEK on unix-like system</title>
-
-			<para></para>
-		</sect1>
+	<para>FreeOSEK Project is a module based project. </para>
 </chapter>
 
 <chapter><title>Generic Files and Make Environment</title>
@@ -180,18 +250,79 @@
 
 <chapter><title>Real Time Operating System</title>
 	<sect1><title>Introduction</title>
-		
 		<para>FreeOSEK RTOS is a free and open source implementation of the Real Time Operating System specified
 		by OSEK-VDX. The phylosophy of this RTOS is to provide a system with standardised interfaces, scalabilty,
 		standard error checking mechanismus and portable.</para>
-
+		<para>This chapter will explain only the basic ideas of an OSEK system specially of FreeOSEK but for
+		more details please refer you to <citation>OSEK</citation> where you can find the OSEK-VDX specifications.</para>
 		<sect2><title>Run Levels</title>
-
 			<para>FreeOSEK provides two types of run levels:</para>
 			<itemizedlist>
 				<listitem><para>Task level</para></listitem>
 				<listitem><para>ISR level</para></listitem>
 			</itemizedlist>
+			<para>This means that code will be executed alway in one of this both contexts.</para>
+			<sect3><title>Task Level</title>
+				<para>On the task level the system will execute tasks. But different as in Windows or Linux on FreeOSEK
+				the tasks are defined statically on configuration time as you sow on (todo link to chapter generation).
+				This means that after generating and compiling the system, no more taks can be added. It is not possibly to
+				create new tasks in a dynamic way.</para>
+				<para>There are two types of supported tasks:</para>
+				<itemizedlist>
+					<listitem><para>Basic</para></listitem>
+					<listitem><para>Extended</para></listitem>
+				</itemizedlist>
+				<para>The difference between both types of tasks are the supported states. Basic tasks have
+				the following states:</para>
+				<itemizedlist>
+					<listitem><para><emphasis>Running</emphasis>: the task is beeing execute by the processor, only one task at the time can be on this state.</para></listitem>
+					<listitem><para><emphasis>Ready</emphasis>: the task is ready and waiting to be executed on the execution queue.</para></listitem>
+					<listitem><para><emphasis>Suspended</emphasis>: the task is stopped.</para></listitem>
+				</itemizedlist>
+				<para>Extra to these states the <emphasis>Extended Tasks</emphasis> can be in <emphasis>Waiting</emphasis> state:</para>
+				<itemizedlist>
+					<listitem><para><emphasis>Waiting</emphasis>: the task is waiting for the occurence of one or more events.</para></listitem>
+				</itemizedlist>
+				<para>Not all convinations of state changes are allowed, here a list of allowed task state changes:</para>
+				<itemizedlist>
+					<listitem><para><emphasis>activate</emphasis>: the task is moved from the suspended state to the ready state</para></listitem>
+					<listitem><para><emphasis>start</emphasis>: the task is moved from the ready state to the running state</para></listitem>
+					<listitem><para><emphasis>preempt</emphasis>: the taks is moved from the running state to the ready state</para></listitem>
+					<listitem><para><emphasis>teminate</emphasis>: the task is moved from the running state to the suspended state</para></listitem>
+				</itemizedlist>
+				<para>For <emphasis>Extended tasks</emphasis> two extra state changes are allowed:</para>
+				<itemizedlist>
+					<listitem><para><emphasis>wait</emphasis>: the taks is moved from the running state to the waiting state</para></listitem>
+					<listitem><para><emphasis>release</emphasis>: the task is moved from the waiting state to the ready state</para></listitem>
+				</itemizedlist>
+				<sect4><title>Priority</title>
+					<para>The scheduler decides in function of the task priority, which is the next task to be started. When two tasks
+					have the same priority the task which was activated first will be executed. This means that the RTOS will use a
+					(todo glosary) FIFO for each priority. On a task activation the task index will be set on the corresponding FIFO.</para>
+					<para>Task priorites are set on configuration time and a higer value represents a higher priority. The priority shall
+					be a number between 0 and 255.</para>
+				</sect4>
+				<sect4><title>Preemptive vs. Non-Preemptive tasks</title>
+					<para>The RTOS support two types of scheduling policies. Every task can be configured as preemptive or non-preemptive. If
+					all system tasks are configured as preemptive or non-preemptive we speak from a preemptive or non-preemptive system. In
+					other cases if both types of tasks are used the system will be a mix-preemptive system.</para>
+					<sect5><title>Preemptive tasks</title>
+						<para>A <emphasis>preemptive</emphasis> task can be preempted (interrupted) while running and set back to ready state
+						in case that a higher priority task is ready to be executed. If a task with a low priority takes a long time to be
+						executed maybe is a good idea to set it as preemptive, in other case it may block other higher priority tasks
+						until the execution is completed.</para>
+					</sect5>
+					<sect5><title>Non-Preemptive tasks</title>
+						<para>A <emphasis>non-preemptive</emphasis> task can not be preempted (interrupted) while running. This means that
+						a non-preemptive task may block higher priority task to be executed on time. Non-Preemptive scheduling is recommended
+						for short tasks where the preemption time is comparable with the execution time and for high priority tasks where
+						the blocked task may not be so critical.</para>
+						<para>It is important to see that Non-Preemptive tasks have an extra indirect advantage and is that a Non-Preemptive task
+						can share the stack with other Non-Preemptive tasks and do not need any Task Context since not task switch will occur.
+						This will make the RTOS a litlle bit smaller and consum less RAM.</para>
+					</sect5>
+				</sect4>
+			</sect3>
 		</sect2>
 	</sect1>
 	<sect1><title>Data type</title>
@@ -263,6 +394,12 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			<para>Hardware Abstraction Layer</para>
 		</glossdef>
 	</glossentry>
+	<glossentry id="oil"><glossterm>OIL</glossterm>
+		<acronym>OIL</acronym>
+		<glossdef>
+			<para>OSEK Implementation Language</para>
+		</glossdef>
+	</glossentry>
 	<glossentry id="osek"><glossterm>OSEK</glossterm>
 		<acronym>OSEK</acronym>
 		<glossdef>
@@ -274,14 +411,12 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 	<glossentry id="osek-vdx"><glossterm>OSEK-VDX</glossterm>
 		<glosssee otherterm="osek"/>
 	</glossentry>
-
 	<glossentry id="rtos"><glossterm>RTOS</glossterm>
 		<acronym>RTOS</acronym>
 		<glossdef>
 			<para>Real Time Operating System</para>
 		</glossdef>
 	</glossentry>
-	
 	<glossentry id="svn"><glossterm>SVN</glossterm>
 		<acronym>SVN</acronym>
 		<glossdef>
@@ -373,6 +508,13 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		</biblioentry>
 	</bibliodiv>
 	<bibliodiv><title>Tools</title>
+		<biblioentry>
+			<abbrev>GOBX</abbrev>
+			<publisher>
+				<publishername>Sam Wang</publishername>
+			</publisher>
+			<title><ulink url="http://tortoisesvn.net/docs/release/TortoiseSVN_en/index.html">The free OSEK configuration builder</ulink></title>
+		</biblioentry>
 		<biblioentry>
 			<abbrev>Tortoise SVN</abbrev>
 			<!--authorgroup>
