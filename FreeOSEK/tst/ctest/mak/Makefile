@@ -20,6 +20,7 @@ CFLAGS += -D$(PROJECT)
 ctestclean :
 
 ctest :
+	mkdir -p out$(DIR)doc$(DIR)ctest
 	@echo GDB:$(GDB)> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
 	@echo BINDIR:$(BINDIR)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
 	@echo DIR:$(DIR)>> out$(DIR)doc$(DIR)ctest$(DIR)ctest.cnf
