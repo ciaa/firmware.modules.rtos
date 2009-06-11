@@ -8,7 +8,7 @@
 #	- posix
 #  - win
 #  - arm
-ARCH = arm7
+ARCH = posix
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
@@ -36,10 +36,16 @@ COMPILER = gcc
 # examples/Blinking	Blinking Leds Example
 #
 
-MODS +=	examples/Blinking			\
+MODS +=	TestSuite					\
 			OpenGEN						\
 			OpenDRV						\
-			FreeOSEK
+			FreeOSEK						\
+			FreeOSEK/tst/ctest
+
+#MODS +=	examples/CarCombi			\
+#			OpenGEN						\
+#			OpenDRV						\
+#			FreeOSEK
 
 #MODS += 	tst/moduletest01		\
 #			OpenGEN						\
@@ -54,6 +60,12 @@ MODS +=	examples/Blinking			\
 #			TestSuite
 #			uIP							
 #			embPOSIX
+
+#MODS +=	examples/Interrupts		\
+#			OpenGEN						\
+#			OpenDRV						\
+#			FreeOSEK
+
 
 all: FreeOSEK
 
