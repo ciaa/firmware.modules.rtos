@@ -23,6 +23,8 @@
 		only the RAM/ROM consumption but the runtime and real time characteristics, as well. For example usually you may need
 		between 2 - 10 kB for the FreeOSEK RTOS, which may vary according to the platform, compiler, compiler options,
 		configuration, etc. This makes FreeOSEK best suitable for small and fast real time embedded systems.</para>
+		<para><warning><para>We are working on this document so it may change fast and may contect unespected and unwanted
+		errors.</para></warning></para>
 	</abstract>
 
 	<keywordset>
@@ -59,6 +61,14 @@
 			<para>You can choose how to read this manual but you have to know that the manual was not written to be
 			readed from top to bottom at ones. You can use it more as a reference book. Other important point
 			is that you may need to read other documentation indicated on the releated documents.</para>
+		</sect1>
+		<sect1><title>License</title>
+			<para>FreeOSEK is licensed as GPL v3 with a link exception. This means that FreeOSEK is free and open
+			source conform GPL v3, but thanks the link exception FreeOSEK can be linked together with other
+			software with different type of licensing (open or privative). In this way FreeOSEK can be used
+			for commercial purposes.</para>
+			<para>You should have received a copy of the GNU General Public License along with FreeOSEK.
+			If not, see <ulink url="http://www.gnu.org/licenses/"></ulink>.</para>
 		</sect1>
 </chapter>
 
@@ -285,15 +295,20 @@
 			<para></para>
 		</sect2>
 		<sect2><title>Services</title>
-			<funcsynopsis>
-				<funcprototype>
-					<funcdef>Dio_LevelType <function>Dio_ReadChannel</function></funcdef>
-					<paramdef>
-						Dio_ChannelType <parameter>ChannelID</parameter>,
-						DioDio_LevelType <parameter>Level</parameter>
-					</paramdef>
-				</funcprototype>
-			</funcsynopsis>
+			<sect3><title>Dio_ReadChannel</title>
+				<funcsynopsis>
+					<funcprototype>
+						<funcdef>Dio_LevelType <function>Dio_ReadChannel</function></funcdef>
+						<paramdef>
+							Dio_ChannelType <parameter>ChannelID</parameter>,
+							DioDio_LevelType <parameter>Level</parameter>
+						</paramdef>
+					</funcprototype>
+				</funcsynopsis>
+				<para>The Dio_ReadChannel service shall used to read the state of a specific channel. This service
+				is implemented as function if DioDevErrorDetect is ENABLE and as macro if DioDevErrorDetect is DISABLE.</para>
+				<note><para>At the moment the service is only provided as macro and DioDevErrorDetect can only be disabled.</para></note>
+			</sect3>
 		</sect2>
 		<sect2><title>Configuration</title>
 			<para></para>
@@ -432,17 +447,17 @@
 			</sect3>
 		</sect2>
 		<sect2><title>ISR Level</title>
-			<para>During an interrupt the RTOS will be TODO</para>
+			<para>TODO</para>
+		</sect2>
+		<sect2><title>Alarms</title>
+			<para>TODO</para>
 		</sect2>
 	</sect1>
 	<sect1><title>Data type</title>
-
 		<para></para>		
 	</sect1>
 	<sect1><title>Services</title>
-
 		<para></para>
-
 		<funcsynopsis>
 			<funcsynopsisinfo>#include "os.h"</funcsynopsisinfo>
 			<funcprototype>
@@ -460,27 +475,88 @@ This function may return E_OK or E_OS_LIMIT in standard mode. Extra in extended 
 If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is not beeing executed the ErrorHook function will be called.</para-->
 			</funcprototype>
 		</funcsynopsis>
-
 	</sect1>
 	<sect1><title>Platform specific implementation</title>
 		<sect2><title>FreeOSEK RTOS on POSIX Systems</title>
-			<para></para>
+			<para>FreeOSEK uses some posix services to simulate an embedded hardware, for example the interrupts and timers.
+			For the interrupt mechanisms a message queue with signal is used. Every time that you send a message of only one
+			byte to the message queue /dev/mqueue/BINNAME where BINNAME is the binary name of the project defined in the
+			Makefile with the PROJECT variable. As defualt /dev/mqueue/FreeOSEK. The received byte in this queue is
+			interprated as the interrupt number.</para>
+			<sect3><title>Timer Simulations</title>
+				<para>The POSIX variant has two simulated HW timers which have an interrupt every 10ms. Anyway alarms are
+				not working on the prebeta release.</para>
+			</sect3>
 		</sect2>
 		<sect2><title>FreeOSEK RTOS on Windows</title>
-
-			<para></para>
+			<para>To simulate the interrupts on windows you are going to need an extra packet of cywgin called
+			<emphasis>cygrunsrv</emphasis> you can find it in the <emphasis>admin tools</emphasis> on the cygwin
+			configuration.</para>
+			<para>After installing the packet you have to configure and start the <emphasis>cygserver</emphasis>
+			for the first time, the server will to take care of the IPC for the interrupts simulations on Windows. 
+			You can run the following command to create the default configuration:
+			<screen>
+				<prompt>bash$ </prompt><userinput>cygserver-config</userinput>
+				<prompt></prompt><userinput> ... </userinput>
+			</screen>
+			After loading the default configuration you can use following commands to start and stop the server respectivly:
+			<screen>
+				<prompt>bash$ </prompt><userinput>net start cygserver</userinput>
+				<prompt></prompt><userinput> ... </userinput>
+			</screen>
+			<screen>
+				<prompt>bash$ </prompt><userinput>net stop cygserver</userinput>
+				<prompt></prompt><userinput> ... </userinput>
+			</screen>
+			At last you have to enable the server into your environment setting the CYGWIN environment variable to server, for
+			example running:
+			<screen>
+				<prompt>bash$ </prompt><userinput>export CYGWIN=server</userinput>
+			</screen>
+			</para>
 		</sect2>
 		<sect2><title>FreeOSEK RTOS on ARM7</title>
-
-			<para></para>
+			<para>TODO</para>
 		</sect2>
 		<sect2><title>Porting FreeOSEK RTOS to new architectures</title>
-
-			<para></para>
+			<para>Before starting to port FreeOSEK to a new platform you will need to fullfill following points:</para>
+			<itemizedlist>
+				<listitem><para>to have a good background of the platform</para></listitem>
+				<listitem><para>to have a good background of the assembler of the platform</para></listitem>
+				<listitem><para>to have good c embedded programming know how</para></listitem>
+				<listitem><para>to have some php and gnu make know how</para></listitem>
+				<listitem><para>to have at least one evaluation board</para></listitem>
+				<listitem><para>to have a debugger</para></listitem>
+				<listitem><para>to have the corresponding toolchain including, debugging software, linker, compiler, etc.</para></listitem>
+				<listitem><para>at least 100 hours to invest on this task (around of one or two months of open source working time)</para></listitem>
+			</itemizedlist>
+			<para>The best way to start with the port is to use the <emphasis>tmparch</emphasis> (template architecture) or an other architecture
+			as a start point. The <emphasis>arm7</emphasis> is actually the most stable supported hardware so we recommend you to use this
+			as example, but you work has to be based on the template.</para>
+			<para>Use the SVN copy command to create a new architecture with the right name, take into account that you will need upto 3
+			names to disting your hardware from others:
+			<itemizedlist>
+				<listitem><para><emphasis>ARCH</emphasis>: for example arm7</para></listitem>
+				<listitem><para><emphasis>CPUTYPE</emphasis>: for example lpc2xxx</para></listitem>
+				<listitem><para><emphasis>CPU</emphasis>: for example lpc2468</para></listitem>
+			</itemizedlist>
+			In some cases only two deeph levels are needed, in such cases you can use ARCH and CPUTYPE avoding CPU. But you always have to use
+			two depth levels, in other cases something is going wrong.</para>
+			<para>The template architecture is so much and good documented as possibly. So please try to use other architectures as examples
+			but always read the template. You will find a lot of <emphasis>error</emphasis> compiler directives on the template so you can
+			write the code an remove the comments.</para>
 		</sect2>
 	</sect1>
-	<sect1><title>Test Concept</title>
-		<para></para>
+	<sect1><title>Conformance Test</title>
+		<para>OSEK-VDX consortium specifies not only the RTOS also the test method too. The FreeOSEK OS is
+		tested under the specified test specifications provided by OSEK-VDX:</para>
+		<itemizedlist>
+			<listitem><para><citation>OSEK-TM</citation>: specifies the test methodology</para></listitem>
+			<listitem><para><citation>OSEK-OS-TPL</citation>: specifies the operating system test plan</para></listitem>
+			<listitem><para><citation>OSEK-OS-TPR</citation>: specifies the operating system test procedure</para></listitem>
+		</itemizedlist>
+		<note><para>The last specification from OSEK-VDX OS is from year 2005 while the last update of
+		the OSEK-VDX test concept is from year 1999.</para></note>
 	</sect1>
 </chapter>
 
@@ -522,6 +598,12 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			<para>Hardware Abstraction Layer</para>
 		</glossdef>
 	</glossentry>
+	<glossentry id="ipc"><glossterm>IPC</glossterm>
+		<acronym>IPC</acronym>
+		<glossdef>
+			<para>Inter Process Communication</para>
+		</glossdef>
+	</glossentry>
 	<glossentry id="oil"><glossterm>OIL</glossterm>
 		<acronym>OIL</acronym>
 		<glossdef>
@@ -559,58 +641,6 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 	</glossentry>
 </glossary>
 
-<appendix><title>FAQ</title>
-	<qandaset>
-		<qandaentry>
-			<question>
-				<para>What is FreeOSEK?</para>
-			</question>
-			<answer>
-				<para>FreeOSEK is a scalable RTOS for embedded systems based on OSEK-VDX specification.
-				OSEK-VDX RTOS standard has been used successfully for more than a decade in the car industry.</para>
-				<para>FreeOSEK is a static configurable RTOS where only the needed resources are created. This
-				feature improves not only the RAM/ROM consumption but the runtime and real time characteristics,
-				as well. For example usually you may need between 2 - 10 kB for the FreeOSEK RTOS, which may vary
-				according to the platform, compiler, compiler options, configuration, etc. This makes FreeOSEK best
-				suitable for small and fast real time embedded systems.</para>
-			</answer>
-		</qandaentry>
-		<qandaentry>
-			<question>
-				<para>Can I use FreeOSEK for commercial purposes?</para>
-			</question>
-			<answer>
-				<para>Yes, you can use FreeOSEK for commercial purposes and distribute your code with a different
-				licensing type other than GPL v3. FreeOSEK is released as GPL3 with Link Exception.</para>
-			</answer>
-		</qandaentry>
-	</qandaset>
-</appendix>
-
-<appendix><title>Documents history</title>
-	<table>
-		<title>Documents history</title>
-		<tgroup cols="4">
-			<thead>
-				<row>
-					<entry>Date</entry>
-					<entry>Version</entry>
-					<entry>Author</entry>
-					<entry>Changes</entry>
-				</row>
-			</thead>
-			<tbody>
-				<row>
-					<entry>31.05.2009</entry>
-					<entry>0.1.0</entry>
-					<entry>Mariano Cerdeiro</entry>
-					<entry>initial version</entry>
-				</row>
-			</tbody>
-		</tgroup>
-	</table>
-</appendix>
-
 <bibliography><title>Related Documentation</title>
 	<bibliodiv><title>Specifications</title>
 		<biblioentry>
@@ -640,7 +670,6 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			- Document Version: 2.2.2</ulink></title>
 			<pubdate>15.08.2008</pubdate>
 		</biblioentry>
-
 		<biblioentry>
 			<abbrev>OSEK</abbrev>
 			<!--authorgroup>
@@ -654,6 +683,40 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			</publisher>
 			<title>OSEK/VDX Operating System Specification - Version 2.2.3</title>
 			<pubdate>17.02.2005</pubdate>
+		</biblioentry>
+		<biblioentry>
+			<abbrev>OSEK-TM</abbrev>
+			<publisher>
+				<publishername>OSEK-VDX</publishername>
+			</publisher>
+			<title><ulink url="http://portal.osek-vdx.org/files/pdf/modistarc/tmeth20.pdf">Conformance Testing Methodology
+			- Document Version: 2.0</ulink></title>
+			<pubdate>16.04.1999</pubdate>
+		</biblioentry>
+		<biblioentry>
+			<abbrev>OSEK-OS-TPL</abbrev>
+			<publisher>
+				<publishername>OSEK-VDX</publishername>
+			</publisher>
+			<title><ulink url="http://portal.osek-vdx.org/files/pdf/modistarc/ostestplan20.pdf">OS Test Plan
+			- Document Version: 2.0</ulink></title>
+			<pubdate>16.04.1999</pubdate>
+		</biblioentry>
+		<biblioentry>
+			<abbrev>OSEK-OS-TPR</abbrev>
+			<publisher>
+				<publishername>OSEK-VDX</publishername>
+			</publisher>
+			<title><ulink url="http://portal.osek-vdx.org/files/pdf/modistarc/ostestproc20.pdf">OS Test Procedure
+			- Document Version: 2.0</ulink></title>
+			<pubdate>16.04.1999</pubdate>
+		</biblioentry>
+		<biblioentry>
+			<abbrev>OSEK-VDX</abbrev>
+			<publisher>
+				<publishername>OSEK-VDX</publishername>
+			</publisher>
+			<title><ulink url="http://www.osek-vdx.org">OSEK-VDX</ulink></title>
 		</biblioentry>
 		<biblioentry>
 			<abbrev>OIL</abbrev>
@@ -675,7 +738,7 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			<publisher>
 				<publishername>Sam Wang</publishername>
 			</publisher>
-			<title><ulink url="http://tortoisesvn.net/docs/release/TortoiseSVN_en/index.html">The free OSEK configuration builder</ulink></title>
+			<title><ulink url="http://gobx.sourceforge.net/">The free OSEK configuration builder</ulink></title>
 		</biblioentry>
 		<biblioentry>
 			<abbrev>Tortoise SVN</abbrev>
@@ -688,8 +751,7 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			<publisher>
 				<publishername>Tigris.org</publishername>
 			</publisher>
-			<title><ulink url="http://tortoisesvn.net/docs/release/TortoiseSVN_en/index.html">TortoiseSVN</ulink></title>
-			<subtitle>A Subversion client for Windows - Version 1.6.1</subtitle>
+			<title><ulink url="http://tortoisesvn.net/docs/release/TortoiseSVN_en/index.html">TortoiseSVN - A Subversion client for Windows - Version 1.6.1</ulink></title>
 			<pubdate>17.02.2005</pubdate>
 		</biblioentry>
 	</bibliodiv>
