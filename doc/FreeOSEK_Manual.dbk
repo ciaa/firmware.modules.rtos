@@ -555,8 +555,33 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			<listitem><para><citation>OSEK-OS-TPL</citation>: specifies the operating system test plan</para></listitem>
 			<listitem><para><citation>OSEK-OS-TPR</citation>: specifies the operating system test procedure</para></listitem>
 		</itemizedlist>
-		<note><para>The last specification from OSEK-VDX OS is from year 2005 while the last update of
+		<note><para>the last specification from OSEK-VDX OS is from year 2005 while the last update of
 		the OSEK-VDX test concept is from year 1999.</para></note>
+		<para>As specified the FreeOSEK OS tests are separated in:
+		<itemizedlist>
+			<listitem><para>test type</para></listitem>
+			<listitem><para>test sequence</para></listitem>
+			<listitem><para>test compilation</para></listitem>
+			<listitem><para>test cases</para></listitem>
+		</itemizedlist>
+		<para>Only the terms <emphasis>test sequence</emphasis> and <emphasis>test case</emphasis> are defined by the
+		specifications. The others two terms <emphasis>test type</emphasis> and <emphasis>test compilation</emphasis>
+		were added by us to simplify the explanation.</para>
+		<para>Since test sequences are separated in types:
+		<itemizedlist>
+			<listitem><para>task management</para></listitem>
+			<listitem><para>interrupt processing</para></listitem>
+			<listitem><para>event mechanism</para></listitem>
+			<listitem><para>resource management</para></listitem>
+			<listitem><para>alarms</para></listitem>
+			<listitem><para>error handling, hook routines and OS execution control</para></listitem>
+		</itemizedlist>
+		We call every one of these sequences alone a test type. Every test sequence is compiled more than one time using
+		similar but not equal OS configuration. Every compilation of one test sequence is called <emphasis>test
+		compilation</emphasis>. And at last but not at least every <emphasis>test compilation</emphasis>/
+		<emphasis>test sequence</emphasis> includes <emphasis>test cases</emphasis>.
+		<note><para><emphasis>test sequences</emphasis> and <emphasis>test cases</emphasis> are defined in
+		<citation>OSEK-OS-TPL</citation> and <citation>OSEK-OS-TPR</citation>.</para></note>
 	</sect1>
 </chapter>
 
