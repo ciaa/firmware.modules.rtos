@@ -98,8 +98,8 @@
 				<para>To check out from <glossterm linkend="svn">SVN</glossterm> you can use any svn tool. In a unix-like
 				system or cygwin on windows we recommend you to use the <command>svn</command> command in following way:
 				<screen>
-				<prompt>bash$ </prompt><userinput>make freeosek</userinput> 
-				<prompt>bash$ </prompt><userinput>svn co https://opensek.svn.sourceforge.net/svnroot/opensek/trunk freeosek</userinput>
+					<prompt>bash$ </prompt><userinput>make freeosek</userinput> 
+					<prompt>bash$ </prompt><userinput>svn co https://opensek.svn.sourceforge.net/svnroot/opensek/trunk freeosek</userinput>
 				</screen>
 				If you are a windows user you may want to use <citation>Tortoise SVN</citation></para>
 			</sect2>
@@ -549,7 +549,7 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 	</sect1>
 	<sect1><title>Conformance Test</title>
 		<para>OSEK-VDX consortium specifies not only the RTOS also the test method too. The FreeOSEK OS is
-		tested under the specified test specifications provided by OSEK-VDX:</para>
+		tested under the specified test specifications provided by OSEK-VDX:
 		<itemizedlist>
 			<listitem><para><citation>OSEK-TM</citation>: specifies the test methodology</para></listitem>
 			<listitem><para><citation>OSEK-OS-TPL</citation>: specifies the operating system test plan</para></listitem>
@@ -557,14 +557,14 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		</itemizedlist>
 		<note><para>the last specification from OSEK-VDX OS is from year 2005 while the last update of
 		the OSEK-VDX test concept is from year 1999.</para></note>
-		<para>As specified the FreeOSEK OS tests are separated in:
+		As specified the FreeOSEK OS tests are separated into:
 		<itemizedlist>
 			<listitem><para>test type</para></listitem>
 			<listitem><para>test sequence</para></listitem>
 			<listitem><para>test compilation</para></listitem>
 			<listitem><para>test cases</para></listitem>
 		</itemizedlist>
-		<para>Only the terms <emphasis>test sequence</emphasis> and <emphasis>test case</emphasis> are defined by the
+		Only the terms <emphasis>test sequence</emphasis> and <emphasis>test case</emphasis> are defined by the
 		specifications. The others two terms <emphasis>test type</emphasis> and <emphasis>test compilation</emphasis>
 		were added by us to simplify the explanation.</para>
 		<para>Since test sequences are separated in types:
@@ -582,6 +582,16 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		<emphasis>test sequence</emphasis> includes <emphasis>test cases</emphasis>.
 		<note><para><emphasis>test sequences</emphasis> and <emphasis>test cases</emphasis> are defined in
 		<citation>OSEK-OS-TPL</citation> and <citation>OSEK-OS-TPR</citation>.</para></note>
+		The tests are executed using a perl script which can be started with:
+		<screen>
+			<prompt>bash$ </prompt><userinput>make ctest</userinput>
+		</screen>
+		If you want to run only one test sequence you can execute the conformance test using:
+		<screen>
+			<prompt>bash$ </prompt><userinput>make ctest CTESTF="--debug TEST_SEQUENCE"</userinput>
+		</screen>
+		Where the <emphasis>TEST_SEQUENCE</emphasis> shall be one of the availables test sequences. This
+		method can be used to debug and find an error. TODO</para>
 	</sect1>
 </chapter>
 
