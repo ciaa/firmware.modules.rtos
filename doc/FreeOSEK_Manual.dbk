@@ -98,8 +98,8 @@
 				<para>To check out from <glossterm linkend="svn">SVN</glossterm> you can use any svn tool. In a unix-like
 				system or cygwin on windows we recommend you to use the <command>svn</command> command in following way:
 				<screen>
-					<prompt>bash$ </prompt><userinput>make freeosek</userinput> 
-					<prompt>bash$ </prompt><userinput>svn co https://opensek.svn.sourceforge.net/svnroot/opensek/trunk freeosek</userinput>
+<prompt>bash$ </prompt><userinput>make freeosek</userinput> 
+<prompt>bash$ </prompt><userinput>svn co https://opensek.svn.sourceforge.net/svnroot/opensek/trunk freeosek</userinput>
 				</screen>
 				If you are a windows user you may want to use <citation>Tortoise SVN</citation></para>
 			</sect2>
@@ -107,7 +107,7 @@
 		<sect1><title>Installing and running</title>
 			<para>If you have download on FreeOSEK release you have to untar it before doing anything else:
 			<screen>
-				<prompt>bash$ </prompt><userinput>tar -xzf FreeOSEK_rel_x_x_x_YYYYMMDD_name</userinput>
+<prompt>bash$ </prompt><userinput>tar -xzf FreeOSEK_rel_x_x_x_YYYYMMDD_name</userinput>
 			</screen>
 			After this you have to edit the Makefile on the root directory and set the make variable ARCH
 			to the arch that you want to compile for. Valid ARCH are at the moment are:</para>
@@ -118,8 +118,10 @@
 			</itemizedlist>
 			<para>After selecting the right architecture you can execute the followings commands:
 			<screen>
-				<prompt>bash$ </prompt><userinput>make generate</userinput>
-				<prompt>bash$ </prompt><userinput>make</userinput>
+<prompt>bash$ </prompt><userinput>make generate</userinput>
+<prompt></prompt><userinput> ... </userinput>
+<prompt>bash$ </prompt><userinput>make</userinput>
+<prompt></prompt><userinput> ... </userinput>
 			</screen>
 			the binary file will be linked on /out/bin/FreeOSEK. If you dont change the original makefile you
 			will generate and compile the basic module tests for FreeOSEK. If you execute the executable after
@@ -202,7 +204,7 @@
 		can be written manually by de user or using an other configuration tool. We
 		recommend to perform it manually or using a OIL configurator, like for example
 		<citation>GOBX</citation>.</para>
-		<para>The OIL format is specified by OSEK-VDA, refer you to todo OIL, anyway
+		<para>The OIL format is specified by OSEK-VDA, refer you to <citation>OIL</citation>, anyway
 		the OIL format used by FreeOSEK is not 100% conform to
 		the specification, at least not right now. And the Language has extensions,
 		since there is no specification of OIL for for example the HAL (drivers).</para>
@@ -496,22 +498,22 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			for the first time, the server will to take care of the IPC for the interrupts simulations on Windows. 
 			You can run the following command to create the default configuration:
 			<screen>
-				<prompt>bash$ </prompt><userinput>cygserver-config</userinput>
-				<prompt></prompt><userinput> ... </userinput>
+<prompt>bash$ </prompt><userinput>cygserver-config</userinput>
+<prompt></prompt><userinput> ... </userinput>
 			</screen>
 			After loading the default configuration you can use following commands to start and stop the server respectivly:
 			<screen>
-				<prompt>bash$ </prompt><userinput>net start cygserver</userinput>
-				<prompt></prompt><userinput> ... </userinput>
+<prompt>bash$ </prompt><userinput>net start cygserver</userinput>
+<prompt></prompt><userinput> ... </userinput>
 			</screen>
 			<screen>
-				<prompt>bash$ </prompt><userinput>net stop cygserver</userinput>
-				<prompt></prompt><userinput> ... </userinput>
+<prompt>bash$ </prompt><userinput>net stop cygserver</userinput>
+<prompt></prompt><userinput> ... </userinput>
 			</screen>
 			At last you have to enable the server into your environment setting the CYGWIN environment variable to server, for
 			example running:
 			<screen>
-				<prompt>bash$ </prompt><userinput>export CYGWIN=server</userinput>
+<prompt>bash$ </prompt><userinput>export CYGWIN=server</userinput>
 			</screen>
 			</para>
 		</sect2>
@@ -582,23 +584,95 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		<emphasis>test sequence</emphasis> includes <emphasis>test cases</emphasis>.
 		<note><para><emphasis>test sequences</emphasis> and <emphasis>test cases</emphasis> are defined in
 		<citation>OSEK-OS-TPL</citation> and <citation>OSEK-OS-TPR</citation>.</para></note>
-		The tests are executed using a perl script which can be started with:
-		<screen>
-			<prompt>bash$ </prompt><userinput>make ctest</userinput>
-		</screen>
-		If you want to run only one test sequence you can execute the conformance test using:
-		<screen>
-			<prompt>bash$ </prompt><userinput>make ctest CTESTF="--debug TEST_SEQUENCE"</userinput>
-		</screen>
-		Where the <emphasis>TEST_SEQUENCE</emphasis> shall be one of the availables test sequences. This
-		method can be used to debug and find an error. TODO</para>
+		</para>
+		<sect2><title>Preparing the make environment</title>
+			<para>To run the conformance tests the make environment has to be configured setting:
+			<emphasis>ARCH</emphasis>, <emphasis>CPUTYPE</emphasis>, <emphasis>CPU</emphasis>,
+			<emphasis>BOARD</emphasis>, <emphasis>COMPILER</emphasis> to the corresponding values.
+			Depending on the selected configuration some parameters may be not needed.
+			The variable <emphasis>MODS</emphasis> has to be set as follows:
+			<programlisting>
+MODS += TestSuite          \
+        OpenGEN            \
+        OpenDRV            \
+        FreeOSEK           \
+        FreeOSEK/tst/ctest
+			</programlisting>
+			</para>
+		</sect2>
+		<sect2><title>Running the Tests</title>
+			<para>The tests are executed using a perl script which can be started with:
+			<screen>
+<prompt>bash$ </prompt><userinput>make ctest</userinput>
+			</screen>
+			If you want to run only one test sequence you can execute the conformance test using:
+			<screen>
+<prompt>bash$ </prompt><userinput>make ctest CTESTF="-t TEST_SEQUENCE"</userinput>
+			</screen>
+			Where the <emphasis>TEST_SEQUENCE</emphasis> shall be one of the availables test sequences. This
+			method can be extended to debug specific test sequence using the command like:
+			<screen>
+<prompt>bash$ </prompt><userinput>make ctest CTESTF="-t TEST_SEQUENCE --debug SEQ_NUMBER"</userinput>
+			</screen>
+			Where <emphasis>TEST_SEQUENCE</emphasis> is again one of the availables test sequences and
+			<emphasis>SEQ_NUMBER</emphasis> which of the compilations shall be executed using the debugger. This
+			command can be used to debug and correct errors or bugs on the code.
+			</para>
+		</sect2>
+		<sect2><title>Test Results</title>
+			<para>The test results will be displaied to the <emphasis>stdout</emphasis> and stored
+			on a test report output that can be found in the <emphasis>out/doc/ctest</emphasis> directory.
+			On the test report you will find something like for example:
+			<programlisting>
+Test: ctest_tm_01 - Config: non-preemptive
+Test Result: FAILED - Sequence: 1-13 - SequenceOk: 18
+Test Result: OK - Test Case: TM_01 - Result: 3 - ResultOk: 3
+Test Result: OK - Test Case: TM_10 - Result: 3 - ResultOk: 3
+Test Result: OK - Test Case: TM_15 - Result: 3 - ResultOk: 3
+Test Result: FAILED - Test Case: TM_20 - Result: 0 - ResultOk: 3
+Test Result: OK - Test Case: TM_22 - Result: 3 - ResultOk: 3
+Test Result: OK - Test Case: TM_24 - Result: 3 - ResultOk: 3
+Test Result: FAILED - Test Case: TM_25 - Result: 0 - ResultOk: 3
+Test Result: OK - Test Case: TM_27 - Result: 3 - ResultOk: 3
+Test Result: OK - Test Case: TM_30 - Result: 3 - ResultOk: 3
+Test Result: FAILED - Test Case: TM_35 - Result: 0 - ResultOk: 3
+Test Result: FAILED - Test Case: TM_37 - Result: 0 - ResultOk: 3
+Test Result: OK - Test Case: TM_40 - Result: 3 - ResultOk: 3
+Test Result: OK - Test Case: OTHER - Result: 3 - ResultOk: 3
+			</programlisting>
+			This indicates the test results of the <emphasis>test sequence</emphasis> 1 of the <emphasis>test type</emphasis>
+			of the <emphasis>test compilation</emphasis> non-preemptive. The first <emphasis>test case</emphasis> is the sequence,
+			this indicates if all steps of the test were performed and if the execution was done in the right order. In this case
+			the sequence was wrong executed, the last well executed sequene entry point is the number 13. After that the list
+			indicates the result and the awaited result for each test case. The last test cases which is called <emphasis>OTHER
+			</emphasis> is used to test all needed but not specified issues on the OSEK-VDX test manual.</para>
+		</sect2>
+		<sect2><title>Running the tests in a new Platform</title>
+			<para></para>
+		</sect2>
 	</sect1>
 </chapter>
 
 <chapter><title>Examples</title>
 	<para>In this chapter you can find a detailed explanation of the examples deliveried with FreeOSEK.</para>
 	<sect1><title>Blinking</title>
-		<para></para>
+		<para><emphasis>Blinking</emphasis> is the most simple example available and can be used
+		for newies and to check that all tools are working as desired.</para>
+		<sect2><title>Summary</title>
+			<para>The Blinking example shows how to use FreeOSEK and OpenDRV (Dio) to read the
+			state of two buttons and to blink 2 leds. The example can work in any boards
+			with at least 2 buttons and 2 leds.</para>
+		</sect2>
+		<sect2><title>Supported Boards</title>
+		<para>
+		<itemizedlist>
+			<listitem><para>Olimex lpc-e2468</para></listitem>
+		</itemizedlist>
+		</para>
+		</sect2>
+		<sect2><title>Make Environment</title>
+			<para></para>
+		</sect2>
 	</sect1>
 	<sect1><title>Car Combi</title>
 		<para></para>
@@ -650,7 +724,6 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		<glossdef>
 			<para>Open Systems and their Interfaces for the Electronics in Motor Vehicles from german
 			(Offene Systeme und deren Schnittstellen f&uuml;r die Elektronik in Kraftfahrzeugen)</para>
-			<!--glossseealso otherterm="osek-vdx">OSEK-VDX</glossseealso-->
 		</glossdef>
 	</glossentry>
 	<glossentry id="osek-vdx"><glossterm>OSEK-VDX</glossterm>
@@ -707,12 +780,6 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		</biblioentry>
 		<biblioentry>
 			<abbrev>OSEK</abbrev>
-			<!--authorgroup>
-				<author><surname>OSEK/VDX</surname></author>
-			</authorgroup-->
-			<!--copyright><holder>OSEK/VDX steering committee</holder></copyright-->
-			<!--editor><surname>OSEK</surname></editor-->
-			<!--isbn>0-201-10088-6</isbn-->
 			<publisher>
 				<publishername>Open Systems and the Corresponding Interfaces for Automotive Electronics</publishername>
 			</publisher>
@@ -755,16 +822,24 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		</biblioentry>
 		<biblioentry>
 			<abbrev>OIL</abbrev>
-			<!--authorgroup>
-				<author><surname>OSEK/VDX</surname></author>
-			</authorgroup-->
-			<!--copyright><holder>OSEK/VDX steering committee</holder></copyright-->
-			<!--editor><surname>OSEK</surname></editor-->
 			<publisher>
 				<publishername>Open Systems and the Corresponding Interfaces for Automotive Electronics</publishername>
 			</publisher>
 			<title>OIL: OSEK Implementation Language - Version 2.5</title>
 			<pubdate>01.07.2004</pubdate>
+		</biblioentry>
+	</bibliodiv>
+	<bibliodiv><title>Books</title>
+		<biblioentry>
+			<abbrev>Programming OSEK/VDX</abbrev>
+			<authorgroup>
+				<author><firstname>Joseph</firstname><surname>Lemieux</surname></author>
+			</authorgroup>
+			<publisher>
+				<publishername><ulink url="www.cmpbooks.com">CMP Books</ulink></publishername>
+			</publisher>
+			<title>Programming in the OSEK/VDX Environment</title>
+			<isbn>ISBN: 1-57820-081-4</isbn>
 		</biblioentry>
 	</bibliodiv>
 	<bibliodiv><title>Tools</title>
@@ -777,12 +852,6 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		</biblioentry>
 		<biblioentry>
 			<abbrev>Tortoise SVN</abbrev>
-			<!--authorgroup>
-				<author><surname>OSEK/VDX</surname></author>
-			</authorgroup-->
-			<!--copyright><holder>OSEK/VDX steering committee</holder></copyright-->
-			<!--editor><surname>OSEK</surname></editor-->
-			<!--isbn>0-201-10088-6</isbn-->
 			<publisher>
 				<publishername>Tigris.org</publishername>
 			</publisher>
@@ -791,7 +860,4 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 		</biblioentry>
 	</bibliodiv>
 </bibliography>
-
 </book>
-
-
