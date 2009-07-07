@@ -72,12 +72,42 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20090705 MaCe implement first COM Module
  * v0.1.0 20090322 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+<?php
+$messages = $config->getList("/COM","MESSAGE");
+$count = 0;
+print "/** \brief Definition of all Send Messages */\n";
+foreach ($messages as $msg)
+{
+	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
+	if ( strpos($msgprop,"SEND") > -1 )
+	{
+		print "/** \brief Send Message $msg */\n";
+		print "#define $msg " . $count . "U\n\n";
+		$count++;
+	}
+}
+
+$count = 0;
+print "/** \brief Definition of all Receive Messages */\n";
+foreach ($messages as $msg)
+{
+	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
+	if ( strpos($msgprop,"RECEIVE") > -1 )
+	{
+		print "/** \brief Receive Message $msg */\n";
+		print "#define $msg " . $count . "U\n";
+		$count++;
+	}
+}
+
+?>
 
 /*==================[typedef]================================================*/
 /** \brief Message Identifier data definition */

@@ -171,8 +171,6 @@ extern StatusType GetMessageState
 	MessageIdentifier Message
 );
 
-
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
