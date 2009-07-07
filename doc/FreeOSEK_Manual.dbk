@@ -101,7 +101,7 @@
 <prompt>bash$ </prompt><userinput>make freeosek</userinput> 
 <prompt>bash$ </prompt><userinput>svn co https://opensek.svn.sourceforge.net/svnroot/opensek/trunk freeosek</userinput>
 				</screen>
-				If you are a windows user you may want to use <citation>Tortoise SVN</citation></para>
+				If you are a windows user you may want to use <citation>Tortoise SVN</citation>.</para>
 			</sect2>
 		</sect1>
 		<sect1><title>Installing and running</title>
@@ -648,7 +648,16 @@ Test Result: OK - Test Case: OTHER - Result: 3 - ResultOk: 3
 			</emphasis> is used to test all needed but not specified issues on the OSEK-VDX test manual.</para>
 		</sect2>
 		<sect2><title>Running the tests in a new Platform</title>
-			<para></para>
+			<para>You can extend the module test to new platforms. Since some parts of the code
+			are hardware specific and the toolchains used are differents for differents platform
+			it may be a good idea to run the module tests in all used platforms. To execute
+			the module tests in a new platform some makefiles and debug files have to be
+			rewriten.</para>
+			<para>The file <emphasis>FreeOSEK/tst/ctest/dbg/posix/gcc/debug.src</emphasis> is used
+			for posix platform to determine the form how the debugger is called. For a new platform
+			and or debugger a new file may be needed. Of course the folders <emphasis>posix</emphasis>
+			and <emphasis>gcc</emphasis> have to be called as the architecture and toolchain used on the
+			root makefile for the new hardware.</para>			
 		</sect2>
 	</sect1>
 </chapter>
@@ -836,7 +845,7 @@ Test Result: OK - Test Case: OTHER - Result: 3 - ResultOk: 3
 				<author><firstname>Joseph</firstname><surname>Lemieux</surname></author>
 			</authorgroup>
 			<publisher>
-				<publishername><ulink url="www.cmpbooks.com">CMP Books</ulink></publishername>
+				<publishername><ulink url="http://www.cmpbooks.com">CMP Books</ulink></publishername>
 			</publisher>
 			<title>Programming in the OSEK/VDX Environment</title>
 			<isbn>ISBN: 1-57820-081-4</isbn>
@@ -848,7 +857,7 @@ Test Result: OK - Test Case: OTHER - Result: 3 - ResultOk: 3
 			<publisher>
 				<publishername>Sam Wang</publishername>
 			</publisher>
-			<title><ulink url="http://gobx.sourceforge.net/">The free OSEK configuration builder</ulink></title>
+			<title><ulink url="http://gobx.sourceforge.net">The free OSEK configuration builder</ulink></title>
 		</biblioentry>
 		<biblioentry>
 			<abbrev>Tortoise SVN</abbrev>
