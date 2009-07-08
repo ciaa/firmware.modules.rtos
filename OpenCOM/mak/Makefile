@@ -11,7 +11,9 @@ LFLAGS +=
 
 OPENCOM_OBJ +=	
 
-GENFILES += OpenCOM$(DIR)gen$(DIR)inc$(DIR)Com_Cfg.h.php
+GENFILES += OpenCOM$(DIR)gen$(DIR)inc$(DIR)Com_Cfg.h.php    		\
+				OpenCOM$(DIR)gen$(DIR)src$(DIR)Com_Cfg.c.php				\
+				OpenCOM$(DIR)gen$(DIR)src$(DIR)Com_Internal_Cfg.c.php
 
 VPATH += OpenCOM$(DIR)src
 
