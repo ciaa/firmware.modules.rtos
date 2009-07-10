@@ -88,17 +88,72 @@ StatusType SendMessage
 	ApplicationDataRef DataRef
 )
 {
-	StatusType ret = E_OK;
 
-	/* check communication type */
-	if ( 1 /* TODO */ )
+	StatusType ret = E_OK;
+	TxPdu;
+
+#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+	if ( Message > COM_MAX_MESSAGE )
 	{
-		/* implement the external communication */
+		/* check that the message is on range */
+		ret = E_COM_ID;
+	}
+	else if ( Com_TxMessageObjects[Message].Flags.Type = COM_TX_MSG_NORMAL )
+	{
+		/* check that the message is not zero-length neither dynamic-lenght neither
+			a rx message */
+		ret = E_COM_ID;
 	}
 	else
-	{
-		/* implement the internal communication */
+#endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
+
+	/* SendMessage main functionality */
+
+		/* check communication type */
+		if ( Com_TxMessageObjects[Message].Flags.CommunicationType == COM_TX_TYPE_EXTERNAL )
+		{
+			/* implement the external communication */
+
+			/* get external L-PDU */
+			TxPdu = Com_TxMessageObjects[Message].TxPdu;
+
+			/* copy the data to the underlayer PDU */
+			/* Com_TxPduObjects[TxPdu].DataRef;
+			Com_TxPduObjects[TxPdu].; */
+			/* TODO */
+
+			/* check if the unter layer tx has to be triggered only to be done if:
+					- the message has property triggered
+					- the underlayer I-PDU is configured != to periodic */
+			if ( ( Com_TxMessageObject[Message].Flags.TxProperty == COM_TX_MSG_PROP_TRIGGERED ) &&
+				  ( Com_TxPduObjects[TxPdu].Flags != COM_TX_PDU_MODE_PERIODIC ) )
+			{
+				/* trigger the transmission of the I-PDU */
+				Com_TxTrigger[Com_TxPduObjects[TxPdu].TriggerFuncNum](Com_TxPduObjects[TxPdu].TriggerFuncParam);
+			}
+		}
+		else
+		{
+			/* implement the internal communication */
+			/* TODO */
+		}
+
+#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	}
+#endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
+
+#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+		(HOOK_ERRORHOOK == ENABLE) )
+   if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+	{
+		SetError_Api(COMServiceId_SendMessage);
+		SetError_Param1(Message);
+		SetError_Param2(DataRef);
+		SetError_Ret(ret);
+		SetError_Msg("SendMessage returns != than E_OK");
+		SetError_ErrorHook();
+	}
+#endif
 
 	return ret;
 }
