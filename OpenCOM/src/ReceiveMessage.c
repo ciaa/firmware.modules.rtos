@@ -36,11 +36,11 @@
  *
  */
 
-/** \brief OpenCOM SendMessage Implementation File
+/** \brief OpenCOM ReceiveMessage Implementation File
  **
- ** This file implements the SendMessage API
+ ** This file implements the ReceiveMessage API
  **
- ** \file SendMessage.c
+ ** \file ReceiveMessage.c
  **
  **/
 
@@ -58,7 +58,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090708 v0.1.0 MaCe initial version
+ * 20090710 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -82,7 +82,7 @@
 #include "MemMap.h"
 #endif
 
-StatusType SendMessage
+StatusType ReceiveMessage
 (
 	MessageIdentifier Message,
 	ApplicationDataRef DataRef
@@ -93,51 +93,46 @@ StatusType SendMessage
 	TxPdu;
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
-	if ( Message > COM_TX_MAX_MESSAGE )
+	if ( Message > COM_RX_MAX_MESSAGE )
 	{
 		/* check that the message is on range */
 		ret = E_COM_ID;
 	}
-	else if ( Com_TxMessageObjectsConst[Message].Flags.Type = COM_TX_MSG_NORMAL )
+	else if ( Com_RxMessageObjectsConst[Message].Flags.Type = COM_RX_MSG_NORMAL )
 	{
 		/* check that the message is not zero-length neither dynamic-lenght neither
-			a rx message */
+			a tx message */
 		ret = E_COM_ID;
 	}
 	else
 	{
 #endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
-
-	/* SendMessage main functionality */
-
-		/* check communication type */
-		if ( Com_TxMessageObjectsConst[Message].Flags.CommunicationType == COM_TX_TYPE_EXTERNAL )
+#if ( COM_QUEUED_MESSAGES == ENABLE )
+		/* TODO for QUEUED messages */
+		if ( 1 /* TODO */ )
 		{
-			/* implement the external communication */
-
-			/* get external L-PDU */
-			TxPdu = Com_TxMessageObjectsConst[Message].TxPdu;
-
-			/* copy the data to the underlayer PDU */
-			/* Com_TxPduObjects[TxPdu].DataRef;
-			Com_TxPduObjects[TxPdu].; */
+			ret = E_COM_NOMSG;
+		}
+		else if ( 1 /* TODO */ )
+		{
+			ret = E_COM_LIMIT;
+			
+			/* clear overflow flag */
 			/* TODO */
 
-			/* check if the unter layer tx has to be triggered only to be done if:
-					- the message has property triggered
-					- the underlayer I-PDU is configured != to periodic */
-			if ( ( Com_TxMessageObject[Message].Flags.TxProperty == COM_TX_MSG_PROP_TRIGGERED ) &&
-				  ( Com_TxPduObjects[TxPdu].Flags != COM_TX_PDU_MODE_PERIODIC ) )
-			{
-				/* trigger the transmission of the I-PDU */
-				Com_TxTrigger[Com_TxPduObjects[TxPdu].TriggerFuncNum](Com_TxPduObjects[TxPdu].TriggerFuncParam);
-			}
-		}
-		else
-		{
-			/* implement the internal communication */
+#endif  /* #if ( COM_QUEUED_MESSAGES == ENABLE ) */
+
+			/* ReceiveMessage main functionality */
+
+			/* receive message */
 			/* TODO */
+
+			/* clear notifications flags */
+			/* TODO */
+
+#if ( COM_QUEUED_MESSAGES == ENABLE )
 		}
+#endif /* #if ( COM_QUEUED_MESSAGES == ENABLE ) */
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	}
