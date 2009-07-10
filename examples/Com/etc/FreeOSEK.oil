@@ -85,16 +85,89 @@ ALARM ActivateButtonsTask {
 	AUTOSTART = FALSE;
 };
 
-MESSAGE MessageButtons {
-	MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-		CDATATYPE = unsigned char;
+// MESSAGE MessageButtons {
+// 	MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+// 		CDATATYPE = unsigned char;
+// 	};
+// 	NOTIFICATION = 
+// 	NOTIFICATIONERROR = 
+// };
+
+};
+
+COM COM {
+
+	COM Example {
+		COMTIMEBASE = 0.001;
+		COMERRORHOOK = TRUE;
+		COMAPPMODE = "NormalMode";
 	};
-	NOTIFICATION = 
-	NOTIFICATIONERROR = 
+
+	MESSAGE Msg1 {
+		MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+			CDATATYPE = unsigned char;
+		};
+	};
+
+	MESSAGE Msg2 {
+		MESSAGEPROPERTY = SEND_STATIC_EXTERNAL {
+			CDATATYPE = unsigned char;
+			TRANSFERPROPERTY = PENDING;
+			INITIALVALUE = 0;
+			NETWORKMESSAGE = Net_Msg2;
+		};
+	};
+
+	MESSAGE Msg3 {
+		MESSAGEPROPERTY = RECEIVE_UNQUEUED_EXTERNAL {
+			CDATATYPE = unsigned char;
+			INITIALVALUE = 0;
+		};
+	};
 };
 
-NETWORKMESSAGE MessageButtons {
-	
-};
-
-};
+// MESSAGE MessageButtons {
+// 	MESSAGEPROPERTY = [ SEND_STATIC_INTERNAL |
+// 							SEND_STATIC_EXTERNAL |
+// 							SEND_ZERO_INTERNAL |
+// 							SEND_ZERO_EXTERNAL |
+// 							RECEIVE_ZERO_INTERNAL |
+// 							RECEIVE_ZERO_EXTERNAL |
+// 							RECEIVE_UNQUEUED_INTERNAL |
+// 							RECEIVE_UNQUEUED_EXTERNAL ] {
+// 		CDATATYPE = [ c type ];
+// 		TRANSFERPROPERTY = [ TRIGGERED | PENDING | AUTO ];
+// 		NETWORKMESSAGE = [ network message ];
+// 		INITIALVALUE = [ init value for this message ];
+// 		SENDINGMESSAGE = [ for receiver the message of the internal sending message ];
+// 	};
+// 	NOTIFICATION = [ NONE | ACTIVATETASK | SETEVENT | COMCALLBACK | FLAG ] {
+// 	};
+// };
+// NETWORKMESSAGE MessageButtons {
+// 	IPDU = name;
+// 	MESSAGEPROPERTY = STATIC {
+// 		SIZEINBITS = [ 1 .. 2xx32-1];
+// 		BITORDERING = [ BIGENDIAN | LITTLEENDIAN ];
+// 		BITPOSITION = [ 0 .. 2xx32-1];
+// 		DATAINTERPRETATION = [ UNSIGNEDINTEGER | BYTEARRAY ];
+// 		INITIALVALUE = [ 0 .. 2xx64-1];
+// 		DIRECTION = SENT {
+// 			TRANSFERPROPERTY = [ TRIGGERED | PENDING | AUTO ];
+// 		};
+// 		DIRECTION = RECEIVED;
+// 	};
+// };
+// IPDU IPDUName {
+// 	SIZEINBITS = [ 1 .. 2xx32-1 ];
+// 	IPDUPROPERTY = [ SENT | RECEIVED ] {
+// 		TRANSMISSIONMODE = [ PERIODIC | DIRECT | MIXED ];
+// 	};
+// 	TIMEPERIOD = [ 1 .. 2xx64-1 ];
+// 	TIMEOFFSET = [ 0 .. 2xx64-1 ];
+// 	MINIMUMDELAY = [ 0 .. 2xx64-1 ];
+// 	TIMEOUT = [ 0 .. 2xx64-1 ];
+// 	LAYERUSED = [ CAN | TCP | UDP ] {
+// 		CHANNEL = [ channel name ];
+// 	};
+// };

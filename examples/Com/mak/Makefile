@@ -9,7 +9,6 @@ VPATH += examples$(DIR)Com$(DIR)src \
 INCLUDE += -Iexamples$(DIR)Com$(DIR)inc
 
 CFGFILES += examples$(DIR)Com$(DIR)etc$(DIR)FreeOSEK.oil					\
-				examples$(DIR)Com$(DIR)etc$(DIR)OpenCOM.oil					\
 				examples$(DIR)Com$(DIR)etc$(DIR)$(BOARD)$(DIR)OpenDRV.oil
 				
 
