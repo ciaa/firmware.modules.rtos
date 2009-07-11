@@ -68,15 +68,8 @@
 #include "Types.h"		/* include standard types header file */
 #include "os.h"			/* include os header file */
 #include "Com_Cfg.h"		/* include COM configuration header file */
-#include "Com_Arch.h"	/* include COM Arch header file */
 
 /*==================[macros]=================================================*/
-#ifndef E_OK
-/** \brief Definition return value E_OK */
-#define E_OK					((StatusType)0U)
-#elif (E_OK != ((StatusType)0U))
-#error E_OK defined with a wrong value
-#endif
 /** \brief Definition return value E_COM_ID */
 #define E_COM_ID					((StatusType)1U)
 /** \brief Definition return value E_COM_LENGTH */
@@ -86,8 +79,21 @@
 /** \brief Definition return value E_COM_NOMSG */
 #define E_COM_NOMSG				((StatusType)4U)
 
-/*==================[typedef]================================================*/
+/** \brief COM Shutdown Mode type immediate */
+#define COM_SHUTDOWN_IMMEDIATE	((COMShutdownModeType)1U)
 
+/*==================[typedef]================================================*/
+/** \brief COM Application Mode type definition */
+typedef uint8 COMApplicationModeType;
+
+/** \brief COM Shutdown Mode type definition */
+typedef uint8 COMShutdownModeType;
+
+/** \brief Application Data Reference type definition */
+typedef void* ApplicationDataRef;
+
+/** \brief Length Reference type definition */
+typedef uint16* LengthRef;
 
 /*==================[external data declaration]==============================*/
 
@@ -158,7 +164,7 @@ extern StatusType ReceiveDynamicMessage
 (
 	MessageIdentifier Message,
 	ApplicationDataRef DataRef,
-	LenghtRef Length
+	LengthRef Length
 );
 
 extern StatusType SendZeroMessage

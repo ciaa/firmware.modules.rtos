@@ -65,11 +65,12 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Types.h"		/* include standard types header file */
-#include "os.h"			/* include os header file */
-#include "com.h"			/* include com header file */
-#include "Com_Cfg.h"		/* include COM configuration header file */
-#include "Com_Arch.h"	/* include COM Arch header file */
+#include "Types.h"				/* include standard types header file */
+#include "os.h"					/* include os header file */
+#include "com.h"					/* include com header file */
+#include "Com_Cfg.h"				/* include COM configuration header file */
+#include "Com_Internal_Cfg.h"	/* include COM internal configuration header
+											file */
 
 /*==================[macros]=================================================*/
 

@@ -43,24 +43,24 @@
 <?php
 /** \brief OpenCOM File to be Generated
  **
- ** \file Com_Cfg.h.php
+ ** \file Com_Internal_Cfg.h.php
  **
  **/
 ?>
 
-#ifndef _COM_CFG_H_
-#define _COM_CFG_H_
+#ifndef _COM_INTERNAL_CFG_H_
+#define _COM_INTERNAL_CFG_H_
 /** \brief OpenCOM Generated Configuration Header File
  **
  ** This file contents the generated configuration of OpenCOM
  **
- ** \file Com_Cfg.h
+ ** \file Com_Internal_Cfg.h
  **
  **/
 
 /** \addtogroup OpenCOM
  ** @{ */ 
-/** \addtogroup OpenCOM_Global
+/** \addtogroup OpenCOM_Internal
  ** @{ */
 
 /*
@@ -72,59 +72,49 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.1 20090705 MaCe implement first COM Module
- * v0.1.0 20090322 MaCe	initial version
+ * v0.1.0 20090711 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-<?php
-$messages = $config->getList("/COM","MESSAGE");
-$count_tx = 0;
-print "/** \brief Definition of all Send Messages */\n";
-foreach ($messages as $msg)
-{
-	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
-	if ( strpos($msgprop,"SEND") > -1 )
-	{
-		print "/** \brief Send Message $msg */\n";
-		print "#define $msg " . $count_tx . "U\n\n";
-		$count_tx++;
-	}
-}
+/** \brief Error Checking Type */
+/** TODO */
+#define ERROR_CHECKING_TYPE ERROR_CHECKING_STANDARD
 
-$count_rx = 0;
-print "/** \brief Definition of all Receive Messages */\n";
-foreach ($messages as $msg)
-{
-	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
-	if ( strpos($msgprop,"RECEIVE") > -1 )
-	{
-		print "/** \brief Receive Message $msg */\n";
-		print "#define $msg " . $count_rx . "U\n\n";
-		$count_rx++;
-	}
-}
-
-print "/** \brief Count of RX Messages */\n";
-print "#define COM_TX_MAX_MESSAGE $count_tx\n\n";
-print "/** \brief Count of RX Messages */\n";
-print "#define COM_RX_MAX_MESSAGE $count_rx\n\n";
-
-?>
+#define COM_RX_MSG_NORMAL		0U
+#define COM_RX_MSG_TRIGGERED	1U
+#define COM_RX_MSG_PENDING		2U
+#define COM_TX_MSG_NORMAL		3U
+#define COM_TX_MSG_TRIGGERED	4U
+#define COM_TX_MSG_PENDING		5U
 
 /*==================[typedef]================================================*/
-/** \brief Message Identifier data definition */
+/** \brief I-PDU type definition */
 /** TODO uint8 or uint16 has to depend on the account of messages */
-typedef uint8 MessageIdentifier;
+typedef uint8 Com_IPDUType;
+
+typedef struct {
+	uint16 Type : 3;
+} Com_MsgFlagsType;
+
+typedef struct {
+	Com_MsgFlagsType Flags;
+} Com_TxMessageObjectConstType;
+
+typedef struct {
+	Com_MsgFlagsType Flags;
+} Com_RxMessageObjectConstType;
 
 /*==================[external data declaration]==============================*/
+Com_RxMessageObjectConstType Com_RxMessageObjectsConst[];
+
+Com_TxMessageObjectConstType Com_TxMessageObjectsConst[];
 
 /*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _COM_CFG_H_ */
+#endif /* #ifndef _COM_INTERNAL_CFG_H_ */
 

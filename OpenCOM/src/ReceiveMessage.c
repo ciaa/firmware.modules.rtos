@@ -90,15 +90,14 @@ StatusType ReceiveMessage
 {
 
 	StatusType ret = E_OK;
-	TxPdu;
 
-#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	if ( Message > COM_RX_MAX_MESSAGE )
 	{
 		/* check that the message is on range */
 		ret = E_COM_ID;
 	}
-	else if ( Com_RxMessageObjectsConst[Message].Flags.Type = COM_RX_MSG_NORMAL )
+	else if ( Com_RxMessageObjectsConst[Message].Flags.Type == COM_RX_MSG_NORMAL )
 	{
 		/* check that the message is not zero-length neither dynamic-lenght neither
 			a tx message */
@@ -134,7 +133,7 @@ StatusType ReceiveMessage
 		}
 #endif /* #if ( COM_QUEUED_MESSAGES == ENABLE ) */
 
-#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	}
 #endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
 
