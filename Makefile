@@ -36,11 +36,11 @@ COMPILER = gcc
 # examples/Blinking	Blinking Leds Example
 #
 
-MODS +=	TestSuite					\
-			OpenGEN						\
-			OpenDRV						\
-			FreeOSEK						\
-			FreeOSEK/tst/ctest
+#MODS +=	TestSuite					\
+#			OpenGEN						\
+#			OpenDRV						\
+#			FreeOSEK						\
+#			FreeOSEK/tst/ctest
 
 #MODS +=	examples/CarCombi			\
 #			OpenGEN						\
@@ -61,10 +61,10 @@ MODS +=	TestSuite					\
 #			uIP							
 #			embPOSIX
 
-#MODS +=	examples/Interrupts		\
-#			OpenGEN						\
-#			OpenDRV						\
-#			FreeOSEK
+MODS +=	examples/Com				\
+			OpenGEN						\
+			FreeOSEK						\
+			OpenCOM
 
 
 all: FreeOSEK
@@ -122,9 +122,15 @@ clean : $(CLEAN)
 	rm -rf $(OBJDIR)$(DIR)*
 	rm -rf $(LIBDIR)$(DIR)*
 	rm -rf $(GENDIR)$(DIR)*
+
+cleandoc :
 	rm -rf $(DOCDIR)$(DIR)*
 
 doc : $(DOC)
+
+manual :
+	@echo Generating FreeOSEK DocBook Manual
+	docbook2pdf doc/FreeOSEK_Manual.dbk -o $(DOCDIR)$(DIR)
 
 reqdoc :
 	./doc/reqdoc.pl
@@ -153,7 +159,7 @@ help :
 	@echo make generate - to generate the code
 	@echo make - to compile the code, has to be executed after make generate
 	@echo make clean - to remove all created files: binary, objects, libraries, doc, generated files
-	@echo make doc - to generate the documentation (execute make reqdoc and make sizedoc automatically)
+	@echo make doc - to generate the documentation [execute make reqdoc and make sizedoc automatically]
 	@echo make splint - to perform splint analyze
 	@echo make reqdoc - generate requirement tracing documentation
 	@echo make sizedoc - generate size documentation
