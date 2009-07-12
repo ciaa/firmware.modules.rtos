@@ -90,9 +90,9 @@ StatusType SendMessage
 {
 
 	StatusType ret = E_OK;
-	TxPdu;
+	Com_IPDUType TxPdu;
 
-#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	if ( Message > COM_TX_MAX_MESSAGE )
 	{
 		/* check that the message is on range */
@@ -111,7 +111,7 @@ StatusType SendMessage
 	/* SendMessage main functionality */
 
 		/* check communication type */
-		if ( Com_TxMessageObjectsConst[Message].Flags.CommunicationType == COM_TX_TYPE_EXTERNAL )
+		if ( Com_TxMessageObjectsConst[Message].Flags.ExtInt == COM_CTYPE_EXTERNAL )
 		{
 			/* implement the external communication */
 
@@ -126,11 +126,11 @@ StatusType SendMessage
 			/* check if the unter layer tx has to be triggered only to be done if:
 					- the message has property triggered
 					- the underlayer I-PDU is configured != to periodic */
-			if ( ( Com_TxMessageObject[Message].Flags.TxProperty == COM_TX_MSG_PROP_TRIGGERED ) &&
-				  ( Com_TxPduObjects[TxPdu].Flags != COM_TX_PDU_MODE_PERIODIC ) )
+			if ( ( Com_TxMessageObjectsConst[Message].Flags.Type == COM_TX_MSG_TRIGGERED ) &&
+				  ( Com_TxPduObjectsConst[TxPdu].Flags.Type != COM_TX_PDU_PERIODIC ) )
 			{
 				/* trigger the transmission of the I-PDU */
-				Com_TxTrigger[Com_TxPduObjects[TxPdu].TriggerFuncNum](Com_TxPduObjects[TxPdu].TriggerFuncParam);
+				Com_TxTrigger[Com_TxPduObjectsConst[TxPdu].TriFuncNum](Com_TxPduObjectsConst[TxPdu].TriFuncParam);
 			}
 		}
 		else
@@ -139,7 +139,7 @@ StatusType SendMessage
 			/* TODO */
 		}
 
-#if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	}
 #endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
 
@@ -154,7 +154,8 @@ StatusType SendMessage
 		SetError_Msg("SendMessage returns != than E_OK");
 		SetError_ErrorHook();
 	}
-#endif
+#endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+			(HOOK_ERRORHOOK == ENABLE) ) */
 
 	return ret;
 }

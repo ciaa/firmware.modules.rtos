@@ -78,7 +78,7 @@
 $messages = $config->getList("/COM","MESSAGE");
 $count = 0;
 print "/** \brief Definition of Send Messages Objects */\n";
-print "const Com_TxMessageObjectType Com_TxMessageObjects[] = {\n";
+/*print "const Com_TxMessageObjectType Com_TxMessageObjects[] = {\n";
 foreach ($messages as $msg)
 {
 	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
@@ -87,16 +87,16 @@ foreach ($messages as $msg)
 		if ($count > 0)
 		{
 			print ",\n";
-		}
+		}*/
 		print "	/** \brief Send Message Object: $msg */\n";
-		print "	{\n";
+/*		print "	{\n";
 		print "		\n";
 		print "		\n";
 		print "	}";
 		$count++;
 	}
 }
-print "\n}\n";
+print "\n}\n";*/
 ?>
 
 /*==================[internal functions definition]==========================*/

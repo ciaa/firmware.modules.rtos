@@ -89,6 +89,11 @@
 #define COM_TX_MSG_TRIGGERED	4U
 #define COM_TX_MSG_PENDING		5U
 
+#define COM_CTYPE_EXTERNAL		0U
+#define COM_CTYPE_INTERNAL		1U
+
+#define COM_TX_PDU_PERIODIC	0U
+
 /*==================[typedef]================================================*/
 /** \brief I-PDU type definition */
 /** TODO uint8 or uint16 has to depend on the account of messages */
@@ -96,20 +101,45 @@ typedef uint8 Com_IPDUType;
 
 typedef struct {
 	uint16 Type : 3;
+	uint16 ExtInt : 2;
 } Com_MsgFlagsType;
 
 typedef struct {
+	uint16 Type : 3;
+} Com_IPDUFlagsType;
+
+typedef struct {
 	Com_MsgFlagsType Flags;
+	Com_IPDUType TxPdu;
 } Com_TxMessageObjectConstType;
 
 typedef struct {
 	Com_MsgFlagsType Flags;
 } Com_RxMessageObjectConstType;
 
+typedef struct {
+	Com_IPDUFlagsType Flags;
+	uint8 TriFuncNum;
+	uint16 TriFuncParam;
+} Com_TxPduObjectsConstType;
+
+typedef struct {
+	Com_IPDUFlagsType Flags;
+} Com_RxPduObjectsConstType;
+
+typedef void (*Com_TxTriggerType)(uint16 IPDU);
+
+
 /*==================[external data declaration]==============================*/
 Com_RxMessageObjectConstType Com_RxMessageObjectsConst[];
 
 Com_TxMessageObjectConstType Com_TxMessageObjectsConst[];
+
+Com_TxPduObjectsConstType Com_TxPduObjectsConst[];
+
+Com_RxPduObjectsConstType Com_RxPduObjectsConst[];
+
+Com_TxTriggerType Com_TxTrigger[];
 
 /*==================[external functions declaration]=========================*/
 
