@@ -82,40 +82,131 @@
 /** TODO */
 #define ERROR_CHECKING_TYPE ERROR_CHECKING_STANDARD
 
-#define COM_RX_MSG_NORMAL		0U
-#define COM_RX_MSG_TRIGGERED	1U
-#define COM_RX_MSG_PENDING		2U
-#define COM_TX_MSG_NORMAL		3U
-#define COM_TX_MSG_TRIGGERED	4U
-#define COM_TX_MSG_PENDING		5U
+#define COM_MSG_PROP_TX_STAT_INT		0U
+#define COM_MSG_PROP_TX_STAT_EXT		1U
+#define COM_MSG_PROP_TX_ZERO_INT		2U
+#define COM_MSG_PROP_TX_ZERO_EXT		3U
+#define COM_MSG_PROP_RX_STAT_INT		4U
+#define COM_MSG_PROP_RX_STAT_EXT		5U
+#define COM_MSG_PROP_RX_ZERO_INT		6U
+#define COM_MSG_PROP_RX_ZERO_EXT		7U
 
-#define COM_CTYPE_EXTERNAL		0U
-#define COM_CTYPE_INTERNAL		1U
+#define COM_MSG_TPROP_TRIGGERED		0U
+#define COM_MSG_TPROP_PENDING			1U
+#define COM_MSG_TPROP_AUTO				2U
 
-#define COM_TX_PDU_PERIODIC	0U
+#define COM_MSH_NOTIF_NONE				0U
+#define COM_MSH_NOTIF_ATASK			1U
+#define COM_MSH_NOTIF_SEVENT			2U
+#define COM_MSH_NOTIF_CBACK			3U
+#define COM_MSH_NOTIF_FLAG				4U
+
 
 /*==================[typedef]================================================*/
 /** \brief I-PDU type definition */
 /** TODO uint8 or uint16 has to depend on the account of messages */
 typedef uint8 Com_IPDUType;
 
+/** \brief Message Flags type definition
+ **
+ ** \param Prop indicates the message properties, valid values are:
+ **			- COM_MSG_PROP_TX_STAT_INT
+ **			- COM_MSG_PROP_TX_STAT_EXT
+ **			- COM_MSG_PROP_TX_ZERO_INT
+ **			- COM_MSG_PROP_TX_ZERO_EXT
+ **			- COM_MSG_PROP_RX_STAT_INT
+ **			- COM_MSG_PROP_RX_STAT_EXT
+ **			- COM_MSG_PROP_RX_ZERO_INT
+ **			- COM_MSG_PROP_RX_ZERO_EXT
+ ** \param Type is the type fo the message valid values are:
+ **			- COM_MSG_TPROP_TRIGGERED
+ **			- COM_MSG_TPROP_PENDING
+ **			- COM_MSG_TPROP_AUTO
+ ** \param CType indicates the callback type
+ **			- COM_MSH_NOTIF_NONE
+ **			- COM_MSH_NOTIF_ATASK
+ **			- COM_MSH_NOTIF_SEVENT
+ **			- COM_MSH_NOTIF_CBACK
+ **			- COM_MSH_NOTIF_FLAG
+ **/
 typedef struct {
-	uint16 Type : 3;
-	uint16 ExtInt : 2;
+	uint16 MsgProp : 3;
+	uint16 TProp : 2;
+	uint16 CType : 3;
 } Com_MsgFlagsType;
 
+/** \brief IPDU Flags type definition
+ **
+ ** \param Type is the type of the IPDU valid values are:
+ **			- COM_TX_PDU_PERIODIC
+ **/
 typedef struct {
 	uint16 Type : 3;
 } Com_IPDUFlagsType;
 
+/** \brief Transmit Message Object Const type definition
+ **
+ ** \param Flags	Transmit Flags, for more details see Com_MsgFlagsType type
+ **					definition
+ ** \param NetMsg indicates on which network the message will be transmitted,
+ **					only used on external communication.
+ ** \param Msg		indicates the related message, only used on internal
+ **					communication
+ **/
 typedef struct {
 	Com_MsgFlagsType Flags;
-	Com_IPDUType TxPdu;
+	uint16 NetMsg;
+	uint16 Msg
+	/* init value TODO */
 } Com_TxMessageObjectConstType;
 
+/** \brief Receive Message Object Const type definition
+ **
+ ** \param Flags	Receive Flags, for more details see Com_MsgFlagsType type
+ **					definition
+ **/
 typedef struct {
 	Com_MsgFlagsType Flags;
+	/** TODO */
 } Com_RxMessageObjectConstType;
+
+/** \brief Network Message Flags type definition
+ **
+ ** \param Prop 		network message properties, valid valuesa are:
+ **							- COM_NM_PROP_STATIC
+ **							- COM_NM_PROP_DYNAMIC
+ **							- COM_NM_PROP_ZERO
+ ** \param BitOrd		bit ordering, valid values are:
+ **							- COM_NM_BO_BIGENDIAN
+ **							- COM_NM_BO_LITTLEENDIAN
+ ** \param DataInt	network message data interpretation
+ **							- COM_NM_DI_UNSIGNEDINTEGER
+ **							- COM_NM_DI_BYTEARRAY
+ ** \param Direction	network message data direction
+ **							- COM_NM_DIR_RX
+ **							- COM_NM_DIR_TX_TRIGGERED
+ **							- COM_NM_DIR_TX_PENDING
+ **							- COM_NM_DIR_TX_AUTO
+ **/
+typedef struct {
+	uint16 Prop : 2;
+	uint16 BitOrd : 1;
+	uint16 DataInt : 1;
+	uint16 Direction : 2;
+} Com_NMsgFlagsType;
+
+/** \brief Network Message Const type definition
+ **
+ ** \param Flags	Network Message Flags, for more detailes see
+ **					Com_NMsgFlagsType type definition
+ ** \param Size	Size of the network message in bits
+ ** \param Offset	Offset of the network message on the PDU
+ **/
+typedef struct {
+	Com_NMsgFlagsType	Flags;
+	uint16 Size;
+	uint16 Offset;
+} Com_NetworkMessageConstType;
 
 typedef struct {
 	Com_IPDUFlagsType Flags;
