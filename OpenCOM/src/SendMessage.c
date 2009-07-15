@@ -88,9 +88,9 @@ StatusType SendMessage
 	ApplicationDataRef DataRef
 )
 {
-
-	StatusType ret = E_OK;
-	Com_NetMsgType NetMsg;
+	StatusType ret = E_OK;		/* return value */
+	Com_NetMsgType TxNetMsg;	/* tx network message index */
+	Com_IPDUType TxPDU;			/* tx pdu message index */
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	/* check that the message is on range */
@@ -119,7 +119,10 @@ StatusType SendMessage
 			/* implement the external communication */
 
 			/* get network message */
-			NetMsg = Com_TxMessageObjectsConst[Message].NetMsg;
+			TxNetMsg = Com_TxMessageObjectsConst[Message].NetMsg;
+
+			/* get tranmist PDU */
+			TxPDU = Com_TxNetworkMessageConst[TxNetMsg].IPDU;
 
 			/* copy the data to the underlayer PDU */
 			/* Com_TxPduObjects[TxPdu].DataRef;
@@ -130,10 +133,10 @@ StatusType SendMessage
 					- the message has property triggered
 					- the underlayer I-PDU is configured != to periodic */
 			if ( ( Com_TxMessageObjectsConst[Message].Flags.TProp == COM_MSG_TPROP_TRIGGERED ) &&
-				  ( Com_TxPduObjectsConst[NetMsg].Flags.Prop != COM_TX_PDU_PERIODIC ) )
+				  ( Com_TxPduObjectsConst[TxPDU].Flags.Prop != COM_TX_PDU_PERIODIC ) )
 			{
 				/* trigger the transmission of the I-PDU */
-				Com_TxTrigger[Com_TxPduObjectsConst[NetMsg].Layer](Com_TxPduObjectsConst[NetMsg].LayerPDU);
+				Com_TxTrigger[Com_TxPduObjectsConst[TxPDU].Layer](Com_TxPduObjectsConst[TxPDU].LayerPDU);
 			}
 		}
 		else

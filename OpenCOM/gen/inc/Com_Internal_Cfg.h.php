@@ -82,6 +82,7 @@
 /** TODO */
 #define ERROR_CHECKING_TYPE ERROR_CHECKING_STANDARD
 
+/*------------------[Message Objects macros declarations]---------------------*/
 #define COM_MSG_PROP_TX_STAT_INT		0U
 #define COM_MSG_PROP_TX_STAT_EXT		1U
 #define COM_MSG_PROP_TX_ZERO_INT		2U
@@ -101,18 +102,25 @@
 #define COM_MSG_NOTIF_CBACK			3U
 #define COM_MSG_NOTIF_FLAG				4U
 
+/*------------------[Network Message Objects macros declarations]-------------*/
+/*------------------[PDU Message Objects macros declarations]-----------------*/
 #define COM_TX_PDU_PERIODIC			0U
 #define COM_TX_PDU_DIRECT				1U
 #define COM_TX_PDU_MIXED				2U
 #define COM_RX_PDU						3U
 
+/*------------------[Lower Layers macros declarations]------------------------*/
+
 /*==================[typedef]================================================*/
+/*------------------[Identifier type definitions]----------------------------*/
+/** \brief Network Message Identifier type definition */
+typedef uint8 Com_NetMsgType;
+
 /** \brief I-PDU type definition */
 /** TODO uint8 or uint16 has to depend on the account of messages */
 typedef uint8 Com_IPDUType;
 
-typedef uint8 Com_NetMsgType;
-
+/*------------------[Message Objects type definitions]----------------------*/
 /** \brief Message Flags type definition
  **
  ** \param MsgProp indicates the message properties, valid values are:
@@ -141,18 +149,6 @@ typedef struct {
 	uint16 CType : 3;
 } Com_MsgFlagsType;
 
-/** \brief IPDU Flags type definition
- **
- ** \param Prop is the property of the IPDU valid values are:
- **			- COM_TX_PDU_PERIODIC
- **			- COM_TX_PDU_DIRECT
- **			- COM_TX_PDU_MIXED
- **			- COM_RX_PDU
- **/
-typedef struct {
-	uint16 Prop : 2;
-} Com_IPDUFlagsType;
-
 /** \brief Transmit Message Object Const type definition
  **
  ** \param Flags	Transmit Flags, for more details see Com_MsgFlagsType type
@@ -179,6 +175,7 @@ typedef struct {
 	/** TODO */
 } Com_RxMessageObjectConstType;
 
+/*------------------[Network Message Objects type definitions]--------------*/
 /** \brief Network Message Flags type definition
  **
  ** \param Prop 		network message properties, valid valuesa are:
@@ -202,20 +199,50 @@ typedef struct {
 	uint16 BitOrd : 1;
 	uint16 DataInt : 1;
 	uint16 Direction : 2;
-} Com_NMsgFlagsType;
+} Com_NetMsgFlagsType;
 
-/** \brief Network Message Const type definition
+/** \brief Transmit Network Message Const type definition
  **
  ** \param Flags	Network Message Flags, for more detailes see
  **					Com_NMsgFlagsType type definition
  ** \param Size	Size of the network message in bits
  ** \param Offset	Offset of the network message on the PDU
+ ** \param IPDU	IPDU for this network message
  **/
 typedef struct {
-	Com_NMsgFlagsType	Flags;
+	Com_NetMsgFlagsType Flags;
 	uint16 Size;
 	uint16 Offset;
-} Com_NetworkMessageConstType;
+	Com_IPDUType IPDU;
+} Com_TxNetworkMessageConstType;
+
+/** \brief Receive Network Message Const type definition
+ **
+ ** \param Flags	Network Message Flags, for more detailes see
+ **					Com_NMsgFlagsType type definition
+ ** \param Size	Size of the network message in bits
+ ** \param Offset	Offset of the network message on the PDU
+ ** \param IPDU	IPDU for this network message
+ **/
+typedef struct {
+	Com_NetMsgFlagsType	Flags;
+	uint16 Size;
+	uint16 Offset;
+	Com_IPDUType IPDU;
+} Com_RxNetworkMessageConstType;
+
+/*------------------[PDU Message Objects type definitions]------------------*/
+/** \brief IPDU Flags type definition
+ **
+ ** \param Prop is the property of the IPDU valid values are:
+ **			- COM_TX_PDU_PERIODIC
+ **			- COM_TX_PDU_DIRECT
+ **			- COM_TX_PDU_MIXED
+ **			- COM_RX_PDU
+ **/
+typedef struct {
+	uint16 Prop : 2;
+} Com_IPDUFlagsType;
 
 /** \brief Transmit IPDU Object Const type definition
  **
@@ -233,22 +260,42 @@ typedef struct {
 	uint16 LayerPDU;
 } Com_TxPduObjectsConstType;
 
+/** \brief Reception IPDU Object Const type definition
+ **
+ ** \param Flags IPDU flags, see Com_IPDUFlagsType type definition
+ **/
 typedef struct {
 	Com_IPDUFlagsType Flags;
 } Com_RxPduObjectsConstType;
 
+/*------------------[Lower Layers type definitions]-------------------------*/
+/** \brief Low Layer Tx Trigger Functions */
 typedef void (*Com_TxTriggerType)(uint16 IPDU);
 
-
 /*==================[external data declaration]==============================*/
+/*------------------[Message Objects declarations]---------------------------*/
+/** \brief Constants for the Message Receive Objects */
 Com_RxMessageObjectConstType Com_RxMessageObjectsConst[];
 
+/** \brief Constants for the Message Transmission Objects */
 Com_TxMessageObjectConstType Com_TxMessageObjectsConst[];
 
+/*------------------[Network Message Objects declarations]-------------------*/
+/** \brief Constant for the Network Message Transmission */
+Com_TxNetworkMessageConstType Com_TxNetworkMessageConst[];
+
+/** \brief Constant for the Network Message Reception */
+Com_RxNetworkMessageConstType Com_RxNetworkMessageConst[];
+
+/*------------------[PDU Message Objects declarations]-----------------------*/
+/** \brief Constants for the PDU Transmited */
 Com_TxPduObjectsConstType Com_TxPduObjectsConst[];
 
+/** \brief Constants for the PDU Received */
 Com_RxPduObjectsConstType Com_RxPduObjectsConst[];
 
+/*------------------[Lower Layers declarations]------------------------------*/
+/** \brief Lower Layer array */
 Com_TxTriggerType Com_TxTrigger[];
 
 /*==================[external functions declaration]=========================*/
