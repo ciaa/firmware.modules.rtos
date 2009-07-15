@@ -92,15 +92,18 @@ StatusType ReceiveMessage
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+	/* check that the message identifier is on range */
 	if ( Message > COM_RX_MAX_MESSAGE )
 	{
-		/* check that the message is on range */
+		/* in other case return an error */
 		ret = E_COM_ID;
 	}
-	else if ( Com_RxMessageObjectsConst[Message].Flags.Type == COM_RX_MSG_NORMAL )
+	/* check that the message is not zero-length neither dynamic-lenght neither
+		a tx message */
+	else if (! ( ( Com_RxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_RX_STAT_INT ) ||
+					 ( Com_RxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_RX_STAT_EXT ) ) )
 	{
-		/* check that the message is not zero-length neither dynamic-lenght neither
-			a tx message */
+		/* in other case return an error */
 		ret = E_COM_ID;
 	}
 	else

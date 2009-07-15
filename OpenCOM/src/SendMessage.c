@@ -90,18 +90,21 @@ StatusType SendMessage
 {
 
 	StatusType ret = E_OK;
-	Com_IPDUType TxPdu;
+	Com_NetMsgType NetMsg;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+	/* check that the message is on range */
 	if ( Message > COM_TX_MAX_MESSAGE )
 	{
-		/* check that the message is on range */
+		/* in other case return an error */
 		ret = E_COM_ID;
 	}
-	else if ( Com_TxMessageObjectsConst[Message].Flags.Type = COM_TX_MSG_NORMAL )
+	/* check that the message is not zero-length neither dynamic-lenght neither
+		a rx message */
+	else if (! ( ( Com_TxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_TX_STAT_INT ) ||
+					 ( Com_TxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_TX_STAT_EXT ) ) )
 	{
-		/* check that the message is not zero-length neither dynamic-lenght neither
-			a rx message */
+		/* in other case return an error */
 		ret = E_COM_ID;
 	}
 	else
@@ -111,12 +114,12 @@ StatusType SendMessage
 	/* SendMessage main functionality */
 
 		/* check communication type */
-		if ( Com_TxMessageObjectsConst[Message].Flags.ExtInt == COM_CTYPE_EXTERNAL )
+		if ( Com_TxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_TX_STAT_EXT )
 		{
 			/* implement the external communication */
 
-			/* get external L-PDU */
-			TxPdu = Com_TxMessageObjectsConst[Message].TxPdu;
+			/* get network message */
+			NetMsg = Com_TxMessageObjectsConst[Message].NetMsg;
 
 			/* copy the data to the underlayer PDU */
 			/* Com_TxPduObjects[TxPdu].DataRef;
@@ -126,11 +129,11 @@ StatusType SendMessage
 			/* check if the unter layer tx has to be triggered only to be done if:
 					- the message has property triggered
 					- the underlayer I-PDU is configured != to periodic */
-			if ( ( Com_TxMessageObjectsConst[Message].Flags.Type == COM_TX_MSG_TRIGGERED ) &&
-				  ( Com_TxPduObjectsConst[TxPdu].Flags.Type != COM_TX_PDU_PERIODIC ) )
+			if ( ( Com_TxMessageObjectsConst[Message].Flags.TProp == COM_MSG_TPROP_TRIGGERED ) &&
+				  ( Com_TxPduObjectsConst[NetMsg].Flags.Prop != COM_TX_PDU_PERIODIC ) )
 			{
 				/* trigger the transmission of the I-PDU */
-				Com_TxTrigger[Com_TxPduObjectsConst[TxPdu].TriFuncNum](Com_TxPduObjectsConst[TxPdu].TriFuncParam);
+				Com_TxTrigger[Com_TxPduObjectsConst[NetMsg].Layer](Com_TxPduObjectsConst[NetMsg].LayerPDU);
 			}
 		}
 		else

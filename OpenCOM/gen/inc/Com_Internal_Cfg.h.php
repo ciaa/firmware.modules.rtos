@@ -95,21 +95,27 @@
 #define COM_MSG_TPROP_PENDING			1U
 #define COM_MSG_TPROP_AUTO				2U
 
-#define COM_MSH_NOTIF_NONE				0U
-#define COM_MSH_NOTIF_ATASK			1U
-#define COM_MSH_NOTIF_SEVENT			2U
-#define COM_MSH_NOTIF_CBACK			3U
-#define COM_MSH_NOTIF_FLAG				4U
+#define COM_MSG_NOTIF_NONE				0U
+#define COM_MSG_NOTIF_ATASK			1U
+#define COM_MSG_NOTIF_SEVENT			2U
+#define COM_MSG_NOTIF_CBACK			3U
+#define COM_MSG_NOTIF_FLAG				4U
 
+#define COM_TX_PDU_PERIODIC			0U
+#define COM_TX_PDU_DIRECT				1U
+#define COM_TX_PDU_MIXED				2U
+#define COM_RX_PDU						3U
 
 /*==================[typedef]================================================*/
 /** \brief I-PDU type definition */
 /** TODO uint8 or uint16 has to depend on the account of messages */
 typedef uint8 Com_IPDUType;
 
+typedef uint8 Com_NetMsgType;
+
 /** \brief Message Flags type definition
  **
- ** \param Prop indicates the message properties, valid values are:
+ ** \param MsgProp indicates the message properties, valid values are:
  **			- COM_MSG_PROP_TX_STAT_INT
  **			- COM_MSG_PROP_TX_STAT_EXT
  **			- COM_MSG_PROP_TX_ZERO_INT
@@ -137,11 +143,14 @@ typedef struct {
 
 /** \brief IPDU Flags type definition
  **
- ** \param Type is the type of the IPDU valid values are:
+ ** \param Prop is the property of the IPDU valid values are:
  **			- COM_TX_PDU_PERIODIC
+ **			- COM_TX_PDU_DIRECT
+ **			- COM_TX_PDU_MIXED
+ **			- COM_RX_PDU
  **/
 typedef struct {
-	uint16 Type : 3;
+	uint16 Prop : 2;
 } Com_IPDUFlagsType;
 
 /** \brief Transmit Message Object Const type definition
@@ -155,8 +164,8 @@ typedef struct {
  **/
 typedef struct {
 	Com_MsgFlagsType Flags;
-	uint16 NetMsg;
-	uint16 Msg
+	Com_NetMsgType NetMsg;
+	MessageIdentifier Msg;
 	/* init value TODO */
 } Com_TxMessageObjectConstType;
 
@@ -208,10 +217,20 @@ typedef struct {
 	uint16 Offset;
 } Com_NetworkMessageConstType;
 
+/** \brief Transmit IPDU Object Const type definition
+ **
+ ** \param Size size in bits of the IPDU
+ ** \param Flags IPDU flags, see Com_IPDUFlagsType type definition
+ **/
 typedef struct {
+	uint16 Size;
 	Com_IPDUFlagsType Flags;
-	uint8 TriFuncNum;
-	uint16 TriFuncParam;
+	uint16 TimePeriod;
+	uint16 TimeOffset;
+	uint16 MinDelay;
+	uint16 Timeout;
+	uint8 Layer;
+	uint16 LayerPDU;
 } Com_TxPduObjectsConstType;
 
 typedef struct {
