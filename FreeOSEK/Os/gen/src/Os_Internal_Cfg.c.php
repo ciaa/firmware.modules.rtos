@@ -40,17 +40,17 @@
  *
  */
 
-/** \brief FreeOSEK Generated Internal Configuration Implementation File
+/** \brief FreeOSEK Os Generated Internal Configuration Implementation File
  **
- **
- **
- ** \file Osek_Internal_Cfg.c
+ ** \file Os_Internal_Cfg.c
  **
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -62,12 +62,13 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090719 v0.1.2 MaCe rename file to Os_
  * 20090128 v0.1.1 MaCe add OSEK_MEMMAP check
  * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -498,6 +499,7 @@ foreach ($intnames as $int)
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

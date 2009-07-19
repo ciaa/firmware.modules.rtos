@@ -40,14 +40,16 @@
  *
  */
 
-/** \brief FreeOSEK Generated Configuration Implementation File
+/** \brief FreeOSEK Os Generated Configuration Implementation File
  **
- ** \file Osek_Cfg.c
+ ** \file Os_Cfg.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -59,11 +61,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080909 v0.1.0 MaCe       - initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20080909 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -97,6 +100,7 @@ unsigned int Osek_ErrorRet;
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

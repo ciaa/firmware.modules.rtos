@@ -40,14 +40,16 @@
  *
  */
 
-/** \brief FreeOSEK Generated Internal Achitecture Configuration Implementation File
+/** \brief FreeOSEK Os Generated Internal Achitecture Configuration Implementation File
  **
- ** \file Osek_Internal_Arch_Cfg.c
+ ** \file Os_Internal_Arch_Cfg.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -59,11 +61,11 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080713 v0.1.0 MaCe       - initial version
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -174,6 +176,7 @@ for ($loopi = 0; $loopi < 32; $loopi++)
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

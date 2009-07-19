@@ -57,15 +57,17 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK Generated Internal Achitecture Configuration Implementation File
+/** \brief FreeOSEK Os Generated Internal Achitecture Configuration Implementation File
  **
- ** \file tmparch/Osek_Internal_Arch_Cfg.c
+ ** \file tmparch/Os_Internal_Arch_Cfg.c
  ** \arch tmparch
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -97,7 +99,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * add any needed include, please take into account that normaly NO INCLUDE
@@ -170,6 +172,7 @@
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
