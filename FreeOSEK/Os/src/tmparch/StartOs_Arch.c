@@ -63,7 +63,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -96,7 +98,7 @@
 
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * add any needed include, please take into account that normaly NO INCLUDE
@@ -210,6 +212,7 @@ void StartOs_Arch(void)
 
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

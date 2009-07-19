@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK StartOs Architecture Dependece Implementation File
+/** \brief FreeOSEK Os StartOs Architecture Dependece Implementation File
  **
  ** This file implements the StartOs Arch API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -58,11 +60,11 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080810 v0.1.0 MaCe       - initial version
+ * 20080810 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -134,6 +136,7 @@ void StartOs_Arch(void)
 	SaveWinStack();
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

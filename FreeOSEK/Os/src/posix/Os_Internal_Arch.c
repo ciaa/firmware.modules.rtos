@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -36,16 +36,19 @@
  *
  */
 
-/** \brief FreeOSEK Internal ARCH CPU Dependece Implementation File
+/** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file arm9/at91/Osek_Internal_Arch_Cpu.c
- ** \arch arm9/at91
+ ** \file posix/Os_Internal_Arch.c
+ ** \arch posix
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
  ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
+ ** @{ */
+
 
 /*
  * Initials     Name
@@ -56,11 +59,14 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090227 v0.1.0 MaCe initial version
+ * 20090719 v0.1.3 MaCe rename file to Os_
+ * 20090424 v0.1.2 MaCe use the right counter macros
+ * 20090130 v0.1.1 MaCe change type uint8_least to uint8f
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -71,39 +77,138 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+uint8	InterruptState;
+
+mqd_t MessageQueue;
+
+struct mq_attr MessageQueueAttr;
+
+struct sigaction MessageSignal;
+
+struct sigaction KillSignal;
+
+pid_t OsekProcessID;
+
+struct sigevent SignalEvent;
+
+uint32 OsekHWTimer0;
+
+InterruptFlagsType InterruptFlag;
+
+uint32 PosixStack;
+
+uint32 OsekStack;
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void StartOs_Arch_Cpu
-(
-	void
-)
+void OSEK_ISR_HWTimer0(void)
 {
-#if 0
-/*** PORT TO CLPS7110 ***/
-   T0CTCR = 0b00;	/* bit 1-0: 00 Timer mode
-      01 Counter mode at rising edge
-      10 Counter mode at falling edge
-      11 Counter mode both edges
-      bit 3-2: only valid when bit 1-0 != 0
-      00 CAPn.0 for timer n
-      01 CAPn.1 for timer n
-      1x reserved
-      bit 7-4: reserved
-      */
-
-   T0PR = 30;	/* 32-bits prescaler register */
-
-	/* set Timer Control Register TCR */
-   T0TCR = 0b11;	/* bit 0:	enable counter
-      bit 1:	reset counter
-      bit 7-2: reserved */
-
-   T0TCR = 0b01;	/* bit 1:	clear reset now */
-#endif
+#if (defined HWCOUNTER0)
+#if (ALARMS_COUNT != 0)
+	IncrementCounter(HWCOUNTER0, 1);
+#endif /* #if (ALARMS_COUNT != 0) */
+#endif /* #if (defined HWCOUNTER0) */
 }
 
+void OSEK_ISR_HWTimer1(void)
+{
+#if (defined HWCOUNTER1)
+#if (ALARMS_COUNT != 0)
+	IncrementCounter(HWCOUNTER1, 1);
+#endif /* #if (ALARMS_COUNT != 0) */
+#endif /* #if (defined HWCOUNTER1) */
+}
+
+void PosixInterruptHandler(int status)
+{
+	uint8 msg[10];
+	ssize_t mq_ret;
+
+	mq_ret = mq_receive(MessageQueue, (char*)msg, sizeof(msg), NULL);
+	if (mq_ret > 0)
+	{
+		if (msg[0] < 32)
+		{
+			/* printf("Interrupt: %d\n",msg[0]); */
+			if ( (InterruptState) &&
+				  ( (InterruptMask & (1 << msg[0] ) )  == 0 ) )
+			{
+				InterruptTable[msg[0]]();
+			}
+			else
+			{
+				InterruptFlag |= 1 << msg[0];
+			}
+		}
+
+	}
+	else
+	{
+		switch(errno)
+		{
+			case EAGAIN:
+				printf("Queue Empty\n");
+				break;
+			case EBADF:
+				printf("Not valued queue descriptor\n");
+				break;
+			case EMSGSIZE:
+				printf("Message buffer to small\n");
+				break;
+			case EINTR:
+				printf("Reception interrupted by a signal\n");
+				break;
+			default:
+				printf("other error\n");
+				break;
+		}
+		printf("Error by reading the Message Queue, returned value: %d, error number: %d\n",mq_ret,errno);
+	}
+
+	if (mq_notify(MessageQueue, &SignalEvent) == -1)
+	{
+		printf("Error: Message Notification can not be activated, error: %d.\n",errno);
+		sleep(3);
+	}
+}
+
+void HWTimerFork(uint8 timer)
+{
+	int mq_ret;
+	char msg;
+	struct timespec rqtp;
+
+	if (timer <= 2)
+	{
+		msg = timer + 4;
+
+		rqtp.tv_sec=0;
+   	rqtp.tv_nsec=1000000;
+
+		while(1)
+		{
+			mq_ret = mq_send(MessageQueue, &msg, sizeof(msg), 0);
+			if (mq_ret < 0)
+			{
+				/* printf("Error HW Timer can not generate an interrupt\n"); */
+			}
+			nanosleep(&rqtp,NULL);
+		}
+	}
+
+	exit(0);
+}
+
+void OsekKillSigHandler(int status)
+{
+	PreCallService();
+	mq_unlink("/FreeOSEK");
+	exit(0);
+	PostCallService();
+}
+
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

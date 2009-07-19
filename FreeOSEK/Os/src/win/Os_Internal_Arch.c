@@ -36,15 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Internal Arch Implementation File
+/** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file win/Osek_Internal_Arch.c
+ ** \file win/Os_Internal_Arch.c
  ** \arch win
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 
@@ -57,11 +59,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080713 v0.1.0 MaCe       - initial version
+ * 20090819 v0.1.1 MaCe rename file to Os_
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -345,6 +348,7 @@ void OsekKillSigHandler(int status)
 	exit(0);
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

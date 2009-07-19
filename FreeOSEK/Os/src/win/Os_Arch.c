@@ -36,15 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Arch Implementation File
+/** \brief FreeOSEK Os Arch Implementation File
  **
- ** \file win/Osek_Arch.c
+ ** \file win/Os_Arch.c
  ** \arch win
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -56,11 +58,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080922 v0.2.0 MaCe       - initial version
+ * 20090819 v0.2.1 MaCe rename file to Os_
+ * 20080922 v0.2.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -101,6 +104,7 @@ void ScheduleInterrupts(void)
 	}
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

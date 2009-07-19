@@ -48,20 +48,22 @@
 
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
- * update the tmparch directory on the \file doxygen comment with your
- * architecture
+ * update the tmparch and tmpcputpye directory on the \file and
+ * \arch doxygen comment with your architecture and cpu type
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK Arch Implementation File
+/** \brief FreeOSEK Os Internal ARCH CPU Dependece Implementation File
  **
- ** \file tmparch/Osek_Arch.c
- ** \arch tmparch
+ ** \file tmparch/tmpcputype/Os_Internal_Arch_Cpu.c
+ ** \arch tmparch/tmpcputype
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -93,7 +95,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * add any needed include, please take into account that normaly NO INCLUDE
@@ -107,7 +109,7 @@
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * Please try to keep empty this part, define all needed macros
- * in Osek_Arch_Cfg.h
+ * in Osek_Internal_Arch.h
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
@@ -143,7 +145,7 @@
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * Please declare here all needed variables which are
- * exported. Please define these variables in Osek_Arch.h
+ * exported. Please define these variables in Osek_Internal_Arch.h
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
@@ -161,11 +163,12 @@
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * Please declare here all needed functions which are
- * exported. Please define these functions in Osek_Arch.h
+ * exported. Please define these functions in Osek_Internal_Arch.h
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

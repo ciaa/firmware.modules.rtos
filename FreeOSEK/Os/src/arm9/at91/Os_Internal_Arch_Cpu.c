@@ -36,15 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Arch Implementation File
+/** \brief FreeOSEK Os Internal ARCH CPU Dependece Implementation File
  **
- ** \file posix/Osek_Arch.c
- ** \arch posix
+ ** \file arm9/at91/Os_Internal_Arch_Cpu.c
+ ** \arch arm9/at91
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -56,11 +58,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080922 v0.2.0 MaCe       - initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20090227 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -71,36 +74,40 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-InterruptFlagsType InterruptMask;
-
-InterruptStateType InterruptState;
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void ScheduleInterrupts(void)
+void StartOs_Arch_Cpu
+(
+	void
+)
 {
-	int loopi = 0;
-	uint32 InterruptToBeExecuted;
+#if 0
+/*** PORT TO CLPS7110 ***/
+   T0CTCR = 0b00;	/* bit 1-0: 00 Timer mode
+      01 Counter mode at rising edge
+      10 Counter mode at falling edge
+      11 Counter mode both edges
+      bit 3-2: only valid when bit 1-0 != 0
+      00 CAPn.0 for timer n
+      01 CAPn.1 for timer n
+      1x reserved
+      bit 7-4: reserved
+      */
 
-	if (InterruptState)
-	{
-		InterruptToBeExecuted = ( InterruptFlag & ( (InterruptFlagsType) ~InterruptMask ) );
-		while(InterruptToBeExecuted != 0)
-		{
-			if (InterruptToBeExecuted & 1)
-			{
-				InterruptFlag &= ~(1<<loopi);
+   T0PR = 30;	/* 32-bits prescaler register */
 
-				InterruptTable[loopi]();
-			}
+	/* set Timer Control Register TCR */
+   T0TCR = 0b11;	/* bit 0:	enable counter
+      bit 1:	reset counter
+      bit 7-2: reserved */
 
-			InterruptToBeExecuted >>=1;
-			loopi++;
-		}
-	}
+   T0TCR = 0b01;	/* bit 1:	clear reset now */
+#endif
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
