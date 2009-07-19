@@ -44,9 +44,9 @@
  **
  **/
 
-/** \addtogroup Examples Examples
+/** \addtogroup Examples
  ** @{ */
-/** \addtogroup ARMExample ARM Example
+/** \addtogroup uIP
  ** @{ */
 
 /*

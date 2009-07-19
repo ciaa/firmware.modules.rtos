@@ -38,7 +38,7 @@
 
 #ifndef _ADC_INTERNAL_ARCH_H_
 #define _ADC_INTERNAL_ARCH_H_
-/** \brief ADC Internal Arch Header File
+/** \brief FreeOSEK Driver ADC Internal Arch Header File
  **
  ** ADC Internal Arch Header File
  **
@@ -46,13 +46,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Adc_Internal
- ** \ingroup OpenDRV_Adc
+/** \addtogroup FreeOSEK_Drv_Adc
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc_Internal
  ** @{ */
 
 /*
@@ -81,6 +81,7 @@ void Adc_Init_Arch
 	const Adc_ConfigType * ConfigPtr
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

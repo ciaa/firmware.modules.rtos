@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV ADC Read Group implementation file
+/** \brief FreeOSEK Driver ADC Read Group implementation file
  **
  ** This file implements the Adc_ReadGroup API
  **
@@ -44,10 +44,11 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
 
 /*
@@ -95,6 +96,7 @@ Std_ReturnType Adc_ReadGroup
 /* #define OpenDRV_Adc_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

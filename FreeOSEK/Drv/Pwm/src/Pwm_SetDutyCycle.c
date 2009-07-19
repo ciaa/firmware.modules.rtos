@@ -78,7 +78,7 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-/** TODO */
+/* TODO */
 /* #define OpenDRV_Pwm_START_SEC_CODE
  * #include "MemMap.h" */
 

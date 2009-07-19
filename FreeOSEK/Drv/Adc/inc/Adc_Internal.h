@@ -38,7 +38,7 @@
 
 #ifndef _ADC_INTERNAL_H_
 #define _ADC_INTERNAL_H_
-/** \brief ADC Internal Header File
+/** \brief FreeOSEK Driver ADC Internal Header File
  **
  ** Io Internal Header File
  **
@@ -46,15 +46,14 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Adc_Internal
- ** \ingroup OpenDRV_Adc
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Adc_Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -88,6 +87,7 @@
 /* #define OpenDRV_IO_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

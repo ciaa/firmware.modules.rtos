@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV ADC Start Group Conversion implementation file
+/** \brief FreeOSEK Driver ADC Start Group Conversion implementation file
  **
  ** This file implements the Adc_StartGroupConversion API
  **
@@ -44,10 +44,11 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
 
 /*
@@ -94,6 +95,7 @@ void Adc_StartGroupConversion
 /* #define OpenDRV_Adc_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

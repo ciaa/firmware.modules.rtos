@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV ADC GetGroupStatus implementation file
+/** \brief FreeOSEK Driver ADC GetGroupStatus implementation file
  **
  ** This file implements the Adc_GetGroupStatus API
  **
@@ -44,10 +44,11 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
 
 /*
@@ -94,6 +95,7 @@ Adc_StatusType Adc_GetGroupStatus
 /* #define OpenDRV_Adc_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

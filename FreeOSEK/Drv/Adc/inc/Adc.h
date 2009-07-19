@@ -38,7 +38,7 @@
 
 #ifndef _ADC_H_
 #define _ADC_H_
-/** \brief OpenDRV ADC Header File
+/** \brief FreeOSEK Driver ADC Header File
  **
  ** This file shall be included by all files using any OpenDRV ADC API.
  **
@@ -46,10 +46,11 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
 
 /*

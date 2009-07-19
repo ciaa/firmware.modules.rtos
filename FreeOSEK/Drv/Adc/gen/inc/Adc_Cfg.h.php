@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief OpenDRV File to be Generated
+/** \brief FreeOSEK Driver ADC File to be Generated
  **
  ** \file Adc_Cfg.h.php
  **/
@@ -49,17 +49,18 @@
 
 #ifndef _ADC_CFG_H_
 #define _ADC_CFG_H_
-/** \brief OpenDRV ADC Generated Configuration Header File
+/** \brief FreeOSEK Driver ADC Generated Configuration Header File
  **
  ** This file contents the generated configuration of the ADC Driver
  **
  ** \file Adc_Cfg.h
  **/
 
-/** \addtogroup OpenDRV
- ** @{ */ 
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
 
 /*
@@ -84,6 +85,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

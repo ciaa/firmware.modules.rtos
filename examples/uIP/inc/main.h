@@ -43,7 +43,7 @@
  ** \file examples/uIP/inc/main.h
  **/
 
-/** \addtogroup examples
+/** \addtogroup Examples
  ** @{ */
 /** \addtogroup uIP
  ** @{ */

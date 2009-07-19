@@ -48,21 +48,23 @@
  *
  */
 
-#ifndef _OSEK_ARCH_H_
-#define _OSEK_ARCH_H_
-/** \brief FreeOSEK Architecture Dependent Header File
+#ifndef _OS_ARCH_H_
+#define _OS_ARCH_H_
+/** \brief FreeOSEK Os Architecture Dependent Header File
  **
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file s12x/Osek_Arch.h
+ ** \file s12x/Os_Arch.h
  ** \arch s12x
  **
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 
@@ -70,13 +72,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
- * KLi                        Kang Li
+ * KLi			 Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20081101 KLi	initial version
+ * 20081101 v0.1.0 KLi  initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -149,6 +151,7 @@
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_ARCH_H_ */
+#endif /* #ifndef _OS_ARCH_H_ */
 

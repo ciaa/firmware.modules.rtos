@@ -40,7 +40,7 @@
  *
  */
 <?php
-/** \brief OpenDRV ADC Internal Arch Header File to be Generated
+/** \brief FreeOSEK Driver ADC Internal Arch Header File to be Generated
  **
  ** \file Adc_Internal_Arch_Cfg.h.php
  **/
@@ -48,17 +48,20 @@
 
 #ifndef _ADC_INTERNAL_ARCH_CFG_H_
 #define _ADC_INTERNAL_ARCH_CFG_H_
-/** \brief OpenDRV ADC Internal Arch Generated Configuration Header File
+/** \brief FreeOSEK Driver ADC Internal Arch Generated Configuration Header File
  **
  ** This file contents the generated configuration of the ADC Driver
  **
  ** \file Adc_Internal_Arch_Cfg.h
  **/
 
-/** \addtogroup OpenDRV
- ** @{ */ 
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc_Internal
  ** @{ */
 
 /*
@@ -83,6 +86,8 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

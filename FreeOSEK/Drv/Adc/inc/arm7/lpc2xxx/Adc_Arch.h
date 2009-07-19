@@ -38,7 +38,7 @@
 
 #ifndef _ADC_ARCH_H_
 #define _ADC_ARCH_H_
-/** \brief ADC Arch Header File
+/** \brief FreeOSEK Driver ADC Arch Header File
  **
  ** ADC Arch Header File
  **
@@ -46,15 +46,12 @@
  ** \arch arm7/lpc2xxx
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Adc_Internal
- ** \ingroup OpenDRV_Adc
+/** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
-
 
 /*
  * Initials     Name
@@ -94,7 +91,7 @@ typedef uint8 Adc_ValueGroupType;
  **/
 typedef uint8 Adc_ClockSourceType;
 
-/** \breif Type of clock prescaler factor. (This is not an API type).
+/** \brief Type of clock prescaler factor. (This is not an API type).
  **/
 typedef uint8 Adc_PrescalerType;
 

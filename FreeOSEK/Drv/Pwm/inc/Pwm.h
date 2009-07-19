@@ -151,7 +151,7 @@ extern void Pwm_DeInit
 /** \brief Pwm service to set the duty cycle of the PWM channel
  **
  ** \param[in] ChannelNumber Numeric identifier of the PWM
- ** \param[in] Min = 0x0000 Max = 0xFFFF
+ ** \param[in] DutyCycle Min = 0x0000 Max = 0xFFFF
  **/
 extern void Pwm_SetDutyCycle
 (
@@ -163,7 +163,7 @@ extern void Pwm_SetDutyCycle
  **
  ** \param[in] ChannelNumber Numeric identifier of the PWM
  ** \param[in] Period Period of the PWM signal
- ** \param[in] Min = 0x0000 Max = 0xFFFF
+ ** \param[in] DutyCycle Min = 0x0000 Max = 0xFFFF
  **/
 extern void Pwm_SetPeriodAndDuty
 (

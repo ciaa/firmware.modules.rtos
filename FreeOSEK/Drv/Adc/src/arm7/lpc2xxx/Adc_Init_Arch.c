@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV ADC Init Arch implementation file
+/** \brief FreeOSEK Driver ADC Init Arch implementation file
  **
  ** This file implements the Adc_Init_Arch API
  **
@@ -44,13 +44,13 @@
  ** \arch arm7/lpc2xxx
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Adc
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Adc_Internal
- ** \ingroup OpenDRV_Adc
+/** \addtogroup FreeOSEK_Drv_Adc
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc_Internal
  ** @{ */
 
 /*
@@ -98,6 +98,7 @@ void Adc_Init_Arch
 /* #define OpenDRV_Adc_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
