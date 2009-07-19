@@ -21,38 +21,38 @@
 
 ###############################################################################
 # includes
--include OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
--include $(GENDIR)$(DIR)mak$(DIR)Make_OpenGEN.mak
+-include FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
+-include $(GENDIR)$(DIR)mak$(DIR)Make_Gen.mak
 
 ###############################################################################
 # definitions
-LIB += OpenGEN.a
+LIB += Gen.a
 
-GEN += OpenGENgen
+GEN += Gengen
 
 LFLAGS +=
 
-OpenGEN_OBJ +=
+GEN_OBJ +=
 
-GENFILES += OpenGEN$(DIR)gen$(DIR)mak$(DIR)Make_OpenGEN.mak.php		\
-				OpenGEN$(DIR)gen$(DIR)inc$(DIR)MemMap_Arch_Cfg.h.php
+GENFILES += FreeOSEK$(DIR)Gen$(DIR)gen$(DIR)mak$(DIR)Make_Gen.mak.php			\
+				FreeOSEK$(DIR)Gen$(DIR)gen$(DIR)inc$(DIR)MemMap_Arch_Cfg.h.php
 
-VPATH += OpenGEN$(DIR)src	\
-			OpenGEN$(DIR)src$(DIR)$(ARCH)
+VPATH += FreeOSEK$(DIR)Gen$(DIR)src	\
+			FreeOSEK$(DIR)Gen$(DIR)src$(DIR)$(ARCH)
 
-INCLUDE +=	-IOpenGEN$(DIR)inc													\
-				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)									\
-				-IOpenGEN$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)				\
-				-IOpenGEN$(DIR)inc$(DIR)compilers$(DIR)$(COMPILER)			\
+INCLUDE +=	-IFreeOSEK$(DIR)Gen$(DIR)inc													\
+				-IFreeOSEK$(DIR)Gen$(DIR)inc$(DIR)$(ARCH)									\
+				-IFreeOSEK$(DIR)Gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)			\
+				-IFreeOSEK$(DIR)Gen$(DIR)inc$(DIR)compilers$(DIR)$(COMPILER)		\
 				-I$(GENDIR)$(DIR)inc
 
 SPLINT +=
 
 ###############################################################################
 # rules
-OpenGEN.a : $(OpenGEN_OBJ)
-	ar -rcs $(LIBDIR)$(DIR)OpenGEN.a $(foreach obj, $(OpenGEN_OBJ), $(OBJDIR)$(DIR)$(obj))
+Gen.a : $(GEN_OBJ)
+	ar -rcs $(LIBDIR)$(DIR)Gen.a $(foreach obj, $(GEN_OBJ), $(OBJDIR)$(DIR)$(obj))
 # generation rule #
-OpenGENgen:
-	php OpenGEN$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	
+Gengen:
+	php FreeOSEK$(DIR)Gen$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	
 
