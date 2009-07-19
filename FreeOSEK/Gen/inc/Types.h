@@ -38,17 +38,18 @@
 
 #ifndef _TYPES_H_
 #define _TYPES_H_
-/** \brief OpenGEN Generic Types definition
+/** \brief FreeOSKE Gen Generic Types definition
  **
  ** \file Types.h
  **
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Global
+/** \addtogroup FreeOSEK_Gen Generator and Generic Files
  ** @{ */
-
+/** \addtogroup FreeOSEK_Gen_Global Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -283,6 +284,7 @@ typedef uint8f Std_ReturnType;
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

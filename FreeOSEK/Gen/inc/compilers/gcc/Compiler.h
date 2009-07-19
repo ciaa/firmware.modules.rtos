@@ -38,19 +38,20 @@
 
 #ifndef _COMPILER_H_
 #define _COMPILER_H_
-/** \brief OpenGEN Compiler Header File
+/** \brief FreeOSEK Gen Compiler Header File
  **
- ** OpenGEN Compiler Header File
+ ** Compiler Header File
  **
  ** \file gcc/Compiler.h
  **
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Compiler
+/** \addtogroup FreeOSEK_Gen
  ** @{ */
-
+/** \addtogroup FreeOSEK_Gen_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -111,6 +112,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

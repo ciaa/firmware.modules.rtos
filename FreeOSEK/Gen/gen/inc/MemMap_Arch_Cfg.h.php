@@ -51,10 +51,11 @@
  **
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Global
- ** \ingroup OpenGEN
+/** \addtogroup FreeOSEK_Gen
+ ** @{ */
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
@@ -87,6 +88,7 @@ foreach ($mappings as $map)
 	
 ?>
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

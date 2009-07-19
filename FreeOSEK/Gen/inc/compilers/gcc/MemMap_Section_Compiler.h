@@ -41,10 +41,11 @@
  ** \file gcc/MemMap_Section_Compiler.h
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Global
- ** \ingroup OpenGEN
+/** \addtogroup FreeOSEK_Gen
+ ** @{ */
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
@@ -85,6 +86,7 @@
    #undef MEMMAP_ERROR
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

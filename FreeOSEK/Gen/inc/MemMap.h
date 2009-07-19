@@ -42,10 +42,11 @@
  **
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Global
- ** \ingroup OpenGEN
+/** \addtogroup FreeOSEK_Gen
+ ** @{ */
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
@@ -90,6 +91,7 @@
 #error Error the memory class was not found.
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -38,18 +38,19 @@
 
 #ifndef _TYPES_ARCH_H_
 #define _TYPES_ARCH_H_
-/** \brief OpenGEN Architecture Types definition
+/** \brief FreeOSEK Gen Architecture Types definition
  **
  ** \file posix/Types_Arch.h
  ** \arch posix
  **
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Global
+/** \addtogroup FreeOSEK_Gen
  ** @{ */
-
+/** \addtogroup FreeOSEK_Gen_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -183,6 +184,7 @@ typedef signed int sint32f;
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

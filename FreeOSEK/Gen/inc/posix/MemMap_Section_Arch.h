@@ -44,10 +44,11 @@
  **
  **/
 
-/** \addtogroup OpenGEN
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenGEN_Global
- ** \ingroup OpenGEN
+/** \addtogroup FreeOSEK_Gen
+ ** @{ */
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
@@ -87,6 +88,7 @@
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _MEMMAP_H_ */
+#endif /* #ifndef _MEMMAP_SECTION_ARCH_H_ */
 
