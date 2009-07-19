@@ -1,0 +1,34 @@
+############################################################################### 
+#
+# Copyright 2008, Mariano Cerdeiro
+#
+# This file is part of FreeOSEK.
+#
+# FreeOSEK is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# FreeOSEK is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with FreeOSEK. If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
+
+###############################################################################
+# definitions
+
+# GCC posix tool chains #
+CC = gcc
+LD = gcc
+AR = ar
+AS = as
+GDB = gdb
+NM = nm
+# compiler options for posix with GCC Compiler #
+CFLAGS += -c -Wall -ggdb3
+LFLAGS += $(LINKSCRIPT)

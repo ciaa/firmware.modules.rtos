@@ -1,0 +1,82 @@
+/***************************************************************/
+/* DONT CHANGE THIS FILE													*/	 
+/* FreeOSEK v0.1.0 is not reading this file to interpret the 	*/
+/* oil file.																	*/
+/***************************************************************/
+
+IMPLEMENTATION Standard {
+	OS {
+		ENUM [STANDARD, EXTENDED] STATUS;
+		BOOLEAN STARTUPHOOK;
+		BOOLEAN ERRORHOOK;
+		BOOLEAN SHUTDOWNHOOK;
+		BOOLEAN USERESSCHEDULER = TRUE;
+	};
+
+	APPMODE {
+	};
+
+	TASK {
+		BOOLEAN [
+			TRUE {
+				APPMODE_TYPE APPMODE[];
+			},
+			FALSE
+		] AUTOSTART;
+		UINT32 PRIORITY;
+		UINT32 ACTIVATION;
+		ENUM [NON, FULL] SCHEDULE;
+		EVENT_TYPE EVENT[];
+		RESOURCE_TYPE RESOURCE[];
+	};
+
+
+	ISR {
+		UINT32 [1, 2] CATEGORY;
+		RESOURCE_TYPE RESOURCE[];
+	};
+
+	COUNTER {
+		UINT32 MINCYCLE;
+		UINT32 MAXALLOWEDVALUE;
+		UINT32 TICKSPERBASE;
+	};
+
+	ALARM {
+		COUNTER_TYPE COUNTER;
+		ENUM [
+			ACTIVATETASK {
+				TASK_TYPE TASK;
+			},
+			SETEVENT {
+				TASK_TYPE TASK;
+			}
+			ALARMCALLBACK {
+				STRING ALARMCALLBACKNAME;
+			}
+			] ACTION;
+		BOOLEAN [
+			TRUE {
+				UINT32 ALARMTIME;
+				UINT32 CYCLETIME;
+				APPMODE_TYPE APPMODE[];
+			},
+			FALSE
+		] AUTOSTART;
+	};
+
+	EVENT {
+		UINT64 WITH_AUTO MASK;
+	};
+
+	RESOURCE {
+		ENUM [
+			STANDARD,
+			LINKED {
+				RESOURCE_TYPE LINKEDRESOURCE;
+			},
+			INTERNAL
+		] RESOURCEPROPERTY;
+	};
+};
+
