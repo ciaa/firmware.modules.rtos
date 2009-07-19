@@ -1,21 +1,21 @@
--include OpenDRV$(DIR)Mcu$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
+-include FreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
-OPENDRV_MCU_OBJ +=	Mcu_Init.o														\
-							Mcu_InitClock.o												\
-							Mcu_Init_Arch.o												\
-							Mcu_InitClock_Arch.o
+DRV_MCU_OBJ +=	Mcu_Init.o														\
+					Mcu_InitClock.o												\
+					Mcu_Init_Arch.o												\
+					Mcu_InitClock_Arch.o
 
-INCLUDE += 	-IOpenDRV$(DIR)Mcu$(DIR)inc											\
-				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)							\
-				-IOpenDRV$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
+INCLUDE += 	-IFreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)inc											\
+				-IFreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)							\
+				-IFreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
-LIB += OpenDRV_Mcu.a
+LIB += Drv_Mcu.a
 
-VPATH += OpenDRV$(DIR)Mcu$(DIR)src												\
-			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)								\
-			OpenDRV$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
+VPATH += FreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)src											\
+			FreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)						\
+			FreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
-GENFILES += OpenDRV$(DIR)Mcu$(DIR)gen$(DIR)inc$(DIR)Mcu_Cfg.h.php
+GENFILES += FreeOSEK$(DIR)Drv$(DIR)Mcu$(DIR)gen$(DIR)inc$(DIR)Mcu_Cfg.h.php
 
-OpenDRV_Mcu.a : $(OPENDRV_MCU_OBJ)
-	$(AR) -rcs $(LIBDIR)$(DIR)OpenDRV_Mcu.a $(foreach obj, $(OPENDRV_MCU_OBJ), $(OBJDIR)$(DIR)$(obj))
+Drv_Mcu.a : $(DRV_MCU_OBJ)
+	$(AR) -rcs $(LIBDIR)$(DIR)Drv_Mcu.a $(foreach obj, $(DRV_MCU_OBJ), $(OBJDIR)$(DIR)$(obj))

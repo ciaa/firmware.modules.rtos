@@ -1,24 +1,24 @@
--include OpenDRV$(DIR)Eth$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
--include OpenDRV$(DIR)Eth$(DIR)Phy$(DIR)mak$(DIR)Makefile
--include $(GENDIR)$(DIR)mak$(DIR)Make_OpenDRV_Eth.mak
+-include FreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
+-include FreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)Phy$(DIR)mak$(DIR)Makefile
+-include $(GENDIR)$(DIR)mak$(DIR)Make_Drv_Eth.mak
 
-OPENDRV_ETH_OBJ +=		Eth_Init.o														\
-								Eth_MainFunction.o											\
-								Eth_Transmit.o													\
-								Eth_Init_Arch.o												\
-								Eth_Internal_Arch.o											\
-								Eth.o
+DRV_ETH_OBJ +=	Eth_Init.o														\
+					Eth_MainFunction.o											\
+					Eth_Transmit.o													\
+					Eth_Init_Arch.o												\
+					Eth_Internal_Arch.o											\
+					Eth.o
 
-INCLUDE += 	-IOpenDRV$(DIR)Eth$(DIR)inc											\
-				-IOpenDRV$(DIR)Eth$(DIR)inc$(DIR)$(MAC)
+INCLUDE += 	-IFreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)inc					\
+				-IFreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)inc$(DIR)$(MAC)
 
-LIB += OpenDRV_Eth.a
+LIB += Drv_Eth.a
 
-VPATH += OpenDRV$(DIR)Eth$(DIR)src												\
-			OpenDRV$(DIR)Eth$(DIR)src$(DIR)$(MAC)
+VPATH += FreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)src												\
+			FreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)src$(DIR)$(MAC)
 
-GENFILES += OpenDRV$(DIR)Eth$(DIR)gen$(DIR)inc$(DIR)Eth_Cfg.h.php					\
-				OpenDRV$(DIR)Eth$(DIR)gen$(DIR)mak$(DIR)Make_OpenDRV_Eth.mak.php
+GENFILES += FreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)gen$(DIR)inc$(DIR)Eth_Cfg.h.php					\
+				FreeOSEK$(DIR)Drv$(DIR)Eth$(DIR)gen$(DIR)mak$(DIR)Make_OpenDRV_Eth.mak.php
 
-OpenDRV_Eth.a : $(OPENDRV_ETH_OBJ)
-	$(AR) -rcs $(LIBDIR)$(DIR)OpenDRV_Eth.a $(foreach obj, $(OPENDRV_ETH_OBJ), $(OBJDIR)$(DIR)$(obj))
+Drv_Eth.a : $(DRV_ETH_OBJ)
+	$(AR) -rcs $(LIBDIR)$(DIR)Drv_Eth.a $(foreach obj, $(DRV_ETH_OBJ), $(OBJDIR)$(DIR)$(obj))

@@ -1,4 +1,4 @@
 
-OPENDRV_STARTUP_OBJ += 	StartUp.o
+DRV_STARTUP_OBJ += 	StartUp.o
 
 

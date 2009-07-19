@@ -8,7 +8,7 @@
 #	- posix
 #  - win
 #  - arm
-ARCH = posix
+ARCH = arm7
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
@@ -42,10 +42,10 @@ COMPILER = gcc
 #			FreeOSEK/Os							\
 #			FreeOSEK/Os/tst/ctest
 
-#MODS +=	examples/CarCombi					\
-#			FreeOSEK/Gen						\
-#			FreeOSEK/Drv						\
-#			FreeOSEK/Os
+MODS +=	examples/Blinking					\
+			FreeOSEK/Gen						\
+			FreeOSEK/Drv						\
+			FreeOSEK/Os
 
 #MODS += FreeOSEK/tst/ctst/ctst01		\
 #			FreeOSEK/Gen						\
@@ -53,10 +53,10 @@ COMPILER = gcc
 #			FreeOSEK/Os							\
 #			FreeOSEK/TestSuite
 
-MODS +=	examples/Com						\
-			FreeOSEK/Gen						\
-			FreeOSEK/Os							\
-			FreeOSEK/Com
+#MODS +=	examples/Com						\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Os							\
+#			FreeOSEK/Com
 
 all: FreeOSEK
 

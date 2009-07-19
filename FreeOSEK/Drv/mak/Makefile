@@ -1,5 +1,5 @@
--include $(GENDIR)$(DIR)mak$(DIR)Make_OpenDRV.mak
+-include $(GENDIR)$(DIR)mak$(DIR)Make_Drv.mak
 
-GENFILES += OpenDRV$(DIR)gen$(DIR)mak$(DIR)Make_OpenDRV.mak.php
+GENFILES += FreeOSEK$(DIR)Drv$(DIR)gen$(DIR)mak$(DIR)Make_Drv.mak.php
 
 

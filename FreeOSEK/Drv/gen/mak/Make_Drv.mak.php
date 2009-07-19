@@ -1,10 +1,10 @@
 <?php
 
-$drvconfig = $config->getList("/OpenDRV","GENERAL");
+$drvconfig = $config->getList("/DRV","GENERAL");
 
 if (count($drvconfig) != 1)
 {
-	error("only one OpenDRV DRIVERS configuration is allowed, " . count($drvconfig) . " were found.");
+	error("only one DRV DRIVERS configuration is allowed, " . count($drvconfig) . " were found.");
 }
 else
 {
@@ -13,11 +13,11 @@ else
 	$drivers = array ("StartUp", "Dio", "Eth", "Mcu", "Pwm", "Adc");
 	foreach($drivers as $driver)
 	{
-		$value = $config->getValue("/OpenDRV/" . $drvconfig , $driver);
+		$value = $config->getValue("/DRV/" . $drvconfig , $driver);
 		switch ($value)
 		{
 			case "ENABLE":
-				print "include OpenDRV$(DIR)$driver$(DIR)mak$(DIR)Makefile\n";
+				print "include FreeOSEK$(DIR)Drv$(DIR)$driver$(DIR)mak$(DIR)Makefile\n";
 				break;
 			case "DISABLE":
 				break;

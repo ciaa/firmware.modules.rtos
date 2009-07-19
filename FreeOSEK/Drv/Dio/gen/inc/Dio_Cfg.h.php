@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief OpenDRV File to be Generated
+/** \brief Dio Driver File to be Generated
  **
  ** \file Dio_Cfg.h.php
  **/
@@ -49,17 +49,18 @@
 
 #ifndef _DIO_CFG_H_
 #define _DIO_CFG_H_
-/** \brief OpenDRV DIO Generated Configuration Header File
+/** \brief Driver DIO Generated Configuration Header File
  **
  ** This file contents the generated configuration of the IO Driver
  **
  ** \file Dio_Cfg.h
  **/
 
-/** \addtogroup OpenDRV
- ** @{ */ 
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */  
+/** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
 
 /*
@@ -87,14 +88,14 @@
  * conform to the specification */
 <?php
 
-$diogen = $config->getList("/OpenDRV/Dio","GENERAL");
+$diogen = $config->getList("/DRV/Dio","GENERAL");
 if (count($diogen)!=1)
 {
 	error("Wrong count of Dio Driver GENERAL parameters on the configuration, only one is allowed");
 }
 else
 {
-	$diodet = $config->getValue("/OpenDRV/Dio/" . $diogen[0],"DET");
+	$diodet = $config->getValue("/DRV/Dio/" . $diogen[0],"DET");
 	if($diodet == "")
 	{
 		warning("DET not configured for Dio Driver taking ENABLE as default");
@@ -115,21 +116,21 @@ else
 }
 
 
-$dioconfig = $config->getList("/OpenDRV/Dio","CONFIG");
+$dioconfig = $config->getList("/DRV/Dio","CONFIG");
 
 if(count($dioconfig)!=1)
 {
 	error("Wrong count of Dio Driver configurations, at the moment only 1 config is allowed for the Dio driver");
 }
 
-$diochannels = $config->getList("/OpenDRV/Dio/" . $dioconfig[0],"CHANNEL");
+$diochannels = $config->getList("/DRV/Dio/" . $dioconfig[0],"CHANNEL");
 $count = 0;
 foreach($diochannels as $dioc)
 {
-	$name = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$port = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	$pin = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
+	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
+	$port = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
+	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
+	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
 	print "/** \brief Define Dio Channel $dioc - port: $port - pin: $pin */\n";
 	print "#define " . $name . "	" . (($port*32)+$pin) . "\n\n";
 	$count++;
@@ -143,6 +144,7 @@ foreach($diochannels as $dioc)
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

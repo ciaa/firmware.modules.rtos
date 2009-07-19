@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief OpenDRV DIO Internal Arch Header File to be Generated
+/** \brief DRV DIO Internal Arch Header File to be Generated
  **
  ** \file Dio_Internal_Arch_Cfg.h.php
  **/
@@ -49,17 +49,18 @@
 
 #ifndef _DIO_INTERNAL_ARCH_CFG_H_
 #define _DIO_INTERNAL_ARCH_CFG_H_
-/** \brief OpenDRV DIO Internal Arch Generated Configuration Header File
+/** \brief DRV DIO Internal Arch Generated Configuration Header File
  **
  ** This file contents the generated configuration of the IO Driver
  **
  ** \file Dio_Internal_Arch_Cfg.h
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */ 
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
 
 /*
@@ -85,10 +86,10 @@ $port_dir = array_fill(0, 5, 0);
 
 foreach($diochannels as $dioc)
 {
-	$name = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$port = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	$pin = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/OpenDRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
+	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
+	$port = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
+	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
+	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
 	if ($port > 4)
 	{
 		error("Invalid port number in Dio channel " . $dioc);
@@ -176,6 +177,7 @@ foreach($port_dir as $pd)
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

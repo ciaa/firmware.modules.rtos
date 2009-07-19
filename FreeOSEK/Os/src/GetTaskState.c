@@ -65,7 +65,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 

@@ -1,23 +1,23 @@
--include OpenDRV$(DIR)Dio$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
+-include FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
-OPENDRV_DIO_OBJ +=		Dio_Init.o														\
-								Dio_ReadChannel.o												\
-								Dio_WriteChannel.o											\
-								Dio_Init_Arch.o
+DRV_DIO_OBJ +=	Dio_Init.o														\
+				Dio_ReadChannel.o												\
+				Dio_WriteChannel.o											\
+				Dio_Init_Arch.o
 
-INCLUDE += 	-IOpenDRV$(DIR)Dio$(DIR)inc											\
-				-IOpenDRV$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)							\
-				-IOpenDRV$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
+INCLUDE += 	-IFreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)inc											\
+				-IFreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)							\
+				-IFreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
-LIB += OpenDRV_Dio.a
+LIB += Drv_Dio.a
 
-VPATH += OpenDRV$(DIR)Dio$(DIR)src												\
-			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)								\
-			OpenDRV$(DIR)Dio$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
+VPATH += FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)src												\
+			FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)src$(DIR)$(ARCH)							\
+			FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
-GENFILES += OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)Dio_Cfg.h.php		\
-				OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Dio_Arch_Cfg.h.php				\
-				OpenDRV$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Dio_Internal_Arch_Cfg.h.php
+GENFILES += FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)Dio_Cfg.h.php															\
+				FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Dio_Arch_Cfg.h.php				\
+				FreeOSEK$(DIR)Drv$(DIR)Dio$(DIR)gen$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Dio_Internal_Arch_Cfg.h.php
 
-OpenDRV_Dio.a : $(OPENDRV_DIO_OBJ)
-	$(AR) -rcs $(LIBDIR)$(DIR)OpenDRV_Dio.a $(foreach obj, $(OPENDRV_DIO_OBJ), $(OBJDIR)$(DIR)$(obj))
+Drv_Dio.a : $(DRV_DIO_OBJ)
+	$(AR) -rcs $(LIBDIR)$(DIR)Drv_Dio.a $(foreach obj, $(DRV_DIO_OBJ), $(OBJDIR)$(DIR)$(obj))

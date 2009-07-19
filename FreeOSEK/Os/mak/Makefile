@@ -56,9 +56,9 @@ VPATH += FreeOSEK$(DIR)Os$(DIR)src						\
 INCLUDE += 	-IFreeOSEK$(DIR)Os$(DIR)inc 												\
 				-IFreeOSEK$(DIR)Os$(DIR)inc$(DIR)$(ARCH) 								\
 				-IFreeOSEK$(DIR)Os$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)			\
-				-I$(GENDIR)$(DIR)Os$(DIR)inc												\
-				-I$(GENDIR)$(DIR)Os$(DIR)inc$(DIR)$(ARCH)								\
-            -I$(GENDIR)$(DIR)Os$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
+				-I$(GENDIR)$(DIR)inc															\
+				-I$(GENDIR)$(DIR)inc$(DIR)$(ARCH)										\
+            -I$(GENDIR)$(DIR)inc$(DIR)$(ARCH)$(DIR)$(CPUTYPE)
 
 Os.a : $(OS_OBJ)
 	ar -rcs $(LIBDIR)$(DIR)Os.a $(foreach obj, $(OS_OBJ), $(OBJDIR)$(DIR)$(obj))
