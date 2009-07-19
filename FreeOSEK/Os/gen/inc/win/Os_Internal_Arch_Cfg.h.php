@@ -40,19 +40,21 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_CFG_H_
-#define _OSEK_INTERNAL_ARCH_CFG_H_
-/** \brief FreeOSEK Generated Internal Architecture Configuration Header File
+#ifndef _OS_INTERNAL_ARCH_CFG_H_
+#define _OS_INTERNAL_ARCH_CFG_H_
+/** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
  **
  ** This file content the internal generated architecture dependent
- ** configuration of FreeOSEK.
+ ** configuration of FreeOSEK Os.
  **
- ** \file Osek_Internal_Arch_Cfg.h
+ ** \file Os_Internal_Arch_Cfg.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -64,7 +66,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20080713 MaCe	initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20080713 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -93,5 +96,6 @@ extern InterruptType InterruptTable[INTERUPTS_COUNT];
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_CFG_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */

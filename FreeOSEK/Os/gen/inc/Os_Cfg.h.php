@@ -42,24 +42,26 @@
 <?php
 /** \brief FreeOSEK File to be Generated
  **
- ** \file Osek_Cfg.h.php
+ ** \file Os_Cfg.h.php
  **
  **/
 ?>
 
-#ifndef _OSEK_CFG_H_
-#define _OSEK_CFG_H_
-/** \brief FreeOSEK Generated Configuration Header File
+#ifndef _OS_CFG_H_
+#define _OS_CFG_H_
+/** \brief FreeOSEK Os Generated Configuration Header File
  **
- ** This file contents the generated configuration of FreeOSEK
+ ** This file contents the generated configuration of FreeOSEK Os
  **
- ** \file Osek_Cfg.h
+ ** \file Os_Cfg.h
  **
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */ 
-/** \addtogroup FreeOSEK_Global
+ ** @{ */
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -71,9 +73,10 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.2 20090424 MaCe add counters defines
- * v0.1.1 20090128 MaCe add MEMMAP off configuration
- * v0.1.0 20080810 MaCe	initial version
+ * 20090719 v0.1.3 MaCe rename file to Os_
+ * 20090424 v0.1.2 MaCe add counters defines
+ * 20090128 v0.1.1 MaCe add MEMMAP off configuration
+ * 20080810 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/
@@ -316,6 +319,7 @@ print "\n";
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

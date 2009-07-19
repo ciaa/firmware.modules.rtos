@@ -51,8 +51,8 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_CFG_H_
-#define _OSEK_INTERNAL_ARCH_CFG_H_
+#ifndef _OS_INTERNAL_ARCH_CFG_H_
+#define _OS_INTERNAL_ARCH_CFG_H_
 
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
@@ -61,18 +61,20 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK Generated Internal Architecture Configuration Header File
+/** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
  **
  ** This file content the internal generated architecture dependent
  ** configuration of FreeOSEK.
  **
- ** \file tmparch/Osek_Internal_Arch_Cfg.h
+ ** \file tmparch/Os_Internal_Arch_Cfg.h
  ** \arch tmparch
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -159,6 +161,7 @@ typedef TaskContextType* TaskContextRefType;
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_CFG_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */
 

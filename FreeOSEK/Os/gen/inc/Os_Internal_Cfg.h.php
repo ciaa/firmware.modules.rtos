@@ -40,19 +40,21 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_CFG_H_
-#define _OSEK_INTERNAL_CFG_H_
-/** \brief FreeOSEK Generated Internal Configuration Header File
+#ifndef _OS_INTERNAL_CFG_H_
+#define _OS_INTERNAL_CFG_H_
+/** \brief FreeOSEK Os Generated Internal Configuration Header File
  **
- ** This file content the internal generated configuration of FreeOSEK
+ ** This file content the internal generated configuration of FreeOSEK Os
  **
- ** \file Osek_Internal_Cfg.h
+ ** \file Os_Internal_Cfg.h
  **
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */ 
-/** \addtogroup FreeOSEK_Internal
+ ** @{ */
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -64,6 +66,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090719 v0.1.7 MaCe rename file to Os_
  * 20090331 v0.1.6 MaCe add USERESSCHEDULER evaluation
  * 20090330 v0.1.5 MaCe add NO_EVENTS macro
  * 20090327 v0.1.4 MaCe add declaration of the start task for the app. modes
@@ -665,5 +668,6 @@ foreach ($intnames as $int)
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OS_H_ */
+#endif /* #ifndef _OS_INTERNAL_CFG_H_ */
