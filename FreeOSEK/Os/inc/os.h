@@ -49,7 +49,7 @@
 
 /** \addtogroup FreeOSEK FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK FreeOSEK Os
+/** \addtogroup FreeOSEK_Os Operating System
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Global Global
  ** @{ */

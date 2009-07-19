@@ -36,20 +36,21 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Alarms, Test Sequence 7
+/** \brief FreeOSEK Os Conformance Test for the Alarms, Test Sequence 7
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_al_07.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_al_07.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL Alarms
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL_07 Test Sequence 7
+/** \addtogroup FreeOSEK_Os_CT_AL Alarms
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_CT_AL_07 Test Sequence 7
+ ** @{ */
 
 /*
  * Initials     Name
@@ -196,6 +197,7 @@ TASK(Task5)
 	TerminateTask();
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

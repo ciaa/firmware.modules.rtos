@@ -36,20 +36,21 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Resource Managment, Test Sequence 1
+/** \brief FreeOSEK Os Conformance Test for the Resource Managment, Test Sequence 1
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_rm_01.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_rm_01.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_RM Resource Management
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_RM_01 Test Sequence 1
+/** \addtogroup FreeOSEK_Os_CT_RM Resource Management
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_CT_RM_01 Test Sequence 1
+ ** @{ */
 
 /*
  * Initials     Name
@@ -252,6 +253,7 @@ ISR(ISR3)
 }
 #endif /* #if ( ISR_CATEGORY_3 == ENABLE ) */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

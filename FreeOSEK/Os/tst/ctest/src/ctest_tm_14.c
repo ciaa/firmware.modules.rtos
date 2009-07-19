@@ -36,18 +36,20 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 14
+/** \brief FreeOSEK Os Conformance Test for the Task Managment, Test Sequence 14
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_tm_14.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_tm_14.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM Task Management
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_14 Test Sequence 14
+/** \addtogroup FreeOSEK_Os_CT_TM Task Management
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_TM_14 Test Sequence 14
  ** @{ */
 
 /*
@@ -800,6 +802,7 @@ TASK(Task16)
 	ConfTestFinish();
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -53,15 +53,17 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK Internal ARCH CPU Dependece Implementation File
+/** \brief FreeOSEK Os Internal ARCH CPU Dependece Implementation File
  **
- ** \file tmparch/tmpcputype/Osek_Internal_Arch_Cpu.c
- ** \arch tmparch/tmpcputype
+ ** \file s12x/s12x256/Os_Internal_Arch_Cpu.c
+ ** \arch s12x/s12x256
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -166,6 +168,7 @@
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -53,17 +53,19 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK StartOs Architecture Dependece Implementation File
+/** \brief FreeOSEK Os StartOs Architecture Dependece Implementation File
  **
  ** This file implements the StartOs Arch API
  **
- ** \file tmparch/StartOs_Arch.c
- ** \arch tmparch
+ ** \file s12x/StartOs_Arch.c
+ ** \arch s12x
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -210,6 +212,7 @@ void StartOs_Arch(void)
 
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -36,18 +36,20 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Task Managment, Test Sequence 5
+/** \brief FreeOSEK Os Conformance Test for the Task Managment, Test Sequence 5
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_tm_05.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_tm_05.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM Task Management
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_05 Test Sequence 5
+/** \addtogroup FreeOSEK_Os_CT_TM Task Management
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_TM_05 Test Sequence 5
  ** @{ */
 
 /*
@@ -168,6 +170,7 @@ TASK(Task4)
 	TerminateTask();
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

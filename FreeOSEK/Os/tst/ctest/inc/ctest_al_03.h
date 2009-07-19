@@ -38,18 +38,20 @@
 
 #ifndef _CTEST_AL_03_H_
 #define _CTEST_AL_03_H_
-/** \brief Free OSEK Conformance Test 
+/** \brief FreeOSEK Os Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_al_03.h
+ ** \file FreeOSEK/Os/tst/ctest/inc/ctest_al_03.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL Alarms
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL_03 Test Sequence 3
+/** \addtogroup FreeOSEK_Os_CT_AL Alarms
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_AL_03 Test Sequence 3
  ** @{ */
 
 /*
@@ -81,6 +83,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

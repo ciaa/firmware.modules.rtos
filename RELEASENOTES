@@ -45,14 +45,14 @@
  * before.
  *
  * FreeOSEK tracker in SourceForge.net:
- * 	- https://sourceforge.net/tracker2/?group_id=240313
+ *    - https://sourceforge.net/tracker2/?group_id=240313
  *
  * FreeOSEK forum in SourceForge.net:
- * 	- https://sourceforge.net/forum/?group_id=240313
+ *    - https://sourceforge.net/forum/?group_id=240313
  *
  * This release was tested for following architectures:
- *		- ARM7 LPC2468 on lpc-e2468 Olimex Board
- * 	- Linux
+ *    - ARM7 LPC2468 on lpc-e2468 Olimex Board
+ *    - Linux
  *
  * NOTE: This version was not tested on WINDOWS, if you are interested contact
  * FreeOSEK Team.

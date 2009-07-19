@@ -36,14 +36,16 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test Result
+/** \brief FreeOSEK Os Conformance Test Result
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_rst_tm_01.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_rst.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
 /*
@@ -779,6 +781,7 @@ void ConfTestFinish
 	while(1);
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

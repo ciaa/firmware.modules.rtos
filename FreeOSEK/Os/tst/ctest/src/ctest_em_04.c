@@ -36,20 +36,21 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Event Mechanism, Test Sequence 4
+/** \brief FreeOSEK Os Conformance Test for the Event Mechanism, Test Sequence 4
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_em_04.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_em_04.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_EM Event Mechanism
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_EM_04 Test Sequence 4
+/** \addtogroup FreeOSEK_Os_CT_EM Event Mechanism
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_CT_EM_04 Test Sequence 4
+ ** @{ */
 
 /*
  * Initials     Name
@@ -230,6 +231,7 @@ TASK(Task5)
 }
 
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

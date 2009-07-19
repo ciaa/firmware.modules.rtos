@@ -40,15 +40,17 @@
  **
  ** main function implementation file
  **
- ** \file moduletest01/src/main.c
+ ** \file mtst01/src/main.c
  **
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_MT Module Tests
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_MT_01 Module Test 1
+/** \addtogroup FreeOSEK_Os_MT Module Tests
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_MT_01 Module Test 1
  ** @{ */
 
 /*
@@ -999,6 +1001,7 @@ ALARMCALLBACK(AlarmCallback)
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

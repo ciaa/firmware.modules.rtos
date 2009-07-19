@@ -67,14 +67,9 @@
  * - \subpage OilFormat
  * - \subpage FreeOSEK
  * - \subpage uIP
- * - \subpage OpenTIME
- * - \subpage OpenLCD
  * - \subpage OpenCOM
- * - \subpage OpenKEY
  * - \subpage OpenGEN
  * - \subpage OpenDRV
- * - \subpage OpenMAKE
- * - \subpage OpenBLF
  *
  */
 

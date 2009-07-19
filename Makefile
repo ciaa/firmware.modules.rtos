@@ -124,13 +124,14 @@ manual :
 	docbook2pdf FreeOSEK/doc/FreeOSEK_Manual.dbk -o $(DOCDIR)$(DIR)
 
 reqdoc :
-	./doc/reqdoc.pl
+	./FreeOSEK/doc/reqdoc.pl
 
 sizedoc :
-	./doc/sizedoc.pl
+	./FreeOSEK/doc/sizedoc.pl
 
 doxygen :
-	doxygen doc$(DIR)doxygen.cfg
+	@echo Generating FreeOSEK Doxygen Documentation
+	doxygen FreeOSEK$(DIR)doc$(DIR)doxygen.cfg
 
 splint :
 	splint $(SPLINT) $(INCLUDE) +posixlib -Dstack_t=char +charindex -predboolint -boolops -type

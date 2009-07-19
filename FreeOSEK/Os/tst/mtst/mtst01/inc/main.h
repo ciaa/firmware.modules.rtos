@@ -40,15 +40,17 @@
 #define _MAIN_H_
 /** \brief Module Test Header File
  **
- ** \file moduletest01/inc/main.h
+ ** \file mtst01/inc/main.h
  **
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_MT Module Tests
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_MT_01 Module Test 1
+/** \addtogroup FreeOSEK_Os_MT Module Tests
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_MT_01 Module Test 1
  ** @{ */
 
 /*
@@ -137,6 +139,7 @@ int main
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

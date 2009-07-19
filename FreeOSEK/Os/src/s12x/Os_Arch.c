@@ -55,13 +55,15 @@
  *****************************************************************************/
 /** \brief FreeOSEK Arch Implementation File
  **
- ** \file tmparch/Osek_Arch.c
- ** \arch tmparch
+ ** \file s12x/Os_Arch.c
+ ** \arch s12x
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -166,6 +168,7 @@
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

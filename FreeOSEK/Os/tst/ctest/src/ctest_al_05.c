@@ -36,18 +36,20 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Alarms, Test Sequence 5
+/** \brief FreeOSEK OS Conformance Test for the Alarms, Test Sequence 5
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_al_05.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_al_05.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL Alarms
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_AL_05 Test Sequence 5
+/** \addtogroup FreeOSEK_Os_CT_AL Alarms
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_AL_05 Test Sequence 5
  ** @{ */
 
 
@@ -184,6 +186,7 @@ TASK(Task4)
 }
 
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

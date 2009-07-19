@@ -47,8 +47,8 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_CPU_H_
-#define _OSEK_INTERNAL_ARCH_CPU_H_
+#ifndef _OS_INTERNAL_ARCH_CPU_H_
+#define _OS_INTERNAL_ARCH_CPU_H_
 
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
@@ -57,15 +57,17 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
+/** \brief FreeOSEK OS Internal Architecture Cpu Dependent Header File
  **
- ** \file tmparch/tmpcputype/Osek_Internal_Arch_Cpu.h
- ** \arch tmparch/tmpcputype
+ ** \file s12x/s12x256/Os_Internal_Arch_Cpu.h
+ ** \arch s12x/s12x256
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -174,6 +176,7 @@
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_CPU_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_CPU_H_ */
 

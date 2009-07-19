@@ -36,18 +36,20 @@
  *
  */
 
-/** \brief Free OSEK Conformance Test for the Error Handling, Test Sequence 2
+/** \brief FreeOSEK Os Conformance Test for the Error Handling, Test Sequence 2
  **
- ** \file FreeOSEK/tst/ctest/src/ctest_eh_02.c
+ ** \file FreeOSEK/Os/tst/ctest/src/ctest_eh_02.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_EH Error Handling
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_EH_02 Test Sequence 2
+/** \addtogroup FreeOSEK_Os_CT_EH Error Handling
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_EH_02 Test Sequence 2
  ** @{ */
 
 
@@ -146,6 +148,7 @@ TASK(Task2)
 	TerminateTask();
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

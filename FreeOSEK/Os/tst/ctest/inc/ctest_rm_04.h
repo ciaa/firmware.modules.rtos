@@ -38,18 +38,20 @@
 
 #ifndef _CTEST_RM_04_H_
 #define _CTEST_RM_04_H_
-/** \brief Free OSEK Conformance Test 
+/** \brief FreeOSEK Os Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_rm_04.h
+ ** \file FreeOSEK/Os/tst/ctest/inc/ctest_rm_04.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_RM Resource Management
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_RM_04 Test Sequence 4
+/** \addtogroup FreeOSEK_Os_CT_RM Resource Management
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_RM_04 Test Sequence 4
  ** @{ */
 
 /*
@@ -81,6 +83,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

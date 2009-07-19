@@ -38,18 +38,20 @@
 
 #ifndef _CTEST_TM_06_H_
 #define _CTEST_TM_06_H_
-/** \brief Free OSEK Conformance Test Task Management, Test Sequence 6
+/** \brief FreeOSEK Os Conformance Test Task Management, Test Sequence 6
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_tm_06.h
+ ** \file FreeOSEK/Os/tst/ctest/inc/ctest_tm_06.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM Task Management
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_TM_06 Test Sequence 6
+/** \addtogroup FreeOSEK_Os_CT_TM Task Management
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_TM_06 Test Sequence 6
  ** @{ */
 
 /*
@@ -81,6 +83,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

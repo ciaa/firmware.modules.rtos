@@ -38,14 +38,16 @@
 
 #ifndef _CTEST_H_
 #define _CTEST_H_
-/** \brief Free OSEK Conformance Test 
+/** \brief FreeOSEK Os Conformance Test
  **
- ** \file FreeOSEK/tst/ctest/</ctest.h
+ ** \file FreeOSEK/Os/tst/ctest/inc/ctest.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
 /*
@@ -389,6 +391,7 @@ extern uint32 IncrementCounter
 	uint32 Increment
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

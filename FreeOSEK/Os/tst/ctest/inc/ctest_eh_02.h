@@ -38,18 +38,20 @@
 
 #ifndef _CTEST_EH_02_H_
 #define _CTEST_EH_02_H_
-/** \brief Free OSEK Conformance Test 
+/** \brief FreeOSEK Os Conformance Test 
  **
- ** \file FreeOSEK/tst/ctest/inc/ctest_eh_02.h
+ ** \file FreeOSEK/Os/tst/ctest/inc/ctest_eh_02.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_CT Conformance Test
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_CT_EH Error Handling
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
-/** \addtogroup FreeOSEK_CT_EH_02 Test Sequence 2
+/** \addtogroup FreeOSEK_Os_CT_EH Error Handling
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_CT_EH_02 Test Sequence 2
  ** @{ */
 
 /*
@@ -81,6 +83,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

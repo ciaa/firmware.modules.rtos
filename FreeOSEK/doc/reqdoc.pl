@@ -187,7 +187,7 @@ info("Total of parsed header and source files.: " . scalar(@chfiles) );
 info("Total of implemented requirements.......: " . scalar(@reqs));
 info("Total of tested requirements............: " . scalar(@reqt));
 
-open IN, "<FreeOSEK/doc/FreeOSEK.req" or die $!;
+open IN, "<FreeOSEK/Os/doc/FreeOSEK.req" or die $!;
 open OUT, ">out/gen/doc/FreeOSEK_Req.doc" or die $!;
 
 my $req;

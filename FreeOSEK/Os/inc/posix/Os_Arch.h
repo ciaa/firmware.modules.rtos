@@ -130,6 +130,7 @@ extern void ScheduleInterrupts(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_ARCH_H_ */
 
