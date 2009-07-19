@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK StartOS Implementation File
+/** \brief FreeOSEK Os StartOS Implementation File
  **
  ** This file implements the StartOS API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -67,7 +69,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -162,6 +164,7 @@ void StartOS
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen endVar group definition */
 /*==================[end of file]============================================*/

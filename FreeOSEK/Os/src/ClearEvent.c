@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK ClearEvent Implementation File
+/** \brief FreeOSEK Os ClearEvent Implementation File
  **
  ** This file implements the ClearEvent API
  **
@@ -46,9 +46,10 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -67,7 +68,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -155,6 +156,7 @@ StatusType ClearEvent
 
 #endif /* #if (NO_EVENTS == DISABLE) */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

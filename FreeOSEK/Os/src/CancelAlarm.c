@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK CancelAlarm Implementation File
+/** \brief FreeOSEK Os CancelAlarm Implementation File
  **
  ** This file implements the CancelAlarm API
  **
@@ -46,9 +46,10 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global 
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -66,7 +67,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -143,6 +144,7 @@ StatusType CancelAlarm
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

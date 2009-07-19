@@ -36,31 +36,37 @@
  *
  */
 
-/** \brief FreeOSEK Arch Implementation File
+/** \brief FreeOSEK Os Implementation File
  **
- ** \file arm7/Osek_Arch.c
- ** \arch arm7
+ ** \file Os.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * KLi          Kang Li
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20081116 v0.1.0 MaCe       - initial version
+ * 20090719 v0.1.4 MaCe rename file to Os_
+ * 20090417 v0.1.3 MaCe update license
+ * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+ * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -71,11 +77,27 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+#if (OSEK_MEMMAP == ENABLE)
+#define FreeOSEK_START_SEC_DATA
+#include "MemMap.h"
+#endif
+
+InterruptCounterType SuspendOSInterrupts_Counter;
+
+InterruptCounterType DisableAllInterrupts_Counter;
+
+InterruptCounterType SuspendAllInterrupts_Counter;
+
+#if (OSEK_MEMMAP == ENABLE)
+#define FreeOSEK_STOP_SEC_DATA
+#include "MemMap.h"
+#endif
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

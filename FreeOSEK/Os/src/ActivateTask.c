@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK ActivateTask Implementation File
+/** \brief FreeOSEK Os ActivateTask Implementation File
  **
  ** This file implements the ActiveTask API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -67,7 +69,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -213,6 +215,7 @@ StatusType ActivateTask
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

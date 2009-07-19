@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK SetRelAlarm Implementation File
+/** \brief FreeOSEK Os SetRelAlarm Implementation File
  **
  ** This file implements the SetRelAlarm API
  **
@@ -46,9 +46,10 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global 
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -66,7 +67,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -167,6 +168,7 @@ StatusType SetRelAlarm
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

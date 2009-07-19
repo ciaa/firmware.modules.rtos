@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK Schedule Implementation File
+/** \brief FreeOSEK Os Schedule Implementation File
  **
  ** This file implements the Schedule API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -68,7 +70,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -228,6 +230,7 @@ StatusType Schedule
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

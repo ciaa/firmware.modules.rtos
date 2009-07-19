@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -36,15 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Internal ARCH CPU Dependece Implementation File
+/** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file arm7/lpc2xxx/Osek_Internal_Arch_Cpu.c
- ** \arch arm7/lpc2xxx
+ ** \file arm7/Os_Internal_Arch.c
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -56,18 +58,23 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090329 v0.1.1 MaCe replace binary representation with hex one
- * 20090227 v0.1.0 MaCe initial version
+ * 20090719 v0.1.2 MaCe rename file to Os_
+ * 20090330 v0.1.1 MaCe add NO_EVENTS and NON_PREEMPTIVE evaluation and
+ *								improvement of FIQ_Routine
+ * 20081116 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
+void* Osek_NewTaskPtr_Arch;
+
+void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -76,55 +83,85 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void StartOs_Arch_Cpu
+void IRQ_Routine
+(
+	void
+)
+{
+   while (1);
+}
+
+void FIQ_Routine
 (
 	void
 )
 {
 #if (ALARMS_COUNT != 0)
-	/* TODO this has to be improved */
-	T0CTCR = 0;	/* bit 1-0: 00 Timer mode
-										01 Counter mode at rising edge
-										10 Counter mode at falling edge
-										11 Counter mode both edges
-							bit 3-2: only valid when bit 1-0 != 0
-										00 CAPn.0 for timer n
-										01 CAPn.1 for timer n
-										1x reserved
-							bit 7-4: reserved
-						*/
+	/* to save the context during the interrupt */
+	ContextType context;
+	/* counter increment */
+	static CounterIncrementType CounterIncrement = 1;
 
-	T0PR = 12;		/* 32-bits prescaler register */
-						/* 1 incremenet every 1us */
+	/* increment the disable interrupt conter to avoid enable the interrupts */
+	SuspendAllInterrupts_Counter++;
 
-	/* set Timer Control Register TCR */
-	T0TCR = 0x3;	/* bit 0:	enable counter
-							bit 1:	reset counter
-							bit 7-2: reserved */
+	/* save actual context */
+	context = GetCallingContext();
 
-	T0TCR = 0x1;	/* bit 1:	clear reset now */
+	/* set context to CONTEXT_SYS */
+	SetActualContext(CONTEXT_DBG);
 
-	T0MR0 = 1000;	/* timer match 0 every 1ms*/
+	/* call counter interrupt handler */
+	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */);
 
-	T0MCR = 0x3;	/* bit 0: interrupt if MR0 match the TC
-							bit 1: reset TC if MR0 match */
+	/* interrupt has to be called first after so many CounterIncrement */
+	/* SetCounterTime(CounterIncrement); */
 
-	/* set the TIMER0 as FIQ Interrupt */
-	((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
+	/* set context back */
+	SetActualContext(context);
 
-	/* enable TIMER0 interrupt */
-	((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
+	/* set the disable interrupt conter back */
+	SuspendAllInterrupts_Counter--;
 #endif /* #if (ALARMS_COUNT != 0) */
 
-	/* enable interrupts */
-	__asm__ __volatile__
-	("											\
-		MRS R7, CPSR 				\n\t	\
-		AND R7, R7, #0xFFFFFF9F \n\t	\
-		MSR CPSR, R7				\n\t	\
-	 " : : : "r7" );
+	/* enable counter interrupt again */
+	T0IR |= 1;
+
+#if 0 /* TODO */
+#if (NON_PREEMPTIVE == DISABLE)
+		/* check if interrupt a Task Context */
+		if ( GetCallingContext() ==  CONTEXT_TASK )
+		{
+			if ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )
+			{
+				/* \req TODO Rescheduling shall take place only if interrupt a
+				 * preemptable task. */
+				(void)Schedule();
+			}
+		}
+#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+#endif
 }
 
+void SWI_Routine
+(
+	void
+)
+{
+   while (1);
+}
+
+void UNDEF_Routine
+(
+	void
+)
+{
+	volatile uint8 foo = 1;
+
+   while (foo);
+}
+
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

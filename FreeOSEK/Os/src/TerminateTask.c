@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK TerminateTask Implementation File
+/** \brief FreeOSEK Os TerminateTask Implementation File
  **
  ** This file implements the TerminateTask API
  **
@@ -46,9 +46,10 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -70,7 +71,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -206,6 +207,7 @@ StatusType TerminateTask
 #include "MemMap.h"
 #endif
 
+/** @} doxygen endVar group definition */
 /** @} doxygen endVar group definition */
 /** @} doxygen endVar group definition */
 /*==================[end of file]============================================*/

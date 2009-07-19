@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK StartOs Architecture Dependece Implementation File
+/** \brief FreeOSEK Os StartOs Architecture Dependece Implementation File
  **
  ** This file implements the StartOs Arch API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -63,7 +65,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -100,6 +102,7 @@ void StartOs_Arch(void)
 
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK WaitEvent Implementation File
+/** \brief FreeOSEK Os WaitEvent Implementation File
  **
  ** This file implements the WaitEvent API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -66,7 +68,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -199,6 +201,7 @@ StatusType WaitEvent
 
 #endif /* #if (NO_EVENTS == DISABLE) */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

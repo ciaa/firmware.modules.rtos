@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK ReleaseResource Implementation File
+/** \brief FreeOSEK Os ReleaseResource Implementation File
  **
  ** This file implements the ReleaseResource API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -73,7 +75,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -229,6 +231,7 @@ StatusType ReleaseResource
 
 #endif /* #if ( (NO_RES_SCHEDULER == DISABLE) || (RESOURCES_COUNT != 0) ) */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK GetEvent Implementation File
+/** \brief FreeOSEK Os GetEvent Implementation File
  **
  ** This file implements the GetEvent API
  **
@@ -46,9 +46,10 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -67,7 +68,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -159,6 +160,7 @@ StatusType GetEvent
 #endif /* #if (NO_EVENTS == DISABLE) */
 
 /** @} doxygen end group definition */
-/** @} doxygen endVar group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 

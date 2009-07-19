@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief FreeOSEK GetResource Implementation File
+/** \brief FreeOSEK Os GetResource Implementation File
  **
  ** This file implements the GetResource API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -70,7 +72,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -208,6 +210,7 @@ StatusType GetResource
 
 #endif /* #if ( (NO_RES_SCHEDULER == DISABLE) || (RESOURCES_COUNT != 0) ) */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
