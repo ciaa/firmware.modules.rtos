@@ -36,19 +36,20 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_H_
-#define _OSEK_INTERNAL_ARCH_H_
-/** \brief FreeOSEK Internal Architecture Dependent Header File
+#ifndef _OS_INTERNAL_ARCH_H_
+#define _OS_INTERNAL_ARCH_H_
+/** \brief FreeOSEK Os Internal Architecture Dependent Header File
  **
- ** \file arm7/Osek_Internal_Arch.h
+ ** \file arm7/Os_Internal_Arch.h
  ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -59,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090719 v0.1.3 MaCe rename file to Os_
  * 20090408 v0.1.2 Mace add ShutdownOs_Arch
  * 20090221 v0.1.1 MaCe port this file to ARM7 architecture
  * 20081116 v0.1.0 MaCe	initial version
@@ -348,6 +350,7 @@ void UNDEF_Routine (void) __attribute__ ((interrupt("UNDEF")));
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
 

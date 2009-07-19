@@ -36,17 +36,19 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_CPU_H_
-#define _OSEK_INTERNAL_ARCH_CPU_H_
-/** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
+#ifndef _OS_INTERNAL_ARCH_CPU_H_
+#define _OS_INTERNAL_ARCH_CPU_H_
+/** \brief FreeOSEK Os Internal Architecture Cpu Dependent Header File
  **
- ** \file arm7/lpc2xxx/Osek_Internal_Arch_Cpu.h
+ ** \file arm7/lpc2xxx/Os_Internal_Arch_Cpu.h
  ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -58,7 +60,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090227 MaCe	initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20090227 v0.1.0 MaCe	initial version
  */  
 
 /*==================[cpu macros]=============================================*/
@@ -238,6 +241,7 @@ extern void StartOs_Arch_Cpu(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_CPU_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_CPU_H_ */
 

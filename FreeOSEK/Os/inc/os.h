@@ -38,10 +38,10 @@
 
 #ifndef _OS_H_
 #define _OS_H_
-/** \brief FreeOSEK Header File
+/** \brief FreeOSEK Os Header File
  **
- ** This file shall be included by all files using any FreeOSEK API
- ** or implementing any FreeOSEK ISR or TASK.
+ ** This file shall be included by all files using any FreeOSEK Os API
+ ** or implementing any FreeOSEK Os ISR or TASK.
  **
  ** \file os.h
  **
@@ -49,8 +49,9 @@
 
 /** \addtogroup FreeOSEK FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global FreeOSEK Global
- ** \ingroup FreeOSEK
+/** \addtogroup FreeOSEK FreeOSEK Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global Global
  ** @{ */
 
 /*
@@ -64,6 +65,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090719 v0.1.7 MaCe rename file to Os_
  * 20090420 v0.1.6 MaCe correct AlarmBaseType members to lower cases
  * 20090418 v0.1.5 MaCe bugfix correct StartOS and ShutdownOS services names
  * 20090329 v0.1.4 MaCe add RES_SCHEDULER
@@ -75,8 +77,8 @@
 
 /*==================[inclusions]=============================================*/
 #include "Types.h"
-#include "Osek_Cfg.h"
-#include "Osek_Arch.h"
+#include "Os_Cfg.h"
+#include "Os_Arch.h"
 
 /*==================[macros]=================================================*/
 /** \brief TASK macro definition
@@ -721,6 +723,7 @@ extern StatusType CancelAlarm(AlarmType AlarmID) ATTRIBUTES();
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
