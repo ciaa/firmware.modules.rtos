@@ -36,23 +36,24 @@
  *
  */
 
-#ifndef _OSEK_ARCH_H_
-#define _OSEK_ARCH_H_
-/** \brief FreeOSEK Architecture Dependent Header File
+#ifndef _OS_ARCH_H_
+#define _OS_ARCH_H_
+/** \brief FreeOSEK Os Architecture Dependent Header File
  **
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file posix/Osek_Arch.h
+ ** \file posix/Os_Arch.h
  ** \arch posix
  **
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -63,7 +64,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20080725 MaCe	initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20080725 v0.1.0 MaCe	initial version
  */  
 
 /*==================[inclusions]=============================================*/

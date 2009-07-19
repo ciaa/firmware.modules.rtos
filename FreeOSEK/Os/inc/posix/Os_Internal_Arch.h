@@ -36,19 +36,20 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_H_
-#define _OSEK_INTERNAL_ARCH_H_
-/** \brief FreeOSEK Internal Architecture Dependent Header File
+#ifndef _OS_INTERNAL_ARCH_H_
+#define _OS_INTERNAL_ARCH_H_
+/** \brief FreeOSEK Os Internal Architecture Dependent Header File
  **
- ** \file posix/Osek_Internal_Arch.h
+ ** \file posix/Os_Internal_Arch.h
  ** \arch posix
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-
+/** \addtogroup FreeOSEK_Os_Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -59,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20090719 v0.1.3 MaCe rename file to Os_
  * 20090408 v0.1.2 Mace add ShutdownOs_Arch
  * 20090330 v0.1.2 MaCe update CallTask macro
  * 20090130 v0.1.1 MaCe remove std type definitions, now in Types.h
@@ -288,5 +290,5 @@ extern void OSEK_ISR_HWTimer1(void);
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
 

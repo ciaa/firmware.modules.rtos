@@ -47,8 +47,8 @@
  *
  */
 
-#ifndef _OSEK_ARCH_H_
-#define _OSEK_ARCH_H_
+#ifndef _OS_ARCH_H_
+#define _OS_ARCH_H_
 
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
@@ -57,12 +57,12 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/** \brief FreeOSEK Architecture Dependent Header File
+/** \brief FreeOSEK Os Architecture Dependent Header File
  **
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file tmparch/Osek_Arch.h
+ ** \file tmparch/Os_Arch.h
  ** \arch tmparch
  **
  **/
@@ -70,6 +70,8 @@
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Global
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 #error this is a remember to remove the comment on the following line
@@ -202,6 +204,7 @@
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_ARCH_H_ */
+#endif /* #ifndef _OS_ARCH_H_ */
 
