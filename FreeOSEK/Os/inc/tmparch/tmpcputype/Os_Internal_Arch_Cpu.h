@@ -65,7 +65,7 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */

@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenCOM ReceiveMessage Implementation File
+/** \brief FreeOSEK Com ReceiveMessage Implementation File
  **
  ** This file implements the ReceiveMessage API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Com
+ ** @{ */
+/** \addtogroup FreeOSEK_Com_Global
  ** @{ */
 
 /*
@@ -161,6 +163,7 @@ StatusType ReceiveMessage
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

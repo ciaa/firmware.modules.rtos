@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV DIO Init implementation file
+/** \brief FreeOSEK Driver Dio Init implementation file
  **
  ** This file implements the Dio_Init API
  **
@@ -44,10 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */  
+/** \addtogroup FreeOSEK_Drv_Dio
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio_Global
  ** @{ */
 
 /*
@@ -95,6 +98,8 @@ Dio_ReturnType Dio_Init
 /* #define OpenDRV_DIO_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

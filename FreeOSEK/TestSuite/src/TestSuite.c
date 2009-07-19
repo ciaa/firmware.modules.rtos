@@ -41,9 +41,11 @@
  ** \file TestSuite.c
  **/
 
-/** \addtogroup TestSuite
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup TestSuite_Global
+/** \addtogroup FreeOSEK_TS
+ ** @{ */
+/** \addtogroup FreeOSEK_TS_Global
  ** @{ */
 
 /*
@@ -119,6 +121,7 @@ TS_ResultType TS_GetTestResult(TS_TestIDType TestID)
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

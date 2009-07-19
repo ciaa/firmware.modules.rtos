@@ -43,11 +43,12 @@
  ** \file TS_Internal.h
  **/
 
-/** \addtogroup TestSuite
- ** @{ */ 
-/** \addtogroup TestSuite_Internal
+/** \addtogroup FreeOSEK
  ** @{ */
-
+/** \addtogroup FreeOSEK_TS
+ ** @{ */
+/** \addtogroup FreeOSEK_TS_Internal Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -75,6 +76,7 @@ extern const TestCase_Type TestCases[TS_TESTS_COUNT];
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

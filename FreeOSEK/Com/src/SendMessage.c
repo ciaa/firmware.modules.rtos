@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenCOM SendMessage Implementation File
+/** \brief FreeOSEK Com SendMessage Implementation File
  **
  ** This file implements the SendMessage API
  **
@@ -46,7 +46,9 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Com
+ ** @{ */
+/** \addtogroup FreeOSEK_Com_Global
  ** @{ */
 
 /*
@@ -171,6 +173,7 @@ StatusType SendMessage
 #include "MemMap.h"
 #endif
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

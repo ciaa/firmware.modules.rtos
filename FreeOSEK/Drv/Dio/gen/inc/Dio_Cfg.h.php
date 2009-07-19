@@ -62,6 +62,8 @@
  ** @{ */  
 /** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -144,6 +146,7 @@ foreach($diochannels as $dioc)
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

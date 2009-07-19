@@ -50,7 +50,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_MT Module Tests
  ** @{ */
-/** \addtogroup FreeOSEK_Os_MT_01 Module Test 1
+/** \addtogroup FreeOSEK_Os_MT_01 Test 1
  ** @{ */
 
 /*

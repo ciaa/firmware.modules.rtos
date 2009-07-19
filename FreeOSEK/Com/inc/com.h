@@ -38,7 +38,7 @@
 
 #ifndef _COM_H_
 #define _COM_H_
-/** \brief OpenCOM Header File
+/** \brief FreeOSEK Com Header File
  **
  ** This file shall be included by all files using any OpenCOM API
  **
@@ -46,10 +46,11 @@
  **
  **/
 
-/** \addtogroup OpenCOM OpenCOM
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenCOM_Global OpenCOM Global
- ** \ingroup FreeOSEK
+/** \addtogroup FreeOSEK_Com Communication
+ ** @{ */
+/** \addtogroup FreeOSEK_Com_Global Global
  ** @{ */
 
 /*
@@ -177,6 +178,7 @@ extern StatusType GetMessageState
 	MessageIdentifier Message
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

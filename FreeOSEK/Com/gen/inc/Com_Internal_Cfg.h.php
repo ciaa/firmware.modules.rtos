@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief OpenCOM File to be Generated
+/** \brief FreeOSEK Com File to be Generated
  **
  ** \file Com_Internal_Cfg.h.php
  **
@@ -50,7 +50,7 @@
 
 #ifndef _COM_INTERNAL_CFG_H_
 #define _COM_INTERNAL_CFG_H_
-/** \brief OpenCOM Generated Configuration Header File
+/** \brief FreeOSEK Com Generated Configuration Header File
  **
  ** This file contents the generated configuration of OpenCOM
  **
@@ -58,9 +58,11 @@
  **
  **/
 
-/** \addtogroup OpenCOM
- ** @{ */ 
-/** \addtogroup OpenCOM_Internal
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Com
+ ** @{ */
+/** \addtogroup FreeOSEK_Com_Internal
  ** @{ */
 
 /*
@@ -300,6 +302,7 @@ Com_TxTriggerType Com_TxTrigger[];
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

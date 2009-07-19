@@ -52,7 +52,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Adc_Internal
+/** \addtogroup FreeOSEK_Drv_Adc_Internal Internal
  ** @{ */
 
 /*

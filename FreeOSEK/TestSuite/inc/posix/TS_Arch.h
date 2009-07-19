@@ -43,9 +43,11 @@
  ** \file posix/TS_Arch.h
  **/
 
-/** \addtogroup TestSuite
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup TestSuite_Global TestSuite Global
+/** \addtogroup FreeOSEK_TS
+ ** @{ */
+/** \addtogroup FreeOSEK_TS_Global
  ** @{ */
 
 /*
@@ -98,6 +100,7 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

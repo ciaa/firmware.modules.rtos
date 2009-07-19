@@ -36,21 +36,23 @@
  *
  */
 
-#ifndef _OSEK_ARCH_H_
-#define _OSEK_ARCH_H_
-/** \brief FreeOSEK Architecture Dependent Header File
+#ifndef _OS_ARCH_H_
+#define _OS_ARCH_H_
+/** \brief FreeOSEK Os Architecture Dependent Header File
  **
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file win/Osek_Arch.h
- ** \arch posix
+ ** \file win/Os_Arch.h
+ ** \arch win
  **
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 
@@ -126,6 +128,7 @@ extern InterruptStateType InterruptState;
 /*==================[external functions declaration]=========================*/
 extern void ScheduleInterrupts(void);
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

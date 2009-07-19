@@ -43,9 +43,11 @@
  ** \file TestSuite.h
  **/
 
-/** \addtogroup TestSuite
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup TestSuite_Global TestSuite Global
+/** \addtogroup FreeOSEK_TS Test Suite
+ ** @{ */
+/** \addtogroup FreeOSEK_TS_Global Global
  ** @{ */
 
 /*
@@ -125,6 +127,7 @@ extern void TS_PrintResult(unsigned int tc, unsigned char result) ATTRIBUTES();
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OS_H_ */
+#endif /* #ifndef _TESTSUITE_H_ */
 

@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV DIO Init Arch implementation file
+/** \brief FreeOSEK Driver DIO Init Arch implementation file
  **
  ** This file implements the Dio_Init_Arch API
  **
@@ -44,13 +44,13 @@
  ** \arch arm7/lpc2xxx
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */  
+/** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
-/** \addtogroup OpenDRV_Dio_Internal
- ** \ingroup OpenDRV_Dio
+/** \addtogroup FreeOSEK_Drv_Dio_Global
  ** @{ */
 
 /*
@@ -147,6 +147,7 @@ Dio_ReturnType Dio_Init_Arch
 /* #define OpenDRV_DIO_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

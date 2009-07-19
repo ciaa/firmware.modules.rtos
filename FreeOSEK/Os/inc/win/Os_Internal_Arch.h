@@ -36,17 +36,19 @@
  *
  */
 
-#ifndef _OSEK_INTERNAL_ARCH_H_
-#define _OSEK_INTERNAL_ARCH_H_
-/** \brief FreeOSEK Internal Architecture Dependent Header File
+#ifndef _OS_INTERNAL_ARCH_H_
+#define _OS_INTERNAL_ARCH_H_
+/** \brief FreeOSEK Os Internal Architecture Dependent Header File
  **
- ** \file win/Osek_Internal_Arch.h
+ ** \file win/Os_Internal_Arch.h
  ** \arch win 
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Internal
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 
@@ -273,6 +275,7 @@ extern void OSEK_ISR_HWTimer1(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OSEK_INTERNAL_ARCH_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
 

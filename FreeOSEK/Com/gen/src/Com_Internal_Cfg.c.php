@@ -40,14 +40,16 @@
  *
  */
 
-/** \brief OpenCOM Generated Configuration Implementation File
+/** \brief FreeOSEK Com Generated Configuration Implementation File
  **
  ** \file Com_Internal_Cfg.c
  **/
 
-/** \addtogroup OpenCOM
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenCOM_Internal
+/** \addtogroup FreeOSEK_Com
+ ** @{ */
+/** \addtogroup FreeOSEK_Com_Internal
  ** @{ */
 
 /*
@@ -103,6 +105,7 @@ print "\n}\n";*/
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

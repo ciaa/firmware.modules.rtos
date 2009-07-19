@@ -69,7 +69,7 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Global
+/** \addtogroup FreeOSEK_Os
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */

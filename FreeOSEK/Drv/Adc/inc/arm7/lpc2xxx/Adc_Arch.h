@@ -52,6 +52,8 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Drv_Adc
  ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -130,6 +132,7 @@ typedef struct {
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

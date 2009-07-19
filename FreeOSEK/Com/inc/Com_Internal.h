@@ -38,7 +38,7 @@
 
 #ifndef _COM_INTERNAL_H_
 #define _COM_INTERNAL_H_
-/** \brief OpenCOM Internal Header File
+/** \brief FreeOSEK Com Internal Header File
  **
  ** This file shall be included by all files implementing any OpenCOM API
  **
@@ -46,10 +46,11 @@
  **
  **/
 
-/** \addtogroup OpenCOM OpenCOM
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenCOM_Internal
- ** \ingroup FreeOSEK
+/** \addtogroup FreeOSEK_Com Communication
+ ** @{ */
+/** \addtogroup FreeOSEK_Com_Internal Internal
  ** @{ */
 
 /*
@@ -83,6 +84,7 @@ typedef struct {
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

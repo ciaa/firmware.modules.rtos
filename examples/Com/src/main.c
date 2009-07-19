@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief example COM
+/** \brief Example COM
  **
  ** This file implements an example using FreeOSEK and OpenCOM
  **
@@ -45,7 +45,7 @@
 
 /** \addtogroup Examples Examples
  ** @{ */
-/** \addtogroup Com COM Example
+/** \addtogroup Examples_Com Communication
  ** @{ */
 
 /*

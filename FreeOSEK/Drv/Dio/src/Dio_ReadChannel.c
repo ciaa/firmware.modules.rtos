@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV DIO Read Channel implementation file
+/** \brief FreeOSEK Driver DIO Read Channel implementation file
  **
  ** This file implements the Dio_ReadChannel API
  **
@@ -44,10 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */  
+/** \addtogroup FreeOSEK_Drv_Dio
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio_Global
  ** @{ */
 
 /*
@@ -97,6 +100,8 @@ Dio_LevelType Dio_ReadChannel
 /* #define OpenDRV_DIO_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -45,7 +45,7 @@
 
 /** \addtogroup Examples
  ** @{ */
-/** \addtogroup uIP
+/** \addtogroup uIP uIp
  ** @{ */
 
 /*

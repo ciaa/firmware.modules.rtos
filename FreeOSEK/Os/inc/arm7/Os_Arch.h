@@ -48,9 +48,9 @@
  **
  **/
 
-/** \addtogroup FreeOSEK FreeOSEK
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Os Os
+/** \addtogroup FreeOSEK_Os
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */

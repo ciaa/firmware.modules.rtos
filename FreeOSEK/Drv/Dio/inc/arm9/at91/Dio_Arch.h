@@ -46,15 +46,14 @@
  ** \arch arm9/at91
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Dio_Internal
- ** \ingroup OpenDRV_Dio
+/** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Dio_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -107,6 +106,7 @@ typedef uint32 Dio_PortLevelType;
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

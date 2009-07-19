@@ -48,9 +48,11 @@
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Drv
+/** \addtogroup FreeOSEK_Drv Drivers
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Adc
+/** \addtogroup FreeOSEK_Drv_Adc Analoge Digital Converter
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Adc_Global Global
  ** @{ */
 
 /*
@@ -335,6 +337,7 @@ extern Adc_StatusType Adc_GetGroupStatus
 	Adc_GroupType Group
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

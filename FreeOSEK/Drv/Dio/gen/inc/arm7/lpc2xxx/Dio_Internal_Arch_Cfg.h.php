@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief DRV DIO Internal Arch Header File to be Generated
+/** \brief FreeOSEK Driver DIO Internal Arch Header File to be Generated
  **
  ** \file Dio_Internal_Arch_Cfg.h.php
  **/
@@ -61,6 +61,8 @@
 /** \addtogroup FreeOSEK_Drv
  ** @{ */
 /** \addtogroup FreeOSEK_Drv_Dio
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio_Internal
  ** @{ */
 
 /*
@@ -177,6 +179,7 @@ foreach($port_dir as $pd)
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

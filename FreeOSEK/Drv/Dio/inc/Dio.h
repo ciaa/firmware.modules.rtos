@@ -38,7 +38,7 @@
 
 #ifndef _DIO_H_
 #define _DIO_H_
-/** \brief OpenDRV DIO Header File
+/** \brief FreeOSEK Driver DIO Header File
  **
  ** This file shall be included by all files using any OpenDRV DIO API.
  **
@@ -46,10 +46,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Dio
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio Digital Input Ouput
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Dio_Global Global
  ** @{ */
 
 /*
@@ -247,6 +250,7 @@ extern void Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level);
 
 #endif /* #if (DioDevErrorDetect == ENABLE) */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
