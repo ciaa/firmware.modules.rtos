@@ -21,4 +21,4 @@
 
 ###############################################################################
 # includes
--include OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)Makefile
+-include FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)Makefile

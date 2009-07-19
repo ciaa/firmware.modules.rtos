@@ -27,45 +27,36 @@ COMPILER = gcc
 # MODULES
 #
 # Available modules are:
-# OpenGEN				Generator and include files
-# FreeOSEK 				RTOS OSEK OS
-# TestSuite				Test suite
-# seENC					Small Embedded Encryption Module
-# OpenDRV				Drivers
-# tst/moduletest01	Module tests for all modules
-# examples/Blinking	Blinking Leds Example
+# FreeOSEK/Gen					Generator and include files
+# FreeOSEK/Os					RTOS OSEK OS
+# FreeOSEK/TestSuite			Test suite
+# FreeOSEK/seENC				Small Embedded Encryption Module
+# FreeOSEK/Drv					Drivers
+# FreOSEK/tst/mtst/mtst01	Module tests for all modules
+# examples/Blinking			Blinking Leds Example
 #
 
-#MODS +=	TestSuite					\
-#			OpenGEN						\
-#			OpenDRV						\
-#			FreeOSEK						\
-#			FreeOSEK/tst/ctest
+#MODS +=	FreeOSEK/TestSuite				\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os							\
+#			FreeOSEK/Os/tst/ctest
 
-#MODS +=	examples/CarCombi			\
-#			OpenGEN						\
-#			OpenDRV						\
-#			FreeOSEK
+#MODS +=	examples/CarCombi					\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os
 
-#MODS += 	tst/moduletest01		\
-#			OpenGEN						\
-#			OpenDRV						\
-#			FreeOSEK						\
-#			TestSuite
+#MODS += FreeOSEK/tst/ctst/ctst01		\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os							\
+#			FreeOSEK/TestSuite
 
-#MODS +=	tst/moduletest01			\
-#			OpenGEN						\
-#			OpenDRV						\
-#			FreeOSEK						\
-#			TestSuite
-#			uIP							
-#			embPOSIX
-
-MODS +=	examples/Com				\
-			OpenGEN						\
-			FreeOSEK						\
-			OpenCOM
-
+MODS +=	examples/Com						\
+			FreeOSEK/Gen						\
+			FreeOSEK/Os							\
+			FreeOSEK/Com
 
 all: FreeOSEK
 
@@ -130,7 +121,7 @@ doc : $(DOC)
 
 manual :
 	@echo Generating FreeOSEK DocBook Manual
-	docbook2pdf doc/FreeOSEK_Manual.dbk -o $(DOCDIR)$(DIR)
+	docbook2pdf FreeOSEK/doc/FreeOSEK_Manual.dbk -o $(DOCDIR)$(DIR)
 
 reqdoc :
 	./doc/reqdoc.pl

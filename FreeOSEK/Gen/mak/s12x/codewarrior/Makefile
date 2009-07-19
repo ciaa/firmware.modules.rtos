@@ -34,7 +34,7 @@ GDB = codewarrior-gdb
 NM = codewarrior-nm
 
 # debug options #
-GDBO += -x OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
+GDBO += -x FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
 
 # compiler options for ARM with GCC Compiler #
 #CFLAGS += -c -Wall

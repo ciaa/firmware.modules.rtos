@@ -21,11 +21,11 @@
 
 ###############################################################################
 # includes
--include OpenGEN$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)Makefile
+-include FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)Makefile
 
 ###############################################################################
 # definitions
 #OpenGEN_OBJ += start.o
 
-LINKSCRIPT = -TOpenGEN$(DIR)ld$(DIR)$(ARCH)$(DIR)lpc2468$(DIR)lpc_e2468.cmd
+LINKSCRIPT = -TFreeOSEK$(DIR)Gen$(DIR)ld$(DIR)$(ARCH)$(DIR)lpc2468$(DIR)lpc_e2468.cmd
 #-TOpenGEN$(DIR)ld$(DIR)lpc2468$(DIR)lpc2468.cmd
