@@ -63,7 +63,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "TS_Internal.h"
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 #include "stdio.h"
 
 /*==================[macros]=================================================*/

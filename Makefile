@@ -5,10 +5,10 @@
 # ARCH
 # define the architecture of the micro where the openosek will be executed
 # at the moment the followings archictectures are supported:
-#	- posix
+#  - posix
 #  - win
 #  - arm
-ARCH = arm7
+ARCH = posix
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
@@ -36,16 +36,16 @@ COMPILER = gcc
 # examples/Blinking			Blinking Leds Example
 #
 
-#MODS +=	FreeOSEK/TestSuite				\
-#			FreeOSEK/Gen						\
-#			FreeOSEK/Drv						\
-#			FreeOSEK/Os							\
-#			FreeOSEK/Os/tst/ctest
-
-MODS +=	examples/Blinking					\
+MODS +=	FreeOSEK/TestSuite				\
 			FreeOSEK/Gen						\
 			FreeOSEK/Drv						\
-			FreeOSEK/Os
+			FreeOSEK/Os							\
+			FreeOSEK/Os/tst/ctest
+
+#MODS +=	examples/Blinking					\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os
 
 #MODS += FreeOSEK/tst/ctst/ctst01		\
 #			FreeOSEK/Gen						\

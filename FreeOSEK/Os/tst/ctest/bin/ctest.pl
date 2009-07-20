@@ -501,7 +501,7 @@ foreach $testfn (@tests)
 
 			mkdir("out/gen/etc/");
 
-			$org = "FreeOSEK/tst/ctest/etc/" . $test . ".oil";
+			$org = "FreeOSEK/Os/tst/ctest/etc/" . $test . ".oil";
 			$dst = "out/gen/etc/" . $test . ".oil";
 			copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
 
@@ -532,7 +532,7 @@ foreach $testfn (@tests)
 					{
 						$out = $BINDIR . "/" . $test;
 						info("debug of $test");
-						$dbgfile = "FreeOSEK/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
+						$dbgfile = "FreeOSEK/Os/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
 						info("$GDB $out -x $dbgfile");
 						`rm /dev/mqueue/*`;
 						if($debug == 0)
