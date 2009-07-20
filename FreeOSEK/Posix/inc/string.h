@@ -43,10 +43,9 @@
  ** \file string.h
  **/
 
-/** \addtogroup embPOSIX embPOSIX
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup embPOSIX_string embPOSIX string
- ** \ingroup embPOSIX
+/** \addtogroup FreeOSEK_Posix
  ** @{ */
 
 /*
@@ -62,7 +61,7 @@
  */  
 
 /*==================[inclusions]=============================================*/
-#include "embPOSIX.h"
+#include "Posix.h"
 #include "string_Arch.h"
 
 /*==================[macros]=================================================*/
@@ -113,7 +112,6 @@ extern void* memset
 	size_t n
 );
 #endif /* #if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION) */
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

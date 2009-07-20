@@ -44,9 +44,9 @@
  **
  **/
 
-/** \addtogroup embPOSIX
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup embPOSIX_string
+/** \addtogroup FreeOSEK_Posix
  ** @{ */
 
 /*
@@ -77,7 +77,7 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION)
+#if (POSIX_STRING_MEMSET == POSIX_FUNCTION)
 void* memset
 (
 	void * s,
@@ -95,7 +95,7 @@ void* memset
 
 	return (void*) s;
 }
-#endif /* #if (emPOSIX_STRING_MEMSET == emPOSIX_FUNCTION) */
+#endif /* #if (POSIX_STRING_MEMSET == POSIX_FUNCTION) */
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

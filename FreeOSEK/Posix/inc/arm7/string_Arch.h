@@ -44,10 +44,9 @@
  ** \arch arm7
  **/
 
-/** \addtogroup embPOSIX embPOSIX
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup embPOSIX_string embPOSIX string
- ** \ingroup embPOSIX
+/** \addtogroup FreeOSEK_Posix
  ** @{ */
 
 /*
@@ -65,9 +64,9 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-#define emPOSIX_STRING_MEMCPY emPOSIX_FUNCTION
+#define POSIX_STRING_MEMCPY POSIX_FUNCTION
 
-#define emPOSIX_STRING_MEMSET emPOSIX_FUNCTION
+#define POSIX_STRING_MEMSET POSIX_FUNCTION
 
 /*==================[typedef]================================================*/
 

@@ -36,17 +36,16 @@
  *
  */
 
-#ifndef _embPOSIX_H_
-#define _embPOSIX_H_
-/** \brief Posix String Header File
+#ifndef _POSIX_H_
+#define _POSIX_H_
+/** \brief Posix Header File
  **
- ** \file embPOSIX.h
+ ** \file Posix.h
  **/
 
-/** \addtogroup embPOSIX embPOSIX
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup embPOSIX_string embPOSIX string
- ** \ingroup embPOSIX
+/** \addtogroup FreeOSEK_Posix Posix
  ** @{ */
 
 /*
@@ -58,6 +57,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.1 20090720 MaCe rename embPOSIX to Posix
  * v0.1.0 20081112 MaCe	initial version
  */  
 
@@ -65,8 +65,8 @@
 #include "Types.h"
 
 /*==================[macros]=================================================*/
-#define emPOSIX_MACRO		1
-#define emPOSIX_FUNCTION	2
+#define POSIX_MACRO		1
+#define POSIX_FUNCTION	2
 
 /*==================[typedef]================================================*/
 typedef uint16 size_t;
@@ -78,5 +78,5 @@ typedef uint16 size_t;
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _STRING_H_ */
+#endif /* #ifndef _POSIX_H_ */
 

@@ -3,24 +3,23 @@
 #
 #-include embPOSIX$(DIR)mak$(DIR)$(ARCH)$(DIR)Makefile
 
-LIB += embPOSIX.a
+LIB += Posix.a
 
 GEN += 
 
 LFLAGS +=
 
-embPOSIX_OBJ +=	memcpy.o													\
-						memset.o
+POSIX_OBJ +=	memcpy.o													\
+					memset.o
 
 GENFILES += 
 
-VPATH += embPOSIX$(DIR)src						\
-			embPOSIX$(DIR)src$(DIR)string
+VPATH += FreeOSEK$(DIR)Posix$(DIR)src						\
+			FreeOSEK$(DIR)Posix$(DIR)src$(DIR)string
 
-INCLUDE += 	-IembPOSIX$(DIR)inc															\
-				-IembPOSIX$(DIR)inc$(DIR)$(ARCH)
+INCLUDE += 	-IFreeOSEK$(DIR)Posix$(DIR)inc															\
+				-IFreeOSEK$(DIR)Posix$(DIR)inc$(DIR)$(ARCH)
 
-embPOSIX.a : $(embPOSIX_OBJ)
-	ar -rcs $(LIBDIR)$(DIR)embPOSIX.a $(foreach obj, $(embPOSIX_OBJ), $(OBJDIR)$(DIR)$(obj))
-
+Posix.a : $(POSIX_OBJ)
+	ar -rcs $(LIBDIR)$(DIR)Posix.a $(foreach obj, $(POSIX_OBJ), $(OBJDIR)$(DIR)$(obj))
 

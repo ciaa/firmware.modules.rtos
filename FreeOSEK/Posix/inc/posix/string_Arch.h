@@ -43,10 +43,9 @@
  ** \file string.h
  **/
 
-/** \addtogroup embPOSIX embPOSIX
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup embPOSIX_string embPOSIX string
- ** \ingroup embPOSIX
+/** \addtogroup FreeOSEK_Posix
  ** @{ */
 
 /*
@@ -64,7 +63,7 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-#define emPOSIX_STRING_MEMCPY emPOSIX_MACRO
+#define POSIX_STRING_MEMCPY POSIX_MACRO
 
 /*==================[typedef]================================================*/
 
