@@ -38,7 +38,7 @@
 
 #ifndef _PWM_H_
 #define _PWM_H_
-/** \brief OpenDRV PWM Header File
+/** \brief FreeOSEK Driver PWM Header File
  **
  ** This file shall be included by all files using any OpenDRV PWM API.
  **
@@ -46,10 +46,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Pwm
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Pwm Pulse Width Modulator
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Pwm_Global Global
  ** @{ */
 
 /*
@@ -214,6 +217,7 @@ extern void Pwm_EnableNotification
 	Pwm_EdgeNotificationType Notification
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

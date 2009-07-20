@@ -36,15 +36,19 @@
  *
  */
 
-/** \brief OpenDRV Etherner
+/** \brief FreeOSEK Driver Etherner
  **
  ** \file Eth.c
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Ethernet
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth Ethernet
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global Global
  ** @{ */
 
 /*
@@ -77,6 +81,8 @@ Eth_VarType Eth_Var;
 
 /*==================[external functions definition]==========================*/
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

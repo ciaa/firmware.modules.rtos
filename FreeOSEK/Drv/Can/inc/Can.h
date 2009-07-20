@@ -38,7 +38,7 @@
 
 #ifndef _CAN_H_
 #define _CAN_H_
-/** \brief OpenDRV CAN Header File
+/** \brief FreeOEK CAN Header File
  **
  ** This file shall be included by all files using any OpenDRV CAN API.
  **
@@ -46,10 +46,11 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Can CAN Driver
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Can Control Area Network
  ** @{ */
 
 /*
@@ -137,6 +138,7 @@ typedef enum {
  **/
 extern void Can_Init(const Can_ConfigType* Config);
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

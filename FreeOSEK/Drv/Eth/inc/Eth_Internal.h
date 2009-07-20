@@ -38,16 +38,19 @@
 
 #ifndef _ETH_INTERNAL_H_
 #define _ETH_INTERNAL_H_
-/** \brief OpenDRV Ethernet Internal Header File
+/** \brief FreeOSEK Driver Ethernet Internal Header File
  **
  ** \file Eth_Internal.h
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Eth
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Internal Internal
  ** @{ */
 
 /*
@@ -100,6 +103,8 @@ extern void Eth_Transmit
 	uint16 length
 );
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

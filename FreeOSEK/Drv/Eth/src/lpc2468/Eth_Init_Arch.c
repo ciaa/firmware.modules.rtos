@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Etherner lpc24xx Init Service
+/** \brief FreeOSEK Driver Etherner lpc24xx Init Service
  **
  ** This file implements the Ethernet lpc24xx Init Service
  **
@@ -45,9 +45,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Ethernet
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Internal Internal
  ** @{ */
 
 /*
@@ -107,6 +111,8 @@ void Eth_Init_Arch
 	/* Enable the receive and transmit dataphats */
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

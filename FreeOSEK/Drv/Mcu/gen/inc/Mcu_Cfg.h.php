@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief OpenDRV File to be Generated
+/** \brief FreeOSEK Driver Mcu File to be Generated
  **
  ** \file Mcu_Cfg.h.php
  **/
@@ -49,7 +49,7 @@
 
 #ifndef _MCU_CFG_H_
 #define _MCU_CFG_H_
-/** \brief OpenDRV Mcu Generated Configuration Header File
+/** \brief FreeOSEK Driver Mcu Generated Configuration Header File
  **
  ** This file contents the generated configuration of the MicroController Unit
  ** driver.
@@ -57,10 +57,13 @@
  ** \file Mcu_Cfg.h
  **/
 
-/** \addtogroup OpenDRV
- ** @{ */ 
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu_Global
  ** @{ */
 
 /*
@@ -96,6 +99,8 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

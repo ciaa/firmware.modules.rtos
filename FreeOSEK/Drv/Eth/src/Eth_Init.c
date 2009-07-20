@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Etherner Init Service
+/** \brief FreeOSEK Driver Etherner Init Service
  **
  ** This file implements the Ethernet Init Service
  **
@@ -44,9 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Ethernet
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth Ethernet
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global Global
  ** @{ */
 
 /*
@@ -89,6 +93,8 @@ void Eth_Init
 	EthPhy_Init();
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

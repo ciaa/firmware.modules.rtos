@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Mcu Init Clock implementation file
+/** \brief FreeOSEK Driver Mcu Init Clock implementation file
  **
  ** This file implements the Mcu_Init API
  **
@@ -44,10 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu_Global
  ** @{ */
 
 /*
@@ -94,6 +97,8 @@ Std_ReturnType Mcu_InitClock
 /* #define OpenDRV_MCU_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

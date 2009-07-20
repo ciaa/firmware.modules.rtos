@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Etherner lpc2468 Internal Service
+/** \brief FreeOSEK Driver Etherner lpc2468 Internal Service
  **
  ** This file implements the Ethernet lpc2468 Internal Service
  **
@@ -45,9 +45,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Ethernet
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Internal Internal
  ** @{ */
 
 /*
@@ -165,6 +169,8 @@ extern Eth_ReturnType Eth_PhyRead
 	return ret;
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

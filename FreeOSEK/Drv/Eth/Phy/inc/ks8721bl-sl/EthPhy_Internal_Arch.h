@@ -38,18 +38,19 @@
 
 #ifndef _ETHPHY_INTERNAL_ARCH_H_
 #define _ETHPHY_INTERNAL_ARCH_H_
-/** \brief OpenDRV Ethernet Physical Internal Arch Header File
+/** \brief FreeOSEK Driver Ethernet Physical Internal Arch Header File
  **
  ** \file EthPhy_Internal_Arch.h
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_EthPhy
- ** \ingroup OpenDRV
-/** \addtogroup OpenDRV_EthPhy_Internal
- ** \ingroup OpenDRV_EthPhy
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Phy Physical Layer
  ** @{ */
 
 /*
@@ -77,6 +78,7 @@ extern void EthPhy_Init_Arch(void);
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

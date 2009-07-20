@@ -38,7 +38,7 @@
 
 #ifndef _PWM_INTERNAL_ARCH_H_
 #define _PWM_INTERNAL_ARCH_H_
-/** \brief PWM Internal Arch Header File
+/** \brief FreeOSEK Driver PWM Internal Arch Header File
  **
  ** PWM Internal Arch Header File
  **
@@ -46,13 +46,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Pwm
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Pwm_Internal
- ** \ingroup OpenDRV_Pwm
+/** \addtogroup FreeOSEK_Drv_Pwm Pulse Width Modulator
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Pwm_Internal Internal
  ** @{ */
 
 /*
@@ -81,6 +81,7 @@ void Pwm_Init_Arch
 	const Pwm_ConfigType * ConfigPtr
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV PWM Init implementation file
+/** \brief FreeOSEK Driver PWM Init implementation file
  **
  ** This file implements the Pwm_Init API
  **
@@ -44,10 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Pwm
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Pwm
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Pwm_Global
  ** @{ */
 
 /*
@@ -94,6 +97,8 @@ void Pwm_Init
 /* #define OpenDRV_Pwm_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

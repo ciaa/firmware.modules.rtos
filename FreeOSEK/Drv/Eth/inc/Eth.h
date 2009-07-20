@@ -38,18 +38,21 @@
 
 #ifndef _ETH_H_
 #define _ETH_H_
-/** \brief OpenDRV Ethernet Header File
+/** \brief FreeOSEK Driver Ethernet Header File
  **
- ** This file shall be included by all files using any OpenDRV Ethernet API.
+ ** This file shall be included by all files using any FreeOSEK Driver Ethernet API.
  **
  ** \file Eth.h
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Eth
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth Ethernet
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global Global
  ** @{ */
 
 /*
@@ -98,6 +101,8 @@ extern void Eth_MainFunction(void);
  **/
 extern void Eth_Init(void);
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

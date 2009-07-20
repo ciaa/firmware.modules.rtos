@@ -38,16 +38,19 @@
 
 #ifndef _ETH_ARCH_H_
 #define _ETH_ARCH_H_
-/** \brief OpenDRV Ethernet Arch Header File
+/** \brief FreeOSEK Driver Ethernet Arch Header File
  **
  ** \file Eth_Arch.h
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Eth
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global
  ** @{ */
 
 /*
@@ -72,6 +75,8 @@
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

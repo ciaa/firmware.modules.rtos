@@ -38,18 +38,20 @@
 
 #ifndef _MCU_H_
 #define _MCU_H_
-/** \brief OpenDRV Mcu Header File
+/** \brief FreeOSEK Driver Mcu Header File
  **
  ** This file shall be included by all files using any OpenDRV Mcu API.
  **
  ** \file Mcu.h
- **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu Microcontroller Unit
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu_Global Global
  ** @{ */
 
 /*
@@ -256,6 +258,8 @@ extern Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSettings);
 
 /** TODO ALL */
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

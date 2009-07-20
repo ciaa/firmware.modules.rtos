@@ -38,18 +38,21 @@
 
 #ifndef _WDT_H_
 #define _WDT_H_
-/** \brief OpenDRV WDT Header File
+/** \brief FreeOSEK Driver WDT Header File
  **
  ** This file shall be included by all files using any OpenDRV WDT API.
  **
- ** \file wdt.h
+ ** \file Wdt.h
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Wdt
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Wdt Watchdog Timer
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Wdt_Global Global
  ** @{ */
 
 /*
@@ -105,6 +108,8 @@ typedef struct {
  **/
 extern Wdt_ReturnType Wdt_Init(Wdt_ConfigType const * config);
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -41,7 +41,7 @@
  */
 
 <?php
-/** \brief OpenDRV Ethernet File to be Generated
+/** \brief FreeOSEK Driver Ethernet File to be Generated
  **
  ** \file Eth_Cfg.h.php
  **
@@ -50,7 +50,7 @@
 
 #ifndef _ETH_CFG_H_
 #define _ETH_CFG_H_
-/** \brief OpenDRV Ethernet Generated Configuration Header File
+/** \brief FreeOSEK Driver Ethernet Generated Configuration Header File
  **
  ** This file contents the generated configuration of OpenDRV Ethernet
  ** module.
@@ -59,9 +59,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
- ** @{ */ 
-/** \addtogroup OpenDRV_Eth
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global
  ** @{ */
 
 /*
@@ -88,5 +92,8 @@
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _ETH_CFG_H_ */
+

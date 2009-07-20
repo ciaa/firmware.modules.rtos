@@ -38,7 +38,7 @@
 
 #ifndef _MCU_ARCH_H_
 #define _MCU_ARCH_H_
-/** \brief Mcu Arch Header File
+/** \brief FreeOSEK Driver Mcu Arch Header File
  **
  ** Mcu Arch Header File
  **
@@ -46,15 +46,14 @@
  ** \arch arm9/at91
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Mcu_Internal
- ** \ingroup OpenDRV_Mcu
+/** \addtogroup FreeOSEK_Drv_Mcu
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Mcu_Global
+ ** @{ */
 
 /*
  * Initials     Name
@@ -82,6 +81,7 @@ typedef struct {
 
 /*==================[external functions declaration]=========================*/
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

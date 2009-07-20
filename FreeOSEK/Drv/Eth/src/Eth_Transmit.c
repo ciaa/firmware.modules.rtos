@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Etherner Transmit Service
+/** \brief FreeOSEK Driver Etherner Transmit Service
  **
  ** This file implements the Ethernet Transmit Service
  **
@@ -44,9 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Ethernet
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth Ethernet
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global Global
  ** @{ */
 
 /*
@@ -86,6 +90,8 @@ void Eth_Transmit
 	
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Ethernet Main Function
+/** \brief FreeOSEK Driver Ethernet Main Function
  **
  ** This file implements the Ethernet Main Function service
  **
@@ -44,9 +44,13 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Ethernet
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth Ethernet
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Global Global
  ** @{ */
 
 /*
@@ -146,6 +150,8 @@ void Eth_MainFunction
 	}
 }
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

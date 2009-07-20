@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV PWM Init Arch implementation file
+/** \brief FreeOSEK Driver PWM Init Arch implementation file
  **
  ** This file implements the Pwm_Init_Arch API
  **
@@ -44,15 +44,14 @@
  ** \arch arm7/lpc2xxx
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Pwm
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Pwm_Internal
- ** \ingroup OpenDRV_Pwm
+/** \addtogroup FreeOSEK_Drv_Pwm
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Pwm_Internal
+ ** @{ */
 /*
  * Initials     Name
  * ---------------------------
@@ -219,6 +218,7 @@ void Pwm_Init_Arch
 /* #define OpenDRV_Pwm_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

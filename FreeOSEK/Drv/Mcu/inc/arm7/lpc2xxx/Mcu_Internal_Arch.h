@@ -38,7 +38,7 @@
 
 #ifndef _MCU_INTERNAL_ARCH_H_
 #define _MCU_INTERNAL_ARCH_H_
-/** \brief Mcu Internal Header File
+/** \brief FreeOSEK Driver Mcu Internal Header File
  **
  ** Mcu Internal Header File
  **
@@ -46,15 +46,14 @@
  ** \arch arm7/lpc2xxx
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Mcu_Internal
- ** \ingroup OpenDRV_Mcu
+/** \addtogroup FreeOSEK_Drv_Mcu
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Mcu_Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -83,6 +82,7 @@ Std_ReturnType Mcu_InitClock_Arch
 	Mcu_ClockType ClockSettings
 );
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

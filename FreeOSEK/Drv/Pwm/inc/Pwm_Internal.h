@@ -38,7 +38,7 @@
 
 #ifndef _PWM_INTERNAL_H_
 #define _PWM_INTERNAL_H_
-/** \brief PWM Internal Header File
+/** \brief FreeOSEK Driver PWM Internal Header File
  **
  ** Io Internal Header File
  **
@@ -46,15 +46,14 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Pwm
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Pwm_Internal
- ** \ingroup OpenDRV_Pwm
+/** \addtogroup FreeOSEK_Drv_Pwm Pulse Width Modulator
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Pwm_Internal Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -88,6 +87,7 @@
 /* #define OpenDRV_IO_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -38,15 +38,18 @@
 
 #ifndef _ETHPHY_H_
 #define _ETHPHY_H_
-/** \brief OpenDRV Ethernet Physical Header File
+/** \brief FreeOSEK Driver Ethernet Physical Header File
  **
  ** \file EthPhy.h
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_EthPhy
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Eth_Phy Physical Layer
  ** @{ */
 
 /*
@@ -78,6 +81,8 @@ typedef uint8f EthPhy_ReturnType;
  **/
 extern void EthPhy_Init(void);
 
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

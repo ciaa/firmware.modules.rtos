@@ -36,7 +36,7 @@
  *
  */
 
-/** \brief OpenDRV Mcu Init Arch implementation file
+/** \brief FreeOSEK Driver Mcu Init Arch implementation file
  **
  ** This file implements the Mcu_InitClock_Arch API
  **
@@ -44,13 +44,13 @@
  ** \arch arm7/lpc2xxx
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Mcu_Internal
- ** \ingroup OpenDRV_Mcu
+/** \addtogroup FreeOSEK_Drv_Mcu
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu_Internal
  ** @{ */
 
 /*
@@ -140,6 +140,7 @@ Std_ReturnType Mcu_InitClock_Arch
 /* #define OpenDRV_MCU_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

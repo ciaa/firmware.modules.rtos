@@ -38,7 +38,7 @@
 
 #ifndef _MCU_INTERNAL_H_
 #define _MCU_INTERNAL_H_
-/** \brief Mcu Internal Header File
+/** \brief FreeOSEK Driver Mcu Internal Header File
  **
  ** Mcu Internal Header File
  **
@@ -46,15 +46,14 @@
  **
  **/
 
-/** \addtogroup OpenDRV
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup OpenDRV_Mcu
- ** \ingroup OpenDRV
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup OpenDRV_Mcu_Internal
- ** \ingroup OpenDRV_Mcu
+/** \addtogroup FreeOSEK_Drv_Mcu
  ** @{ */
-
+/** \addtogroup FreeOSEK_Drv_Mcu_Internal Internal
+ ** @{ */
 
 /*
  * Initials     Name
@@ -90,6 +89,7 @@ extern Mcu_ReturnType Mcu_Init_Arch(const Mcu_ConfigType* Config);
 /* #define OpenDRV_MCU_STOP_SEC_CODE
  * #include "MemMap.h" */
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
