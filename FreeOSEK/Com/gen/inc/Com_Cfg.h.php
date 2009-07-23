@@ -95,6 +95,7 @@ foreach ($messages as $msg)
 		$count_tx++;
 	}
 }
+$com_total_tx_msg = $count_tx;
 
 $count_rx = 0;
 print "/** \brief Definition of all Receive Messages */\n";
@@ -108,6 +109,7 @@ foreach ($messages as $msg)
 		$count_rx++;
 	}
 }
+$com_total_rx_msg = $count_rx;
 
 print "/** \brief Count of RX Messages */\n";
 print "#define COM_TX_MAX_MESSAGE $count_tx\n\n";

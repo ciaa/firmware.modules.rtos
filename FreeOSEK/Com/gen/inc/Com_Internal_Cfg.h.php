@@ -105,11 +105,73 @@
 #define COM_MSG_NOTIF_FLAG				4U
 
 /*------------------[Network Message Objects macros declarations]-------------*/
+<?php
+$netmessages = $config->getList("/COM","NETWORKMESSAGE");
+$count_tx = 0;
+print "/** \brief Definition of all Transmitted Network Messages */\n";
+foreach ($netmessages as $netmsg)
+{
+	$msgprop = $config->getValue("/COM/" . $netmsg,"DIRECTION");
+	if ( $msgprop == "SENT" )
+	{
+		print "/** \brief Network Tx Message $netmsg */\n";
+		print "#define $netmsg " . $count_tx . "U\n\n";
+		$count_tx++;
+	}
+}
+$com_total_tx_netmsg = $count_tx;
+
+$count_rx = 0;
+print "/** \brief Definition of all Receive Network Messages */\n";
+foreach ($netmessages as $netmsg)
+{
+	$msgprop = $config->getValue("/COM/" . $netmsg,"DIRECTION");
+	if ( $msgprop == "RECEIVE" )
+	{
+		print "/** \brief Network Rx Message $netmsg */\n";
+		print "#define $netmsg " . $count_rx . "U\n\n";
+		$count_rx++;
+	}
+}
+$com_total_rx_netmsg = $count_rx;
+?>
+
 /*------------------[PDU Message Objects macros declarations]-----------------*/
 #define COM_TX_PDU_PERIODIC			0U
 #define COM_TX_PDU_DIRECT				1U
 #define COM_TX_PDU_MIXED				2U
 #define COM_RX_PDU						3U
+
+<?php
+$pdus = $config->getList("/COM","IPDU");
+$count_tx = 0;
+print "/** \brief Definition of all Transmitted PDU Messages */\n";
+foreach ($pdus as $pdu)
+{
+	$pduprop = $config->getValue("/COM/" . $pdu,"IPDUPROPERTY");
+	if ( $pdupropprop == "SENT" )
+	{
+		print "/** \brief IPDU Tx $netmsg */\n";
+		print "#define $pdu " . $count_tx . "U\n\n";
+		$count_tx++;
+	}
+}
+$com_total_tx_pdus = $count_tx;
+
+$count_rx = 0;
+print "/** \brief Definition of all Receive PDU Messages */\n";
+foreach ($pdus as $pdu)
+{
+	$pduprop = $config->getValue("/COM/" . $netmsg,"IPDUPROPERTY");
+	if ( $msgprop == "RECEIVE" )
+	{
+		print "/** \brief IPDU Rx $netmsg */\n";
+		print "#define $pdu " . $count_rx . "U\n\n";
+		$count_rx++;
+	}
+}
+$com_total_rx_pdus = $count_rx;
+?>
 
 /*------------------[Lower Layers macros declarations]------------------------*/
 
@@ -277,24 +339,24 @@ typedef void (*Com_TxTriggerType)(uint16 IPDU);
 /*==================[external data declaration]==============================*/
 /*------------------[Message Objects declarations]---------------------------*/
 /** \brief Constants for the Message Receive Objects */
-Com_RxMessageObjectConstType Com_RxMessageObjectsConst[];
+Com_RxMessageObjectConstType Com_RxMessageObjectsConst[<?=$com_total_rx_msg?>];
 
 /** \brief Constants for the Message Transmission Objects */
-Com_TxMessageObjectConstType Com_TxMessageObjectsConst[];
+Com_TxMessageObjectConstType Com_TxMessageObjectsConst[<?=$com_total_tx_msg?>];
 
 /*------------------[Network Message Objects declarations]-------------------*/
 /** \brief Constant for the Network Message Transmission */
-Com_TxNetworkMessageConstType Com_TxNetworkMessageConst[];
+Com_TxNetworkMessageConstType Com_TxNetworkMessageConst[<?=$com_total_tx_netmsg?>];
 
 /** \brief Constant for the Network Message Reception */
-Com_RxNetworkMessageConstType Com_RxNetworkMessageConst[];
+Com_RxNetworkMessageConstType Com_RxNetworkMessageConst[<?=$com_total_rx_netmsg?>];
 
 /*------------------[PDU Message Objects declarations]-----------------------*/
 /** \brief Constants for the PDU Transmited */
-Com_TxPduObjectsConstType Com_TxPduObjectsConst[];
+Com_TxPduObjectsConstType Com_TxPduObjectsConst[<?=$com_total_tx_pdus?>];
 
 /** \brief Constants for the PDU Received */
-Com_RxPduObjectsConstType Com_RxPduObjectsConst[];
+Com_RxPduObjectsConstType Com_RxPduObjectsConst[<?=$com_total_rx_pdus?>];
 
 /*------------------[Lower Layers declarations]------------------------------*/
 /** \brief Lower Layer array */
