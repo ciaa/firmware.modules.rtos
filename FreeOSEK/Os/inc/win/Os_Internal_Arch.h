@@ -259,7 +259,7 @@ extern uint32 WinStack;
 extern uint32 OsekStack;
 
 /*==================[external functions declaration]=========================*/
-extern void CallTask(TaskType NewTask);
+extern void CallTask(TaskType OldTask, TaskType NewTask);
 
 extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
 
