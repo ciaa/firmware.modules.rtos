@@ -266,10 +266,12 @@ void CounterInterrupt(CounterType CounterID)
 							AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
 						}
 						break;
+#if (NO_EVENTS == DISABLE)
 					case SETEVENT:
 						/* set event */
 						SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Event);
 						break;
+#endif
 					default:
 						/* some error ? */
 						break;
