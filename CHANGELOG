@@ -38,12 +38,15 @@
 
 /** \page CHANGELOG Change Log
  *
- * v0.3.1	FreeOSEK Release 200906xx
- * 	- 2795348 add first PWM Driver
- * 	- 2795355 add the CarCombi example
- * 	- 2797017 add FreeOSEK OS template for new architectures
- * 	- 2796524 add first ADC Driver
- * 	- 2798376 start porting for s12x
+ * v0.4.0	FreeOSEK Release 200907xx
+ * 	- 2797017 create a FreeOSEK OS template for new architectures
+ * 	- 2822046 improve whole FreeOSEK directory structure
+ * 	- 2795348 start PWM Driver implementation
+ * 	- 2795355 start a CarCombi example implementation
+ * 	- 2796524 start ADC Driver implementation
+ * 	- 2798376 start FreeOSEK Os port for s12x
+ * 	- 2799054 start a DocBook Manual
+ * 	- bufixes: 2805073, 2805686, 2806756, 2825942, 2826121
  *
  * v0.3.0	FreeOSEK Release 20090511
  * 	- 2727954 add FreeOSEK OS conformance tests
