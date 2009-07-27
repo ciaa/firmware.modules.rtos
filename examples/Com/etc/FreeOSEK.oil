@@ -101,7 +101,12 @@ COM COM {
 	COM Example {
 		COMTIMEBASE = 0.001;
 		COMERRORHOOK = TRUE;
-		COMAPPMODE = "Com_ApplMode1";
+		COMUSEGETSERVICEID = TRUE;
+		COMUSEPARAMETERACCESS = TRUE;
+		COMSTARTCOMEXTENSION = DISABLE;
+		COMAPPMODE = Com_ApplMode1;
+		COMSTATUS = COMEXTENDED;
+		USE = "networkfile.oil";
 	};
 
 	MESSAGE Msg1 {
@@ -168,7 +173,7 @@ COM COM {
 // 	TIMEOFFSET = [ 0 .. 2xx64-1 ];
 // 	MINIMUMDELAY = [ 0 .. 2xx64-1 ];
 // 	TIMEOUT = [ 0 .. 2xx64-1 ];
-// 	LAYERUSED = [ CAN | TCP | UDP ] {
+// 	LAYERUSED = [ CAN | TCP | UDP | FLRY ] {
 // 		CHANNEL = [ channel name ];
 // 	};
 // };
