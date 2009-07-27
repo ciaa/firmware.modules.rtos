@@ -101,7 +101,7 @@ COM COM {
 	COM Example {
 		COMTIMEBASE = 0.001;
 		COMERRORHOOK = TRUE;
-		COMAPPMODE = "NormalMode";
+		COMAPPMODE = "Com_ApplMode1";
 	};
 
 	MESSAGE Msg1 {

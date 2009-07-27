@@ -110,6 +110,9 @@ TASK(InitTask)
 		to be activated on the same moment */
 	SetRelAlarm(ActivateButtonsTask, 125, 250);
 
+	/* init Communication */
+	(void) StartCOM(Com_ApplMode1);
+
 	/* Terminate Init Task */
 	TerminateTask();
 }
