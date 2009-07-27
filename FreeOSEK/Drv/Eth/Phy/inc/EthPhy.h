@@ -81,6 +81,20 @@ typedef uint8f EthPhy_ReturnType;
  **/
 extern void EthPhy_Init(void);
 
+extern void EthPhy_Write
+(
+	uint32 RegAddr,
+	uint32 PhyAddr,
+	uint16 Data
+);
+
+extern void EthPhy_Read
+(
+	uint32 RedAddr,
+	uint32 PhyAddr,
+	uint16* Data
+);
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
