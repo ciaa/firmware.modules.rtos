@@ -83,6 +83,20 @@
 /** \brief COM Shutdown Mode type immediate */
 #define COM_SHUTDOWN_IMMEDIATE	((COMShutdownModeType)1U)
 
+/** \brief COM false value
+ **
+ ** this macro is used for FlagValue, CalloutReturnType types and for
+ ** the ReadFlag_, COMCallout interfaces
+ **/
+#define COM_FALSE					0U
+
+/** \brief COM true value
+ **
+ ** this macro is used for FlagValue, CalloutReturnType types and for
+ ** the ReadFlag_, COMCallout interfaces
+ **/
+#define COM_TRUE					1U
+
 /*==================[typedef]================================================*/
 /** \brief COM Application Mode type definition */
 typedef uint8 COMApplicationModeType;
@@ -90,11 +104,43 @@ typedef uint8 COMApplicationModeType;
 /** \brief COM Shutdown Mode type definition */
 typedef uint8 COMShutdownModeType;
 
+/** \brief Callout return type definition 
+ **
+ ** Indicates at the exit of a callout whether the IL shall continue or abandon
+ ** further processing of the current message or I-PDU.
+ **/
+typedef uint8 CalloutReturnType;
+
+/** \brief Communication Service Id type definition
+ **
+ ** Unique identifier for an OSEK COM service.
+ **/
+typedef enum
+{
+	COMServiceId_COMApplicationMode,
+	COMServiceId_GetMessageStatus,
+	COMServiceId_InitMessage,
+	COMServiceId_ReceiveDynamicMessage,
+	COMServiceId_ReceiveMessage,
+	COMServiceId_SendDynamicMessage,
+	COMServiceId_SendMessage,
+	COMServiceId_SendZeroMessage,
+	COMServiceId_StartCOM,
+	COMServiceId_StartPeriodic,
+	COMServiceId_StopCOM
+} COMServiceIdType;
+
 /** \brief Application Data Reference type definition */
 typedef void* ApplicationDataRef;
 
 /** \brief Length Reference type definition */
 typedef uint16* LengthRef;
+
+/** \brief Flag Value type definition
+ **
+ ** Current State of a message flag
+ **/
+typedef uint8 FlagValue;
 
 /*==================[external data declaration]==============================*/
 
@@ -173,7 +219,7 @@ extern StatusType SendZeroMessage
 	MessageIdentifier Message
 );
 
-extern StatusType GetMessageState
+extern StatusType GetMessageStatus
 (
 	MessageIdentifier Message
 );

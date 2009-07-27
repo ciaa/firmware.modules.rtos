@@ -1,7 +1,3 @@
-/********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
- ********************************************************/
-
 /* Copyright 2008, 2009, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
@@ -40,21 +36,11 @@
  *
  */
 
-<?php
-/** \brief FreeOSEK Com File to be Generated
+/** \brief FreeOSEK Com StartCOM Implementation File
  **
- ** \file Com_Cfg.h.php
+ ** This file implements the StartCOM API
  **
- **/
-?>
-
-#ifndef _COM_CFG_H_
-#define _COM_CFG_H_
-/** \brief FreeOSEK Com Generated Configuration Header File
- **
- ** This file contents the generated configuration of OpenCOM
- **
- ** \file Com_Cfg.h
+ ** \file StartCOM.c
  **
  **/
 
@@ -68,91 +54,58 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.1 20090705 MaCe implement first COM Module
- * v0.1.0 20090322 MaCe	initial version
- */  
+ * 20090727 v0.1.0 MaCe initial version
+ */
 
 /*==================[inclusions]=============================================*/
+#include "Com_Internal.h"
 
-/*==================[macros]=================================================*/
-<?php
-$applmode = $config->getList("/COM/COM", "COMAPPMODE");
-if (count($applmode)<1)
+/*==================[macros and definitions]=================================*/
+
+/*==================[internal data declaration]==============================*/
+
+/*==================[internal functions declaration]=========================*/
+
+/*==================[internal data definition]===============================*/
+
+/*==================[external data definition]===============================*/
+
+/*==================[internal functions definition]==========================*/
+
+/*==================[external functions definition]==========================*/
+#if (COM_MEMMAP == ENABLE)
+#define OpenCOM_START_SEC_CODE
+#include "MemMap.h"
+#endif
+
+extern StatusType StartCOM
+(
+	COMApplicationModeType Mode
+)
 {
-	error("at least one COMAPPMODE shall be defined");
+	StatusType ret = E_OK;		/* return value */
+
+	/* save applicaiton mode */
+	Com_ApplicationMode = Mode;
+
+	/* TODO */
+
+	return ret;
 }
 
-$count = 0;
-foreach ($applmode as $am)
-{
-	print "/** \brief Communication Application Mode: $am */\n";
-	print "#define $am " . $count . "U\n\n";	
-	$count++;
-}
-
-$messages = $config->getList("/COM","MESSAGE");
-$count = 0;
-print "/** \brief Definition of all Send Messages */\n";
-foreach ($messages as $msg)
-{
-	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
-	if ( strpos($msgprop,"SEND") > -1 )
-	{
-		print "/** \brief Send Message $msg */\n";
-		print "#define $msg " . $count . "U\n\n";
-		$count++;
-	}
-}
-$com_total_tx_msg = $count;
-
-print "/** \brief Definition of all Receive Messages */\n";
-foreach ($messages as $msg)
-{
-	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
-	if ( strpos($msgprop,"RECEIVE") > -1 )
-	{
-		print "/** \brief Receive Message $msg */\n";
-		print "#define $msg " . $count . "U\n\n";
-		$count++;
-	}
-}
-$com_total_rx_msg = $count - $com_total_tx_msg;
-
-?>
-
-/*==================[typedef]================================================*/
-/** \brief Message Identifier data definition */
-<?php
-if ( ( $com_total_tx_msg + $com_total_rx_msg ) < 256 )
-{
-	print "typedef uint8 MessageIdentifier;\n";
-}
-elseif ( ( $com_total_tx_msg + $com_total_rx_msg ) < 65536 )
-{
-	print "typedef uint16 MessageIdentifier;\n";
-}
-else
-{
-	error("up to 65536 messages are allowed on the COM module, " . ( $com_total_tx_msg + $com_total_rx_msg ) . " are defined");
-}
-?>
-
-/** \brief Communication Lenght type definition */
-/* TODO this type has to be configurable */
-typedef uint8 COMLengthType;
-/*==================[external data declaration]==============================*/
-
-/*==================[external functions declaration]=========================*/
+#if (COM_MEMMAP == ENABLE)
+#define OpenCOM_STOP_SEC_CODE
+#include "MemMap.h"
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _COM_CFG_H_ */
 

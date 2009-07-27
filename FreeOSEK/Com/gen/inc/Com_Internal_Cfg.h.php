@@ -94,9 +94,9 @@
 #define COM_MSG_PROP_RX_ZERO_INT		6U
 #define COM_MSG_PROP_RX_ZERO_EXT		7U
 
-#define COM_MSG_TPROP_TRIGGERED		0U
-#define COM_MSG_TPROP_PENDING			1U
-#define COM_MSG_TPROP_AUTO				2U
+#define COM_MSG_TYPE_TRIGGERED		0U
+#define COM_MSG_TYPE_PENDING			1U
+#define COM_MSG_TYPE_AUTO				2U
 
 #define COM_MSG_NOTIF_NONE				0U
 #define COM_MSG_NOTIF_ATASK			1U
@@ -104,36 +104,11 @@
 #define COM_MSG_NOTIF_CBACK			3U
 #define COM_MSG_NOTIF_FLAG				4U
 
-/*------------------[Network Message Objects macros declarations]-------------*/
 <?php
-$netmessages = $config->getList("/COM","NETWORKMESSAGE");
-$count_tx = 0;
-print "/** \brief Definition of all Transmitted Network Messages */\n";
-foreach ($netmessages as $netmsg)
-{
-	$msgprop = $config->getValue("/COM/" . $netmsg,"DIRECTION");
-	if ( $msgprop == "SENT" )
-	{
-		print "/** \brief Network Tx Message $netmsg */\n";
-		print "#define $netmsg " . $count_tx . "U\n\n";
-		$count_tx++;
-	}
-}
-$com_total_tx_netmsg = $count_tx;
-
-$count_rx = 0;
-print "/** \brief Definition of all Receive Network Messages */\n";
-foreach ($netmessages as $netmsg)
-{
-	$msgprop = $config->getValue("/COM/" . $netmsg,"DIRECTION");
-	if ( $msgprop == "RECEIVE" )
-	{
-		print "/** \brief Network Rx Message $netmsg */\n";
-		print "#define $netmsg " . $count_rx . "U\n\n";
-		$count_rx++;
-	}
-}
-$com_total_rx_netmsg = $count_rx;
+print "/** \brief Count of RX Messages */\n";
+print "#define COM_TX_MAX_MESSAGE $com_total_tx_msg\n\n";
+print "/** \brief Count of RX Messages */\n";
+print "#define COM_RX_MAX_MESSAGE $com_total_rx_msg\n\n";
 ?>
 
 /*------------------[PDU Message Objects macros declarations]-----------------*/
@@ -151,7 +126,7 @@ foreach ($pdus as $pdu)
 	$pduprop = $config->getValue("/COM/" . $pdu,"IPDUPROPERTY");
 	if ( $pdupropprop == "SENT" )
 	{
-		print "/** \brief IPDU Tx $netmsg */\n";
+		print "/** \brief IPDU Tx $pdu */\n";
 		print "#define $pdu " . $count_tx . "U\n\n";
 		$count_tx++;
 	}
@@ -162,10 +137,10 @@ $count_rx = 0;
 print "/** \brief Definition of all Receive PDU Messages */\n";
 foreach ($pdus as $pdu)
 {
-	$pduprop = $config->getValue("/COM/" . $netmsg,"IPDUPROPERTY");
+	$pduprop = $config->getValue("/COM/" . $pdu,"IPDUPROPERTY");
 	if ( $msgprop == "RECEIVE" )
 	{
-		print "/** \brief IPDU Rx $netmsg */\n";
+		print "/** \brief IPDU Rx $pdu */\n";
 		print "#define $pdu " . $count_rx . "U\n\n";
 		$count_rx++;
 	}
@@ -184,7 +159,7 @@ typedef uint8 Com_NetMsgType;
 /** TODO uint8 or uint16 has to depend on the account of messages */
 typedef uint8 Com_IPDUType;
 
-/*------------------[Message Objects type definitions]----------------------*/
+/*------------------[Message (and network) Objects type definitions]---------*/
 /** \brief Message Flags type definition
  **
  ** \param MsgProp indicates the message properties, valid values are:
@@ -196,104 +171,74 @@ typedef uint8 Com_IPDUType;
  **			- COM_MSG_PROP_RX_STAT_EXT
  **			- COM_MSG_PROP_RX_ZERO_INT
  **			- COM_MSG_PROP_RX_ZERO_EXT
- ** \param Type is the type fo the message valid values are:
- **			- COM_MSG_TPROP_TRIGGERED
- **			- COM_MSG_TPROP_PENDING
- **			- COM_MSG_TPROP_AUTO
- ** \param CType indicates the callback type
+ ** \param MsgType is the type fo the message valid values are:
+ **			- COM_MSG_TYPE_TRIGGERED
+ **			- COM_MSG_TYPE_PENDING
+ **			- COM_MSG_TYPE_AUTO
+ ** \param MsgCType indicates the message callback type
  **			- COM_MSH_NOTIF_NONE
  **			- COM_MSH_NOTIF_ATASK
  **			- COM_MSH_NOTIF_SEVENT
  **			- COM_MSH_NOTIF_CBACK
  **			- COM_MSH_NOTIF_FLAG
+ ** \param NetProp network message properties, valid valuesa are:
+ **			- COM_NM_PROP_STATIC
+ **			- COM_NM_PROP_DYNAMIC
+ **			- COM_NM_PROP_ZERO
+ ** \param NetBitOrd network bit ordering, valid values are:
+ **			- COM_NM_BO_BIGENDIAN
+ **			- COM_NM_BO_LITTLEENDIAN
+ ** \param NetDataInt network message data interpretation
+ **			- COM_NM_DI_UNSIGNEDINTEGER
+ **			- COM_NM_DI_BYTEARRAY
+ ** \param NetDirection network message data direction
+ **			- COM_NM_DIR_RX
+ **			- COM_NM_DIR_TX_TRIGGERED
+ **			- COM_NM_DIR_TX_PENDING
+ **			- COM_NM_DIR_TX_AUTO
  **/
 typedef struct {
 	uint16 MsgProp : 3;
-	uint16 TProp : 2;
-	uint16 CType : 3;
-} Com_MsgFlagsType;
+	uint16 MsgType : 2;
+	uint16 MsgCType : 3;
+	uint16 NetProp : 2;
+	uint16 NetBitOrd : 1;
+	uint16 NetDataInt : 1;
+	uint16 NetDirection : 2;
+} Com_FlagsType;
 
-/** \brief Transmit Message Object Const type definition
+/** \brief Transmit Message (and network) Object Const type definition
  **
- ** \param Flags	Transmit Flags, for more details see Com_MsgFlagsType type
+ ** \param Flags	Transmit Flags, for more details see Com_FlagsType type
  **					definition
- ** \param NetMsg indicates on which network the message will be transmitted,
- **					only used on external communication.
- ** \param Msg		indicates the related message, only used on internal
- **					communication
+ ** \param Size	Size of the network message in bits
+ ** \param Offset	Offset of the network message on the PDU
+ ** \param Data	pointer to the memory to stor the data
+ ** \param IPDU	IPDU for this network message
  **/
 typedef struct {
-	Com_MsgFlagsType Flags;
-	Com_NetMsgType NetMsg;
-	MessageIdentifier Msg;
-	/* init value TODO */
+	Com_FlagsType Flags;
+	uint16 Size;
+	uint16 Offset;
+	uint32* Data;
+	Com_IPDUType IPDU;
 } Com_TxMessageObjectConstType;
 
-/** \brief Receive Message Object Const type definition
+/** \brief Receive Message (and network) Object Const type definition
  **
  ** \param Flags	Receive Flags, for more details see Com_MsgFlagsType type
  **					definition
+ ** \param Size	Size of the network message in bits
+ ** \param Offset	Offset of the network message on the PDU
+ ** \param Data	pointer to the memory to stor the data
+ ** \param IPDU	IPDU for this network message
  **/
 typedef struct {
-	Com_MsgFlagsType Flags;
-	/** TODO */
+	Com_FlagsType Flags;
+	uint16 Size;
+	uint16 Offset;
+	uint32* Data;
 } Com_RxMessageObjectConstType;
-
-/*------------------[Network Message Objects type definitions]--------------*/
-/** \brief Network Message Flags type definition
- **
- ** \param Prop 		network message properties, valid valuesa are:
- **							- COM_NM_PROP_STATIC
- **							- COM_NM_PROP_DYNAMIC
- **							- COM_NM_PROP_ZERO
- ** \param BitOrd		bit ordering, valid values are:
- **							- COM_NM_BO_BIGENDIAN
- **							- COM_NM_BO_LITTLEENDIAN
- ** \param DataInt	network message data interpretation
- **							- COM_NM_DI_UNSIGNEDINTEGER
- **							- COM_NM_DI_BYTEARRAY
- ** \param Direction	network message data direction
- **							- COM_NM_DIR_RX
- **							- COM_NM_DIR_TX_TRIGGERED
- **							- COM_NM_DIR_TX_PENDING
- **							- COM_NM_DIR_TX_AUTO
- **/
-typedef struct {
-	uint16 Prop : 2;
-	uint16 BitOrd : 1;
-	uint16 DataInt : 1;
-	uint16 Direction : 2;
-} Com_NetMsgFlagsType;
-
-/** \brief Transmit Network Message Const type definition
- **
- ** \param Flags	Network Message Flags, for more detailes see
- **					Com_NMsgFlagsType type definition
- ** \param Size	Size of the network message in bits
- ** \param Offset	Offset of the network message on the PDU
- ** \param IPDU	IPDU for this network message
- **/
-typedef struct {
-	Com_NetMsgFlagsType Flags;
-	uint16 Size;
-	uint16 Offset;
-	Com_IPDUType IPDU;
-} Com_TxNetworkMessageConstType;
-
-/** \brief Receive Network Message Const type definition
- **
- ** \param Flags	Network Message Flags, for more detailes see
- **					Com_NMsgFlagsType type definition
- ** \param Size	Size of the network message in bits
- ** \param Offset	Offset of the network message on the PDU
- ** \param IPDU	IPDU for this network message
- **/
-typedef struct {
-	Com_NetMsgFlagsType	Flags;
-	uint16 Size;
-	uint16 Offset;
-	Com_IPDUType IPDU;
-} Com_RxNetworkMessageConstType;
 
 /*------------------[PDU Message Objects type definitions]------------------*/
 /** \brief IPDU Flags type definition
@@ -327,9 +272,13 @@ typedef struct {
 /** \brief Reception IPDU Object Const type definition
  **
  ** \param Flags IPDU flags, see Com_IPDUFlagsType type definition
+ ** \param Msgs pointer to the lisf of messages receiving from this IPDU
+ ** \param MsgCount amount of message on the Msgs list
  **/
 typedef struct {
 	Com_IPDUFlagsType Flags;
+	const MessageIdentifier* Msgs;
+	uint8	MsgCount;
 } Com_RxPduObjectsConstType;
 
 /*------------------[Lower Layers type definitions]-------------------------*/
@@ -337,30 +286,23 @@ typedef struct {
 typedef void (*Com_TxTriggerType)(uint16 IPDU);
 
 /*==================[external data declaration]==============================*/
-/*------------------[Message Objects declarations]---------------------------*/
+/*------------------[Message (and Network) Objects declarations]-------------*/
 /** \brief Constants for the Message Receive Objects */
-Com_RxMessageObjectConstType Com_RxMessageObjectsConst[<?=$com_total_rx_msg?>];
+const Com_RxMessageObjectConstType Com_RxMessageObjectsConst[<?=$com_total_rx_msg?>];
 
 /** \brief Constants for the Message Transmission Objects */
-Com_TxMessageObjectConstType Com_TxMessageObjectsConst[<?=$com_total_tx_msg?>];
+const Com_TxMessageObjectConstType Com_TxMessageObjectsConst[<?=$com_total_tx_msg?>];
 
-/*------------------[Network Message Objects declarations]-------------------*/
-/** \brief Constant for the Network Message Transmission */
-Com_TxNetworkMessageConstType Com_TxNetworkMessageConst[<?=$com_total_tx_netmsg?>];
+/*------------------[PDU Objects declarations]-------------------------------*/
+/** \brief Constants for the PDU Receive Objects */
+const Com_RxPduObjectsConstType Com_RxPduObjectsConst[<?=$com_total_rx_pdus?>];
 
-/** \brief Constant for the Network Message Reception */
-Com_RxNetworkMessageConstType Com_RxNetworkMessageConst[<?=$com_total_rx_netmsg?>];
-
-/*------------------[PDU Message Objects declarations]-----------------------*/
-/** \brief Constants for the PDU Transmited */
-Com_TxPduObjectsConstType Com_TxPduObjectsConst[<?=$com_total_tx_pdus?>];
-
-/** \brief Constants for the PDU Received */
-Com_RxPduObjectsConstType Com_RxPduObjectsConst[<?=$com_total_rx_pdus?>];
+/** \brief Constants for the PDU Transmit Objects */
+const Com_TxPduObjectsConstType Com_TxPduObjectsConst[<?=$com_total_tx_pdus?>];
 
 /*------------------[Lower Layers declarations]------------------------------*/
 /** \brief Lower Layer array */
-Com_TxTriggerType Com_TxTrigger[];
+const Com_TxTriggerType Com_TxTrigger[];
 
 /*==================[external functions declaration]=========================*/
 

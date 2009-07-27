@@ -94,6 +94,9 @@ StatusType ReceiveMessage
 	StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+	/* first rx id is COM_TX_MAX_MESSAGE, so remove this offset */
+	Message -= COM_TX_MAX_MESSAGE;
+
 	/* check that the message identifier is on range */
 	if ( Message > COM_RX_MAX_MESSAGE )
 	{
