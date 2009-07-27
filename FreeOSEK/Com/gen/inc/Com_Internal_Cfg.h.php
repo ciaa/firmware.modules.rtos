@@ -80,10 +80,94 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-/** \brief Error Checking Type */
-/** TODO */
-#define ERROR_CHECKING_TYPE ERROR_CHECKING_STANDARD
+<?php
+$configs = $config->getList("/COM", "COM");
 
+/* COMSTATUS */
+$status = $config->getValue("/COM/" . $configs[0], "COMSTATUS");
+print "/** \brief Error Checking Type */\n";
+if ( $status == TRUE )
+{
+	print "#define ERROR_CHECKING_TYPE ERROR_CHECKING_EXTENDED\n\n";
+}
+elseif ( $status == FALSE )
+{
+	print "#define ERROR_CHECKING_TYPE ERROR_CHECKING_STANDARD\n\n";
+}
+else
+{
+	warning("COMSTATUS not defined, using FALSE as default");
+	print "#define ERROR_CHECKING_TYPE ERROR_CHECKING_STANDARD\n\n";
+}
+
+/* COMERRORHOOK */
+$errorhook = $config->getValue("/COM/" . $configs[0], "COMERRORHOOK");
+print "/** \brief ErrorHook  */\n";
+if ( $errorhook == TRUE )
+{
+	print "#define COM_ERRORHOOK ENABLE\n\n";
+}
+elseif ( $errorhook == FALSE )
+{
+	print "#define COM_ERRORHOOK DISABLE\n\n";
+}
+else
+{
+	warning("COMERRORHOOK not defined, using FALSE as default");
+	print "#define COM_ERRORHOOK DISABLE\n\n";
+}
+
+/* COMUSEGETSERVICEID */
+$getsid = $config->getValue("/COM/" . $configs[0], "COMUSEGETSERVICEID");
+print "/** \brief Enable or Disable GetServiceId */\n";
+if ( $getsid == TRUE )
+{
+	print "#define COM_GETSERVICEID ENABLE\n\n";
+}
+elseif ( $getsid == FALSE )
+{
+	print "#define COM_GETSERVICEID DISABLE\n\n";
+}
+else
+{
+	warning("COMUSEGETSERVICEID not defined, using FALSE as default");
+	print "#define COM_GETSERVICEID DISABLE\n\n";
+}
+
+/* COMUSEPARAMETERACCESS */
+$pa = $config->getValue("/COM/" . $configs[0], "COMUSEPARAMETERACCESS");
+print "/** \brief Enable or Disable USEPARAMETERACCESS */\n";
+if ( $pa == TRUE )
+{
+	print "#define COM_USEPARAMETERACCESS ENABLE\n\n";
+}
+elseif ( $pa == FALSE )
+{
+	print "#define COM_USEPARAMETERACCESS DISABLE\n\n";
+}
+else
+{
+	warning("COMUSEPARAMETERACCESS not defined, using FALSE as default");
+	print "#define COM_USEPARAMETERACCESS DISABLE\n\n";
+}
+
+/* COMSTARTCOMEXTENSION */
+$se = $config->getValue("/COM/" . $configs[0], "COMSTARTCOMEXTENSION");
+print "/** \brief Enable or Disable COMSTARTCOMEXTENSION */\n";
+if ( $se == TRUE )
+{
+	print "#define COM_STARTCOMEXTENSION ENABLE\n\n";
+}
+elseif ( $se == FALSE )
+{
+	print "#define COM_COMSTARTCOMEXTENSION DISABLE\n\n";
+}
+else
+{
+	warning("COMSTARTCOMEXTENSION not defined, using FALSE as default");
+	print "#define COM_COMSTARTCOMEXTENSION DISABLE\n\n";
+}
+?>
 /*------------------[Message Objects macros declarations]---------------------*/
 #define COM_MSG_PROP_TX_STAT_INT		0U
 #define COM_MSG_PROP_TX_STAT_EXT		1U
@@ -109,6 +193,17 @@ print "/** \brief Count of RX Messages */\n";
 print "#define COM_TX_MAX_MESSAGE $com_total_tx_msg\n\n";
 print "/** \brief Count of RX Messages */\n";
 print "#define COM_RX_MAX_MESSAGE $com_total_rx_msg\n\n";
+
+$timebase = $config->getList("/COM/" . $configs[0], "COMTIMEBASE");
+if (count($timebase) != 1)
+{
+	error("only one COMTIMEBAE shall be defined, " . count($timebase) . " were found");
+}
+print "/** \brief COM time base macro definition */\n";
+print "#define COM_TIMEBASE $timebase\n\n";
+
+
+
 ?>
 
 /*------------------[PDU Message Objects macros declarations]-----------------*/
@@ -301,8 +396,43 @@ const Com_RxPduObjectsConstType Com_RxPduObjectsConst[<?=$com_total_rx_pdus?>];
 const Com_TxPduObjectsConstType Com_TxPduObjectsConst[<?=$com_total_tx_pdus?>];
 
 /*------------------[Lower Layers declarations]------------------------------*/
-/** \brief Lower Layer array */
-const Com_TxTriggerType Com_TxTrigger[];
+<?php
+$pdus = $config->getList("/COM","IPDU");
+$count = 0;
+$f = $c = $t = $u = 0;
+print "/** \brief Definition of all Transmitted PDU Messages */\n";
+foreach ($pdus as $pdu)
+{
+	$pduprop = $config->getValue("/COM/" . $pdu,"IPDUPROPERTY");
+	if ( $pdupropprop == "SENT" )
+	{
+		$layer = $config->getValue("/COM/" . $pdu, "LAYERUSED");
+		if ( ( $layer == "TCP") && ( $t == 0 ) )
+		{
+			$count++;
+			$t = 1;
+		}
+		if ( ( $layer == "UDP") && ( $u == 0 ) )
+		{
+			$count++;
+			$u = 1;
+		}
+		if ( ( $layer == "CAN") && ( $c == 0 ) )
+		{
+			$count++;
+			$c = 1;
+		}
+		if ( ( $layer == "FLRY") && ( $f == 0 ) )
+		{
+			$count++;
+			$f = 1;
+		}
+	}
+}
+print "/** \brief Lower Layer array */\n";
+print "const Com_TxTriggerType Com_TxTrigger[$count];\n\n";
+?>
+
 
 /*==================[external functions declaration]=========================*/
 

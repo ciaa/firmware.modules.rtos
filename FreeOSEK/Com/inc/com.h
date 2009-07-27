@@ -145,9 +145,18 @@ typedef uint8 FlagValue;
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-/** \brief Start COM
+/** \brief Start Communication
  **
- ** TODO add information
+ ** The service StartCOM starts and initialises the OSEK COM implementation
+ ** in the requested application mode. If StartCOM fails, initialisation of
+ ** the OSEK COM implementation aborts and StartCOM returns a status code as
+ ** specified below. StartCOM shall be called from within a task if an
+ ** OSEK-compliant operating system is used. Before returning, the service
+ ** StartCOM calls the application function StartCOMExtension.
+
+ **
+ ** \param[in] Mode COM application mode
+ ** \return
  **/
 extern StatusType StartCOM
 (

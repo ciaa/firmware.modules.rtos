@@ -36,11 +36,11 @@
  *
  */
 
-/** \brief FreeOSEK Com StartCOM Implementation File
+/** \brief FreeOSEK Com Implementation File
  **
- ** This file implements the StartCOM API
+ ** This file implements the internal functions of FreeOSEK Com
  **
- ** \file StartCOM.c
+ ** \file Com.c
  **
  **/
 
@@ -48,7 +48,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Com
  ** @{ */
-/** \addtogroup FreeOSEK_Com_Global
+/** \addtogroup FreeOSEK_Com_Internal
  ** @{ */
 
 /*
@@ -75,44 +75,11 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+COMApplicationModeType Com_ApplicationMode;
 
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-#if (COM_MEMMAP == ENABLE)
-#define OpenCOM_START_SEC_CODE
-#include "MemMap.h"
-#endif
-
-extern StatusType StartCOM
-(
-	COMApplicationModeType Mode
-)
-{
-	StatusType ret = E_OK;		/* return value */
-
-	/* save applicaiton mode */
-	Com_ApplicationMode = Mode;
-
-	/* TODO */
-
-#if ( COM_COMSTARTCOMEXTENSION == ENABLE )
-	/* StartCOMExtension is called only if the return code is E_OK */
-	if ( ret == E_OK )
-	{
-		/* call user Start COM extension and get the return value */
-		ret = StartCOMExtension();
-	}
-#endif /* #if ( COM_COMSTARTCOMEXTENSION == ENABLE ) */
-
-	/* return StartCOM error or if no error, return StartCOMExtension status */
-	return ret;
-}
-
-#if (COM_MEMMAP == ENABLE)
-#define OpenCOM_STOP_SEC_CODE
-#include "MemMap.h"
-#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

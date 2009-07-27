@@ -81,6 +81,7 @@ typedef struct {
 } Com_TxMessageObjectType;
 
 /*==================[external data declaration]==============================*/
+extern COMApplicationModeType Com_ApplicationMode;
 
 /*==================[external functions declaration]=========================*/
 

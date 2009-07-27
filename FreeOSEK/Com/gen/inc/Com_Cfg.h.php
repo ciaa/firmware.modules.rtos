@@ -82,7 +82,13 @@
 
 /*==================[macros]=================================================*/
 <?php
-$applmode = $config->getList("/COM/COM", "COMAPPMODE");
+$configs = $config->getList("/COM", "COM");
+if (count($configs)!=1)
+{
+	error("not least and no more than 1 COM configuration shall be available, " . count($configs) . " were found");
+}
+
+$applmode = $config->getList("/COM/" . $configs[0], "COMAPPMODE");
 if (count($applmode)<1)
 {
 	error("at least one COMAPPMODE shall be defined");

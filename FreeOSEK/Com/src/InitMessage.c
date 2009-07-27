@@ -88,7 +88,7 @@ StatusType InitMessage
 (
 	MessageIdentifier Message,
 	ApplicationDataRef DataRef
-);
+)
 {
 	StatusType ret = E_OK;		/* return value */
 
