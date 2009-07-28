@@ -178,9 +178,9 @@ else
 #define COM_MSG_PROP_RX_ZERO_INT		6U
 #define COM_MSG_PROP_RX_ZERO_EXT		7U
 
-#define COM_MSG_TYPE_TRIGGERED		0U
-#define COM_MSG_TYPE_PENDING			1U
-#define COM_MSG_TYPE_AUTO				2U
+#define COM_MSG_TRANS_TRIGGERED		0U
+#define COM_MSG_TRANS_PENDING			1U
+#define COM_MSG_TRANS_AUTO				2U
 
 #define COM_MSG_NOTIF_NONE				0U
 #define COM_MSG_NOTIF_ATASK			1U
@@ -267,15 +267,15 @@ typedef uint8 Com_IPDUType;
  **			- COM_MSG_PROP_RX_ZERO_INT
  **			- COM_MSG_PROP_RX_ZERO_EXT
  ** \param MsgType is the type fo the message valid values are:
- **			- COM_MSG_TYPE_TRIGGERED
- **			- COM_MSG_TYPE_PENDING
- **			- COM_MSG_TYPE_AUTO
+ **			- COM_MSG_TRANS_TRIGGERED
+ **			- COM_MSG_TRANS_PENDING
+ **			- COM_MSG_TRANS_AUTO
  ** \param MsgCType indicates the message callback type
- **			- COM_MSH_NOTIF_NONE
- **			- COM_MSH_NOTIF_ATASK
- **			- COM_MSH_NOTIF_SEVENT
- **			- COM_MSH_NOTIF_CBACK
- **			- COM_MSH_NOTIF_FLAG
+ **			- COM_MSG_NOTIF_NONE
+ **			- COM_MSG_NOTIF_ATASK
+ **			- COM_MSG_NOTIF_SEVENT
+ **			- COM_MSG_NOTIF_CBACK
+ **			- COM_MSG_NOTIF_FLAG
  ** \param NetProp network message properties, valid valuesa are:
  **			- COM_NM_PROP_STATIC
  **			- COM_NM_PROP_DYNAMIC
@@ -389,33 +389,48 @@ const Com_RxMessageObjectConstType Com_RxMessageObjectsConst[<?=$com_total_rx_ms
 const Com_TxMessageObjectConstType Com_TxMessageObjectsConst[<?=$com_total_tx_msg?>];
 
 /*------------------[PDU Objects declarations]-------------------------------*/
-/** \brief Constants for the PDU Receive Objects */
-const Com_RxPduObjectsConstType Com_RxPduObjectsConst[<?=$com_total_rx_pdus?>];
+<?php
+if ( $com_total_rx_pdus != 0 )
+{
+	print "/** \brief Constants for the PDU Receive Objects */\n";
+	print "const Com_RxPduObjectsConstType Com_RxPduObjectsConst[" . $com_total_rx_pdus . "];\n\n";
+}
+else
+{
+	print "/* No reception PDU is defined, Com_RxPduObjectsConst is not declared */\n\n";
+}
 
-/** \brief Constants for the PDU Transmit Objects */
-const Com_TxPduObjectsConstType Com_TxPduObjectsConst[<?=$com_total_tx_pdus?>];
+if ( $com_total_tx_pdus != 0 )
+{
+	print "/** \brief Constants for the PDU Transmit Objects */\n";
+	print "const Com_TxPduObjectsConstType Com_TxPduObjectsConst[" . $com_total_tx_pdus . "];\n\n";
+}
+else
+{
+	print "/* No transmission PDU is defined, Com_TxPduObjectsConst is not declared */\n\n";
+}
+?>
 
 /*------------------[Lower Layers declarations]------------------------------*/
 <?php
 $pdus = $config->getList("/COM","IPDU");
 $count = 0;
-$f = $c = $t = $u = 0;
-print "/** \brief Definition of all Transmitted PDU Messages */\n";
+$f = $c = $ti = $ui = $u = 0;
 foreach ($pdus as $pdu)
 {
 	$pduprop = $config->getValue("/COM/" . $pdu,"IPDUPROPERTY");
 	if ( $pdupropprop == "SENT" )
 	{
 		$layer = $config->getValue("/COM/" . $pdu, "LAYERUSED");
-		if ( ( $layer == "TCP") && ( $t == 0 ) )
+		if ( ( $layer == "TCP") && ( $ti == 0 ) )
 		{
 			$count++;
-			$t = 1;
+			$ti = 1;
 		}
-		if ( ( $layer == "UDP") && ( $u == 0 ) )
+		if ( ( $layer == "UDP") && ( $ui == 0 ) )
 		{
 			$count++;
-			$u = 1;
+			$ui = 1;
 		}
 		if ( ( $layer == "CAN") && ( $c == 0 ) )
 		{
@@ -427,10 +442,22 @@ foreach ($pdus as $pdu)
 			$count++;
 			$f = 1;
 		}
+		if ( ( $layer == "USB") && ( $u == 0 ) )
+		{
+			$count++;
+			$u = 1;
+		}
 	}
 }
-print "/** \brief Lower Layer array */\n";
-print "const Com_TxTriggerType Com_TxTrigger[$count];\n\n";
+if ( $count != 0 )
+{
+	print "/** \brief Lower Layer array */\n";
+	print "const Com_TxTriggerType Com_TxTrigger[$count];\n\n";
+}
+else
+{
+	print "/* no Lower Layer is used, Com_TxTrigger is not declared */\n\n";
+}
 ?>
 
 

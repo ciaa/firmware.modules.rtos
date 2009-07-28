@@ -76,29 +76,112 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+/*------------------[Message (and Network) Objects declarations]-------------*/
 <?php
 $messages = $config->getList("/COM","MESSAGE");
 $count = 0;
-print "/** \brief Definition of Send Messages Objects */\n";
-/*print "const Com_TxMessageObjectType Com_TxMessageObjects[] = {\n";
+print "/** \brief Constants for the Message Receive Objects definition */\n";
+print "const Com_RxMessageObjectConstType Com_RxMessageObjectsConst[<?=$com_total_rx_msg?>] =\n";
+print "{\n";
+$messages = $config->getList("/COM","MESSAGE");
 foreach ($messages as $msg)
 {
-	$msgprop = $config->getValue("/COM/" . $msg,"MESSAGEPROPERTY");
+	$msgprop = $config->getValue("/COM/" . $msg, "MESSAGEPROPERTY");
+	$msgtrans = $config->getValue("/COM/" . $msg . "/" . $msgprop, "TRANSFERPROPERTY");
+	$msgnotif = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NOTIFICATION");
 	if ( strpos($msgprop,"SEND") > -1 )
 	{
+		/* add , */
 		if ($count > 0)
 		{
 			print ",\n";
-		}*/
-		print "	/** \brief Send Message Object: $msg */\n";
-/*		print "	{\n";
-		print "		\n";
-		print "		\n";
+		}
+		print "	/* Receive Message Object: $msg */\n";
+		print "	{\n";
+		print "		/* flags */\n";
+		print "		{\n";
+		switch ($msgprop)
+		{
+			case "SEND_STATIC_INTERNAL" :
+				print "			COM_MSG_PROP_TX_STAT_INT";
+				break;
+			case "SEND_STATIC_EXTERNAL" :
+				print "			COM_MSG_PROP_TX_STAT_EXT";
+				break;
+			case "SEND_ZERO_INTERNAL" :
+				print "			COM_MSG_PROP_TX_ZERO_INT";
+				break;
+			case "SEND_ZERO_EXTERNAL" :
+				print "			COM_MSG_PROP_TX_ZERO_EXT";
+				break;
+			case "RECEIVE_ZERO_INTERNAL" :
+				print "			COM_MSG_PROP_RX_ZERO_INT";
+				break;
+			case "RECEIVE_ZERO_EXTERNAL" :
+				print "			COM_MSG_PROP_RX_ZERO_EXT";
+				break;
+			case "RECEIVE_UNQUEUED_INTERNAL" :
+				print "			COM_MSG_PROP_RX_STAT_INT";
+				break;
+			case "RECEIVE_UNQUEUED_EXTERNAL" :
+				print "			COM_MSG_PROP_RX_STAT_EXT";
+				break;
+			default :
+				error("the MESSAGEPROPERTY of the message $msg is set to $msgprop what is invalid or not supported");
+				break;
+		}
+		print ", /* message properties */\n";
+		switch ($msgtrans)
+		{
+			case "TRIGGERED" :
+				print "			COM_MSG_TRANS_TRIGGERED";
+				break;
+			case "PENDING" :
+				print "			COM_MSG_TRANS_PENDING";
+				break;
+			case "AUTO" :
+				print "			COM_MSG_TRANS_AUTO";
+				break;
+			default :
+				error("the TRANSFERPROPERTY of the message of the message $msg  is set to $msgtrans what is invalid or not supported");
+				break;
+		}
+		print ", /* message transfer property */\n";
+		switch ($msgnotif)
+		{
+			case "NONE" :
+				print "			COM_MSG_NOTIF_NONE";
+				break;
+			case "ACTIVATETASK" :
+				print "			COM_MSG_NOTIF_ATASK";
+				break;
+			case "SETEVENT" :
+				print "			COM_MSG_NOTIF_SEVENT";
+				break;
+			case "COMCALLBACK" :
+				print "			COM_MSG_NOTIF_CBACK";
+				break;
+			case "FLAG" :
+				print "			COM_MSG_NOTIF_FLAG";
+				break;
+			default :
+				error("the NOTIFICATION of the message $msg is set to $msgnotif what is invalid or not supported");
+				break;
+		}
+		print ", /* message callback type */\n";
+		print "			0, /* network properties */\n";
+		print "			0, /* network bitorder */\n";
+		print "			0, /* network data interpretation */\n";
+		print "			 /* network direction */\n";
+		print "		},\n";
+		print "		0, /* size */\n";
+		print "		0, /* offset */\n";
+		print "		0 /* data pointer */\n";
 		print "	}";
 		$count++;
 	}
 }
-print "\n}\n";*/
+print "\n}\n";
 ?>
 
 /*==================[internal functions definition]==========================*/

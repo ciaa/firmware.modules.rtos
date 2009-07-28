@@ -125,7 +125,7 @@ StatusType SendMessage
 			/* check if the unter layer tx has to be triggered only to be done if:
 					- the message has property triggered
 					- the underlayer I-PDU is configured != to periodic */
-			if ( ( Com_TxMessageObjectsConst[Message].Flags.MsgType == COM_MSG_TYPE_TRIGGERED ) &&
+			if ( ( Com_TxMessageObjectsConst[Message].Flags.MsgType == COM_MSG_TRANS_TRIGGERED ) &&
 				  ( Com_TxPduObjectsConst[TxPDU].Flags.Prop != COM_TX_PDU_PERIODIC ) )
 			{
 				/* trigger the transmission of the I-PDU */
