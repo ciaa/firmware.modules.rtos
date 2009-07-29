@@ -84,6 +84,7 @@ print "/** \brief Constants for the Message Receive Objects definition */\n";
 print "const Com_RxMessageObjectConstType Com_RxMessageObjectsConst[<?=$com_total_rx_msg?>] =\n";
 print "{\n";
 $messages = $config->getList("/COM","MESSAGE");
+$netmsgs = $config->getList("/COM","NETWORKMESSAGE");
 foreach ($messages as $msg)
 {
 	$msgprop = $config->getValue("/COM/" . $msg, "MESSAGEPROPERTY");
@@ -169,14 +170,50 @@ foreach ($messages as $msg)
 				break;
 		}
 		print ", /* message callback type */\n";
-		print "			0, /* network properties */\n";
-		print "			0, /* network bitorder */\n";
-		print "			0, /* network data interpretation */\n";
-		print "			 /* network direction */\n";
-		print "		},\n";
-		print "		0, /* size */\n";
-		print "		0, /* offset */\n";
-		print "		0 /* data pointer */\n";
+		$nmbp = 0;
+		if ( strpos($msgprop,"EXTERNAL") > 0 )
+		{
+			$netmsg = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NETWORKMESSAGE");
+			$nmfound = 0;
+			foreach ($netmsgs as $nm)
+			{
+				if ( $nm == $netmsg )
+				{
+					$nmfound++;
+					$nmpdu = $config->getValue("/COM/" . $nm, "IPDU");
+					$nmmp = $config->getValue("/COM/" . $nm, "MESSAGEPROPERTY");
+					$nmsize = $config->getValue("/COM/" . $nm . "/" . $nmmp, "SIZEINBITS");
+					$nmbo = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITORDERING");
+					$nmbp = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITPOSITION");
+					$nmdi = $config->getValue("/COM/" . $nm . "/" . $nmmp, "DATAINTERPRETATION");
+					$nmiv = $config->getValue("/COM/" . $nm . "/" . $nmmp, "INITIALVALUE");
+					$nmdir = $config->getValue("/COM/" . $nm . "/" . $nmmp, "DIRECTION");
+				}
+			}
+			if ( $nmfound != 1 )
+			{
+				error("exact one network message shall be defined for each external message, $nmfound " .
+						"network messages were found for the message $msg, which refers to the $nm network message");
+			}
+			print "			0, /* network properties */\n";
+			print "			0, /* network bitorder */\n";
+			print "			0, /* network data interpretation */\n";
+			print "			$nmdir /* network direction */\n";
+			print "		},\n";
+			print "		$nmsize, /* size */\n";
+			print "		" . ($nmbp & 0x7 ) . ", /* offset */\n";
+		}
+		else
+		{
+			print "			0, /* network properties - not used internal message */\n";
+			print "			0, /* network bitorder - not used internal message */\n";
+			print "			0, /* network data interpretation - not used internal message */\n";
+			print "			0 /* network direction - not used internal message */\n";
+			print "		},\n";
+			print "		0, /* size - not used internal message */\n";
+			print "		0, /* offset - not used internal message */\n";
+		}
+		print "		" . ( 0 + ( $nmbp >> 3 ) ) . " /* data pointer */\n";
 		print "	}";
 		$count++;
 	}
