@@ -36,22 +36,22 @@ COMPILER = gcc
 # examples/Blinking			Blinking Leds Example
 #
 
-MODS +=	FreeOSEK/TestSuite				\
-			FreeOSEK/Gen						\
-			FreeOSEK/Drv						\
-			FreeOSEK/Os							\
-			FreeOSEK/Os/tst/ctest
+#MODS +=	FreeOSEK/TestSuite				\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os							\
+#			FreeOSEK/Os/tst/ctest
 
 #MODS +=	examples/Blinking					\
 #			FreeOSEK/Gen						\
 #			FreeOSEK/Drv						\
 #			FreeOSEK/Os
 
-#MODS += FreeOSEK/tst/ctst/ctst01		\
-#			FreeOSEK/Gen						\
-#			FreeOSEK/Drv						\
-#			FreeOSEK/Os							\
-#			FreeOSEK/TestSuite
+MODS += FreeOSEK/Os/tst/mtst/mtst01		\
+			FreeOSEK/Gen						\
+			FreeOSEK/Drv						\
+			FreeOSEK/Os							\
+			FreeOSEK/TestSuite
 
 #MODS +=	examples/Com						\
 #			FreeOSEK/Gen						\

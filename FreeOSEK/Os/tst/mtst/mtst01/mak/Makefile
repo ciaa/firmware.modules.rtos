@@ -3,18 +3,18 @@
 #
 OBJ += main.o
 
-VPATH += tst$(DIR)moduletest01$(DIR)src
+VPATH += FreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)src
 
-INCLUDE += -Itst$(DIR)moduletest01$(DIR)inc
+INCLUDE += -IFreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)inc
 
-CFGFILES += tst$(DIR)moduletest01$(DIR)etc$(DIR)moduletest01.oil			\
-				tst$(DIR)moduletest01$(DIR)etc$(DIR)testsuite.oil				\
-				tst$(DIR)moduletest01$(DIR)etc$(DIR)OpenDRV.oil					\
-				tst$(DIR)moduletest01$(DIR)etc$(DIR)OpenGEN.oil					\
-				tst$(DIR)moduletest01$(DIR)etc$(DIR)seENC.oil
+CFGFILES += FreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)etc$(DIR)mtst01.oil			\
+				FreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)etc$(DIR)testsuite.oil				\
+				FreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)etc$(DIR)OpenDRV.oil					\
+				FreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)etc$(DIR)OpenGEN.oil					\
+				FreeOSEK$(DIR)Os$(DIR)tst$(DIR)mtst$(DIR)mtst01$(DIR)etc$(DIR)seENC.oil
 
-CLEAN += moduletest01clean
+CLEAN += mtst01clean
 
-moduletest01clean :
+mtst01clean :
 
 

@@ -1,4 +1,4 @@
-OpenDRV OpenDRV {
+DRV DRV {
 
 	GENERAL GenConfig {
 		StartUp = ENABLE;
