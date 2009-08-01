@@ -80,6 +80,7 @@
 <?php
 $messages = $config->getList("/COM","MESSAGE");
 $count = 0;
+$msgidp = 0;
 print "/** \brief Constants for the Message Transmitted Objects definition */\n";
 print "const Com_TxMsgObjCstType Com_TxMsgObjsCst[$com_total_tx_msg] =\n";
 print "{\n";
@@ -92,6 +93,7 @@ foreach ($messages as $msg)
 	$msgnotif = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NOTIFICATION");
 	$msgsize = $config->getValue("/COM/" . $msg . "/" . $msgprop, "SIZEINBITS");
 	$msgnet = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NETWORKMESSAGE");
+	$msge = false;
 	if ( strpos($msgprop,"SEND") > -1 )
 	{
 		/* add , */
@@ -110,24 +112,28 @@ foreach ($messages as $msg)
 				break;
 			case "SEND_STATIC_EXTERNAL" :
 				print "			COM_MSG_PROP_TX_STAT_EXT";
+				$msge = true;
 				break;
 			case "SEND_ZERO_INTERNAL" :
 				print "			COM_MSG_PROP_TX_ZERO_INT";
 				break;
 			case "SEND_ZERO_EXTERNAL" :
 				print "			COM_MSG_PROP_TX_ZERO_EXT";
+				$msge = true;
 				break;
 			case "RECEIVE_ZERO_INTERNAL" :
 				print "			COM_MSG_PROP_RX_ZERO_INT";
 				break;
 			case "RECEIVE_ZERO_EXTERNAL" :
 				print "			COM_MSG_PROP_RX_ZERO_EXT";
+				$msge = true;
 				break;
 			case "RECEIVE_UNQUEUED_INTERNAL" :
 				print "			COM_MSG_PROP_RX_STAT_INT";
 				break;
 			case "RECEIVE_UNQUEUED_EXTERNAL" :
 				print "			COM_MSG_PROP_RX_STAT_EXT";
+				$msge = true;
 				break;
 			default :
 				error("the MESSAGEPROPERTY of the message $msg is set to $msgprop what is invalid or not supported");
@@ -181,10 +187,20 @@ foreach ($messages as $msg)
 			{
 				$nmmp = $config->getValue("/COM/" . $nm, "MESSAGEPROPERTY");
 				$offset = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITPOSITION");
+				$offset >>= 3;	/* only byte offset is used for the data pointer - see bit position in network message */
 			}
 		}
-		$offset >>= 3;	/* only byte offset is used for the data pointer - see bit position in network message */
-		print "		" . $offset . ", /* data pointer */\n";
+		if ( $msge == true )
+		{
+			/* external message */
+			print "		&Com_TxMsgExtBuf_" . $msgnet . "[" . $offset . "], /* data pointer */\n";
+		}
+		else
+		{
+			/* internal message */
+			print "		&Com_TxMsgIntBuf[$msgidp], /* data pointer */\n";
+			$msgidp += ( ( $msgsize + 7 ) >> 3 );
+		}
 		print "		" . $msgnet . " /* network message */\n";
 		print "	}";
 		$count++;
