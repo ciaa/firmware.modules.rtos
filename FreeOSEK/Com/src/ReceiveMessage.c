@@ -84,6 +84,8 @@
 #include "MemMap.h"
 #endif
 
+/* ReceiveMessage is not necesarry if no received message are defined */
+#if ( COM_RECEIVEMESSAGE == ENABLE )
 StatusType ReceiveMessage
 (
 	MessageIdentifier Message,
@@ -105,8 +107,8 @@ StatusType ReceiveMessage
 	}
 	/* check that the message is not zero-length neither dynamic-lenght neither
 		a tx message */
-	else if (! ( ( Com_RxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_RX_STAT_INT ) ||
-					 ( Com_RxMessageObjectsConst[Message].Flags.MsgProp == COM_MSG_PROP_RX_STAT_EXT ) ) )
+	else if (! ( ( Com_RxMsgObjsCst[Message].Flags.Prop == COM_MSG_PROP_RX_STAT_INT ) ||
+					 ( Com_RxMsgObjsCst[Message].Flags.Prop == COM_MSG_PROP_RX_STAT_EXT ) ) )
 	{
 		/* in other case return an error */
 		ret = E_COM_ID;
@@ -160,6 +162,7 @@ StatusType ReceiveMessage
 
 	return ret;
 }
+#endif /* #if ( COM_RECEIVEMESSAGE == ENABLE ) */
 
 #if (COM_MEMMAP == ENABLE)
 #define OpenCOM_STOP_SEC_CODE
