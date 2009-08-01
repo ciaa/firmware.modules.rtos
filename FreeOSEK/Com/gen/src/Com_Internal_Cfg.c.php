@@ -76,7 +76,7 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-/*------------------[Message (and Network) Objects declarations]-------------*/
+/*------------------[Message Objects declarations]---------------------------*/
 <?php
 $messages = $config->getList("/COM","MESSAGE");
 $count = 0;
@@ -90,6 +90,8 @@ foreach ($messages as $msg)
 	$msgprop = $config->getValue("/COM/" . $msg, "MESSAGEPROPERTY");
 	$msgtrans = $config->getValue("/COM/" . $msg . "/" . $msgprop, "TRANSFERPROPERTY");
 	$msgnotif = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NOTIFICATION");
+	$msgsize = $config->getValue("/COM/" . $msg . "/" . $msgprop, "SIZEINBITS");
+	$msgnet = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NETWORKMESSAGE");
 	if ( strpos($msgprop,"SEND") > -1 )
 	{
 		/* add , */
@@ -170,118 +172,130 @@ foreach ($messages as $msg)
 				break;
 		}
 		print ", /* message callback type */\n";
-		$nmbp = 0;
-		if ( strpos($msgprop,"EXTERNAL") > 0 )
+		print "		},\n";
+		print "		" . $msgsize . ", /* size */\n";
+		$offset = 0;
+		foreach ($netmsgs as $nm)
 		{
-			$netmsg = $config->getValue("/COM/" . $msg . "/" . $msgprop, "NETWORKMESSAGE");
-			$nmfound = 0;
-			foreach ($netmsgs as $nm)
+			if ( $msgnet == $nm )
 			{
-				if ( $nm == $netmsg )
-				{
-					$nmfound++;
-					$nmpdu = $config->getValue("/COM/" . $nm, "IPDU");
-					$nmmp = $config->getValue("/COM/" . $nm, "MESSAGEPROPERTY");
-					$nmsize = $config->getValue("/COM/" . $nm . "/" . $nmmp, "SIZEINBITS");
-					$nmbo = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITORDERING");
-					$nmbp = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITPOSITION");
-					$nmdi = $config->getValue("/COM/" . $nm . "/" . $nmmp, "DATAINTERPRETATION");
-					$nmiv = $config->getValue("/COM/" . $nm . "/" . $nmmp, "INITIALVALUE");
-					$nmdir = $config->getValue("/COM/" . $nm . "/" . $nmmp, "DIRECTION");
-				}
+				$nmmp = $config->getValue("/COM/" . $nm, "MESSAGEPROPERTY");
+				$offset = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITPOSITION");
 			}
-			if ( $nmfound != 1 )
-			{
-				error("exact one network message shall be defined for each external message, $nmfound " .
-						"network messages were found for the message $msg, which refers to the $nm network message");
-			}
-			switch ($nmmp)
-			{
-				case "STATIC" :
-					print "			COM_NM_PROP_STATIC, /* network property */\n";
-					break;
-				case "DYNAMIC" :
-					print "			COM_NM_PROP_DYNAMIC, /* network property */\n";
-					break;
-				case "ZERO" :
-					print "			COM_NM_PROP_ZERO, /* network property */\n";
-					break;
-				default :
-					error("$nmmp is not a valid network message property on network message $nm");
-					print "			0, /* network properties */\n";
-					break;
-			}
-			switch ($nmbo)
-			{
-				case "BIGENDIAN" :
-					print "			COM_NM_BO_BIGENDIAN, /* network bitorder */\n";
-					break;
-				case "LITTLEENDIAN" :
-					print "			COM_NM_BO_LITTLEENDIAN, /* network bitorder */\n";
-					break;
-				default :
-					error("$nmbo is not a valid bit ordering on network message $nm");
-					break;
-			}
-			switch ($nmdi)
-			{
-				case "UNSIGNEDINTEGER" :
-					print "			COM_NM_DI_UNSIGNEDINTEGER, /* network data interpretation */\n";
-					break;
-				case "BYTEARRAY" :
-					print "			COM_NM_DI_BYTEARRAY, /* network data interpretation */\n";
-					break;
-				default :
-					error("$nmdi is not a valid data interpretation on network message $nm");
-					break;
-			}
-			switch ($nmdir)
-			{
-				case "SENT" :
-					$nmdirprop = $config->getValue("/COM/" . $nm . "/" . $nmmp . "/" . $nmdir, "TRANSFERPROPERTY");
-					switch ($nmdirprop)
-					{
-						case "TRIGGERED" :
-							print "			COM_NM_DIR_TX_TRIGGERED /* network direction */\n";
-							break;
-						case "PENDING" :
-							print "			COM_NM_DIR_TX_PENDING /* network direction */\n";
-							break;
-						case "AUTO" :
-							print "			COM_NM_DIR_TX_AUTO /* network direction */\n";
-							break;
-						default :
-							error("$nmdirprop is not a valid transfer property on network message $nm");
-							break;
-					}
-					break;
-				case "RECEIVED" :
-					print "			COM_NM_DIR_RX /* network direction */\n";
-					break;
-				default :
-					error("$nmdir is not a valid direction on network message $nm");
-					break;
-			}
-			print "		},\n";
-			print "		$nmsize, /* size */\n";
-			print "		" . ($nmbp & 0x7 ) . ", /* offset */\n";
 		}
-		else
-		{
-			print "			0, /* network properties - not used internal message */\n";
-			print "			0, /* network bitorder - not used internal message */\n";
-			print "			0, /* network data interpretation - not used internal message */\n";
-			print "			0 /* network direction - not used internal message */\n";
-			print "		},\n";
-			print "		0, /* size - not used internal message */\n";
-			print "		0, /* offset - not used internal message */\n";
-		}
-		print "		" . ( 0 + ( $nmbp >> 3 ) ) . " /* data pointer */\n";
+		$offset >>= 3;	/* only byte offset is used for the data pointer - see bit position in network message */
+		print "		" . $offset . ", /* data pointer */\n";
+		print "		" . $msgnet . " /* network message */\n";
 		print "	}";
 		$count++;
 	}
 }
-print "\n}\n";
+print "\n};\n";
+
+print "/*------------------[Network Objects declarations]---------------------------*/\n";
+$count = 0;
+print "/** \brief Constants for the Network Message Transmitted Objects definition */\n";
+print "const Com_TxNetObjCstType Com_TxNetObjsCst[$com_total_tx_net] =\n";
+print "{\n";
+foreach ($netmsgs as $nm)
+{
+	$nmpdu = $config->getValue("/COM/" . $nm, "IPDU");
+	$nmmp = $config->getValue("/COM/" . $nm, "MESSAGEPROPERTY");
+	$nmsize = $config->getValue("/COM/" . $nm . "/" . $nmmp, "SIZEINBITS");
+	$nmbo = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITORDERING");
+	$nmbp = $config->getValue("/COM/" . $nm . "/" . $nmmp, "BITPOSITION");
+	$nmbp &= 7; /* only the byte position is used - see data pointer in message object */
+	$nmdi = $config->getValue("/COM/" . $nm . "/" . $nmmp, "DATAINTERPRETATION");
+	$nmiv = $config->getValue("/COM/" . $nm . "/" . $nmmp, "INITIALVALUE");
+	$nmdir = $config->getValue("/COM/" . $nm . "/" . $nmmp, "DIRECTION");
+	$nmtp = $config->getValue("/COM/" . $nm . "/" . $nmmp . "/" . $nmdir, "TRANSFERPROPERTY");
+	if ( $nmdir == "SENT" )
+	{
+		/* add , */
+		if ($count > 0)
+		{
+			print ",\n";
+		}
+		$count++;
+		print "	/* Transmit Network Message Object: $nm */\n";
+		print "	{\n";
+		print "		/* flags */\n";
+		print "		{\n";
+		switch ($nmmp)
+		{
+			case "STATIC" :
+				print "			COM_NM_PROP_STATIC, /* network property */\n";
+				break;
+			case "DYNAMIC" :
+				print "			COM_NM_PROP_DYNAMIC, /* network property */\n";
+				break;
+			case "ZERO" :
+				print "			COM_NM_PROP_ZERO, /* network property */\n";
+				break;
+			default :
+				error("$nmmp is not a valid network message property on network message $nm");
+				print "			0, /* network properties */\n";
+				break;
+		}
+		switch ($nmbo)
+		{
+			case "BIGENDIAN" :
+				print "			COM_NM_BO_BIGENDIAN, /* network bitorder */\n";
+				break;
+			case "LITTLEENDIAN" :
+				print "			COM_NM_BO_LITTLEENDIAN, /* network bitorder */\n";
+				break;
+			default :
+				error("$nmbo is not a valid bit ordering on network message $nm");
+				break;
+		}
+		switch ($nmdi)
+		{
+			case "UNSIGNEDINTEGER" :
+				print "			COM_NM_DI_UNSIGNEDINTEGER, /* network data interpretation */\n";
+				break;
+			case "BYTEARRAY" :
+				print "			COM_NM_DI_BYTEARRAY, /* network data interpretation */\n";
+				break;
+			default :
+				error("$nmdi is not a valid data interpretation on network message $nm");
+				break;
+		}
+		switch ($nmdir)
+		{
+			case "SENT" :
+				$nmdirprop = $config->getValue("/COM/" . $nm . "/" . $nmmp . "/" . $nmdir, "TRANSFERPROPERTY");
+				switch ($nmdirprop)
+				{
+					case "TRIGGERED" :
+						print "			COM_NM_DIR_TX_TRIGGERED, /* network direction */\n";
+						break;
+					case "PENDING" :
+						print "			COM_NM_DIR_TX_PENDING, /* network direction */\n";
+						break;
+					case "AUTO" :
+						print "			COM_NM_DIR_TX_AUTO, /* network direction */\n";
+						break;
+					default :
+						error("$nmdirprop is not a valid transfer property on network message $nm");
+						break;
+				}
+				break;
+			case "RECEIVED" :
+				print "			COM_NM_DIR_RX, /* network direction */\n";
+				break;
+			default :
+				error("$nmdir is not a valid direction on network message $nm");
+				break;
+		}
+		print "			" . $nmbp . " /* offset on the PDU byte */\n";
+		print "		},\n";
+		print "		" . $nmsize . ", /* size */\n";
+		print "		" . $nmpdu . ", /* PDU */\n";
+		print "	}";
+	}
+}
+print "\n};\n";
 ?>
 
 /*==================[internal functions definition]==========================*/

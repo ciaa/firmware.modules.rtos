@@ -228,6 +228,20 @@ print "#define COM_TIMEBASE $timebase\n\n";
 
 ?>
 /*------------------[Network Message Objects macros declarations]------------*/
+#define COM_NM_PROP_STATIC				0
+#define COM_NM_PROP_DYNAMIC			1
+#define COM_NM_PROP_ZERO				2
+
+#define COM_NM_BO_BIGENDIAN			0
+#define COM_NM_BO_LITTLEENDIAN		1
+
+#define COM_NM_DI_UNSIGNEDINTEGER	0
+#define COM_NM_DI_BYTEARRAY			1
+
+#define COM_NM_DIR_TX_TRIGGERED		0
+#define COM_NM_DIR_TX_PENDING			1
+#define COM_NM_DIR_TX_AUTO				2
+
 <?php
 $nets = $config->getList("/COM","NETWORKMESSAGE");
 $count_tx = 0;
@@ -353,7 +367,6 @@ typedef struct {
 typedef struct {
 	Com_MsgFlagsType Flags;
 	uint16 Size;
-	uint16 Offset;
 	uint32* Data;
 	Com_NetType Net;
 } Com_TxMsgObjCstType;
