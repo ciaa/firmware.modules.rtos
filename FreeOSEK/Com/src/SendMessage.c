@@ -115,10 +115,10 @@ StatusType SendMessage
 	{
 #endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
 
-	/* SendMessage main functionality */
+		/* SendMessage main functionality */
 
 		/* check communication type */
-		if ( Com_TxMsgObjsCst[Message].Flags.Prop == COM_MSG_PROP_TX_STAT_EXT )
+		if ( Com_TxMsgObjsCst[Message].Flags.Prop & COM_MSG_PROP_EXTERNAL )
 		{
 			/* implement the external communication */
 
@@ -129,7 +129,10 @@ StatusType SendMessage
 			TxPDU = Com_TxNetObjsCst[TxNet].PDU;
 
 			/* copy the data to the underlayer PDU */
-			/* TODO */
+			for ( loopi = 0; loopi < ; loopi++)
+			{
+				DataRef[loopi];
+			}
 
 			/* check if the unter layer tx has to be triggered only to be done if:
 					- the message has property triggered

@@ -169,14 +169,47 @@ else
 }
 ?>
 /*------------------[Message Objects macros declarations]--------------------*/
-#define COM_MSG_PROP_TX_STAT_INT		0U
-#define COM_MSG_PROP_TX_STAT_EXT		1U
-#define COM_MSG_PROP_TX_ZERO_INT		2U
-#define COM_MSG_PROP_TX_ZERO_EXT		3U
-#define COM_MSG_PROP_RX_STAT_INT		4U
-#define COM_MSG_PROP_RX_STAT_EXT		5U
-#define COM_MSG_PROP_RX_ZERO_INT		6U
-#define COM_MSG_PROP_RX_ZERO_EXT		7U
+/** \brief Description of the Message Properties
+ **
+ ** bits:
+ **    4     3     2     1    0
+ ** +-----+-----+-----+-----+---+
+ ** | T/R | Q/U | S/D | I/E | Z |
+ ** +-----+-----+-----+-----+---+
+ **
+ ** T/R 0 indicates transmission
+ **     1 indicates reception
+ ** Q/U 0 indicates unqueued message (always for tx message)
+ **     1 indicates queued message
+ ** S/D 0 indicates static message length
+ **     1 indicates dynamic message length
+ ** I/E 0 indicates internal message
+ **	  1 indicates external message (or both)
+ ** Z	  1 indicates zero message
+ **/
+#define COM_MSG_PROP_TX						0x00U
+#define COM_MSG_PROP_RX						0x10U
+#define COM_MSG_PROP_UNQUEUED				0x00U
+#define COM_MSG_PROP_QUEUED				0x08U
+#define COM_MSG_PROP_STATIC				0x00U
+#define COM_MSG_PROP_DYNAMIC				0x04U
+#define COM_MSG_PROP_INTERNAL				0x00U
+#define COM_MSG_PROP_EXTERNAL				0x02U
+#define COM_MSG_PROP_ZERO					0x01U
+
+#define COM_MSG_PROP_TX_STAT_INT			( COM_MSG_PROP_TX | COM_MSG_PROP_STATIC   | COM_MSG_PROP_INTERNAL )
+#define COM_MSG_PROP_TX_STAT_EXT			( COM_MSG_PROP_TX | COM_MSG_PROP_STATIC   | COM_MSG_PROP_EXTERNAL )
+#define COM_MSG_PROP_TX_DYN_EXT			( COM_MSG_PROP_TX | COM_MSG_PROP_DYNAMIC  | COM_MSG_PROP_EXTERNAL )
+#define COM_MSG_PROP_TX_ZERO_INT			( COM_MSG_PROP_TX | COM_MSG_PROP_INTERNAL | COM_MSG_PROP_ZERO )
+#define COM_MSG_PROP_TX_ZERO_EXT			( COM_MSG_PROP_TX | COM_MSG_PROP_EXTERNAL | COM_MSG_PROP_ZERO )
+#define COM_MSG_PROP_RX_ZERO_INT			( COM_MSG_PROP_RX | COM_MSG_PROP_INTERNAL | COM_MSG_PROP_ZERO )
+#define COM_MSG_PROP_RX_ZERO_EXT			( COM_MSG_PROP_RX | COM_MSG_PROP_EXTERNAL | COM_MSG_PROP_ZERO )
+#define COM_MSG_PROP_RX_UNQUEUED_INT	( COM_MSG_PROP_RX | COM_MSG_PROP_UNQUEUED | COM_MSG_PROP_INTERNAL )
+#define COM_MSG_PROP_RX_UNQUEUED_EXT	( COM_MSG_PROP_RX | COM_MSG_PROP_UNQUEUED | COM_MSG_PROP_EXTERNAL )
+#define COM_MSG_PROP_RX_QUEUED_INT		( COM_MSG_PROP_RX | COM_MSG_PROP_QUEUED   | COM_MSG_PROP_INTERNAL )
+#define COM_MSG_PROP_RX_QUEUED_EXT		( COM_MSG_PROP_RX | COM_MSG_PROP_QUEUED   | COM_MSG_PROP_EXTERNAL )
+#define COM_MSG_PROP_RX_DYN_EXT			( COM_MSG_PROP_RX | COM_MSG_PROP_DYNAMIC  | COM_MSG_PROP_EXTERNAL )
+#define COM_MSG_PROP_RX_ZERO				( COM_MSG_PROP_RX | COM_MSG_PROP_INTERNAL | COM_MSG_PROP_ZEROm)
 
 #define COM_MSG_TRANS_TRIGGERED		0U
 #define COM_MSG_TRANS_PENDING			1U
@@ -333,12 +366,17 @@ typedef uint8 Com_NetType;
  ** \param Prop indicates the message properties, valid values are:
  **			- COM_MSG_PROP_TX_STAT_INT
  **			- COM_MSG_PROP_TX_STAT_EXT
+ **			- COM_MSG_PROP_TX_DYN_EXT
  **			- COM_MSG_PROP_TX_ZERO_INT
  **			- COM_MSG_PROP_TX_ZERO_EXT
- **			- COM_MSG_PROP_RX_STAT_INT
- **			- COM_MSG_PROP_RX_STAT_EXT
  **			- COM_MSG_PROP_RX_ZERO_INT
  **			- COM_MSG_PROP_RX_ZERO_EXT
+ **			- COM_MSG_PROP_RX_UNQUEUED_INT
+ **			- COM_MSG_PROP_RX_UNQUEUED_EXT
+ **			- COM_MSG_PROP_RX_QUEUED_INT
+ **			- COM_MSG_PROP_RX_QUEUED_EXT
+ **			- COM_MSG_PROP_RX_DYN_EXT
+ **			- COM_MSG_PROP_RX_ZERO
  ** \param Trans is the type fo the message valid values are:
  **			- COM_MSG_TRANS_TRIGGERED
  **			- COM_MSG_TRANS_PENDING
@@ -351,7 +389,7 @@ typedef uint8 Com_NetType;
  **			- COM_MSG_NOTIF_FLAG
  **/
 typedef struct {
-	uint16 Prop : 3;
+	uint16 Prop : 5;
 	uint16 Trans : 2;
 	uint16 Notif : 3;
 } Com_MsgFlagsType;
@@ -367,7 +405,7 @@ typedef struct {
 typedef struct {
 	Com_MsgFlagsType Flags;
 	uint16 Size;
-	uint32* Data;
+	uint8* Data;
 	Com_NetType Net;
 } Com_TxMsgObjCstType;
 
@@ -382,7 +420,7 @@ typedef struct {
 typedef struct {
 	Com_MsgFlagsType Flags;
 	uint16 Size;
-	uint32* Data;
+	uint8* Data;
 	Com_NetType Net;
 } Com_RxMsgObjCstType;
 
@@ -418,10 +456,12 @@ typedef struct {
  **
  ** \param Flags	Transmit Flags, for more details see Com_NetFlagsType type
  **					definition
- ** \param Net		network message
+ ** \param Size	Size in bits of the network message
+ ** \param PDU		PDU message
  **/
 typedef struct {
 	Com_NetFlagsType Flags;
+	uint16 Size;
 	Com_PDUType PDU;
 } Com_TxNetObjCstType;
 
@@ -491,7 +531,7 @@ if ( $com_total_rx_msg != 0 )
 }
 else
 {
-	print "/* No reception Message is defined, Com_RxMsgObjsCst is not declared*/\n\n";
+	print "/* No reception Message is defined, Com_RxMsgObjsCst is not declared */\n\n";
 }
 if ( $com_total_tx_msg != 0 )
 {
@@ -500,7 +540,7 @@ if ( $com_total_tx_msg != 0 )
 }
 else
 {
-	print "/* No transmission Message is defined, Com_TxMsgObjsCst is not declared*/\n\n";
+	print "/* No transmission Message is defined, Com_TxMsgObjsCst is not declared */\n\n";
 }
 
 print "/*------------------[Network Objects declarations]---------------------------*/\n";
@@ -511,7 +551,7 @@ if ( $com_total_rx_net != 0 )
 }
 else
 {
-	print "/* No reception Network Message is defined, Com_TxMsgObjsCst is not declared*/\n\n";
+	print "/* No reception Network Message is defined, Com_TxMsgObjsCst is not declared */\n\n";
 }
 if ( $com_total_tx_net != 0 )
 {
@@ -520,7 +560,7 @@ if ( $com_total_tx_net != 0 )
 }
 else
 {
-	print "/* No transmission Network Message is defined, Com_TxMsgObjsCst is not declared*/\n\n";
+	print "/* No transmission Network Message is defined, Com_TxMsgObjsCst is not declared */\n\n";
 }
 
 print "/*------------------[PDU Objects declarations]-------------------------------*/\n";
@@ -544,7 +584,6 @@ else
 	print "/* No transmission PDU is defined, Com_TxPduObjectsConst is not declared */\n\n";
 }
 ?>
-
 /*------------------[Lower Layers declarations]------------------------------*/
 <?php
 $pdus = $config->getList("/COM","IPDU");
@@ -592,9 +631,38 @@ else
 {
 	print "/* no Lower Layer is used, Com_TxTrigger is not declared */\n\n";
 }
+
+print "/*------------------[Transmit Buffer declarations]---------------------------*/\n";
+$msgidp = 0;
+foreach ($messages as $msg)
+{
+	$msgprop = $config->getValue("/COM/" . $msg, "MESSAGEPROPERTY");
+	$msgsize = $config->getValue("/COM/" . $msg . "/" . $msgprop, "SIZEINBITS");
+	if ( ( strpos($msgprop,"SEND") > -1 ) && ( strpos($msgprop,"INTERNAL") > -1 ) )
+	{
+		$msgidp += ( ( $msgsize + 7 ) >> 3 );
+	}
+}
+
+if ( $msgidp != 0 )
+{
+	print "/** \brief Transmission Internal Message Buffer */\n";
+	print "extern uint8 Com_TxMsgIntBuf[$msgidp];\n\n";
+}
+else
+{
+	print "/* no internal buffer is needed, Com_TxMsgIntBuf is not defined */\n\n";
+}
+
+$pdumsgs = $config->getList("/COM","IPDU");
+foreach ($pdumsgs as $pm)
+{
+	print "/** \brief Transmit External $pm PDU Buffer */\n";
+	$pmsize = $config->getValue("/COM/" . $pm , "SIZEINBITS");
+	$pmsize = ( ( $pmsize + 7 ) >> 3 );
+	print "extern uint8 Com_TxMsgExtBuf_" . $pm . "[" . $pmsize . "];\n\n";
+}
 ?>
-
-
 /*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */

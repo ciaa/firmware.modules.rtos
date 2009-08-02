@@ -86,6 +86,7 @@ print "const Com_TxMsgObjCstType Com_TxMsgObjsCst[$com_total_tx_msg] =\n";
 print "{\n";
 $messages = $config->getList("/COM","MESSAGE");
 $netmsgs = $config->getList("/COM","NETWORKMESSAGE");
+$pdumsgs = $config->getList("/COM","IPDU");
 foreach ($messages as $msg)
 {
 	$msgprop = $config->getValue("/COM/" . $msg, "MESSAGEPROPERTY");
@@ -193,12 +194,13 @@ foreach ($messages as $msg)
 		if ( $msge == true )
 		{
 			/* external message */
-			print "		&Com_TxMsgExtBuf_" . $msgnet . "[" . $offset . "], /* data pointer */\n";
+			$msgpdu = $config->getValue("/COM/" . $msgnet, "IPDU");		/* get pdu for the net message */
+			print "		&Com_TxMsgExtBuf_" . $msgpdu . "[" . $offset . "], /* external communication data pointer */\n";
 		}
 		else
 		{
 			/* internal message */
-			print "		&Com_TxMsgIntBuf[$msgidp], /* data pointer */\n";
+			print "		&Com_TxMsgIntBuf[$msgidp], /* internal communication data pointer */\n";
 			$msgidp += ( ( $msgsize + 7 ) >> 3 );
 		}
 		print "		" . $msgnet . " /* network message */\n";
@@ -311,7 +313,26 @@ foreach ($netmsgs as $nm)
 		print "	}";
 	}
 }
-print "\n};\n";
+print "\n};\n\n";
+
+print "/*------------------[Transmit Buffer definition]-----------------------------*/\n";
+if ( $msgidp != 0 )
+{
+	print "/** \brief Transmission Internal Message Buffer */\n";
+	print "uint8 Com_TxMsgIntBuf[$msgidp];\n\n";
+}
+else
+{
+	print "/* no internal buffer is needed, Com_TxMsgIntBuf is not defined */\n\n";
+}
+
+foreach ($pdumsgs as $pm)
+{
+	print "/** \brief Transmit External $pm PDU Buffer */\n";
+	$pmsize = $config->getValue("/COM/" . $pm , "SIZEINBITS");
+	$pmsize = ( ( $pmsize + 7 ) >> 3 );
+	print "uint8 Com_TxMsgExtBuf_" . $pm . "[" . $pmsize . "];\n";
+}
 ?>
 
 /*==================[internal functions definition]==========================*/

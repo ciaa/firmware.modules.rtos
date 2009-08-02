@@ -26,8 +26,8 @@ COM_OBJ +=	GetCOMApplicationMode.o		\
 				Com_Internal_Cfg.o
 
 GENFILES += FreeOSEK$(DIR)Com$(DIR)gen$(DIR)inc$(DIR)Com_Cfg.h.php				\
-				FreeOSEK$(DIR)Com$(DIR)gen$(DIR)inc$(DIR)Com_Internal_Cfg.h.php	\
 				FreeOSEK$(DIR)Com$(DIR)gen$(DIR)src$(DIR)Com_Cfg.c.php				\
+				FreeOSEK$(DIR)Com$(DIR)gen$(DIR)inc$(DIR)Com_Internal_Cfg.h.php	\
 				FreeOSEK$(DIR)Com$(DIR)gen$(DIR)src$(DIR)Com_Internal_Cfg.c.php
 
 VPATH += FreeOSEK$(DIR)Com$(DIR)src				\
