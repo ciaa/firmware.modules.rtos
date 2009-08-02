@@ -131,7 +131,7 @@ typedef enum
 } COMServiceIdType;
 
 /** \brief Application Data Reference type definition */
-typedef void* ApplicationDataRef;
+typedef uint8* ApplicationDataRef;
 
 /** \brief Length Reference type definition */
 typedef uint16* LengthRef;

@@ -93,8 +93,14 @@ StatusType SendMessage
 )
 {
 	StatusType ret = E_OK;		/* return value */
-	Com_NetType TxNet;			/* tx net message index */
-	Com_PDUType TxPDU;			/* tx pdu message index */
+	Com_NetType txnet;			/* tx net message index */
+	Com_PDUType txpdu;			/* tx pdu message index */
+	uint16 loopi;					/* loop variable */
+	uint16 tmp = 0;				/* tmp data */
+	uint16 size;					/* size in bits */
+	uint8* dstbuf;					/* buffer to save the data */
+	uint8 shift;					/* value to shift */
+	uint8 remainbits;				/* remian bits to be copied */
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
 	/* check that the message is on range */
@@ -123,25 +129,75 @@ StatusType SendMessage
 			/* implement the external communication */
 
 			/* get network message */
-			TxNet = Com_TxMsgObjsCst[Message].Net;
+			txnet = Com_TxMsgObjsCst[Message].Net;
 
 			/* get PDU message */
-			TxPDU = Com_TxNetObjsCst[TxNet].PDU;
+			txpdu = Com_TxNetObjsCst[txnet].PDU;
 
-			/* copy the data to the underlayer PDU */
-			for ( loopi = 0; loopi < ; loopi++)
+			/* get buffer */
+			dstbuf = Com_TxMsgObjsCst[Message].Data;
+
+			if ( Com_TxNetObjsCst[txnet].Flags.DataInt == COM_NM_DI_BYTEARRAY )
 			{
-				DataRef[loopi];
+				/* process data as array */
+				/* all bytes are alligned to 8 bits */
+				/* always 8 bits are copied */
+
+				/* copy the data to the underlayer PDU */
+				/* less 3 bits of Com_TxMsgObjsCst[Message].Size shall be 0, 
+					byte alligned */
+				for ( loopi = 0; loopi < ( Com_TxMsgObjsCst[Message].Size >> 3 ); loopi++)
+				{
+					dstbuf[loopi] = DataRef[loopi];
+				}
+			}
+			else
+			{
+				/* process unsigned integer */
+				shift = Com_TxNetObjsCst[txnet].Flags.Offset;
+				remainbits = Com_TxMsgObjsCst[Message].Size;
+
+				if ( Com_TxNetObjsCst[txnet].Flags.BitOrd == COM_NM_BO_LITTLEENDIAN )
+				{
+					/* little-endian */
+
+					/* first byte */
+					tmp = dstbuf[0];
+					tmp &= ( 0xFF >> ( 8 - shift ) );
+					tmp |= ( DataRef[loopi] << shift);
+					dstbuf[0] = (uint8)tmp;
+					tmp >>= 8;
+					remainbits -= ( 8 - shift );
+
+					/* midle bytes */
+					for (loopi = 1; loopi < ( Com_TxMsgObjsCst[Message].Size >> 3 ) - 1; loopi++)
+					{
+						tmp |= ( DataRef[loopi] << shift);
+						dstbuf[loopi] = (uint8)tmp;
+						tmp >>= 8;
+						remainbits -= 8;
+					}
+
+					/* last byte */
+					dstbuf[loopi] &= 0xff << remainbits;
+					dstbuf[loopi] |= (uint8)tmp;		
+				}
+				else
+				{
+					/* big-endian */
+				}
+
+				
 			}
 
 			/* check if the unter layer tx has to be triggered only to be done if:
 					- the message has property triggered
 					- the underlayer I-PDU is configured != to periodic */
 			if ( ( Com_TxMsgObjsCst[Message].Flags.Trans == COM_MSG_TRANS_TRIGGERED ) &&
-				  ( Com_TxPduObjsCst[TxPDU].Flags.Prop != COM_TX_PDU_PERIODIC ) )
+				  ( Com_TxPduObjsCst[txpdu].Flags.Prop != COM_TX_PDU_PERIODIC ) )
 			{
 				/* trigger the transmission of the I-PDU */
-				Com_TxTrigger[Com_TxPduObjsCst[TxPDU].Layer](Com_TxPduObjsCst[TxPDU].LayerPDU);
+				Com_TxTrigger[Com_TxPduObjsCst[txpdu].Layer](Com_TxPduObjsCst[txpdu].LayerPDU);
 			}
 		}
 		else
