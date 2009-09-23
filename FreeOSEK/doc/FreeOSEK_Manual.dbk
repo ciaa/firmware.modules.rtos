@@ -104,6 +104,31 @@
 				If you are a windows user you may want to use <citation>Tortoise SVN</citation>.</para>
 			</sect2>
 		</sect1>
+		<sect1><title>Preparing the environment for FreeOSEK</title>
+			<sect2><title>on Linux</title>
+				<para></para>
+			</sect2>
+			<sect2><title>on Windows</title>
+				<para>You will have to install some tools on Windows before you can work with FreeOSEK:</para>
+				<itemizedlist>
+					<listitem><para>cygwin</para></listitem>
+					<listitem><para>php</para></listitem>
+					<listitem><para>todo</para></listitem>
+				</itemizedlist>
+				<sect3><title>Cygwin</title>
+					<para>Cygwin is a Linux-like environment for Windows. Download the <emphasis>setup.exe</emphasis> file from: http://www.cygwin.com/ 
+					and to the standard selected packet add the followings:</para>
+					<itemizedlist>
+						<listitem><para>subversion</para></listitem>
+						<listitem><para>make</para></listitem>
+						<listitem><para>gcc-core</para></listitem>
+					</itemizedlist>
+				</sect3>
+				<sect3><title>php</title>
+					<para>php is a programming language used by FreeOSEK to generate the needed source and header files (.c and .h) based on the user confiugration (Osek Implementation Language files or .oil files). You can download php for Windows as msi installer from php webpage: http://www.php.net/</para>
+				</sect3>
+			</sect2>
+		</sect1>
 		<sect1><title>Installing and running</title>
 			<para>If you have download on FreeOSEK release you have to untar it before doing anything else:
 			<screen>
@@ -235,7 +260,20 @@
 		feature of the generator is that all generated files will be checked for changes, if at least
 		one file was updated the generator will be called again. This allows the generator to generate
 		for example makefiles which will change the generation process the next time that the generator
-		is called</para>
+		is called.</para>
+	</sect1>
+	<sect1><title>Makfiles</title>
+	<para>The generator is called by the make environment when you execute:
+	<screen>
+make generate
+	</screen>
+	the root Makefile contents a variable MODS which select the active modules. Every module may add values to two variables:</para>
+ 	<itemizedlist>
+		<listitem><para>CFGFILES</para></listitem>
+		<listitem><para>GENFILES</para></listitem>
+ 	</itemizedlist>
+	<para>The generator is called with all CFGFILES and GENFILES of all activated modules as parameters. All CFGFILES will be parsed and then all
+	GENFILES will be generated. All files are generated under <emphasis>out/gen/...</emphasis>.</para>
 	</sect1>
 </chapter>
 
@@ -688,6 +726,32 @@ Test Result: OK - Test Case: OTHER - Result: 3 - ResultOk: 3
 	</sect1>
 	<sect1><title>uIP</title>
 			<para></para>
+	</sect1>
+</chapter>
+
+<chapter><title>Porting FreeOSEK</title>
+	<para>This chapters explains how to port FreeOSEK OS and the basic componets to a now platform and or compiler.</para>
+	<sect1><title>Porting FreeOSEK OS</title>
+	<para></para>
+	</sect1>
+	<sect1><title>Adding a new compiler</title>
+	<para>First of all you need to remember that the compiler short name is
+	indicated on the root Makefile with the variable <emphasis>COMPILER</emphasis>, for example:
+	<programlisting>
+ARCH = arm7
+COMPILER = gcc
+	</programlisting>
+	selects the gcc compiler on arm7 platform.</para>
+	<para>The <emphasis>FreeOSEK/Gen</emphasis> module shall be indicated on the <emphasis>MODS</emphasis> variable on the root Makefile too, in other case the wanted Makefiles will not be included.</para>
+	<para>On the <emphasis>FreeOSEK/Gen/mak</emphasis> module you will find a platform directory, under this directory there will be a directory for each compiler supported on this platform. For example: <emphasis>FreeOSEK/Gen/mak/arm7/gcc/Makefile</emphasis> is used if the <emphasis>gcc</emphasis> compiler is selected when ARCH defined as arm7.</para>
+	<para>You can start you porting using the <command>svn</command> command:
+	<screen>
+<prompt>bash$ </prompt><userinput>cd FreeOSEK/Gen/mak</userinput> 
+<prompt>bash$ </prompt><userinput>svn cp arch1 arch2</userinput>
+<prompt>bash$ </prompt><userinput>svn ci -m"checking message" arch2</userinput>
+	</screen>
+	where <emphasis>arch1</emphasis> and <emphasis>arch2</emphasis> are the architecture where you are basing
+	your por and the new one respectivly. The third line is only needed if you want to check the result on <command>svn</command> server.</para>
 	</sect1>
 </chapter>
 
