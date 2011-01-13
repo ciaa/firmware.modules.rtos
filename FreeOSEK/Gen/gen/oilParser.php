@@ -233,6 +233,10 @@ class oilParserClass {
 
 	function oilParserClass($file)
 	{
+		if (file_exists($file) == false) {
+			error('Configuration file ' . $file . ' not found.');
+		}
+			
 		$this->file = $file;
 		$this->lines = file($file);
 
