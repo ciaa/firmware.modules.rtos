@@ -84,17 +84,17 @@
  * conform to the specification */
 #define DioDevErrorDetect DISABLE
 
-/** \brief Define Dio Channel LED0 - port: 4 - pin: 17 */
-#define LED0	145
+/** \brief Define Dio Channel LED0 - port: A - pin: 1 */
+#define LED0	1
 
-/** \brief Define Dio Channel LED1 - port: 4 - pin: 16 */
-#define LED1	144
+/** \brief Define Dio Channel LED1 - port: A - pin: 2 */
+#define LED1	2
 
-/** \brief Define Dio Channel BUT0 - port: 2 - pin: 13 */
-#define BUT0	77
+/** \brief Define Dio Channel BUT0 - port: 2 - pin: 3 */
+#define BUT0	67
 
-/** \brief Define Dio Channel BUT1 - port: 2 - pin: 21 */
-#define BUT1	85
+/** \brief Define Dio Channel BUT1 - port: 2 - pin: 4 */
+#define BUT1	68
 
 
 /*==================[typedef]================================================*/

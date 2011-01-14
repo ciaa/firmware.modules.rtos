@@ -74,17 +74,17 @@
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-#define Dio_WriteChannel_Arch_145(value) \
-				((value) == DIO_LOW) ? ( FIO4CLR = ( 1 << 17 ) ) : ( FIO4SET = ( 1 << 17 ) )
+#define Dio_WriteChannel_Arch_1(value) \
+				{ PINA1 = (value) }
 
-#define Dio_WriteChannel_Arch_144(value) \
-				((value) == DIO_LOW) ? ( FIO4CLR = ( 1 << 16 ) ) : ( FIO4SET = ( 1 << 16 ) )
+#define Dio_WriteChannel_Arch_2(value) \
+				{ PINA2 = (value) }
 
-#define Dio_ReadChannel_Arch_77() \
-				( ( FIO2PIN >> 13 ) & 1 )
+#define Dio_ReadChannel_Arch_67() \
+				( PIN23 )
 
-#define Dio_ReadChannel_Arch_85() \
-				( ( FIO2PIN >> 21 ) & 1 )
+#define Dio_ReadChannel_Arch_68() \
+				( PIN24 )
 
 
 /*==================[typedef]================================================*/

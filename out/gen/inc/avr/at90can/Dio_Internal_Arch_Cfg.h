@@ -107,7 +107,14 @@
  ** if ENABLE the port will be used in Dio Driver
  ** if DISABLE the port will not be used in Dio Driver
  **/
-#define DIO_PORT4_STATE	ENABLE
+#define DIO_PORT4_STATE	DISABLE
+
+/** \brief Dio Port 5 state
+ **
+ ** if ENABLE the port will be used in Dio Driver
+ ** if DISABLE the port will not be used in Dio Driver
+ **/
+#define DIO_PORT5_STATE	ENABLE
 
 /** \brief Mask of the Dio Port 0
  **
@@ -128,7 +135,7 @@
  ** bit n 0 indicate the bit of the port 2 is not used
  ** bit n 1 indicate the bit of the port 2 is used
  **/
-#define DIO_PORT2_MASK	0x202000
+#define DIO_PORT2_MASK	0x18
 
 /** \brief Mask of the Dio Port 3
  **
@@ -142,7 +149,14 @@
  ** bit n 0 indicate the bit of the port 4 is not used
  ** bit n 1 indicate the bit of the port 4 is used
  **/
-#define DIO_PORT4_MASK	0x30000
+#define DIO_PORT4_MASK	0x0
+
+/** \brief Mask of the Dio Port 5
+ **
+ ** bit n 0 indicate the bit of the port 5 is not used
+ ** bit n 1 indicate the bit of the port 5 is used
+ **/
+#define DIO_PORT5_MASK	0x6
 
 /** \brief Direction of the Dio Port 0
  **
@@ -177,7 +191,14 @@
  ** bit n 0 indicate the bit of the port 4 is an input
  ** bit n 1 indicate the bit of the port 4 is an output
  **/
-#define DIO_PORT4_DIR	0x30000
+#define DIO_PORT4_DIR	0x0
+
+/** \brief Direction of the Dio Port 5
+ **
+ ** bit n 0 indicate the bit of the port 5 is an input
+ ** bit n 1 indicate the bit of the port 5 is an output
+ **/
+#define DIO_PORT5_DIR	0x6
 
 
 /** \brief Init value for Port 0 */
