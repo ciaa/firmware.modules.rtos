@@ -42,3 +42,13 @@ CFLAGS += -mmcu=$(CPU) -Wall -gdwarf-2 -Os -std=gnu99 -funsigned-char -funsigned
 
 LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
 AFLAGS += -mapcs-32 -mfpu=softfpa
+
+%.o : %.c
+	@ echo
+	@ echo Compiling $<
+	$(CC) $(CFLAGS) -o $(OBJDIR)$(DIR)$@ -c $<
+
+%.o : %.s
+	@ echo
+	@ echo Assembling $<
+	$(AS) $(AFLAGS) -o $(OBJDIR)$(DIR)$@ -c $<

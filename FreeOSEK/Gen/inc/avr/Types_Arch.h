@@ -1,7 +1,3 @@
-/********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
- ********************************************************/
-
 /* Copyright 2008, 2009, 2011, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
@@ -10,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -40,101 +36,148 @@
  *
  */
 
-<?php
-/** \brief DRV DIO Arch Header File to be Generated
+#ifndef _TYPES_ARCH_H_
+#define _TYPES_ARCH_H_
+/** \brief FreeOSEK Gen Architecture Types definition
  **
- ** \file Dio_Arch_Cfg.h.php
- **/
-?>
-
-#ifndef _DIO_ARCH_CFG_H_
-#define _DIO_ARCH_CFG_H_
-/** \brief DRV DIO Arch Generated Configuration Header File
- **
- ** This file contents the generated configuration of the IO Driver
- **
- ** \file Dio_Arch_Cfg.h
+ ** \file avr/Types_Arch.h
+ ** \arch avr
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */ 
-/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio
+/** \addtogroup FreeOSEK_Gen
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio_Global
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe                  Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20110113 v0.1.0 MaCe	initial version
+ * v0.1.0 20110114 MaCe initial version
  */  
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-<?php
-foreach($diochannels as $dioc)
-{
-	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$portl = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
-	
-	switch ($portl)
-	{
-		case "A":
-			$port = 0;
-			break;
-		case "B":
-			$port = 1;
-			break;
-		case "C":
-			$port = 2;
-			break;
-		case "D":
-			$port = 3;
-			break;
-	}
-	
-	if ($port > 3)
-	{
-		error("Invalid port number in Dio channel " . $dioc);
-	}
-	elseif($pin > 7)
-	{
-		error("Invalid pin number on Dio channel " . $dioc);	
-	}
-	elseif( ($dir != "INPUT") &&
-			($dir != "OUTPUT"))
-	{
-		error("Invalid direction on Dio channel " . $dioc);
-	}
-	else
-	{
-		if($dir == "OUTPUT")
-		{
-			print "#define Dio_WriteChannel_Arch_" . ($port * 32 + $pin) . "(value) \\\n";
-			print "				((value) == DIO_LOW) ? ( PORT" . $portl . " &= ~( 1 << " . $pin . " ) ) : ( PORT" . $portl . " |= ( 1 << " . $pin . " ) )\n\n";
-		}
-		else
-		{
-			print "#define Dio_ReadChannel_Arch_" . ($port * 32 + $pin) . "() \\\n";
-			print "				( ( PORT" . $portl . " >> " . $pin . " ) & 1 )\n\n";
-		}
-	}
-}
-
-?>
+#ifndef TYPES_NULL
+#define TYPES_NULL
+/** \brief NULL definition */
+#define NULL ((void *)0)
+#else
+#error NULL defined before
+#endif
 
 /*==================[typedef]================================================*/
+#ifndef TYPES_BOOLEAN
+#define TYPES_BOOLEAN
+/** \brief boolean type type definition */
+typedef unsigned char boolean;
+#else
+#error boolean defined before
+#endif
+
+#ifndef TYPES_UINT8
+#define TYPES_UINT8
+/** \brief usigned 8 bits integer type definition */
+typedef unsigned char uint8;
+#else
+#error uint8 defined before
+#endif
+
+#ifndef TYPES_SINT8
+#define TYPES_SINT8
+/** \brief signed 8 bits integer type definition */
+typedef signed char sint8;
+#else
+#error sint8 defined before
+#endif
+
+#ifndef TYPES_UINT8F
+#define TYPES_UINT8F
+/** \brief unsigned 8 bits fast integer type definition */
+typedef unsigned int uint8f;
+#else
+#error uint8f defined before
+#endif
+
+#ifndef TYPES_SINT8F
+#define TYPES_SINT8F
+/** \brief signed 8 bits fast integer type definition */
+typedef signed int sint8f;
+#else
+#error sint8f defined before
+#endif
+
+#ifndef TYPES_UINT16
+#define TYPES_UINT16
+/** \brief unsigned 16 bits integer type definition */
+typedef unsigned short uint16;
+#else
+#error uint16 defined before
+#endif
+
+#ifndef TYPES_SINT16
+#define TYPES_SINT16
+/** \brief signed 16 bits integer type definition */
+typedef signed short sint16;
+#else
+#error sint16 defined before
+#endif
+
+#ifndef TYPES_UINT16F
+#define TYPES_UINT16F
+/** \brief unsigned 16 bits fast integer type definition */
+typedef unsigned int uint16f;
+#else
+#error uint16f defined before
+#endif
+
+#ifndef TYPES_SINT16F
+#define TYPES_SINT16F
+/** \brief signed 16 bits fast integer type definition */
+typedef signed int sint16f;
+#else
+#error uint16f defined before
+#endif
+
+#ifndef TYPES_UINT32
+#define TYPES_UINT32
+/** \brief unsigned 32 bits integer type definition */
+typedef unsigned int uint32;
+#else
+#error uint32 defined before
+#endif
+
+#ifndef TYPES_SINT32
+#define TYPES_SINT32
+/** \brief signed 32 bits integer type definition */
+typedef signed int sint32;
+#else
+#error sint32 defined before
+#endif
+
+#ifndef TYPES_UINT32F
+#define TYPES_UINT32F
+/** \brief unsigned 32 bits fast integer type definition */
+typedef unsigned int uint32f;
+#else
+#error uint32f defined before
+#endif
+
+#ifndef TYPES_SINT32F
+#define TYPES_SINT32F
+/** \brief signed 32 bits fast integer type definition */
+typedef signed int sint32f;
+#else
+#error sint32 defined before
+#endif
 
 /*==================[external data declaration]==============================*/
 
@@ -143,7 +186,5 @@ foreach($diochannels as $dioc)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_ARCH_CFG_H_ */
-
+#endif /* #ifndef _TYPES_ARCH_H_ */

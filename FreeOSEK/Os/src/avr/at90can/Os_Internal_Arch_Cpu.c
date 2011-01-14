@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, Mariano Cerdeiro
+/* Copyright 2008, 2009, 2011, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
  *
@@ -36,17 +36,17 @@
  *
  */
 
-/** \brief Blinking main
+/** \brief FreeOSEK Os Internal ARCH CPU Dependece Implementation File
  **
- ** This file implements the Blinking example
- **
- ** \file Blinking/src/main.c
- **
+ ** \file avr/at90can/Os_Internal_Arch_Cpu.c
+ ** \arch avr/at90can
  **/
 
-/** \addtogroup Examples Examples
+/** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup Blinking Blinking
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -58,24 +58,17 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090322 v0.1.1 MaCe correct comments of the file
- * 20090227 v0.1.0 MaCe initial version based on an LPC-E2468 blinking led demo
+ * 20090719 v0.1.2 MaCe rename file to Os_
+ * 20090329 v0.1.1 MaCe replace binary representation with hex one
+ * 20090227 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"			/* OSEK header file */
-#include "Mcu.h"		/* MCU Driver header file */
-#include "Dio.h"		/* DIO Driver header file */
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
-#define SET_LED0(val)	Dio_WriteChannel(LED0, (val == 0 ) ? DIO_LOW : DIO_HIGH)
-#define SET_LED1(val)	Dio_WriteChannel(LED1, (val == 0 ) ? DIO_LOW : DIO_HIGH)
-
-#define GET_BUT0()		Dio_ReadChannel(BUT0)
-#define GET_BUT1()		Dio_ReadChannel(BUT1)
 
 /*==================[internal data declaration]==============================*/
-uint8 led1;
 
 /*==================[internal functions declaration]=========================*/
 
@@ -86,111 +79,15 @@ uint8 led1;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-/** \brief main function
- **
- ** Project main function. This function is called after the c conformance
- ** initialisation. This function shall call the StartOS in the right
- ** Application Mode. The StartOS API shall never return.
- **
- **/
-int main
+void StartOs_Arch_Cpu
 (
 	void
 )
-{	
-	/* Start OSEK */
-	StartOS(AppMode1);
-}
-
-/** \brief Init Task
- **
- ** This task is called one time after every reset and takes care of
- ** the system initialization.
- **/
-TASK(InitTask)
-{
-	/* init MCU Driver */
-	Mcu_Init((Mcu_ConfigRefType)NULL);
-
-	/* init Clock */
-	(void)Mcu_InitClock((Mcu_ClockType)0);
-
-	/* init DIO Driver */
-	(void)Dio_Init((Dio_ConfigRefType)NULL);
-
-	/* start cyclic alarm to activate task LedsTask every 250ms */
-	SetRelAlarm(ActivateLedsTask, 250, 250);
-
-	/* start cyclic alarm to activate task ButtonsTask every 250ms */
-	/* first time will be called after 125ms to avoid both tasks
-		to be activated on the same moment */
-	SetRelAlarm(ActivateButtonsTask, 125, 250);
-
-	/* Terminate Init Task */
-	TerminateTask();
-}
-
-/** \brief Led Task
- **
- ** This task set the Board Leds:
- **  LED0 will blink every time the task is started
- **  LED1 can be turned on or of with the board buttons
- **/
-TASK(LedsTask)
-{
-	static uint8 led0 = 0;
-	
-	/* check actual state of the led */
-	switch (led0) {
-		case 0:
-			/* set the led off */
-			SET_LED0(0);
-			/* save led 0 status */
-			led0 = 1;
-			break;
-		case 1:
-			/* set the led on */
-			SET_LED0(1);
-			/* save led 0 status */
-			led0 = 0;
-			break;
-		default:
-			/* shall never happens */
-			break;
-	}
-
-	/* set or clear the led1 depending on led1 variable */
-	/* led1 variable will be set on the ButtonsTask Task */
-	SET_LED1(led1);
-
-	/* Terminate Leds Task */
-	TerminateTask();
-}
-
-/** \brief Button Task
- **
- ** This task get the status of the 2 Buttons of the board.
- **/
-TASK(ButtonsTask)
 {
 
-	/* check if Button 0 is low */
-	if ( GET_BUT0() == DIO_LOW )
-	{
-		/* turn off the led */
-		led1 = 1;
-	}
-	/* check if Button 1 is low */
-	if ( GET_BUT1() == DIO_LOW )
-	{
-		/* turn on the led */
-		led1 = 0;
-	}
-
-	/* Terminate Buttons Task */
-	TerminateTask();
 }
 
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

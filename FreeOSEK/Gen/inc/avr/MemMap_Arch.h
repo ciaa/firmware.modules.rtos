@@ -1,7 +1,3 @@
-/********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
- ********************************************************/
-
 /* Copyright 2008, 2009, 2011, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
@@ -40,33 +36,21 @@
  *
  */
 
-<?php
-/** \brief DRV DIO Arch Header File to be Generated
+/** \brief FreeOSEK Posix Memory Mapping Header File
  **
- ** \file Dio_Arch_Cfg.h.php
- **/
-?>
-
-#ifndef _DIO_ARCH_CFG_H_
-#define _DIO_ARCH_CFG_H_
-/** \brief DRV DIO Arch Generated Configuration Header File
- **
- ** This file contents the generated configuration of the IO Driver
- **
- ** \file Dio_Arch_Cfg.h
+ ** \file avr/MemMap_Arch.h
+ ** \arch avr
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */ 
-/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio
+/** \addtogroup FreeOSEK_Gen
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio_Global
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
- * Initials     Name
+ * Initials	  Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
  */
@@ -74,76 +58,56 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20110113 v0.1.0 MaCe	initial version
- */  
+ * v0.1.0 20110114 MaCe	initial version
+ */
 
-/*==================[inclusions]=============================================*/
+/*==================[Start FreeOSEK OS Mapping]===============================*/
+#ifdef FreeOSEK_START_SEC_CODE
+	#define START_SECTION_CODE
+	#undef FreeOSEK_START_SEC_CODE
+#endif
 
-/*==================[macros]=================================================*/
-<?php
-foreach($diochannels as $dioc)
-{
-	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$portl = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
-	
-	switch ($portl)
-	{
-		case "A":
-			$port = 0;
-			break;
-		case "B":
-			$port = 1;
-			break;
-		case "C":
-			$port = 2;
-			break;
-		case "D":
-			$port = 3;
-			break;
-	}
-	
-	if ($port > 3)
-	{
-		error("Invalid port number in Dio channel " . $dioc);
-	}
-	elseif($pin > 7)
-	{
-		error("Invalid pin number on Dio channel " . $dioc);	
-	}
-	elseif( ($dir != "INPUT") &&
-			($dir != "OUTPUT"))
-	{
-		error("Invalid direction on Dio channel " . $dioc);
-	}
-	else
-	{
-		if($dir == "OUTPUT")
-		{
-			print "#define Dio_WriteChannel_Arch_" . ($port * 32 + $pin) . "(value) \\\n";
-			print "				((value) == DIO_LOW) ? ( PORT" . $portl . " &= ~( 1 << " . $pin . " ) ) : ( PORT" . $portl . " |= ( 1 << " . $pin . " ) )\n\n";
-		}
-		else
-		{
-			print "#define Dio_ReadChannel_Arch_" . ($port * 32 + $pin) . "() \\\n";
-			print "				( ( PORT" . $portl . " >> " . $pin . " ) & 1 )\n\n";
-		}
-	}
-}
+#ifdef FreeOSEK_STOP_SEC_CODE
+	#define STOP_SECTION_CODE
+	#undef FreeOSEK_STOP_SEC_CODE
+#endif
 
-?>
+#ifdef FreeOSEK_START_SEC_DATA
+	#define START_SECTION_DATA
+	#undef FreeOSEK_START_SEC_DATA
+#endif
 
-/*==================[typedef]================================================*/
+#ifdef FreeOSEK_STOP_SEC_DATA
+	#define STOP_SECTION_DATA
+	#undef FreeOSEK_STOP_SEC_DATA
+#endif
 
-/*==================[external data declaration]==============================*/
+/*==================[Stop FreeOSEK OS Mapping]===============================*/
 
-/*==================[external functions declaration]=========================*/
+/*==================[Start TestSuite Mapping]===============================*/
+#ifdef TestSuite_START_SEC_CODE
+	#define START_SECTION_CODE
+	#undef TestSuite_START_SEC_CODE
+#endif
 
-/** @} doxygen end group definition */
+#ifdef TestSuite_STOP_SEC_CODE
+   #define STOP_SECTION_CODE
+   #undef TestSuite_STOP_SEC_CODE
+#endif
+
+#ifdef TestSuite_START_SEC_DATA
+   #define START_SECTION_DATA
+   #undef TestSuite_START_SEC_DATA
+#endif
+
+#ifdef TestSuite_STOP_SEC_DATA
+   #define STOP_SECTION_DATA
+   #undef TestSuite_STOP_SEC_DATA
+#endif
+
+/*==================[Stop TestSuite Mapping]=================================*/
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_ARCH_CFG_H_ */
-

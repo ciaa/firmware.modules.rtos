@@ -133,6 +133,27 @@ foreach($diochannels as $dioc)
 	$port = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
 	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
 	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
+	switch ($port)
+	{
+		case "A":
+			$port = 0;
+			break;
+		case "B":
+			$port = 1;
+			break;
+		case "C":
+			$port = 2;
+			break;
+		case "D":
+			$port = 3;
+			break;
+		case "E":
+			$port = 4;
+			break;
+		case "F":
+			$port = 5;
+			break;
+	}
 	print "/** \brief Define Dio Channel $dioc - port: $port - pin: $pin */\n";
 	print "#define " . $name . "	" . (($port*32)+$pin) . "\n\n";
 	$count++;

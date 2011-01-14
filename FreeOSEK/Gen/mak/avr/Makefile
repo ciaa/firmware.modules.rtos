@@ -27,5 +27,5 @@
 # definitions
 #OpenGEN_OBJ += start.o
 
-LINKSCRIPT = -TFreeOSEK$(DIR)Gen$(DIR)ld$(DIR)$(ARCH)$(DIR)lpc2468$(DIR)lpc_e2468.cmd
+LINKSCRIPT = 
 #-TOpenGEN$(DIR)ld$(DIR)lpc2468$(DIR)lpc2468.cmd

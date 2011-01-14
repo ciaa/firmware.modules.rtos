@@ -1,7 +1,3 @@
-/********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
- ********************************************************/
-
 /* Copyright 2008, 2009, 2011, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
@@ -40,29 +36,21 @@
  *
  */
 
-<?php
-/** \brief DRV DIO Arch Header File to be Generated
+#ifndef _COMPILER_H_
+#define _COMPILER_H_
+/** \brief FreeOSEK Gen Compiler Header File
  **
- ** \file Dio_Arch_Cfg.h.php
- **/
-?>
-
-#ifndef _DIO_ARCH_CFG_H_
-#define _DIO_ARCH_CFG_H_
-/** \brief DRV DIO Arch Generated Configuration Header File
+ ** Compiler Header File
  **
- ** This file contents the generated configuration of the IO Driver
+ ** \file gcc/Compiler.h
  **
- ** \file Dio_Arch_Cfg.h
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */ 
-/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio
+/** \addtogroup FreeOSEK_Gen
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio_Global
+/** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
 /*
@@ -74,65 +62,48 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20110113 v0.1.0 MaCe	initial version
+  * 20110114 v0.1.0 MaCe	initial version
  */  
 
-/*==================[inclusions]=============================================*/
+/*==================[inclusions]=============================================*/ 
 
 /*==================[macros]=================================================*/
-<?php
-foreach($diochannels as $dioc)
-{
-	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$portl = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
-	
-	switch ($portl)
-	{
-		case "A":
-			$port = 0;
-			break;
-		case "B":
-			$port = 1;
-			break;
-		case "C":
-			$port = 2;
-			break;
-		case "D":
-			$port = 3;
-			break;
-	}
-	
-	if ($port > 3)
-	{
-		error("Invalid port number in Dio channel " . $dioc);
-	}
-	elseif($pin > 7)
-	{
-		error("Invalid pin number on Dio channel " . $dioc);	
-	}
-	elseif( ($dir != "INPUT") &&
-			($dir != "OUTPUT"))
-	{
-		error("Invalid direction on Dio channel " . $dioc);
-	}
-	else
-	{
-		if($dir == "OUTPUT")
-		{
-			print "#define Dio_WriteChannel_Arch_" . ($port * 32 + $pin) . "(value) \\\n";
-			print "				((value) == DIO_LOW) ? ( PORT" . $portl . " &= ~( 1 << " . $pin . " ) ) : ( PORT" . $portl . " |= ( 1 << " . $pin . " ) )\n\n";
-		}
-		else
-		{
-			print "#define Dio_ReadChannel_Arch_" . ($port * 32 + $pin) . "() \\\n";
-			print "				( ( PORT" . $portl . " >> " . $pin . " ) & 1 )\n\n";
-		}
-	}
-}
+/** TODO */
+#if 0
+#define SEC_ACTUAL "SEC_INVALID"
+#define ATTRIBUTES(attr) __attribute__ ((section(SEC_ACTUAL)))
+#else
+#define ATTRIBUTES(attr)
+#endif
 
-?>
+/* check for C99 compiler */
+#if ( ( defined __STDC_VERSION__ ) && 	\
+		( __STDC_VERSION__ >= 199901L ) )
+#define C99_COMPILER
+#else
+#undef  C99_COMPILER
+#endif
+
+/* check for C++-Compiler */
+#if defined(__cplusplus)
+#define CPP_COMPILER
+#else
+#undef  CPP_COMPILER
+#endif
+
+/* define INLINE and RESTRICT depending on _OS_CPP_COMPILER and
+ * _OS_C99_COMPILER 
+ */
+#if (defined C99_COMPILER)
+#define INLINE inline
+#define RESTRICT restrict
+#elif (defined OS_CPP_COMPILER)
+#define INLINE inline
+#define RESTRICT
+#else
+#define INLINE
+#define RESTRICT
+#endif
 
 /*==================[typedef]================================================*/
 
@@ -143,7 +114,6 @@ foreach($diochannels as $dioc)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_ARCH_CFG_H_ */
+#endif /* #ifndef _COMPILER_H_ */
 

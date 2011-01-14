@@ -1,7 +1,3 @@
-/********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
- ********************************************************/
-
 /* Copyright 2008, 2009, 2011, Mariano Cerdeiro
  *
  * This file is part of FreeOSEK.
@@ -40,29 +36,19 @@
  *
  */
 
-<?php
-/** \brief DRV DIO Arch Header File to be Generated
+#ifndef _OS_INTERNAL_ARCH_CPU_H_
+#define _OS_INTERNAL_ARCH_CPU_H_
+/** \brief FreeOSEK Os Internal Architecture Cpu Dependent Header File
  **
- ** \file Dio_Arch_Cfg.h.php
- **/
-?>
-
-#ifndef _DIO_ARCH_CFG_H_
-#define _DIO_ARCH_CFG_H_
-/** \brief DRV DIO Arch Generated Configuration Header File
- **
- ** This file contents the generated configuration of the IO Driver
- **
- ** \file Dio_Arch_Cfg.h
+ ** \file avr/at90can/Os_Internal_Arch_Cpu.h
+ ** \arch avr/at90can
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */ 
-/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio_Global
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -74,76 +60,81 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20110113 v0.1.0 MaCe	initial version
+  * 20110114 v0.1.0 MaCe	initial version
  */  
 
+/*==================[cpu macros]=============================================*/
+/** \brief at90can32 cpu definition */
+#define at90can32	1
+/** \brief at90can64 cpu definition */
+#define at90can	2
+/** \brief at90can128 cpu definition */
+#define at90can128	3
+
 /*==================[inclusions]=============================================*/
+#ifndef CPU
+#error CPU is not defined
+#elif (CPU == at90can128)
+#include "at90can128.h"
+#else
+#error not defined CPU
+#endif
 
 /*==================[macros]=================================================*/
-<?php
-foreach($diochannels as $dioc)
-{
-	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$portl = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
-	
-	switch ($portl)
-	{
-		case "A":
-			$port = 0;
-			break;
-		case "B":
-			$port = 1;
-			break;
-		case "C":
-			$port = 2;
-			break;
-		case "D":
-			$port = 3;
-			break;
-	}
-	
-	if ($port > 3)
-	{
-		error("Invalid port number in Dio channel " . $dioc);
-	}
-	elseif($pin > 7)
-	{
-		error("Invalid pin number on Dio channel " . $dioc);	
-	}
-	elseif( ($dir != "INPUT") &&
-			($dir != "OUTPUT"))
-	{
-		error("Invalid direction on Dio channel " . $dioc);
-	}
-	else
-	{
-		if($dir == "OUTPUT")
-		{
-			print "#define Dio_WriteChannel_Arch_" . ($port * 32 + $pin) . "(value) \\\n";
-			print "				((value) == DIO_LOW) ? ( PORT" . $portl . " &= ~( 1 << " . $pin . " ) ) : ( PORT" . $portl . " |= ( 1 << " . $pin . " ) )\n\n";
-		}
-		else
-		{
-			print "#define Dio_ReadChannel_Arch_" . ($port * 32 + $pin) . "() \\\n";
-			print "				( ( PORT" . $portl . " >> " . $pin . " ) & 1 )\n\n";
-		}
-	}
-}
-
-?>
 
 /*==================[typedef]================================================*/
+/** \brief VIC type definition
+ **
+ ** This type is a structure used to control the VIC (Vector Interrupt
+ ** Controller) of the LPCxxxx uController.
+ **
+ **/
+typedef struct
+{
+	volatile uint32	IRQStatus;	/* IRQ Status Register */
+	volatile uint32	FIQStatus;	/* FIQ Status Register */
+	volatile uint32	RawIntr;		/* Raw Interrupt Status Register */
+	volatile uint32	IntSelect;	/* Interrupt Select Register */
+	volatile uint32	IntEnable;	/* Interrupt Enable Register */
+	volatile uint32	IntEnClr;	/* Interrupt Enable Clear Register */
+	volatile uint32	SoftInt;		/* Software Interrupt Register */
+	volatile uint32	SoftIntClr;	/* Software Interrupt Clear Register */
+	volatile uint32	Protection;	/* Protection enable register */
+	volatile uint32	SWPrioMask;	/* Software Priority Mask Register */
+	volatile uint32	reserved1[54];
+	/* Vector Address Register 0..31 */
+	volatile uint32	Address;		/* IRQ Address */
+} VICType;
+
+typedef struct
+{
+	volatile uint32	IR;
+	volatile uint32	TCR;
+	volatile uint32	TC;
+	volatile uint32	PR;
+	volatile uint32	PC;
+	volatile uint32	MCR;
+	volatile uint32	MR0;
+	volatile uint32	MR1;
+	volatile uint32	MR3;
+	volatile uint32	CCR;
+	volatile uint32	CR0;
+	volatile uint32	CR1;
+	volatile uint32	CR2;
+	volatile uint32	CR3;
+	volatile uint32	EMR;
+	volatile uint32	reserved1[12];
+	volatile uint32	CTCR;
+} TIMERType;	
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+extern void StartOs_Arch_Cpu(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
-/** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_ARCH_CFG_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_CPU_H_ */
 
