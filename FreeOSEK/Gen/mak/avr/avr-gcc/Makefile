@@ -27,7 +27,7 @@
 
 # GCC ARM tools chains #
 CC = avr-gcc
-LD = avr-ld
+LD = avr-gcc
 AR = avr-ar
 AS = avr-as
 GDB = avr-gdb
@@ -40,7 +40,7 @@ GDBO += -x FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.s
 #CFLAGS += -c -Wall
 CFLAGS += -mmcu=$(CPU) -Wall -gdwarf-2 -Os -std=gnu99 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -MD -MP -MT -c
 
-LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
+LFLAGS += $(LINKSCRIPT) -mmcu=at90can128
 AFLAGS += -mapcs-32 -mfpu=softfpa
 
 %.o : %.c
