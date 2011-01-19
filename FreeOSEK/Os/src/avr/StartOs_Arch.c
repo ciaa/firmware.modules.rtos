@@ -87,13 +87,18 @@ void StartOs_Arch(void)
 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
 	{
 		/* init stack */
-		
+		//ResetStack(loopi);
+		uint8 tmp;
+		tmp = (uint8)((uint16)(TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize - 32) & 0xFF);
+		TasksConst[loopi].TaskContext->reg_stack_low =	tmp;
+		tmp = (uint8)(((uint16)(TasksConst[loopi].StackPtr + TasksConst[loopi].StackSize - 32) >> 8 ) & 0xFF);
+		TasksConst[loopi].TaskContext->reg_stack_high = tmp;
 
 		/* init entry point */
-		
+		SetEntryPoint(loopi); /* set task entry point */
 
 		/* init program status register */
-		
+		/* TODO */
 	}
 
 	/* call CPU dependent initialisation */

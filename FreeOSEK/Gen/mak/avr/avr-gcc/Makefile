@@ -35,10 +35,12 @@ NM = avr-nm
 
 # debug options #
 GDBO += -x FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
+BINDIR = .$(DIR)
+BINEXT = .elf
 
-# compiler options for ARM with GCC Compiler #
-#CFLAGS += -c -Wall
+# compiler options for AVR-GCC Compiler #
 CFLAGS += -mmcu=$(CPU) -Wall -gdwarf-2 -Os -std=gnu99 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -MD -MP -MT -c
+
 
 LFLAGS += $(LINKSCRIPT) -mmcu=at90can128
 AFLAGS += -mapcs-32 -mfpu=softfpa

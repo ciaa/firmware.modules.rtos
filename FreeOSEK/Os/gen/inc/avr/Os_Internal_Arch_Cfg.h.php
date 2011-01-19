@@ -78,23 +78,8 @@
 /*==================[typedef]================================================*/
 /** \brief Task Context Type */
 typedef struct {
-	uint32 reg_r0;
-	uint32 reg_r1;
-	uint32 reg_r2;
-	uint32 reg_r3;
-	uint32 reg_r4;
-	uint32 reg_r5;
-	uint32 reg_r6;
-	uint32 reg_r7;
-	uint32 reg_r8;
-	uint32 reg_r9;
-	uint32 reg_r10;
-	uint32 reg_r11;
-	uint32 reg_r12;
-	uint32 reg_r13; /* stack pointer */
-	uint32 reg_r14; /* link register */
-	uint32 reg_r15; /* program counter */
-	uint32 reg_cpsr; /* current program status register */
+	uint8	reg_stack_low;
+	uint8 reg_stack_high;
 } TaskContextType;
 
 /** \brief Task Context Type */

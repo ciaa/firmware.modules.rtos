@@ -88,20 +88,103 @@
  **/
 #define osekpause()			\
 	{								\
-		PreCallService();		\
-		/** TODO	*/				\
-		PostCallService();	\
 	}
 
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(actualtask, nexttask)														\
-	{																									\
-		Osek_OldTaskPtr_Arch = (void*)TasksConst[actualtask].TaskContext;			\
-		Osek_NewTaskPtr_Arch = (void*)TasksConst[nexttask].TaskContext;			\
-																										\
+#define CallTask(actualtask, nexttask)											\
+	{																						\
+		Osek_OldTaskPtr_Arch =														\
+			(void*)TasksConst[actualtask].TaskContext;						\
+		Osek_NewTaskPtr_Arch = 														\
+			(void*)TasksConst[nexttask].TaskContext;							\
+		__asm__ __volatile__ (														\
+			"push	r0																\n\t"	\
+			"in r0, __SREG__													\n\t"	\
+			"cli																	\n\t"	\
+			"push	r0																\n\t"	\
+			"push	r1																\n\t"	\
+			"clr	r1																\n\t"	\
+			"push	r2																\n\t"	\
+			"push	r3																\n\t"	\
+			"push	r4																\n\t"	\
+			"push	r5																\n\t"	\
+			"push	r6																\n\t"	\
+			"push	r7																\n\t"	\
+			"push	r8																\n\t"	\
+			"push	r9																\n\t"	\
+			"push	r10															\n\t"	\
+			"push	r11															\n\t"	\
+			"push	r12															\n\t"	\
+			"push	r13															\n\t"	\
+			"push	r14															\n\t"	\
+			"push	r15															\n\t"	\
+			"push	r16															\n\t"	\
+			"push	r17															\n\t"	\
+			"push	r18															\n\t"	\
+			"push	r19															\n\t"	\
+			"push	r20															\n\t"	\
+			"push	r21															\n\t"	\
+			"push	r22															\n\t"	\
+			"push	r23															\n\t"	\
+			"push	r24															\n\t"	\
+			"push	r25															\n\t"	\
+			"push	r26															\n\t"	\
+			"push	r27															\n\t"	\
+			"push	r28															\n\t"	\
+			"push	r29															\n\t"	\
+			"push	r30															\n\t"	\
+			"push	r31															\n\t"	\
+			"lds r26, Osek_OldTaskPtr_Arch								\n\t"	\
+			"lds r27, Osek_OldTaskPtr_Arch + 1							\n\t"	\
+			"in r0, __SP_L__													\n\t"	\
+			"st x+, r0															\n\t"	\
+			"in r0, __SP_H__													\n\t"	\
+			"st x+, r0															\n\t"	\
+			"lds r26, Osek_NewTaskPtr_Arch								\n\t"	\
+			"lds r27, Osek_NewTaskPtr_Arch + 1							\n\t"	\
+			"ld r28, x+															\n\t"	\
+			"out __SP_L__, r28												\n\t"	\
+			"ld r29, x+															\n\t"	\
+			"out __SP_H__, r29												\n\t"	\
+			"pop r31																\n\t"	\
+			"pop r30																\n\t"	\
+			"pop r29																\n\t"	\
+			"pop r28																\n\t"	\
+			"pop r27																\n\t"	\
+			"pop r26																\n\t"	\
+			"pop r25																\n\t"	\
+			"pop r24																\n\t"	\
+			"pop r23																\n\t"	\
+			"pop r22																\n\t"	\
+			"pop r21																\n\t"	\
+			"pop r20																\n\t"	\
+			"pop r19																\n\t"	\
+			"pop r18																\n\t"	\
+			"pop r17																\n\t"	\
+			"pop r16																\n\t"	\
+			"pop r15																\n\t"	\
+			"pop r14																\n\t"	\
+			"pop r13																\n\t"	\
+			"pop r12																\n\t"	\
+			"pop r11																\n\t"	\
+			"pop r10																\n\t"	\
+			"pop r9																\n\t"	\
+			"pop r8																\n\t"	\
+			"pop r7																\n\t"	\
+			"pop r6																\n\t"	\
+			"pop r5																\n\t"	\
+			"pop r4																\n\t"	\
+			"pop r3																\n\t"	\
+			"pop r2																\n\t"	\
+			"pop r1																\n\t"	\
+			"pop r0																\n\t"	\
+			"out __SREG__, r0													\n\t"	\
+			"pop r0																\n\t"	\
+			"ret																	\n\t" \
+			);																				\
 	}
 
 
@@ -112,30 +195,126 @@
  **/
 #define JmpTask(task)															\
 	{																					\
-	Osek_NewTaskPtr_Arch = (void*)TasksConst[task].TaskContext;		\
+		Osek_NewTaskPtr_Arch = (void*)TasksConst[task].TaskContext;		\
+		__asm__ __volatile__ (														\
+			"lds r26, Osek_NewTaskPtr_Arch								\n\t"	\
+			"lds r27, Osek_NewTaskPtr_Arch + 1							\n\t"	\
+			"ld r28, x+															\n\t"	\
+			"out __SP_L__, r28												\n\t"	\
+			"ld r29, x+															\n\t"	\
+			"out __SP_H__, r29												\n\t"	\
+			"pop r31																\n\t"	\
+			"pop r30																\n\t"	\
+			"pop r29																\n\t"	\
+			"pop r28																\n\t"	\
+			"pop r27																\n\t"	\
+			"pop r26																\n\t"	\
+			"pop r25																\n\t"	\
+			"pop r24																\n\t"	\
+			"pop r23																\n\t"	\
+			"pop r22																\n\t"	\
+			"pop r21																\n\t"	\
+			"pop r20																\n\t"	\
+			"pop r19																\n\t"	\
+			"pop r18																\n\t"	\
+			"pop r17																\n\t"	\
+			"pop r16																\n\t"	\
+			"pop r15																\n\t"	\
+			"pop r14																\n\t"	\
+			"pop r13																\n\t"	\
+			"pop r12																\n\t"	\
+			"pop r11																\n\t"	\
+			"pop r10																\n\t"	\
+			"pop r9																\n\t"	\
+			"pop r8																\n\t"	\
+			"pop r7																\n\t"	\
+			"pop r6																\n\t"	\
+			"pop r5																\n\t"	\
+			"pop r4																\n\t"	\
+			"pop r3																\n\t"	\
+			"pop r2																\n\t"	\
+			"pop r1																\n\t"	\
+			"pop r0																\n\t"	\
+			"out __SREG__, r0													\n\t"	\
+			"pop r0																\n\t"	\
+			"ret																	\n\t" \
+			);																				\
 	}
 
-/** \brief Save context */
+/** \brief Save context
+ **
+ ** Jonas Mitschang task switch for AT90CAN128 based on FreeRTOS
+ ** task switch.
+ **/
 #define SaveContext(task) 														\
 	{																					\
-	Osek_OldTaskPtr_Arch = (void*)TasksConst[task].TaskContext;		\
+		Osek_OldTaskPtr_Arch = (void*)TasksConst[task].TaskContext;		\
+		__asm__ __volatile__ (														\
+			"push	r0																\n\t"	\
+			"in r0, __SREG__													\n\t"	\
+			"cli																	\n\t"	\
+			"push	r0																\n\t"	\
+			"push	r1																\n\t"	\
+			"clr	r1																\n\t"	\
+			"push	r2																\n\t"	\
+			"push	r3																\n\t"	\
+			"push	r4																\n\t"	\
+			"push	r5																\n\t"	\
+			"push	r6																\n\t"	\
+			"push	r7																\n\t"	\
+			"push	r8																\n\t"	\
+			"push	r9																\n\t"	\
+			"push	r10															\n\t"	\
+			"push	r11															\n\t"	\
+			"push	r12															\n\t"	\
+			"push	r13															\n\t"	\
+			"push	r14															\n\t"	\
+			"push	r15															\n\t"	\
+			"push	r16															\n\t"	\
+			"push	r17															\n\t"	\
+			"push	r18															\n\t"	\
+			"push	r19															\n\t"	\
+			"push	r20															\n\t"	\
+			"push	r21															\n\t"	\
+			"push	r22															\n\t"	\
+			"push	r23															\n\t"	\
+			"push	r24															\n\t"	\
+			"push	r25															\n\t"	\
+			"push	r26															\n\t"	\
+			"push	r27															\n\t"	\
+			"push	r28															\n\t"	\
+			"push	r29															\n\t"	\
+			"push	r30															\n\t"	\
+			"push	r31															\n\t"	\
+			"lds r26, Osek_OldTaskPtr_Arch								\n\t"	\
+			"lds r27, Osek_OldTaskPtr_Arch + 1							\n\t"	\
+			"in r0, __SP_L__													\n\t"	\
+			"st x+, r0															\n\t"	\
+			"in r0, __SP_H__													\n\t"	\
+			"st x+, r0															\n\t"	\
+			);																		\
 	}
 
 /** \brief Set the entry point for a task */
-#define SetEntryPoint(task)							\
-	{															\
-		/* init entry point */							\
-		TasksConst[task].TaskContext->reg_r15 = 	\
-			(uint32) TasksConst[task].EntryPoint;	\
+#define SetEntryPoint(task)															\
+	{																							\
+		/* init entry point */															\
+		uint8* stackPtr = (uint8*) TasksConst[task].TaskContext;				\
+		*stackPtr = (uint8)((uint16)TasksConst[task].EntryPoint & 0xFF);				\
+		stackPtr++;																			\
+		*stackPtr = (uint8)(((uint16)TasksConst[task].EntryPoint >> 8 ) & 0xFF);	\
 	}
 
 /** \brief */
 #define ResetStack(task)											\
 	{																		\
 		/* init stack */												\
-		TasksConst[task].TaskContext->reg_r13 = 				\
-			(uint32)TasksConst[task].StackPtr + 				\
-			TasksConst[task].StackSize;							\
+		TasksConst[task].TaskContext->reg_stack_low =		\
+			(uint8)((uint16)(TasksConst[task].StackPtr + 	\
+			TasksConst[task].StackSize - 32) & 0xFF);			\
+		TasksConst[task].TaskContext->reg_stack_high =		\
+			(uint8)(((uint16)(TasksConst[task].StackPtr + 	\
+			TasksConst[task].StackSize - 32) >> 8 ) & 0xFF);\
    }
 
 #define ISR_NMI      0
