@@ -8,21 +8,22 @@
 #  - posix
 #  - win
 #  - arm
-ARCH = posix
+#  - avr
+ARCH = avr
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
 # defined
-CPUTYPE = lpc2xxx
+CPUTYPE = at90can
 
 # CPU
-CPU = lpc2468
+CPU = at90can128
 
 # BOARD
-BOARD = lpc-e2468
+BOARD = stk501
 
 # COMPILER
-COMPILER = gcc
+COMPILER = avr-gcc
 
 # MODULES
 #
@@ -42,16 +43,16 @@ COMPILER = gcc
 #			FreeOSEK/Os							\
 #			FreeOSEK/Os/tst/ctest
 
-#MODS +=	examples/Blinking					\
-#			FreeOSEK/Gen						\
-#			FreeOSEK/Drv						\
-#			FreeOSEK/Os
-
-MODS += FreeOSEK/Os/tst/mtst/mtst01		\
+MODS +=	examples/Blinking					\
 			FreeOSEK/Gen						\
 			FreeOSEK/Drv						\
-			FreeOSEK/Os							\
-			FreeOSEK/TestSuite
+			FreeOSEK/Os
+
+#MODS += FreeOSEK/Os/tst/mtst/mtst01	\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os							\
+#			FreeOSEK/TestSuite
 
 #MODS +=	examples/Com						\
 #			FreeOSEK/Gen						\
@@ -73,7 +74,7 @@ DOCDIR = out$(DIR)doc
 GENDIR = out$(DIR)gen
 
 PROJECT = FreeOSEK
-BIN = $(PROJECT)
+BIN = $(PROJECT)$(BINEXT)
 
 #CFLAGS = -c -Wall -ggdb3 $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE) -fprofile-arcs -ftest-coverage
 CFLAGS += $(INCLUDE) -DPROJECT=$(PROJECT) -DCOMPILER=$(COMPILER) -DARCH=$(ARCH) -DCPUTYPE=$(CPUTYPE) -DCPU=$(CPU)
@@ -83,6 +84,7 @@ DOC += nm sizedoc reqdoc doxygen
 ###############################################################################
 # include modules make files
 
+# generic rule, can be overriden
 %.o : %.c
 	@ echo
 	@ echo Compiling $<
@@ -92,7 +94,6 @@ DOC += nm sizedoc reqdoc doxygen
 	@ echo
 	@ echo Assembling $<
 	$(AS) $(AFLAGS) $< -o $(OBJDIR)$(DIR)$@
-
 
 include $(foreach module, $(MODS), $(module)$(DIR)mak$(DIR)Makefile)
 
