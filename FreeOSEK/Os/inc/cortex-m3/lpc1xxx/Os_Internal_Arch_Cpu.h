@@ -169,6 +169,8 @@
 #include "lpc2468.h"
 #elif (CPU == lpc2378)
 #include "lpc23xx.h"
+#elif (CPU == lpc1768)
+#include "lpc17xx.h"
 #else
 #error not defined CPU
 #endif

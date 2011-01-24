@@ -1,5 +1,5 @@
 /* Copyright 2008, 2009, Mariano Cerdeiro
- * Copyright 2011 Sebastián Viviani
+ *
  * This file is part of FreeOSEK.
  *
  * FreeOSEK is free software: you can redistribute it and/or modify
@@ -36,21 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Driver Mcu Init Arch implementation file
+/** \brief FreeOSEK Os Internal ARCH CPU Dependece Implementation File
  **
- ** This file implements the Mcu_InitClock_Arch API
- **
- ** \file arm7/lpc2xxx/Mcu_InitClock_Arch.c
+ ** \file arm7/lpc2xxx/Os_Internal_Arch_Cpu.c
  ** \arch arm7/lpc2xxx
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Drv
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Mcu
- ** @{ */
-/** \addtogroup FreeOSEK_Drv_Mcu_Internal
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -62,17 +58,15 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090216 v0.1.0 MaCe initial version
+ * 20090719 v0.1.2 MaCe rename file to Os_
+ * 20090329 v0.1.1 MaCe replace binary representation with hex one
+ * 20090227 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Mcu_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
-#define PLL_MValue	11
-#define PLL_NValue	0
-#define CCLKDivValue	4
-#define USBCLKDivValue	5
 
 /*==================[internal data declaration]==============================*/
 
@@ -85,62 +79,55 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-/** TODO */
-/* #define OpenDRV_MCU_START_SEC_CODE
- * #include "MemMap.h" */
-
-Std_ReturnType Mcu_InitClock_Arch
+void StartOs_Arch_Cpu
 (
-	Mcu_ClockType ClockSettings
+	void
 )
 {
+#if (ALARMS_COUNT != 0)
+	/* TODO this has to be improved */
+	TIM0->CTCR = 0;	/* bit 1-0: 00 Timer mode
+										01 Counter mode at rising edge
+										10 Counter mode at falling edge
+										11 Counter mode both edges
+							bit 3-2: only valid when bit 1-0 != 0
+										00 CAPn.0 for timer n
+										01 CAPn.1 for timer n
+										1x reserved
+							bit 7-4: reserved
+						*/
 
-	volatile unsigned long MValue;
-	volatile unsigned long NValue;
+	TIM0->PR = 12;		/* 32-bits prescaler register */
+						/* 1 incremenet every 1us */
 
-	if ( SC->PLL0STAT & (1 << 25) )
-	{
-		SC->PLL0CON = 1;			/* Enable PLL, disconnected */
-		SC->PLL0FEED = PLLFEED_FEED1;
-		SC->PLL0FEED = PLLFEED_FEED2;
-	}
+	/* set Timer Control Register TCR */
+	TIM0->TCR = 0x3;	/* bit 0:	enable counter
+							bit 1:	reset counter
+							bit 7-2: reserved */
 
-	SC->PLL0CON = 0;				/* Disable PLL, disconnected */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	(SC->SCS) |= 0x20;			/* Enable main OSC */
-	while( !(SC->SCS & 0x40) );	/* Wait until main OSC is usable */
+	TIM0->TCR = 0x1;	/* bit 1:	clear reset now */
 
-	SC->CLKSRCSEL = 0x1;		/* select main OSC, 12MHz, as the PLL clock source */
+	TIM0->MR0 = 1000;	/* timer match 0 every 1ms*/
 
-	SC->PLL0CFG = PLL_MValue | (PLL_NValue << 16);
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	SC->PLL0CON = 1;				/* Enable PLL, disconnected */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	SC->CCLKCFG = CCLKDivValue;	/* Set clock divider */
+	TIM0->MCR = 0x3;	/* bit 0: interrupt if MR0 match the TC
+							bit 1: reset TC if MR0 match */
 
-	while ( ((SC->PLL0STAT & (1 << 26)) == 0) );	/* Check lock bit status */
+	/* set the TIMER0 as FIQ Interrupt */
+	((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
 
-	MValue = SC->PLL0STAT & 0x00007FFF;
-	NValue = (SC->PLL0STAT & 0x00FF0000) >> 16;
-	while ((MValue != PLL_MValue) && ( NValue != PLL_NValue) );
+	/* enable TIMER0 interrupt */
+	((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
+#endif /* #if (ALARMS_COUNT != 0) */
 
-	SC->PLL0CON = 3;				/* enable and connect */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	while ( ((SC->PLL0STAT & (1 << 25)) == 0) );	/* Check connect bit status */
+	/* enable interrupts */
+	__asm__ __volatile__
+	("											\
+		MRS R7, CPSR 				\n\t	\
+		AND R7, R7, #0xFFFFFF9F \n\t	\
+		MSR CPSR, R7				\n\t	\
+	 " : : : "r7" );
 }
 
-/** TODO */
-/* #define OpenDRV_MCU_STOP_SEC_CODE
- * #include "MemMap.h" */
-
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

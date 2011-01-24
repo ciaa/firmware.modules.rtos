@@ -1,5 +1,5 @@
 /* Copyright 2008, 2009, Mariano Cerdeiro
- * Copyright 2011 Sebastián Viviani
+ *
  * This file is part of FreeOSEK.
  *
  * FreeOSEK is free software: you can redistribute it and/or modify
@@ -36,21 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Driver Mcu Init Arch implementation file
+/** \brief FreeOSEK Os Arch Implementation File
  **
- ** This file implements the Mcu_InitClock_Arch API
- **
- ** \file arm7/lpc2xxx/Mcu_InitClock_Arch.c
- ** \arch arm7/lpc2xxx
+ ** \file arm7/Os_Arch.c
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Drv
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Mcu
- ** @{ */
-/** \addtogroup FreeOSEK_Drv_Mcu_Internal
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -62,17 +58,14 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090216 v0.1.0 MaCe initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20081116 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Mcu_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
-#define PLL_MValue	11
-#define PLL_NValue	0
-#define CCLKDivValue	4
-#define USBCLKDivValue	5
 
 /*==================[internal data declaration]==============================*/
 
@@ -85,62 +78,7 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-/** TODO */
-/* #define OpenDRV_MCU_START_SEC_CODE
- * #include "MemMap.h" */
 
-Std_ReturnType Mcu_InitClock_Arch
-(
-	Mcu_ClockType ClockSettings
-)
-{
-
-	volatile unsigned long MValue;
-	volatile unsigned long NValue;
-
-	if ( SC->PLL0STAT & (1 << 25) )
-	{
-		SC->PLL0CON = 1;			/* Enable PLL, disconnected */
-		SC->PLL0FEED = PLLFEED_FEED1;
-		SC->PLL0FEED = PLLFEED_FEED2;
-	}
-
-	SC->PLL0CON = 0;				/* Disable PLL, disconnected */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	(SC->SCS) |= 0x20;			/* Enable main OSC */
-	while( !(SC->SCS & 0x40) );	/* Wait until main OSC is usable */
-
-	SC->CLKSRCSEL = 0x1;		/* select main OSC, 12MHz, as the PLL clock source */
-
-	SC->PLL0CFG = PLL_MValue | (PLL_NValue << 16);
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	SC->PLL0CON = 1;				/* Enable PLL, disconnected */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	SC->CCLKCFG = CCLKDivValue;	/* Set clock divider */
-
-	while ( ((SC->PLL0STAT & (1 << 26)) == 0) );	/* Check lock bit status */
-
-	MValue = SC->PLL0STAT & 0x00007FFF;
-	NValue = (SC->PLL0STAT & 0x00FF0000) >> 16;
-	while ((MValue != PLL_MValue) && ( NValue != PLL_NValue) );
-
-	SC->PLL0CON = 3;				/* enable and connect */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	while ( ((SC->PLL0STAT & (1 << 25)) == 0) );	/* Check connect bit status */
-}
-
-/** TODO */
-/* #define OpenDRV_MCU_STOP_SEC_CODE
- * #include "MemMap.h" */
-
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

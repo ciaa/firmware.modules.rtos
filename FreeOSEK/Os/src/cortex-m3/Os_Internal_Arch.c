@@ -1,12 +1,12 @@
 /* Copyright 2008, 2009, Mariano Cerdeiro
- * Copyright 2011 Sebastián Viviani
+ *
  * This file is part of FreeOSEK.
  *
  * FreeOSEK is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -36,21 +36,17 @@
  *
  */
 
-/** \brief FreeOSEK Driver Mcu Init Arch implementation file
+/** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** This file implements the Mcu_InitClock_Arch API
- **
- ** \file arm7/lpc2xxx/Mcu_InitClock_Arch.c
- ** \arch arm7/lpc2xxx
+ ** \file arm7/Os_Internal_Arch.c
+ ** \arch arm7
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Drv
+/** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Mcu
- ** @{ */
-/** \addtogroup FreeOSEK_Drv_Mcu_Internal
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*
@@ -62,21 +58,23 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090216 v0.1.0 MaCe initial version
+ * 20090719 v0.1.2 MaCe rename file to Os_
+ * 20090330 v0.1.1 MaCe add NO_EVENTS and NON_PREEMPTIVE evaluation and
+ *								improvement of FIQ_Routine
+ * 20081116 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Mcu_Internal.h"
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
-#define PLL_MValue	11
-#define PLL_NValue	0
-#define CCLKDivValue	4
-#define USBCLKDivValue	5
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
+void* Osek_NewTaskPtr_Arch;
+
+void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -85,62 +83,84 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-/** TODO */
-/* #define OpenDRV_MCU_START_SEC_CODE
- * #include "MemMap.h" */
-
-Std_ReturnType Mcu_InitClock_Arch
+void IRQ_Routine
 (
-	Mcu_ClockType ClockSettings
+	void
 )
 {
-
-	volatile unsigned long MValue;
-	volatile unsigned long NValue;
-
-	if ( SC->PLL0STAT & (1 << 25) )
-	{
-		SC->PLL0CON = 1;			/* Enable PLL, disconnected */
-		SC->PLL0FEED = PLLFEED_FEED1;
-		SC->PLL0FEED = PLLFEED_FEED2;
-	}
-
-	SC->PLL0CON = 0;				/* Disable PLL, disconnected */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	(SC->SCS) |= 0x20;			/* Enable main OSC */
-	while( !(SC->SCS & 0x40) );	/* Wait until main OSC is usable */
-
-	SC->CLKSRCSEL = 0x1;		/* select main OSC, 12MHz, as the PLL clock source */
-
-	SC->PLL0CFG = PLL_MValue | (PLL_NValue << 16);
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	SC->PLL0CON = 1;				/* Enable PLL, disconnected */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	
-	SC->CCLKCFG = CCLKDivValue;	/* Set clock divider */
-
-	while ( ((SC->PLL0STAT & (1 << 26)) == 0) );	/* Check lock bit status */
-
-	MValue = SC->PLL0STAT & 0x00007FFF;
-	NValue = (SC->PLL0STAT & 0x00FF0000) >> 16;
-	while ((MValue != PLL_MValue) && ( NValue != PLL_NValue) );
-
-	SC->PLL0CON = 3;				/* enable and connect */
-	SC->PLL0FEED = PLLFEED_FEED1;
-	SC->PLL0FEED = PLLFEED_FEED2;
-	while ( ((SC->PLL0STAT & (1 << 25)) == 0) );	/* Check connect bit status */
+   while (1);
 }
 
-/** TODO */
-/* #define OpenDRV_MCU_STOP_SEC_CODE
- * #include "MemMap.h" */
+void FIQ_Routine
+(
+	void
+)
+{
+#if (ALARMS_COUNT != 0)
+	/* to save the context during the interrupt */
+	ContextType context;
+	/* counter increment */
+	static CounterIncrementType CounterIncrement = 1;
 
-/** @} doxygen end group definition */
+	/* increment the disable interrupt conter to avoid enable the interrupts */
+	SuspendAllInterrupts_Counter++;
+
+	/* save actual context */
+	context = GetCallingContext();
+
+	/* set context to CONTEXT_SYS */
+	SetActualContext(CONTEXT_DBG);
+
+	/* call counter interrupt handler */
+	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */);
+
+	/* interrupt has to be called first after so many CounterIncrement */
+	/* SetCounterTime(CounterIncrement); */
+
+	/* set context back */
+	SetActualContext(context);
+
+	/* set the disable interrupt conter back */
+	SuspendAllInterrupts_Counter--;
+#endif /* #if (ALARMS_COUNT != 0) */
+
+	/* enable counter interrupt again */
+	T0IR |= 1;
+
+#if 0 /* TODO */
+#if (NON_PREEMPTIVE == DISABLE)
+		/* check if interrupt a Task Context */
+		if ( GetCallingContext() ==  CONTEXT_TASK )
+		{
+			if ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )
+			{
+				/* \req TODO Rescheduling shall take place only if interrupt a
+				 * preemptable task. */
+				(void)Schedule();
+			}
+		}
+#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+#endif
+}
+
+void SWI_Routine
+(
+	void
+)
+{
+   while (1);
+}
+
+void UNDEF_Routine
+(
+	void
+)
+{
+	volatile uint8 foo = 1;
+
+   while (foo);
+}
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
