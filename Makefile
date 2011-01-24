@@ -9,6 +9,7 @@
 #  - win
 #  - arm
 #  - avr
+#  - cortex-m3
 ARCH = avr
 
 # CPU Types

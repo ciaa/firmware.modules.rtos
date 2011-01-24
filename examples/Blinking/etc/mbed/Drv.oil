@@ -1,0 +1,52 @@
+DRV DRV {
+
+	GENERAL GenConfig {
+		StartUp = ENABLE;
+		Mcu = ENABLE;
+		Dio = ENABLE;
+		Eth = DISABLE;
+		Pwm = DISABLE;
+		Adc = DISABLE;
+	};
+
+	DRIVER StartUp {
+	};
+
+	DRIVER Dio {
+		GENERAL DioGeneral {
+			DET = FALSE;
+		}
+
+		CONFIG DioConfig01 {
+
+			CHANNEL LED0 {
+				NAME = LED0;
+				PORT = 4;
+				PIN = 17;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL LED1 {
+				NAME = LED1;
+				PORT = 4;
+				PIN = 16;
+				DIRECTION = OUTPUT;
+			}
+
+			CHANNEL BUT0 {
+				NAME = BUT0;
+				PORT = 2;
+				PIN = 13;
+				DIRECTION = INPUT;
+			}
+
+			CHANNEL BUT1 {
+				NAME = BUT1;
+				PORT = 2;
+				PIN = 21;
+				DIRECTION = INPUT;
+			}
+			
+		}
+	}
+};
