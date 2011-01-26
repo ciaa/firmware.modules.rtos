@@ -113,10 +113,13 @@ void StartOs_Arch_Cpu
 							bit 1: reset TC if MR0 match */
 
 	/* set the TIMER0 as FIQ Interrupt */
-	((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
+	//((VICType*)VIC_BASE_ADDR)->IntSelect |= 1<<4;
+	
 
 	/* enable TIMER0 interrupt */
-	((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
+	//((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
+	//NVIC->ISER |= 1<<4;
+	NVIC_EnableIRQ( TIMER0_IRQn );
 #endif /* #if (ALARMS_COUNT != 0) */
 
 	/* enable interrupts */
@@ -132,4 +135,5 @@ void StartOs_Arch_Cpu
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+
 

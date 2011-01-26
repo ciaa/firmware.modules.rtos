@@ -25,7 +25,7 @@
 ##############################################################################
 # definitions
 
-COMPILER_PREFFIX=arm-elf-
+COMPILER_PREFFIX=arm-none-eabi-
 
 # GCC ARM tools chains #
 CC = $(COMPILER_PREFFIX)gcc
