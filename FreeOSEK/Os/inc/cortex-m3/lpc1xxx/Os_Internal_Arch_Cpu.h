@@ -41,8 +41,8 @@
 #define _OS_INTERNAL_ARCH_CPU_H_
 /** \brief FreeOSEK Os Internal Architecture Cpu Dependent Header File
  **
- ** \file arm7/lpc2xxx/Os_Internal_Arch_Cpu.h
- ** \arch arm7/lpc2xxx
+ ** \file cortex-m3/lpc1xxx/Os_Internal_Arch_Cpu.h
+ ** \arch cortex-m3/lpc1xxx
  **/
 
 /** \addtogroup FreeOSEK
@@ -56,13 +56,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
+ * SLV			 Sebastián Viviani
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090719 v0.1.1 MaCe rename file to Os_
- * 20090227 v0.1.0 MaCe	initial version
+ * 20110126 v0.1.0 SLV  imported from arm7 0.1.1
  */  
 
 /*==================[cpu macros]=============================================*/

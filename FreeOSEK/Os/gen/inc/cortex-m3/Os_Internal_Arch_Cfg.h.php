@@ -3,6 +3,7 @@
  ********************************************************/
 
 /* Copyright 2008, 2009, Mariano Cerdeiro
+ * Copyright 2011 Sebastián Viviani
  *
  * This file is part of FreeOSEK.
  *
@@ -61,13 +62,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
+ * SLV			 Sebastián Viviani
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090719 v0.1.1 MaCe rename file to Os_
- * 20081116 v0.1.0 MaCe	initial version
+ * 20110126 v0.1.0 imported from arm7 0.1.1, changed name of InterruptType typedef
  */  
 
 /*==================[inclusions]=============================================*/ 
@@ -102,10 +103,10 @@ typedef struct {
 typedef TaskContextType* TaskContextRefType;
 
 /** \brief InterruptType Type definition */
-typedef void (*InterruptType)(void);
+typedef void (*InterruptHandlerType)(void);
 
 /*==================[external data declaration]==============================*/
-extern InterruptType InterruptTable[INTERUPTS_COUNT];
+extern InterruptHandlerType InterruptTable[INTERUPTS_COUNT];
 
 /*==================[external functions declaration]=========================*/
 

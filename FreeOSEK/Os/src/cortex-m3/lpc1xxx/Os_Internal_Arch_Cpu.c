@@ -1,6 +1,7 @@
 /* Copyright 2008, 2009, Mariano Cerdeiro
- *
- * This file is part of FreeOSEK.
+ * Copyright 2011 Sebastián Viviani
+ * 
+ *  * This file is part of FreeOSEK.
  *
  * FreeOSEK is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +39,8 @@
 
 /** \brief FreeOSEK Os Internal ARCH CPU Dependece Implementation File
  **
- ** \file arm7/lpc2xxx/Os_Internal_Arch_Cpu.c
- ** \arch arm7/lpc2xxx
+ ** \file cortex-m3/lpc1xxx/Os_Internal_Arch_Cpu.c
+ ** \arch cortex-m3/lpc1xxx
  **/
 
 /** \addtogroup FreeOSEK
@@ -53,14 +54,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
+ * SLV			Sebastián Viviani
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090719 v0.1.2 MaCe rename file to Os_
- * 20090329 v0.1.1 MaCe replace binary representation with hex one
- * 20090227 v0.1.0 MaCe initial version
+ * 20110126 v0.1.0 SLV imported from arm7 0.1.2
  */
 
 /*==================[inclusions]=============================================*/
@@ -117,18 +117,19 @@ void StartOs_Arch_Cpu
 	
 
 	/* enable TIMER0 interrupt */
-	//((VICType*)VIC_BASE_ADDR)->IntEnable |= 1<<4;
-	//NVIC->ISER |= 1<<4;
 	NVIC_EnableIRQ( TIMER0_IRQn );
 #endif /* #if (ALARMS_COUNT != 0) */
 
 	/* enable interrupts */
+	__enable_irq();
+/*
 	__asm__ __volatile__
 	("											\
 		MRS R7, CPSR 				\n\t	\
 		AND R7, R7, #0xFFFFFF9F \n\t	\
 		MSR CPSR, R7				\n\t	\
 	 " : : : "r7" );
+	 */
 }
 
 /** @} doxygen end group definition */

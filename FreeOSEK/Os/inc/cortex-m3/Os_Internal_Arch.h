@@ -1,4 +1,5 @@
 /* Copyright 2008, 2009, Mariano Cerdeiro
+ * Copyright 2011 		Sebastián Viviani
  *
  * This file is part of FreeOSEK.
  *
@@ -40,8 +41,8 @@
 #define _OS_INTERNAL_ARCH_H_
 /** \brief FreeOSEK Os Internal Architecture Dependent Header File
  **
- ** \file arm7/Os_Internal_Arch.h
- ** \arch arm7
+ ** \file cortex-m3/Os_Internal_Arch.h
+ ** \arch cortex-m3
  **/
 
 /** \addtogroup FreeOSEK
@@ -55,15 +56,13 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
+ * SLV			Sebastián Viviani
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090719 v0.1.3 MaCe rename file to Os_
- * 20090408 v0.1.2 Mace add ShutdownOs_Arch
- * 20090221 v0.1.1 MaCe port this file to ARM7 architecture
- * 20081116 v0.1.0 MaCe	initial version
+ * 20110126 v0.1.0 Import from arm7 0.1.3, commented setArm7 macro
  */  
 
 /*==================[inclusions]=============================================*/
@@ -300,7 +299,7 @@
  **					MODE_ABT to set to abort mode
  **					MODE_UND to set to undefined mode
  **					MODE_SYS to set to system mode
- **/
+ **
 #define SetArm7Mode(mode)			\
 	{										\
 		__asm__ __volatile__ (		\
@@ -309,7 +308,7 @@
 			"MSR CPSR_c, R7	\t\n"	\
 		);									\
 	}
-
+*/
 /** \brief ShutdownOs Arch service
  **/
 #define	ShutdownOs_Arch()

@@ -1,4 +1,6 @@
 /* Copyright 2008, 2009, Mariano Cerdeiro
+ * Copyright 2011 Sebastián Viviani
+ * 
  *
  * This file is part of FreeOSEK.
  *
@@ -43,8 +45,8 @@
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file arm7/Os_Arch.h
- ** \arch arm7
+ ** \file cortex-m3/Os_Arch.h
+ ** \arch cortex-m3
  **
  **/
 
@@ -59,46 +61,36 @@
  * Initials     Name
  * ---------------------------
  * MaCe			 Mariano Cerdeiro
+ * SLV			Sebastián Viviani
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090719 v0.1.1 MaCe rename file to Os_
- * 20080725 v0.1.0 MaCe	initial version
+ * 20110126 v0.1.0 imported from arm7 0.1.1, changed enable/disable all interrupts macro
+ * 					TODO check that cm3.h macros affect ALL interrupts
  */  
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
 /** \brief Enable All Interrupts Arch */
-#define EnableAllInterrupts_Arch()	ResumeAllInterrupts_Arch()
+#define EnableAllInterrupts_Arch()	__enable_irq()
 
 /** \brief Disable All Interrupts Arch */
-#define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
+#define DisableAllInterrupts_Arch() __disable_irq()
 
 /** \brief Resume All Interrupts Arch */
 #define ResumeAllInterrupts_Arch()						\
 	{																\
-		__asm__ __volatile__ (								\
-			"mrs r7, CPSR								\t\n"	\
-			"and r7, r7, #0xFFFFFF3F				\t\n"	\
-			"msr CPSR, r7								\t\n"	\
-			: : : "r7"											\
-		);															\
 	}
 
 /** \brief Suspend All Interrupts Arch */
 #define SuspendAllInterrupts_Arch()						\
 	{																\
-		__asm__ __volatile__ (								\
-			"mrs r7, CPSR								\t\n"	\
-			"orr r7, r7, #0xC0						\t\n"	\
-			"msr CPSR, r7								\t\n"	\
-			: : : "r7"											\
-		);															\
 	}
-					\
+					
+					
 /** \brief Resume OS Interrupts Arch */
 #define ResumeOSInterrupts_Arch()						\
 	{																\
