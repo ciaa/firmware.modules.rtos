@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, Mariano Cerdeiro
+/* Copyright 2011 Tamas Kenderes
  *
  * This file is part of FreeOSEK.
  *
@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ *             
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -36,48 +36,47 @@
  *
  */
 
-/** \brief FreeOSEK Os Internal Arch Implementation File
+/** \brief FreeOSEK Driver Mcu Init Arch implementation file
  **
- ** \file arm7/Os_Internal_Arch.c
- ** \arch arm7
+ ** This file implements the Mcu_InitClock_Arch API
+ **
+ ** The implementation is based on the file board_lowlevel.c in at91lib
+ ** supplied by Atmel Corporation.
+ **
+ ** \file arm7/at91sam7x/Mcu_InitClock_Arch.c
+ ** \arch arm7/at91sam7x
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Os
+/** \addtogroup FreeOSEK_Drv
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup FreeOSEK_Drv_Mcu
+ ** @{ */
+/** \addtogroup FreeOSEK_Drv_Mcu_Internal
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
  * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20111015 v0.1.3 KT	renamed interrupt handlers, modified
- * 							TimerIrqHandler_Arch() to use ClearTimerInterrupt_Cpu()
- * 20090719 v0.1.2 MaCe rename file to Os_
- * 20090330 v0.1.1 MaCe add NO_EVENTS and NON_PREEMPTIVE evaluation and
- *								improvement of FIQ_Routine
- * 20081116 v0.1.0 MaCe initial version
+ * 20111015 v0.1.0 KT	initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal.h"
+#include "Mcu_Internal.h"
+#include "Mcu_Internal_Arch.h"
 
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
-void* Osek_NewTaskPtr_Arch;
-
-void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -86,99 +85,46 @@ void* Osek_OldTaskPtr_Arch;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void TimerIrqHandler_Arch
+/** TODO */
+/* #define OpenDRV_MCU_START_SEC_CODE
+ * #include "MemMap.h" */
+
+Std_ReturnType Mcu_InitClock_Arch
 (
-	void
+	Mcu_ClockType ClockSettings
 )
 {
-#if (ALARMS_COUNT != 0)
-	/* to save the context during the interrupt */
-	ContextType context;
-	/* counter increment */
-	static CounterIncrementType CounterIncrement = 1;
+	/*
+	 * Initialize main oscillator
+	 */
+	AT91C_BASE_PMC->PMC_MOR = MCU_OSCOUNT | AT91C_CKGR_MOSCEN;
+	while (!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_MOSCS));
 
-	/* increment the disable interrupt conter to avoid enable the interrupts */
-	SuspendAllInterrupts_Counter++;
+	/* Initialize PLL at 96MHz (96.109) and USB clock to 48MHz */
+	AT91C_BASE_PMC->PMC_PLLR = MCU_USBDIV | MCU_CKGR_PLL | MCU_PLLCOUNT |
+		MCU_MUL | MCU_DIV;
+	while (!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_LOCK));
 
-	/* save actual context */
-	context = GetCallingContext();
+	/* Wait for the master clock if it was already initialized */
+	while (!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_MCKRDY));
 
-	/* set context to CONTEXT_DBG */
-	SetActualContext(CONTEXT_DBG);
+	/*
+	 * Switch to fast clock
+	 */
+	/* Switch to slow clock + prescaler */
+	AT91C_BASE_PMC->PMC_MCKR = MCU_PRESCALER;
+	while (!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_MCKRDY));
 
-	/* call counter interrupt handler */
-	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
-
-	/* interrupt has to be called first after so many CounterIncrement */
-	/* SetCounterTime(CounterIncrement); */ /* TODO FIXME */
-
-	/* set context back */
-	SetActualContext(context);
-
-	/* set the disable interrupt counter back */
-	SuspendAllInterrupts_Counter--;
-#endif /* #if (ALARMS_COUNT != 0) */
-
-	/* clear timer interrupt flag */
-	ClearTimerInterrupt_Cpu();
-
-#if 0 /* TODO */
-#if (NON_PREEMPTIVE == DISABLE)
-		/* check if interrupt a Task Context */
-		if ( GetCallingContext() ==  CONTEXT_TASK )
-		{
-			if ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )
-			{
-				/* \req TODO Rescheduling shall take place only if interrupt a
-				 * preemptable task. */
-				(void)Schedule();
-			}
-		}
-#endif /* #if (NON_PREEMPTIVE == ENABLE) */
-#endif
+	/* Switch to fast clock + prescaler */
+	AT91C_BASE_PMC->PMC_MCKR |= AT91C_PMC_CSS_PLL_CLK;
+	while (!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_MCKRDY));
 }
 
-void DefaultIrqHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
+/** TODO */
+/* #define OpenDRV_MCU_STOP_SEC_CODE
+ * #include "MemMap.h" */
 
-void DefaultFiqHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultSwiHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultUndefHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultAbortHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

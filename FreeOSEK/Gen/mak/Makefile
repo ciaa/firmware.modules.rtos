@@ -51,8 +51,7 @@ SPLINT +=
 ###############################################################################
 # rules
 Gen.a : $(GEN_OBJ)
-	ar -rcs $(LIBDIR)$(DIR)Gen.a $(foreach obj, $(GEN_OBJ), $(OBJDIR)$(DIR)$(obj))
+	$(AR) -rcs $(LIBDIR)$(DIR)Gen.a $(foreach obj, $(GEN_OBJ), $(OBJDIR)$(DIR)$(obj))
 # generation rule #
 Gengen:
-	php FreeOSEK$(DIR)Gen$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)	
-
+	php FreeOSEK$(DIR)Gen$(DIR)gen$(DIR)generator.php --cmdline -l -v -c $(CFGFILES) -f $(GENFILES) -o $(GENDIR)

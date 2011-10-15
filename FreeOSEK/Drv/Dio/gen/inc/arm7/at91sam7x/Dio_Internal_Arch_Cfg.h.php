@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALLY*
  *********************************************************/
 
-/* Copyright 2008, 2009, Mariano Cerdeiro
+/* Copyright 2011 Tamas Kenderes
  *
  * This file is part of FreeOSEK.
  *
@@ -40,114 +40,120 @@
  *
  */
 
-<?php
-/** \brief Dio Driver File to be Generated
+/** \brief FreeOSEK Driver Dio Internal Arch Header File to be Generated
  **
- ** \file Dio_Cfg.h.php
+ ** \file Dio_Internal_Arch_Cfg.h.php
  **/
-?>
 
-#ifndef _DIO_CFG_H_
-#define _DIO_CFG_H_
-/** \brief Driver DIO Generated Configuration Header File
+#ifndef _DIO_INTERNAL_ARCH_CFG_H_
+#define _DIO_INTERNAL_ARCH_CFG_H_
+/** \brief FreeOSEK Driver Dio Internal Arch Generated Configuration Header File
  **
- ** This file contents the generated configuration of the IO Driver
+ ** This file contents the generated configuration of the Dio Driver
  **
- ** \file Dio_Cfg.h
+ ** \file Dio_Internal_Arch_Cfg.h
  **/
 
 /** \addtogroup FreeOSEK
- ** @{ */
+ ** @{ */ 
 /** \addtogroup FreeOSEK_Drv
- ** @{ */  
+ ** @{ */
 /** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio_Global
+/** \addtogroup FreeOSEK_Drv_Dio_Internal
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
  * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20111015 v0.1.2 KT	improved algorithm for port names with letters
- * 20090213 v0.1.1 MaCe	rename Io driver to Dio
- * 20090125 v0.1.0 MaCe	initial version
- */  
+ * 20111015 v0.1.0 KT	initial version
+ */
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-/** \brief Dio Development Error Detection Macro */
-/* \req DIO071 The DioDevErrorDetect enables the development error detection.
- * (ENABLE the development error detection is enable, DISABLE the development
- * error detection is disable)
- */
-/* \dev The DioDevErrorDetect macro can be ENABLE or DISABLE, this is not
- * conform to the specification */
 <?php
+$port_mask = array_fill(0, 2, 0);
+$port_dir = array_fill(0, 2, 0);
 
-$diogen = $config->getList("/DRV/Dio","GENERAL");
-if (count($diogen)!=1)
-{
-	error("Wrong count of Dio Driver GENERAL parameters on the configuration, only one is allowed");
-}
-else
-{
-	$diodet = $config->getValue("/DRV/Dio/" . $diogen[0],"DET");
-	if($diodet == "")
-	{
-		warning("DET not configured for Dio Driver taking ENABLE as default");
-		$diodet = "TRUE";
-	}
-	if($diodet == "FALSE")
-	{
-		print "#define DioDevErrorDetect DISABLE\n\n";
-	}
-	elseif($diodet == "TRUE")
-	{
-		print "#define DioDevErrorDetect ENABLE\n\n";
-	}
-	else
-	{
-		error("Wrong DET configuration of the Dio Driver");
-	}
-}
-
-
-$dioconfig = $config->getList("/DRV/Dio","CONFIG");
-
-if(count($dioconfig)!=1)
-{
-	error("Wrong count of Dio Driver configurations, at the moment only 1 config is allowed for the Dio driver");
-}
-
-$diochannels = $config->getList("/DRV/Dio/" . $dioconfig[0],"CHANNEL");
-$count = 0;
 foreach($diochannels as $dioc)
 {
 	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
 	$port_txt = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	if(ord(strtoupper($port_txt[0])) >= ord('A'))
+	$port = ord(strtoupper($port_txt[0])) - ord('A');
+	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
+	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
+	if (($port < 0) || ($port > 1))
 	{
-		$port = ord(strtoupper($port_txt[0])) - ord('A');
+		error("Invalid port number in Dio channel " . $dioc);
+	}
+	elseif($pin > 30)
+	{
+		error("Invalid pin number in Dio channel " . $dioc);
+	}
+	elseif( ($dir != "INPUT") &&
+			($dir != "OUTPUT"))
+	{
+		error("Invalid direction in Dio channel " . $dioc);
 	}
 	else
 	{
-		$port = $port_txt;
+		$port_mask[$port] |= 1 << $pin;
+		if($dir == "OUTPUT")
+		{
+			$port_dir[$port] |= 1 << $pin;
+		}
 	}
-	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
-	print "/** \brief Define Dio Channel $dioc - port: $port_txt - pin: $pin */\n";
-	print "#define " . $name . "	" . ($port * 32 + $pin) . "\n\n";
-	$count++;
 }
 
+$current_port = 'A';
+foreach($port_mask as $pm)
+{
+	print "/** \brief Dio Port $current_port state\n";
+	print " **\n";
+	print " ** if ENABLE the port will be used in Dio Driver\n";
+	print " ** if DISABLE the port will not be used in Dio Driver\n";
+	print " **/\n";
+	if($pm != 0)
+	{
+		print "#define DIO_PORT" . $current_port . "_STATE	ENABLE\n\n";
+	}
+	else
+	{
+		print "#define DIO_PORT" . $current_port . "_STATE	DISABLE\n\n";
+	}
+	$current_port++;
+}
+
+$current_port = 'A';
+foreach($port_mask as $pm)
+{
+	print "/** \brief Mask of the Dio Port $current_port\n";
+	print " **\n";
+	print " ** bit n 0 indicate the bit of the port $current_port is not used\n";
+	print " ** bit n 1 indicate the bit of the port $current_port is used\n";
+	print " **/\n";
+	print "#define DIO_PORT" . $current_port . "_MASK	0x" . dechex($pm) . "\n\n";
+	$current_port++;
+}
+
+$current_port = 'A';
+foreach($port_dir as $pd)
+{
+	print "/** \brief Direction of the Dio Port $current_port\n";
+	print " **\n";
+	print " ** bit n 0 indicate the bit of the port $current_port is an input\n";
+	print " ** bit n 1 indicate the bit of the port $current_port is an output\n";
+	print " **/\n";
+	print "#define DIO_PORT" . $current_port . "_DIR	0x" . dechex($pd) . "\n\n";
+	$current_port++;
+}
 ?>
 
 /*==================[typedef]================================================*/
@@ -161,5 +167,5 @@ foreach($diochannels as $dioc)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_CFG_H_ */
+#endif /* #ifndef _DIO_INTERNAL_ARCH_CFG_H_ */
 

@@ -1,6 +1,6 @@
 ############################################################################### 
 #
-# Copyright 2008, Mariano Cerdeiro
+# Copyright 2011, Tamas Kenderes
 #
 # This file is part of FreeOSEK.
 #
@@ -25,19 +25,18 @@
 ##############################################################################
 # definitions
 
-# GCC ARM tools chains #
-CC = arm-gcc
-LD = arm-ld
-AR = arm-ar
-AS = arm-as
-GDB = arm-gdb
-NM = arm-nm
+# configuration for using the Yagarto toolchain #
+CC = arm-none-eabi-gcc
+LD = arm-none-eabi-ld
+AR = arm-none-eabi-ar
+AS = arm-none-eabi-as
+GDB = arm-none-eabi-gdb
+NM = arm-none-eabi-nm
 
 # debug options #
-GDBO += -x FreeOSEK$(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(COMPILER)$(DIR)debug.scr
+#GDBO += -x FreeOSEK(DIR)Gen$(DIR)mak$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)$(COMPILER)$(DIR)debug.scr
 
 # compiler options for ARM with GCC Compiler #
-#CFLAGS += -c -Wall
-CFLAGS += -c -fno-common -O3 -g -fno-builtin
+CFLAGS += -c -Wall -fno-common -O0 -g -fno-builtin
 LFLAGS += $(LINKSCRIPT) -Map $(BINDIR)$(DIR)$(BIN).map
 AFLAGS += -mapcs-32 -mfpu=softfpa

@@ -54,17 +54,25 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
+ * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20111015 v0.1.4 KT	updated the declarations of interrupt handlers
  * 20090719 v0.1.3 MaCe rename file to Os_
  * 20090408 v0.1.2 Mace add ShutdownOs_Arch
  * 20090221 v0.1.1 MaCe port this file to ARM7 architecture
  * 20081116 v0.1.0 MaCe	initial version
- */  
+ */
+
+/*==================[cputype macros]=========================================*/
+/** \brief arm7 cputype definition */
+#define lpc2xxx	1
+/** \brief arm7 cputype definition */
+#define at91sam7x	2
 
 /*==================[inclusions]=============================================*/
 
@@ -330,23 +338,37 @@ extern void* Osek_NewTaskPtr_Arch;
 extern void* Osek_OldTaskPtr_Arch;
 
 /*==================[external functions declaration]=========================*/
-/** \brief IRQ Interupt
- **/
-void IRQ_Routine (void)   __attribute__ ((interrupt("IRQ")));
-
-/** \brief FIQ Interupt
+/** \brief Timer IRQ Handler
  **
- ** This function implements the Fast Interruption
+ ** This function shall be called on every tick of the system counter.
+ ** On the lpc2xxx architecture, this function is used as the FIQ handler,
+ ** on at91sam7x, this function is the IRQ handler of the PIT timer.
  **/
-void FIQ_Routine (void)   __attribute__ ((interrupt("FIQ")));
+#if (CPUTYPE == lpc2xxx)
+void TimerIrqHandler_Arch (void)    __attribute__ ((interrupt("FIQ")));
+#else
+void TimerIrqHandler_Arch (void);
+#endif
 
-/** \brief SWI Interrupt
+/** \brief Default IRQ Handler
  **/
-void SWI_Routine (void)   __attribute__ ((interrupt("SWI")));
+void DefaultIrqHandler_Arch (void)  __attribute__ ((interrupt("IRQ")));
 
-/** \brief UNDEF Instruction Interrupt
+/** \brief Default FIQ Handler
  **/
-void UNDEF_Routine (void) __attribute__ ((interrupt("UNDEF")));
+void DefaultFiqHandler_Arch (void);  __attribute__ ((interrupt("FIQ")));
+
+/** \brief Default SWI Handler
+ **/
+void DefaultSwiHandler_Arch (void)   __attribute__ ((interrupt("SWI")));
+
+/** \brief Default UNDEF Handler
+ **/
+void DefaultUndefHandler_Arch (void) __attribute__ ((interrupt("UNDEF")));
+
+/** \brief Default PAbt/DAbt Handler
+ **/
+void DefaultAbortHandler_Arch (void) __attribute__ ((interrupt("ABORT")));
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

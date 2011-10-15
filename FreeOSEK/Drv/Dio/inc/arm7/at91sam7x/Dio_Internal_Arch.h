@@ -1,8 +1,4 @@
-/*********************************************************
- * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALLY*
- *********************************************************/
-
-/* Copyright 2008, 2009, Mariano Cerdeiro
+/* Copyright 2011 Tamas Kenderes
  *
  * This file is part of FreeOSEK.
  *
@@ -40,126 +36,53 @@
  *
  */
 
-<?php
-/** \brief Dio Driver File to be Generated
+#ifndef _DIO_INTERNAL_ARCH_H_
+#define _DIO_INTERNAL_ARCH_H_
+/** \brief FreeOSEK Driver Dio Internal Architecture Header File
  **
- ** \file Dio_Cfg.h.php
- **/
-?>
-
-#ifndef _DIO_CFG_H_
-#define _DIO_CFG_H_
-/** \brief Driver DIO Generated Configuration Header File
+ ** \file Dio_Internal_Arch.h
  **
- ** This file contents the generated configuration of the IO Driver
- **
- ** \file Dio_Cfg.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Drv
- ** @{ */  
+ ** @{ */
 /** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
-/** \addtogroup FreeOSEK_Drv_Dio_Global
+/** \addtogroup FreeOSEK_Drv_Dio_Internal
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
  * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20111015 v0.1.2 KT	improved algorithm for port names with letters
- * 20090213 v0.1.1 MaCe	rename Io driver to Dio
- * 20090125 v0.1.0 MaCe	initial version
- */  
+ * 20111015 v0.1.0 KT	initial version
+ */
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-/** \brief Dio Development Error Detection Macro */
-/* \req DIO071 The DioDevErrorDetect enables the development error detection.
- * (ENABLE the development error detection is enable, DISABLE the development
- * error detection is disable)
- */
-/* \dev The DioDevErrorDetect macro can be ENABLE or DISABLE, this is not
- * conform to the specification */
-<?php
-
-$diogen = $config->getList("/DRV/Dio","GENERAL");
-if (count($diogen)!=1)
-{
-	error("Wrong count of Dio Driver GENERAL parameters on the configuration, only one is allowed");
-}
-else
-{
-	$diodet = $config->getValue("/DRV/Dio/" . $diogen[0],"DET");
-	if($diodet == "")
-	{
-		warning("DET not configured for Dio Driver taking ENABLE as default");
-		$diodet = "TRUE";
-	}
-	if($diodet == "FALSE")
-	{
-		print "#define DioDevErrorDetect DISABLE\n\n";
-	}
-	elseif($diodet == "TRUE")
-	{
-		print "#define DioDevErrorDetect ENABLE\n\n";
-	}
-	else
-	{
-		error("Wrong DET configuration of the Dio Driver");
-	}
-}
-
-
-$dioconfig = $config->getList("/DRV/Dio","CONFIG");
-
-if(count($dioconfig)!=1)
-{
-	error("Wrong count of Dio Driver configurations, at the moment only 1 config is allowed for the Dio driver");
-}
-
-$diochannels = $config->getList("/DRV/Dio/" . $dioconfig[0],"CHANNEL");
-$count = 0;
-foreach($diochannels as $dioc)
-{
-	$name = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "NAME");
-	$port_txt = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PORT");
-	if(ord(strtoupper($port_txt[0])) >= ord('A'))
-	{
-		$port = ord(strtoupper($port_txt[0])) - ord('A');
-	}
-	else
-	{
-		$port = $port_txt;
-	}
-	$pin = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "PIN");
-	$dir = $config->getValue("/DRV/Dio/" . $dioconfig[0] . "/" . $dioc, "DIRECTION");
-	print "/** \brief Define Dio Channel $dioc - port: $port_txt - pin: $pin */\n";
-	print "#define " . $name . "	" . ($port * 32 + $pin) . "\n\n";
-	$count++;
-}
-
-?>
 
 /*==================[typedef]================================================*/
 
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
+Dio_ReturnType Dio_Init_Arch
+(
+	Dio_ConfigRefType config
+);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _DIO_CFG_H_ */
+#endif /* #ifndef _DIO_INTERNAL_ARCH_H_ */
 

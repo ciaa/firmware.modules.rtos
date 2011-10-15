@@ -1,6 +1,8 @@
 ##############################################################################
 # add library
 #
+-include FreeOSEK$(DIR)Os$(DIR)mak$(DIR)$(ARCH)$(DIR)$(CPUTYPE)$(DIR)Makefile
+
 OS_OBJ +=	Os_Internal_Arch_Cpu.o
 
 VPATH		+=		FreeOSEK$(DIR)Os$(DIR)src$(DIR)$(ARCH)$(DIR)$(CPUTYPE)

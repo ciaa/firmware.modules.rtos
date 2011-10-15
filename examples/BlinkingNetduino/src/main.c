@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, Mariano Cerdeiro
+/* Copyright 2011 Tamas Kenderes
  *
  * This file is part of FreeOSEK.
  *
@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ *             
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -36,48 +36,42 @@
  *
  */
 
-/** \brief FreeOSEK Os Internal Arch Implementation File
+/** \brief BlinkingNetduino main
  **
- ** \file arm7/Os_Internal_Arch.c
- ** \arch arm7
+ ** This file implements the BlinkingNetduino example
+ **
+ ** \file BlinkingNetduino/src/main.c
+ **
  **/
 
-/** \addtogroup FreeOSEK
+/** \addtogroup Examples Examples
  ** @{ */
-/** \addtogroup FreeOSEK_Os
- ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup BlinkingNetduino BlinkingNetduino
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
  * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20111015 v0.1.3 KT	renamed interrupt handlers, modified
- * 							TimerIrqHandler_Arch() to use ClearTimerInterrupt_Cpu()
- * 20090719 v0.1.2 MaCe rename file to Os_
- * 20090330 v0.1.1 MaCe add NO_EVENTS and NON_PREEMPTIVE evaluation and
- *								improvement of FIQ_Routine
- * 20081116 v0.1.0 MaCe initial version
+ * 20111015 v0.1.0 KT	initial version based on the FreeOSEK Blinking example
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal.h"
+#include "os.h"		/* OSEK header file */
+#include "Mcu.h"		/* MCU Driver header file */
+#include "Dio.h"		/* DIO Driver header file */
 
 /*==================[macros and definitions]=================================*/
+#define SET_LED0(val)	Dio_WriteChannel(LED0, (val == 0) ? DIO_LOW : DIO_HIGH)
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
-void* Osek_NewTaskPtr_Arch;
-
-void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -86,100 +80,75 @@ void* Osek_OldTaskPtr_Arch;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void TimerIrqHandler_Arch
+/** \brief main function
+ **
+ ** Project main function. This function is called after the C conformance
+ ** initialization. This function shall call the StartOS() in the right
+ ** Application Mode. The function StartOS() shall never return.
+ **
+ **/
+int main
 (
 	void
 )
 {
-#if (ALARMS_COUNT != 0)
-	/* to save the context during the interrupt */
-	ContextType context;
-	/* counter increment */
-	static CounterIncrementType CounterIncrement = 1;
+	/* init MCU Driver */
+	Mcu_Init((Mcu_ConfigRefType)NULL);
 
-	/* increment the disable interrupt conter to avoid enable the interrupts */
-	SuspendAllInterrupts_Counter++;
+	/* init Clock */
+	(void)Mcu_InitClock((Mcu_ClockType)0);
 
-	/* save actual context */
-	context = GetCallingContext();
+	/* init DIO Driver */
+	(void)Dio_Init((Dio_ConfigRefType)NULL);
 
-	/* set context to CONTEXT_DBG */
-	SetActualContext(CONTEXT_DBG);
-
-	/* call counter interrupt handler */
-	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
-
-	/* interrupt has to be called first after so many CounterIncrement */
-	/* SetCounterTime(CounterIncrement); */ /* TODO FIXME */
-
-	/* set context back */
-	SetActualContext(context);
-
-	/* set the disable interrupt counter back */
-	SuspendAllInterrupts_Counter--;
-#endif /* #if (ALARMS_COUNT != 0) */
-
-	/* clear timer interrupt flag */
-	ClearTimerInterrupt_Cpu();
-
-#if 0 /* TODO */
-#if (NON_PREEMPTIVE == DISABLE)
-		/* check if interrupt a Task Context */
-		if ( GetCallingContext() ==  CONTEXT_TASK )
-		{
-			if ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )
-			{
-				/* \req TODO Rescheduling shall take place only if interrupt a
-				 * preemptable task. */
-				(void)Schedule();
-			}
-		}
-#endif /* #if (NON_PREEMPTIVE == ENABLE) */
-#endif
+	/* Start OSEK */
+	StartOS(AppMode1);
 }
 
-void DefaultIrqHandler_Arch
-(
-	void
-)
+/** \brief Init Task
+ **
+ ** This task is called one time after every reset and takes care of
+ ** the system initialization.
+ **/
+TASK(InitTask)
 {
-	while (1);
+	/* Insert code here */
+
+	/* Terminate Init Task */
+	TerminateTask();
 }
 
-void DefaultFiqHandler_Arch
-(
-	void
-)
+/** \brief LED Task
+ **
+ ** This task toggles the LED.
+ **/
+TASK(LedTask)
 {
-	while (1);
+	static uint8 led0 = 0;
+	
+	/* check actual state of the LED */
+	switch (led0) {
+		case 0:
+			/* turn off the LED */
+			SET_LED0(1);
+			/* save LED status */
+			led0 = 1;
+			break;
+		case 1:
+			/* turn on the LED */
+			SET_LED0(0);
+			/* save LED status */
+			led0 = 0;
+			break;
+		default:
+			/* shall never happen */
+			break;
+	}
+
+	/* Terminate Leds Task */
+	TerminateTask();
 }
 
-void DefaultSwiHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultUndefHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultAbortHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-
-/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

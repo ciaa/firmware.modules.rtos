@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, Mariano Cerdeiro
+/* Copyright 2011 Tamas Kenderes
  *
  * This file is part of FreeOSEK.
  *
@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ *             
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -36,149 +36,98 @@
  *
  */
 
-/** \brief FreeOSEK Os Internal Arch Implementation File
+/** \brief FreeOSEK Driver Dio Init Arch Implementation File
  **
- ** \file arm7/Os_Internal_Arch.c
- ** \arch arm7
+ ** This file implements the Dio_Init_Arch API
+ **
+ ** \file arm7/at91sam7x/Dio_Init_Arch.c
+ ** \arch arm7/at91sam7x
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
-/** \addtogroup FreeOSEK_Os
+/** \addtogroup FreeOSEK_Drv
+ ** @{ */  
+/** \addtogroup FreeOSEK_Drv_Dio
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup FreeOSEK_Drv_Dio_Global
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
  * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20111015 v0.1.3 KT	renamed interrupt handlers, modified
- * 							TimerIrqHandler_Arch() to use ClearTimerInterrupt_Cpu()
- * 20090719 v0.1.2 MaCe rename file to Os_
- * 20090330 v0.1.1 MaCe add NO_EVENTS and NON_PREEMPTIVE evaluation and
- *								improvement of FIQ_Routine
- * 20081116 v0.1.0 MaCe initial version
+ * 20111015 v0.1.0 KT	initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal.h"
+#include "Dio_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
-void* Osek_NewTaskPtr_Arch;
-
-void* Osek_OldTaskPtr_Arch;
+static void InitPort_Arch(AT91S_PIO *pio, uint32 mask, uint32 dir);
 
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
+/** \brief Initializes PIO port
+ **
+ ** \param[in] pio  A handle to the PIO controller to use (AT91C_BASE_PIOx)
+ ** \param[in] mask Mask: every bit of this uint32 variable represents a pin
+ ** of the current PIO peripheral. 0 = pin is not used, 1 = pin is used.
+ ** \param[in] dir  Direction mask: every bit of this uint32 variable
+ ** represents a pin of the current PIO peripheral. 0 = input, 1 = output.
+ **/
+static void InitPort_Arch(AT91S_PIO *pio, uint32 mask, uint32 dir)
+{
+	/* enable pins in use */
+	pio->PIO_PER = mask;
+
+	/* disable interrupts and pullup resistors for pins in use */
+	pio->PIO_IDR = mask;
+	pio->PIO_PPUDR = mask;
+
+	/* set default output to 0 for output pins in use */
+	pio->PIO_CODR = mask;
+
+	/* set the direction of the pins */
+	pio->PIO_ODR = ~mask;
+	pio->PIO_OER = mask;
+}
 
 /*==================[external functions definition]==========================*/
-void TimerIrqHandler_Arch
+/** TODO */
+/* #define OpenDRV_DIO_START_SEC_CODE
+ * #include "MemMap.h" */
+
+Dio_ReturnType Dio_Init_Arch
 (
-	void
+	Dio_ConfigRefType config
 )
 {
-#if (ALARMS_COUNT != 0)
-	/* to save the context during the interrupt */
-	ContextType context;
-	/* counter increment */
-	static CounterIncrementType CounterIncrement = 1;
-
-	/* increment the disable interrupt conter to avoid enable the interrupts */
-	SuspendAllInterrupts_Counter++;
-
-	/* save actual context */
-	context = GetCallingContext();
-
-	/* set context to CONTEXT_DBG */
-	SetActualContext(CONTEXT_DBG);
-
-	/* call counter interrupt handler */
-	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
-
-	/* interrupt has to be called first after so many CounterIncrement */
-	/* SetCounterTime(CounterIncrement); */ /* TODO FIXME */
-
-	/* set context back */
-	SetActualContext(context);
-
-	/* set the disable interrupt counter back */
-	SuspendAllInterrupts_Counter--;
-#endif /* #if (ALARMS_COUNT != 0) */
-
-	/* clear timer interrupt flag */
-	ClearTimerInterrupt_Cpu();
-
-#if 0 /* TODO */
-#if (NON_PREEMPTIVE == DISABLE)
-		/* check if interrupt a Task Context */
-		if ( GetCallingContext() ==  CONTEXT_TASK )
-		{
-			if ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )
-			{
-				/* \req TODO Rescheduling shall take place only if interrupt a
-				 * preemptable task. */
-				(void)Schedule();
-			}
-		}
-#endif /* #if (NON_PREEMPTIVE == ENABLE) */
+#if (DIO_PORTA_STATE == ENABLE)
+	InitPort_Arch(AT91C_BASE_PIOA, DIO_PORTA_MASK, DIO_PORTA_DIR);
+#endif
+#if (DIO_PORTB_STATE == ENABLE)
+	InitPort_Arch(AT91C_BASE_PIOB, DIO_PORTB_MASK, DIO_PORTB_DIR);
 #endif
 }
 
-void DefaultIrqHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
+/** TODO */
+/* #define OpenDRV_DIO_STOP_SEC_CODE
+ * #include "MemMap.h" */
 
-void DefaultFiqHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultSwiHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultUndefHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-void DefaultAbortHandler_Arch
-(
-	void
-)
-{
-	while (1);
-}
-
-
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

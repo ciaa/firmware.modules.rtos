@@ -54,12 +54,14 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
+ * KT           Tamas Kenderes
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20111015 v0.1.2 KT	added macro definition ClearTimerInterrupt_Cpu()
  * 20090719 v0.1.1 MaCe rename file to Os_
  * 20090227 v0.1.0 MaCe	initial version
  */  
@@ -183,6 +185,12 @@
 #else
 #error VICVectAddrSIZE not defined
 #endif
+
+/** \brief CPU-dependent implementation of clearing timer interrupt flag */
+#define ClearTimerInterrupt_Cpu() \
+{ \
+	T0IR |= 1; \
+}
 
 /*==================[typedef]================================================*/
 /** \brief VIC type definition

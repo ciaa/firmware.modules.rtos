@@ -63,7 +63,7 @@ INCLUDE += 	-IFreeOSEK$(DIR)Os$(DIR)inc 												\
 Os.a : $(OS_OBJ)
 	@echo
 	@echo create OS library
-	ar -rcs $(LIBDIR)$(DIR)Os.a $(foreach obj, $(OS_OBJ), $(OBJDIR)$(DIR)$(obj))
+	$(AR) -rcs $(LIBDIR)$(DIR)Os.a $(foreach obj, $(OS_OBJ), $(OBJDIR)$(DIR)$(obj))
 
 SPLINT +=	FreeOSEK$(DIR)Os$(DIR)src$(DIR)*.c											\
 				FreeOSEK$(DIR)Os$(DIR)src$(DIR)$(ARCH)*.c									\
