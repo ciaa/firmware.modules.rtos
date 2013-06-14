@@ -76,6 +76,7 @@
 #include "unistd.h"		/* used to create a fork to poll the interrupts */
 #include "stdlib.h"		/* used to call exit to terminate the process */
 #include "time.h"			/* used to simulate the hardware timer */
+#include "string.h"     /* used to call the function strerror */
 
 /*==================[macros]=================================================*/
 /** \brief Interrupt Secure Start Macro
@@ -197,10 +198,6 @@
  **/
 #define PreCallService() 		\
 	{									\
-		/* save osek stack */	\
-		__asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (OsekStack) : : "eax"); \
-		/* get windows stack */	\
-		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (PosixStack) ); \
 	}
 
 /** \brief Post Call Service
@@ -209,8 +206,6 @@
  **/
 #define PostCallService()		\
 	{									\
-		/* get windows stack */ \
-		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (OsekStack) ); \
 	}
 
 /** \brief ShutdownOs Arch service

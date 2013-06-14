@@ -111,7 +111,7 @@ void StartOs_Arch(void)
  	 *		- if the queue exists return an error
  	 *		- 
  	 */
-	MessageQueue = mq_open("/FreeOSEK", O_RDWR | O_CREAT | O_EXCL | O_NONBLOCK, 0666, &MessageQueueAttr);
+	MessageQueue = mq_open("/FreeOSEK", O_RDWR | O_CREAT | O_NONBLOCK, 0666, &MessageQueueAttr);
 	if (MessageQueue == (mqd_t)-1)
 	{
 		switch (errno)
@@ -122,13 +122,13 @@ void StartOs_Arch(void)
 			default:
 				break;
 		}
-		printf ("Error: Message Queue for interrupts can not be configured, error number: %d\n",errno);
+		printf ("Error: Message Queue for interrupts can not be configured, error: %d %s\n",errno, strerror(errno));
 		sleep(2);
 	}
 
 	if (mq_getattr(MessageQueue, &MessageQueueAttr) == -1)
 	{
-		printf ("Error: Get Attribte error, error number: %d\n",errno);
+		printf ("Error: Get Attribte error, error number: %d %s\n",errno, strerror(errno));
       sleep(2);
 	}
 	else
@@ -143,7 +143,7 @@ void StartOs_Arch(void)
 
 	if (sigaction(SIGINT, &KillSignal, NULL) == -1)
 	{
-		printf("Error: SIGKILL can not be configured, error number: %d\n",errno);
+		printf("Error: SIGKILL can not be configured, error number: %d %s\n",errno, strerror(errno));
 	}
 
 	MessageSignal.sa_handler = PosixInterruptHandler;
@@ -152,7 +152,7 @@ void StartOs_Arch(void)
 
 	if (sigaction(SIGUSR1, &MessageSignal, NULL) == -1)
 	{
-		printf("Error: SIGUSR1 can not be configured, error number: %d\n", errno);
+		printf("Error: SIGUSR1 can not be configured, error number: %d %s\n",errno, strerror(errno));
 	}
 
 	SignalEvent.sigev_notify = SIGEV_SIGNAL;
@@ -163,7 +163,7 @@ void StartOs_Arch(void)
 
 	if (mq_notify(MessageQueue, &SignalEvent) == -1)
 	{
-		printf("Error: Message Notification can not be activated, error: %d.\n",errno);
+		printf("Error: Message Notification can not be activated, error: %d %s\n",errno, strerror(errno));
 	}
 
 	if (fork() == 0)

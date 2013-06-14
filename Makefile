@@ -10,18 +10,18 @@
 #  - arm
 #  - avr
 #  - cortex-m3
-ARCH = cortex-m3
+ARCH = posix
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
 # defined
-CPUTYPE = lpc1xxx
+CPUTYPE = 
 
 # CPU
-CPU = lpc1768
+CPU = 
 
 # BOARD
-BOARD = mbed
+BOARD = 
 
 # COMPILER
 COMPILER = gcc
@@ -38,16 +38,16 @@ COMPILER = gcc
 # examples/Blinking			Blinking Leds Example
 #
 
-#MODS +=	FreeOSEK/TestSuite				\
-#			FreeOSEK/Gen						\
-#			FreeOSEK/Drv						\
-#			FreeOSEK/Os							\
-#			FreeOSEK/Os/tst/ctest
-
-MODS +=	examples/Blinking					\
+MODS +=	FreeOSEK/TestSuite				\
 			FreeOSEK/Gen						\
 			FreeOSEK/Drv						\
-			FreeOSEK/Os
+			FreeOSEK/Os							\
+			FreeOSEK/Os/tst/ctest
+
+#MODS +=	examples/Blinking					\
+#			FreeOSEK/Gen						\
+#			FreeOSEK/Drv						\
+#			FreeOSEK/Os
 
 #MODS += FreeOSEK/Os/tst/mtst/mtst01	\
 #			FreeOSEK/Gen						\

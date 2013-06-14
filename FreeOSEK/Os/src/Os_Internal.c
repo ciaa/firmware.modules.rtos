@@ -146,7 +146,6 @@ void RemoveTask
 )
 {
 	TaskPriorityType priority;
-	TaskRefType readylist;
 	TaskTotalType maxtasks;
 
 	/* get task priority */
@@ -158,8 +157,6 @@ void RemoveTask
 	*/
 	priority = (READYLISTS_COUNT-1)-priority;
 
-	/* get ready list */
-	readylist = ReadyConst[priority].TaskRef;
 	/* get max number of entries */
 	maxtasks = ReadyConst[priority].ListLength;
 

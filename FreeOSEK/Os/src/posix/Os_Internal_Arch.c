@@ -163,7 +163,7 @@ void PosixInterruptHandler(int status)
 				printf("other error\n");
 				break;
 		}
-		printf("Error by reading the Message Queue, returned value: %d, error number: %d\n",mq_ret,errno);
+		printf("Error by reading the Message Queue, returned value: %d, error number: %d\n",(int)mq_ret,errno);
 	}
 
 	if (mq_notify(MessageQueue, &SignalEvent) == -1)

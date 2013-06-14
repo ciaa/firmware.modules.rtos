@@ -113,7 +113,7 @@ void TS_RunTestSuite(void)
 
 TS_ResultType TS_GetTestResult(TS_TestIDType TestID)
 {
-	return ( (TS_TestResults[(TestID/sizeof(TS_TestResults))] >> (TestID % 4) ) & 0x3);
+	return ( (TS_TestResults[(TestID/sizeof(TS_ResultType))] >> (TestID % 4) ) & 0x3);
 }
 
 #if (TS_MEMMAP == ENABLE)

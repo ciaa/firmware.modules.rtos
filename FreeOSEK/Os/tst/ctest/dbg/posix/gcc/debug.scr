@@ -1,6 +1,5 @@
-run
 break ConfTestFinish
-cont
+run
 dump value out/dbg/TestResults.bin TestResults
 dump value out/dbg/TestResultsOk.bin TestResultsOk
 dump value out/dbg/SequenceCounter.bin SequenceCounter
