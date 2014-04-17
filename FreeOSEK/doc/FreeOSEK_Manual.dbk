@@ -522,7 +522,14 @@ If the return code is other than E_OK, the ErrorHook is enable, and ErrorHook is
 			For the interrupt mechanisms a message queue with signal is used. Every time that you send a message of only one
 			byte to the message queue /dev/mqueue/BINNAME where BINNAME is the binary name of the project defined in the
 			Makefile with the PROJECT variable. As defualt /dev/mqueue/FreeOSEK. The received byte in this queue is
-			interprated as the interrupt number.</para>
+         interprated as the interrupt number.</para>
+         <para>Before using the messages queues from POSIX you may need to mount them using:
+         <itemizedlist>
+            <listitem><para>sudo mkdir /dev/mqueue
+                  sudo mount -t mqueue none /dev/mqueue</para></listitem>
+         </izemizedlist>
+
+         </para>
 			<sect3><title>Timer Simulations</title>
 				<para>The POSIX variant has two simulated HW timers which have an interrupt every 10ms. Anyway alarms are
 				not working on the prebeta release.</para>

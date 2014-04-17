@@ -577,6 +577,10 @@
  * is the binary name of the project defined in the Makefile with the PROJECT variable.
  * As defualt /dev/mqueue/FreeOSEK. The received byte in this queue is interprated as an interrupt.
  *
+ * In posix you need to mount the queues before using this feature, use following 2 commands:
+ *    sudo mkdir /dev/mqueue
+ *    sudo mount -t mqueue none /dev/mqueue
+ *
  * \subsubsection FreeOSEK_Arch_Posix_Timers Timers Simulations
  *
  * The POSIX variant has two simulated HW timers which have an interrupt every 10ms. Anyway
