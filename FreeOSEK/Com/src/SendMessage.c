@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -102,7 +102,7 @@ StatusType SendMessage
 	uint8 shift;					/* value to shift */
 	uint8 remainbits;				/* remian bits to be copied */
 
-#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	/* check that the message is on range */
 	if ( Message > COM_TX_MAX_MESSAGE )
 	{
@@ -144,7 +144,7 @@ StatusType SendMessage
 				/* always 8 bits are copied */
 
 				/* copy the data to the underlayer PDU */
-				/* less 3 bits of Com_TxMsgObjsCst[Message].Size shall be 0, 
+				/* less 3 bits of Com_TxMsgObjsCst[Message].Size shall be 0,
 					byte alligned */
 				for ( loopi = 0; loopi < ( Com_TxMsgObjsCst[Message].Size >> 3 ); loopi++)
 				{
@@ -180,14 +180,14 @@ StatusType SendMessage
 
 					/* last byte */
 					dstbuf[loopi] &= 0xff << remainbits;
-					dstbuf[loopi] |= (uint8)tmp;		
+					dstbuf[loopi] |= (uint8)tmp;
 				}
 				else
 				{
 					/* big-endian */
 				}
 
-				
+
 			}
 
 			/* check if the unter layer tx has to be triggered only to be done if:
@@ -206,7 +206,7 @@ StatusType SendMessage
 			/* TODO */
 		}
 
-#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
 	}
 #endif /* #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)  */
 

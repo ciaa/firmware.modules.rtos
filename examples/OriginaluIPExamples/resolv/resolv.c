@@ -147,7 +147,7 @@ parse_name(unsigned char *query)
 
   do {
     n = *query++;
-    
+
     while(n > 0) {
       /*      printf("%c", *query);*/
       ++query;
@@ -172,7 +172,7 @@ check_entries(void)
   static u8_t i;
   static u8_t n;
   register struct namemap *namemapptr;
-  
+
   for(i = 0; i < RESOLV_ENTRIES; ++i) {
     namemapptr = &names[i];
     if(namemapptr->state == STATE_NEW ||
@@ -240,7 +240,7 @@ newdata(void)
   static u8_t nquestions, nanswers;
   static u8_t i;
   register struct namemap *namemapptr;
-  
+
   hdr = (struct dns_hdr *)uip_appdata;
   /*  printf("ID %d\n", htons(hdr->id));
       printf("Query %d\n", hdr->flags1 & DNS_FLAG1_RESPONSE);
@@ -311,7 +311,7 @@ newdata(void)
 	   we want. */
 	namemapptr->ipaddr[0] = ans->ipaddr[0];
 	namemapptr->ipaddr[1] = ans->ipaddr[1];
-	
+
 	resolv_found(namemapptr->name, namemapptr->ipaddr);
 	return;
       } else {
@@ -352,9 +352,9 @@ resolv_query(char *name)
   static u8_t i;
   static u8_t lseq, lseqi;
   register struct namemap *nameptr;
-      
+
   lseq = lseqi = 0;
-  
+
   for(i = 0; i < RESOLV_ENTRIES; ++i) {
     nameptr = &names[i];
     if(nameptr->state == STATE_UNUSED) {
@@ -397,7 +397,7 @@ resolv_lookup(char *name)
 {
   static u8_t i;
   struct namemap *nameptr;
-  
+
   /* Walk through the list to see if the name is in there. If it is
      not, we return NULL. */
   for(i = 0; i < RESOLV_ENTRIES; ++i) {
@@ -440,7 +440,7 @@ resolv_conf(u16_t *dnsserver)
   if(resolv_conn != NULL) {
     uip_udp_remove(resolv_conn);
   }
-  
+
   resolv_conn = uip_udp_new(dnsserver, HTONS(53));
 }
 /*---------------------------------------------------------------------------*/
@@ -452,7 +452,7 @@ void
 resolv_init(void)
 {
   static u8_t i;
-  
+
   for(i = 0; i < RESOLV_ENTRIES; ++i) {
     names[i].state = STATE_DONE;
   }

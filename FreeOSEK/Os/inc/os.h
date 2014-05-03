@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -97,7 +97,7 @@
  **/
 #define ISR(name)   void OSEK_ISR_ ## name (void)
 
-/** \brief ALARMCALLBACK macro definition 
+/** \brief ALARMCALLBACK macro definition
  **/
 #define ALARMCALLBACK(name)	void OSEK_CALLBACK_ ## name (void)
 
@@ -489,7 +489,7 @@ extern StatusType TerminateTask(void) ATTRIBUTES();
  ** FreeOSEK generates macros with the names of the tasks as defined on the on
  ** the OIL configuration.
  **
- ** Rescheduling takes place before returning. 
+ ** Rescheduling takes place before returning.
  **
  ** This function may return E_OS_LIMIT in standard mode.
  ** Extra in extended mode E_OS_ID, E_OS_CALLEVEL, or E_OS_RESOURCE may be
@@ -582,7 +582,7 @@ extern StatusType ReleaseResource(ResourceType ResID) ATTRIBUTES();
  **/
 extern void StartOS(AppModeType Mode) ATTRIBUTES();
 
-/** \brief Set Event 
+/** \brief Set Event
  **
  ** This Interface can be used to set one or more events of the specified
  ** Task.
@@ -661,7 +661,7 @@ extern StatusType GetAlarmBase(AlarmType AlarmID, AlarmBaseRefType Info) ATTRIBU
 /** \brief Get Alarm
  **
  ** The system service GetAlarm shall return the relative value in ticks before the
- ** alarm AlarmID expires. 
+ ** alarm AlarmID expires.
  **
  ** \param[in] AlarmID Alamar ID to be readed
  ** \param[out] Tick count of tick before alarm expires.
@@ -676,7 +676,7 @@ extern StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick) ATTRIBUTES();
  ** extended tasks) is set or the alarm-callback routine is called.
  **
  ** \param[in] AlarmID Alamar ID to be readed
- ** \param[in] Increment 
+ ** \param[in] Increment
  ** \param[in] Cycle
  **/
 extern StatusType SetRelAlarm(AlarmType AlarmID, TickType Increment, TickType Cycle) ATTRIBUTES();

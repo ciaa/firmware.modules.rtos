@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -112,14 +112,14 @@ uint32 OsekStack;
 uint8 SendMessage(MessageQueueType *Msg, uint8 Val)
 {
    uint8 ret = 1;
-   
+
    if (Msg == NULL)
    {
       ret = 0;
    }
    else
    {
-   
+
       Msg->Lock++;
       while(Msg->Lock != 1)
       {
@@ -127,7 +127,7 @@ uint8 SendMessage(MessageQueueType *Msg, uint8 Val)
          osekpause();
          Msg->Lock++;
       }
-      
+
       if (Msg->Count >= MESSAGE_QUEUE_LENGTH)
       {
          ret = 0;
@@ -138,10 +138,10 @@ uint8 SendMessage(MessageQueueType *Msg, uint8 Val)
          Msg->Last = (Msg->Last + 1) % MESSAGE_QUEUE_LENGTH;
          Msg->Count++;
       }
-      
+
       Msg->Lock--;
    }
-   
+
    return ret;
 }
 
@@ -158,7 +158,7 @@ uint8 SendMessage(MessageQueueType *Msg, uint8 Val)
 uint8 ReceiveMessage(MessageQueueType *Msg, uint8 *Val)
 {
    uint8 ret = 1;
-   
+
    if (Msg == NULL)
    {
       ret = 0;
@@ -173,7 +173,7 @@ uint8 ReceiveMessage(MessageQueueType *Msg, uint8 *Val)
          osekpause();
          Msg->Lock++;
       }
-   
+
       if (Msg->Count == 0)
       {
          ret = 0;
@@ -184,11 +184,11 @@ uint8 ReceiveMessage(MessageQueueType *Msg, uint8 *Val)
          Msg->First = (Msg->First + 1) % MESSAGE_QUEUE_LENGTH;
          Msg->Count--;
       }
-      
+
       Msg->Lock--;
-      
+
    }
-   
+
    return ret;
 }
 
@@ -197,20 +197,20 @@ void CallTask(TaskType OldTask, TaskType NewTask)
 {
    /* save actual esp */
    __asm__ __volatile__ ("movl %%esp, %%eax; addl $12, %%eax; movl %%eax, %0;" : "=g" (TasksConst[OldTask].TaskContext->tss_esp) : : "%eax" );
-  
-   /* save actual ebp */ 
+
+   /* save actual ebp */
    __asm__ __volatile__ ("movl %%ebp, %%eax; addl $16, %%eax; movl %%eax, %0;" : "=g" (TasksConst[OldTask].TaskContext->tss_ebp) : : "%eax" );
-   
+
    /* save return eip */
    __asm__ __volatile__ ("movl 4(%%ebp), %%eax; movl %%eax, %0" : "=g" (TasksConst[OldTask].TaskContext->tss_eip) : : "%eax");
-   
+
    /* load new stack pointer */
    __asm__ __volatile__ ("movl %0, %%esp;" : :  "g" (TasksConst[NewTask].TaskContext->tss_esp));
-   
+
    /* load new ebp and jmp to the new task */
    __asm__ __volatile__ ("movl %0, %%ebx;" \
                          "movl %1, %%ebp;" \
-                         "jmp *%%ebx;" : :  "g" (TasksConst[NewTask].TaskContext->tss_eip), "g" (TasksConst[NewTask].TaskContext->tss_ebp));   
+                         "jmp *%%ebx;" : :  "g" (TasksConst[NewTask].TaskContext->tss_eip), "g" (TasksConst[NewTask].TaskContext->tss_ebp));
 }
 
 void CounterInterrupt(CounterType CounterID)
@@ -321,10 +321,10 @@ void HWTimerFork(uint8 timer)
 	char Msg;
 	struct timespec rqtp;
 	pid_t ppid;
-	
+
 	ppid = getppid();
 	MessageQueueType *MessageQueue;
-	
+
 	MessageQueue = (MessageQueueType*) shmat(SharedMemory, NULL, 0);
 
 	if (timer <= 2)

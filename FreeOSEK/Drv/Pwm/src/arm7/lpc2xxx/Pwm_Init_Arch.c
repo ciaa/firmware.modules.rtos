@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -90,8 +90,8 @@ void Pwm_Init_Arch
 )
 {
 #if (PWM_PWM0 == ENABLE)
-	/* set PWM0TCR:	bit 0 enable counter 
-							bit 1 reset rounter 
+	/* set PWM0TCR:	bit 0 enable counter
+							bit 1 reset rounter
 							bit 2 reserved
 							bit 3 PWM enable
 							bit 4 master disable
@@ -127,32 +127,32 @@ void Pwm_Init_Arch
 
 #if (defined PWM_PWM0_0_ENABLE)
 	PWM0MR1 = PWM_PWM0_0_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM0_1_ENABLE)
 	PWM0MR2 = PWM_PWM0_1_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM0_2_ENABLE)
 	PWM0MR3 = PWM_PWM0_2_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM0_3_ENABLE)
 	PWM0MR4 = PWM_PWM0_3_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM0_4_ENABLE)
 	PWM0MR5 = PWM_PWM0_4_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM0_5_ENABLE)
 	PWM0MR6 = PWM_PWM0_5_DUTY;
-#endif 
+#endif
 #endif
 
 #if (PWM_PWM1 == ENABLE)
-	/* set PWM1TCR:	bit 0 enable counter 
-							bit 1 reset rounter 
+	/* set PWM1TCR:	bit 0 enable counter
+							bit 1 reset rounter
 							bit 2 reserved
 							bit 3 PWM enable
 							bit 4 master disable
@@ -188,27 +188,27 @@ void Pwm_Init_Arch
 
 #if (defined PWM_PWM1_0_ENABLE)
 	PWM1MR1 = PWM_PWM1_0_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM1_1_ENABLE)
 	PWM1MR2 = PWM_PWM1_1_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM1_2_ENABLE)
 	PWM1MR3 = PWM_PWM1_2_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM1_3_ENABLE)
 	PWM1MR4 = PWM_PWM1_3_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM1_4_ENABLE)
 	PWM1MR5 = PWM_PWM1_4_DUTY;
-#endif 
+#endif
 
 #if (defined PWM_PWM1_5_ENABLE)
 	PWM1MR6 = PWM_PWM1_5_DUTY;
-#endif 
+#endif
 #endif
 }
 

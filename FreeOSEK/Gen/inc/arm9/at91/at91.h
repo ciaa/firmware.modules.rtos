@@ -503,15 +503,15 @@ struct at91_timers
 #ifndef __ASSEMBLER__
 struct atmel_usart_regs
 {
-	unsigned int cr;	// control 
+	unsigned int cr;	// control
 	unsigned int mr;	// mode
 	unsigned int ier;	// interrupt enable
 	unsigned int idr;	// interrupt disable
 	unsigned int imr;	// interrupt mask
 	unsigned int csr;	// channel status
-	unsigned int rhr;	// receive holding 
-	unsigned int thr;	// tramsmit holding             
-	unsigned int brgr;	// baud rate generator          
+	unsigned int rhr;	// receive holding
+	unsigned int thr;	// tramsmit holding
+	unsigned int brgr;	// baud rate generator
 	unsigned int rtor;	// rx time-out
 	unsigned int ttgr;	// tx time-guard
 	unsigned int res1;

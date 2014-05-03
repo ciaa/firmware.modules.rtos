@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -92,7 +92,7 @@ int main
 (
 	void
 )
-{	
+{
 	/* Start OSEK */
 	StartOS(AppMode1);
 }
@@ -115,7 +115,7 @@ TASK(InitTask)
 
 	/* init PWM Driver */
 	Pwm_Init((Pwm_ConfigType*)NULL);
-	
+
 	/* init ADC Driver */
 	Adc_Init((Adc_ConfigType*)NULL);
 
@@ -123,11 +123,11 @@ TASK(InitTask)
 	 *
 	 * Task are activated at the indicated time frames to try to avoid the
 	 * activation of two or more task at the same moment, avoidong
-	 * latency time between the task activation and execution. 
+	 * latency time between the task activation and execution.
 	 *
 	 * CarSimulationTask:	5ms, 15ms, 25ms, 35ms, ... , 65ms, 75ms, ... , 245ms, 255ms, ... , 455ms, 505ms, ...
 	 * CombiTask:				20ms, 70ms, 120ms, 170ms, 220ms, 270ms, ..., 220ms, 270ms, ... , 470ms, 520ms, ...
-	 * BlinkingLedsTask:		250ms, 500ms, 
+	 * BlinkingLedsTask:		250ms, 500ms,
 	 */
 
 	/* start cyclic alarm to activate task BlinkingLedsTask every 250ms */

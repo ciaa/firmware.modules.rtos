@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -83,7 +83,7 @@
 #endif
 
 TaskType RunningTask ATTRIBUTES();
- 
+
 ContextType ActualContext ATTRIBUTES();
 
 #if (OSEK_MEMMAP == ENABLE)
@@ -320,7 +320,7 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
 	AlarmType AlarmID;
 	AlarmIncrementType MinimalCount = -1;
 	AlarmIncrementType TmpCount;
-	
+
 	/* increment counter */
 	CountersVar[CounterID].Time+=Increment;
 
@@ -351,7 +351,7 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
 			}
 		}
 	}
-	
+
 	/* return the minimal increment */
 	return (CounterIncrementType)MinimalCount;
 }

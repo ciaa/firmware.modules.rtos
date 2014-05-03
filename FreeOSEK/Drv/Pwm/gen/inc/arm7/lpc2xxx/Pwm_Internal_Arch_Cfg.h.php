@@ -10,7 +10,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -18,7 +18,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -29,7 +29,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -56,7 +56,7 @@
  **/
 
 /** \addtogroup OpenDRV
- ** @{ */ 
+ ** @{ */
 /** \addtogroup OpenDRV_Pwm
  ** \ingroup OpenDRV
  ** @{ */
@@ -113,11 +113,11 @@ foreach($pwmchannels as $pwmc)
 	}
 	if($class != "PWM_FIXED_PERIOD")
 	{
-		error("Error on PWM: " . $pwmc . ". Only class PWM_FIXED_PERIOD is supported");	
+		error("Error on PWM: " . $pwmc . ". Only class PWM_FIXED_PERIOD is supported");
 	}
 	if($polarity != "PWM_HIGH")
 	{
-		error("Error on PWM: " . $pwmc . ". Only polarity PWM_HIGH is supported.");	
+		error("Error on PWM: " . $pwmc . ". Only polarity PWM_HIGH is supported.");
 	}
 
 	if ( ($channel > 0) && ($channel < 7) )
@@ -134,7 +134,7 @@ foreach($pwmchannels as $pwmc)
 			}
 			else
 			{
-				error("All PWMs of block 0 shall have the same period, PWM: " . $pwmc . " has period $period which differ from $period0cte");	
+				error("All PWMs of block 0 shall have the same period, PWM: " . $pwmc . " has period $period which differ from $period0cte");
 			}
 		}
 	}
@@ -153,11 +153,11 @@ foreach($pwmchannels as $pwmc)
 			}
 			else
 			{
-				error("All PWMs of block 1 shall have the same period, PWM: " . $pwmc . " has period $period which differ from $period1cte");	
+				error("All PWMs of block 1 shall have the same period, PWM: " . $pwmc . " has period $period which differ from $period1cte");
 			}
 		}
 	}
-	
+
 /*	print "$pwmc\n";
 	print "	$name\n";
 	print "	$channel\n";
@@ -178,7 +178,7 @@ print "/** \brief enables or disables PWM_PWM0 */\n";
 if ($PWM_PWM0 == "ENABLE")
 {
 	print "#define PWM_PWM0 ENABLE\n\n";
-	
+
 	print "/** \brief PWM0 block match register for period\n";
 	print " **\n";
 	print " ** Confiugred Period: $period1cte -> frequency: " . (1/$period1cte) . " Hz\n";

@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -66,7 +66,7 @@
  * -----------------------------------------------------------
  * 20090213 v0.1.1 MaCe raname Io driver to Dio
  * 20090125 v0.1.0 MaCe	initial version
- */  
+ */
 
 /*==================[inclusions]=============================================*/
 #include "Types.h"
@@ -111,7 +111,7 @@
 #define DIO_E_PARAM_INVALID_GROUP_ID				31
 
 #if (DioDevErrorDetect == DISABLE)
-/** \brief Dio Driver Read Channel service 
+/** \brief Dio Driver Read Channel service
  **
  ** This Dio driver service shall used to read the state of a specific
  ** channel. This service is implemented as function if DioDevErrorDetect is
@@ -124,7 +124,7 @@
 #define /* Dio_LevelType */ Dio_ReadChannel( /* Dio_ChannelType */ ChannelId) \
 	Dio_ReadChannel_Arch(ChannelId)
 
-/** \brief Dio Driver Write Channel service 
+/** \brief Dio Driver Write Channel service
  **
  ** This Dio driver service shall used to write the state of a specific
  ** channel. This service is implemented as function if DioDevErrorDetect is
@@ -137,7 +137,7 @@
 #define /* void */ Dio_WriteChannel( /* Dio_ChannelType */ ChannelId, /* Dio_LevelType */ Level)	\
 	Dio_WriteChannel_Arch(ChannelId, Level)
 
-/** \brief Dio Read Port service 
+/** \brief Dio Read Port service
  **
  ** This Dio driver service shall used to read the state of a specific
  ** port. This service is implemented as function if DioDevErrorDetect is
@@ -149,7 +149,7 @@
 #define /* Dio_PortLevelType */ Dio_ReadPort( /* Dio_PortType */ PortId)	\
 	Dio_ReadPort_Arch(PortId)
 
-/** \brief Dio Driver Write Port service 
+/** \brief Dio Driver Write Port service
  **
  ** This Dio driver service shall used to write the state of a specific
  ** port. This service is implemented as function if DioDevErrorDetect is
@@ -201,7 +201,7 @@ extern Dio_ReturnType Dio_Init(const Dio_ConfigRefType Config);
 extern Dio_ReturnType Dio_DeInit();
 
 #if (DioDevErrorDetect == ENABLE)
-/** \brief Dio Driver Read Channel service 
+/** \brief Dio Driver Read Channel service
  **
  ** This Dio driver service shall used to read the state of a specific
  ** channel. This service is implemented as function if DioDevErrorDetect is
@@ -213,7 +213,7 @@ extern Dio_ReturnType Dio_DeInit();
  **/
 extern Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId);
 
-/** \brief Dio Driver Write Channel service 
+/** \brief Dio Driver Write Channel service
  **
  ** This Dio driver service shall used to write the state of a specific
  ** channel. This service is implemented as function if DioDevErrorDetect is
@@ -225,7 +225,7 @@ extern Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId);
  **/
 extern void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level);
 
-/** \brief Dio Read Port service 
+/** \brief Dio Read Port service
  **
  ** This Dio driver service shall used to read the state of a specific
  ** port. This service is implemented as function if DioDevErrorDetect is
@@ -236,7 +236,7 @@ extern void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level);
  **/
 extern Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId);
 
-/** \brief Dio Driver Write Port service 
+/** \brief Dio Driver Write Port service
  **
  ** This Dio driver service shall used to write the state of a specific
  ** port. This service is implemented as function if DioDevErrorDetect is

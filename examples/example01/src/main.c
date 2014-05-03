@@ -126,7 +126,7 @@ TASK(TaskA) {
     WaitEvent(Event1);
     printf("TaskA recibio la notficacion del Event1\n");
 
-   
+
     ActivateTask(TaskB);
 
     printf("Pedimos recurso\n");
@@ -161,7 +161,7 @@ TASK(TaskC) {
 
     printf("TaskC is running\n");
 
-    
+
 
     printf("TaskC is Terminating\n");
     TerminateTask();

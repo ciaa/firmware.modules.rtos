@@ -85,7 +85,7 @@ struct smtp_state {
   char *subject;
   char *msg;
   u16_t msglen;
-  
+
   u16_t sentlen, textlen;
   u16_t sendptr;
 

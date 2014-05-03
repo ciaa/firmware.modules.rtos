@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -220,7 +220,7 @@ TEST(OS_0002)
 	ASSERT(mt_ErrorHook_Api != OSServiceId_ActivateTask);
 	ASSERT(mt_ErrorHook_Param1 != TaskB);
 	ASSERT(mt_ErrorHook_Ret != E_OS_LIMIT);
-	
+
 	ret = ActivateTask(INVALID_TASK);
 	ASSERT(mt_ErrorHook_Counter != 2);
 	ASSERT(mt_ErrorHook_Api != OSServiceId_ActivateTask);
@@ -228,7 +228,7 @@ TEST(OS_0002)
 	ASSERT(mt_ErrorHook_Ret != E_OS_ID);
 	/* \reqt OSEK_SYS_3.1.8 */
 	ASSERT(ret != E_OS_ID)
-	
+
 	return TS_OK;
 }
 
@@ -259,7 +259,7 @@ TEST(OS_0003)
 
 	ReleaseResource(Resource1);
 
-	return TS_OK;	
+	return TS_OK;
 }
 
 TEST(OS_0004)
@@ -286,7 +286,7 @@ TEST(OS_0004)
 	ASSERT(mt_ErrorHook_Api != OSServiceId_ChainTask);
 	ASSERT(mt_ErrorHook_Param1 != TaskB);
 	ASSERT(mt_ErrorHook_Ret != E_OS_LIMIT);
-	
+
 	ret = ChainTask(INVALID_TASK);
 	ASSERT(ret != E_OS_ID);
 	ASSERT(mt_ErrorHook_Counter != 2);
@@ -320,7 +320,7 @@ TEST(OS_0006)
 {
 	StatusType ret;
 	TaskType TaskID = 0;
-	
+
 	mt_ErrorHook_Counter = 0;
 	mt_SetTestCase(OS_0006);
 	mt_SetTaskAssert(TS_OK);
@@ -330,7 +330,7 @@ TEST(OS_0006)
 	ASSERT(mt_ErrorHook_Counter != 0);
 	ASSERT(ret != E_OK);
 	ASSERT(TaskID != InitTask);
-	
+
 	return TS_OK;
 }
 
@@ -366,7 +366,7 @@ TEST(OS_0007)
 	ASSERT(mt_ErrorHook_Param2 != (unsigned int)&State);
 	ASSERT(mt_ErrorHook_Ret != E_OS_ID);
 	ASSERT(ret != E_OS_ID);
-	
+
 	return TS_OK;
 }
 
@@ -505,7 +505,7 @@ TEST(OS_0015)
 	ret = ReleaseResource(Resource1);
 	ASSERT(ret != E_OK);
 	ASSERT(mt_ErrorHook_Counter != 0);
-	
+
 	ret = ReleaseResource(INVALID_RESOURCE);
 	ASSERT(ret != E_OS_ID);
 	ASSERT(mt_ErrorHook_Counter != 1);
@@ -582,7 +582,7 @@ TEST(OS_0017)
 	ActivateTask(TaskC);
 	ASSERT(mt_GetTaskAssert() != TS_OK);
 	ASSERT(mt_GetMark() != 1);
-	
+
 	return TS_OK;
 }
 

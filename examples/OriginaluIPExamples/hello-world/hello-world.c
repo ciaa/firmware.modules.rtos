@@ -94,7 +94,7 @@ handle_connection(struct hello_world_state *s)
   PSOCK_SEND_STR(&s->p, "Hello ");
   PSOCK_SEND_STR(&s->p, s->name);
   PSOCK_CLOSE(&s->p);
-  
+
   PSOCK_END(&s->p);
 }
 /** @} doxygen end group definition */

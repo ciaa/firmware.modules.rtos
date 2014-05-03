@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -108,7 +108,7 @@ Std_ReturnType Mcu_InitClock_Arch
 	SC->PLL0CON = 0;				/* Disable PLL, disconnected */
 	SC->PLL0FEED = PLLFEED_FEED1;
 	SC->PLL0FEED = PLLFEED_FEED2;
-	
+
 	(SC->SCS) |= 0x20;			/* Enable main OSC */
 	while( !(SC->SCS & 0x40) );	/* Wait until main OSC is usable */
 
@@ -117,11 +117,11 @@ Std_ReturnType Mcu_InitClock_Arch
 	SC->PLL0CFG = PLL_MValue | (PLL_NValue << 16);
 	SC->PLL0FEED = PLLFEED_FEED1;
 	SC->PLL0FEED = PLLFEED_FEED2;
-	
+
 	SC->PLL0CON = 1;				/* Enable PLL, disconnected */
 	SC->PLL0FEED = PLLFEED_FEED1;
 	SC->PLL0FEED = PLLFEED_FEED2;
-	
+
 	SC->CCLKCFG = CCLKDivValue;	/* Set clock divider */
 
 	while ( ((SC->PLL0STAT & (1 << 26)) == 0) );	/* Check lock bit status */
