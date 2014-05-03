@@ -6,7 +6,8 @@ OBJ += 	ctest_rst.o			\
 
 VPATH += FreeOSEK$(DIR)Os$(DIR)tst$(DIR)ctest$(DIR)src
 
-INCLUDE += -IFreeOSEK$(DIR)Os$(DIR)tst$(DIR)ctest$(DIR)inc
+INCLUDE += -IFreeOSEK$(DIR)Os$(DIR)tst$(DIR)ctest$(DIR)inc                    \
+           -IFreeOSEK$(DIR)Os$(DIR)tst$(DIR)ctest$(DIR)inc$(DIR)$(ARCH)       \
 
 CFGFILES += out$(DIR)gen$(DIR)etc$(DIR)$(PROJECT).oil									\
 				FreeOSEK$(DIR)Os$(DIR)tst$(DIR)ctest$(DIR)etc$(DIR)OpenDRV.oil

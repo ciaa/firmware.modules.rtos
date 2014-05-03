@@ -91,7 +91,7 @@ function comfiles($f)
 			{
 				/* nothing to do */
 			}
-			if( ($loopi == count($f1)) && ($f1[$loopi]==$f2[$loopi]) )
+         if( ($loopi == count($f1)) )
 			{
 				$ret = true;
 			}

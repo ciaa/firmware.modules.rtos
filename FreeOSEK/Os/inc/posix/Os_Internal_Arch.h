@@ -79,6 +79,12 @@
 #include "string.h"     /* used to call the function strerror */
 
 /*==================[macros]=================================================*/
+/*==================[cputype macros]=========================================*/
+/** \brief posix32 cputype definition */
+#define posix32	1
+/** \brief posix64 cputype definition */
+#define posix64	2
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro shall be used to disable the interrupts
@@ -186,27 +192,63 @@
  **/
 #define PostIsr2_Arch(isr)
 
+#ifdef posix64
 #define SavePosixStack() \
    {                                   \
-      /* save actual win esp */        \
+      /* save actual posix stack */        \
+      __asm__ __volatile__ ("movq %%rsp, %%rax; movq %%rax, %0;" : "=g" (PosixStack) : : "rax"); \
+   }
+#else
+#define SavePosixStack() \
+   {                                   \
+      /* save actual posix esp */        \
       __asm__ __volatile__ ("movl %%esp, %%eax; movl %%eax, %0;" : "=g" (PosixStack) : : "eax"); \
    }
+#endif
 
 /** \brief Pre Call Service
  **
  ** This macro shall be called before calling any posix system service
  **/
-#define PreCallService() 		\
-	{									\
+#ifdef posix64
+#define PreCallService()      																	               \
+	{                                                                                            \
+		/* save osek stack */                                                                     \
+		__asm__ __volatile__ ("movq %%rsp, %%rax; movq %%rax, %0;" : "=g" (OsekStack) : : "rax"); \
+		/* get posix stack */                                                                     \
+		__asm__ __volatile__ ("movq %0, %%rsp;" : : "g" (PosixStack) );                           \
 	}
+#else
+#define PreCallService()      																	               \
+	{                                                                                            \
+		/* save osek stack */                                                                     \
+		__asm__ __volatile__ ("movl %%esp, %%eax; movq %%eax, %0;" : "=g" (OsekStack) : : "eax"); \
+		/* get posix stack */                                                                     \
+		__asm__ __volatile__ ("movl %0, %%esp;" : : "g" (PosixStack) );                           \
+	}
+#endif
 
 /** \brief Post Call Service
  **
  ** This macro shall be called after calling any posix system service
  **/
-#define PostCallService()		\
-	{									\
+#ifdef posix64
+#define PostCallService()                                                                          \
+	{                                                                                               \
+      /* save actual posix stack */                                                                \
+      __asm__ __volatile__ ("movq %%rsp, %%rax; movq %%rax, %0;" : "=g" (PosixStack) : : "rax");   \
+		/* get osek stack */                                                                         \
+		__asm__ __volatile__ ("movq %0, %%rsp;" : : "g" (OsekStack) );                               \
 	}
+#else
+#define PostCallService()                                                                          \
+	{                                                                                               \
+      /* save actual posix stack */                                                                \
+      __asm__ __volatile__ ("movl %%esp, %%eax; movq %%eax, %0;" : "=g" (PosixStack) : : "eax");   \
+		/* get osek stack */                                                                         \
+		__asm__ __volatile__ ("movq %0, %%esp;" : : "g" (OsekStack) );                               \
+	}
+#endif
 
 /** \brief ShutdownOs Arch service
  **/
@@ -258,14 +300,23 @@ extern uint32 OsekHWTimer0;
  ** This variable is used to save the posix stack used to call the system
  ** (linux) services from FreeOSEK
  **/
+#ifdef posix64
+extern uint64 PosixStack;
+#else
 extern uint32 PosixStack;
+#endif
+
 
 /** \brief Osek Stack
  **
  ** This variable is used to save the Osek stack while calling a posix
  ** service
  **/
+#ifdef posix64
+extern uint64 OsekStack;
+#else
 extern uint32 OsekStack;
+#endif
 
 /*==================[external functions declaration]=========================*/
 /** \brief Posix Interrupt Handler

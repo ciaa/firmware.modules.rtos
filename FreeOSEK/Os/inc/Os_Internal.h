@@ -152,10 +152,10 @@
  **               - CONTEXT_ISR1
  **               - CONTEXT_ISR2
  **/
-#define SetActualContext(newcontext)   \
-	{												\
-		ActualContext = (newcontext);		\
-	}
+#define SetActualContext(newcontext)    \
+	do {							    \
+		ActualContext = (newcontext);	\
+	} while(0)
 
 /** \brief Get Running Task
  **
@@ -187,13 +187,17 @@
  **
  ** This macro is called every time that an ISR Cat 2 is started
  **/
-#define PreIsr2(isr)	PreIsr2_Arch(isr)
+#define PreIsr2(isr)                \
+    SetActualContext(CONTEXT_ISR2); \
+    PreIsr2_Arch(isr)
 
 /** \brief Post ISR Macro
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2(isr) PostIsr2_Arch(isr)
+#define PostIsr2(isr)               \
+    PostIsr2_Arch(isr)              \
+    SetActualContext(CONTEXT_TASK); \
 
 /*==================[typedef]================================================*/
 /** \brief ContextType

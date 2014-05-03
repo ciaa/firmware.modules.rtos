@@ -1,3 +1,4 @@
+handle SIGUSR1 noprint nostop
 break ConfTestFinish
 run
 dump value out/dbg/TestResults.bin TestResults

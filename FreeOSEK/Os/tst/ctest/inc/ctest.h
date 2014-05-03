@@ -64,7 +64,9 @@
 
 /*==================[inclusions]=============================================*/
 #include "Types.h"
+#include "ctest_arch.h"
 #include "ctest_cfg.h"
+#include "Os_Internal.h"
 
 /*==================[macros]=================================================*/
 #define TM_01		0
@@ -214,7 +216,9 @@
 
 #define OTHER		139
 
-#define INVALID_TASK 0xFE
+#ifndef INVALID_TASK
+#error INVALID_TASK not defined
+#endif
 
 #define INVALID_RESOURCE 0xFE
 
@@ -243,7 +247,8 @@
  **
  ** This macro shall implement a mechanismus to trigger the ISR2 interruption
  **/
-#define TriggerISR2()
+#define TriggerISR2()   \
+   TriggerISR2_Arch()
 
 /** \brief Initialise Alarm Counter Macro
  **
@@ -383,12 +388,6 @@ extern void Sequence
 extern void ConfTestFinish
 (
 	void
-);
-
-extern uint32 IncrementCounter
-(
-	uint32 CounterID,
-	uint32 Increment
 );
 
 /** @} doxygen end group definition */

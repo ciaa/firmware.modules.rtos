@@ -97,7 +97,6 @@ void StartOs_Arch(void)
 	}
 
 	/* set message queue attributes */
-	
 	MessageQueueAttr.mq_flags = O_NONBLOCK;
 	MessageQueueAttr.mq_maxmsg = 10;
 	MessageQueueAttr.mq_msgsize = 8;
@@ -133,12 +132,12 @@ void StartOs_Arch(void)
 	}
 	else
 	{
-		//printf("Maxmsg: %d, Msgsize: %d, Curmsg: %d, Flags: %d\n", MessageQueueAttr.mq_maxmsg, MessageQueueAttr.mq_msgsize, MessageQueueAttr.mq_curmsgs, MessageQueueAttr.mq_flags);
-		//sleep(2);
+		/* printf("Maxmsg: %d, Msgsize: %d, Curmsg: %d, Flags: %d\n", MessageQueueAttr.mq_maxmsg, MessageQueueAttr.mq_msgsize, MessageQueueAttr.mq_curmsgs, MessageQueueAttr.mq_flags);
+		sleep(2); */
 	}
 
-	KillSignal.sa_handler = OsekKillSigHandler;
 	sigemptyset(&KillSignal.sa_mask);
+	KillSignal.sa_handler = OsekKillSigHandler;
 	KillSignal.sa_flags = 0;
 
 	if (sigaction(SIGINT, &KillSignal, NULL) == -1)
@@ -146,8 +145,8 @@ void StartOs_Arch(void)
 		printf("Error: SIGKILL can not be configured, error number: %d %s\n",errno, strerror(errno));
 	}
 
-	MessageSignal.sa_handler = PosixInterruptHandler;
 	(void)sigemptyset(&MessageSignal.sa_mask);
+	MessageSignal.sa_handler = PosixInterruptHandler;
 	MessageSignal.sa_flags = 0;
 
 	if (sigaction(SIGUSR1, &MessageSignal, NULL) == -1)

@@ -486,7 +486,7 @@ foreach ($intnames as $int)
 		print "void OSEK_ISR2_$int(void)\n";
 		print "{\n";
 		print "	PreIsr2($int);\n";
-		print "	OSEK_ISR_$int()\n";
+		print "	OSEK_ISR_$int();\n";
 		print "	PostIsr2($int);\n";
 		print "}\n";
 	}

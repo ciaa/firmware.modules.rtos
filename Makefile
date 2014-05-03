@@ -5,17 +5,21 @@
 # ARCH
 # define the architecture of the micro where the openosek will be executed
 # at the moment the followings archictectures are supported:
-#  - posix
-#  - win
-#  - arm
-#  - avr
-#  - cortex-m3
+#|   ARCH    |  CPUTYPE   |   CPU     |
+#|-----------|------------|-----------|
+#| posix     | posix32    |           |
+#|           | posix64    |           |
+#| win       |            |           |
+#| arm7      | lpc2xxx    | lpc2468   |
+#| avr       |            |           |
+#| cortex-m3 |            |           |
+#\-----------|------------|-----------/
 ARCH = posix
 
 # CPU Types
 # defines the CPU family. For each architecture none, one or more CPUTYPEs can be
 # defined
-CPUTYPE = 
+CPUTYPE = posix64
 
 # CPU
 CPU = 
@@ -40,9 +44,13 @@ COMPILER = gcc
 
 MODS +=	FreeOSEK/TestSuite				\
 			FreeOSEK/Gen						\
-			FreeOSEK/Drv						\
+		FreeOSEK/Drv						\
 			FreeOSEK/Os							\
 			FreeOSEK/Os/tst/ctest
+
+#MODS  += 	examples/example01 \
+#		FreeOSEK/Os \
+#	FreeOSEK/Gen
 
 #MODS +=	examples/Blinking					\
 #			FreeOSEK/Gen						\

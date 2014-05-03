@@ -62,6 +62,7 @@
  * modification history (new versions first)
  * -----------------------------------------------------------
  * v0.1.0 20090129 MaCe initial version
+ * v0.1.1 20140503 MaCe add support for 64 bits
  */  
 
 /*==================[inclusions]=============================================*/
@@ -178,6 +179,22 @@ typedef unsigned int uint32f;
 typedef signed int sint32f;
 #else
 #error sint32 defined before
+#endif
+
+#ifndef TYPES_UINT64
+#define TYPES_UINT64
+/** \brief unsigned 64 bits integer type definition */
+typedef unsigned long long uint64;
+#else
+#error uint64 defined before
+#endif
+
+#ifndef TYPES_SINT64
+#define TYPES_SINT64
+/** \brief signed 64 bits integer type definition */
+typedef signed long long sint64;
+#else
+#error sint64 defined before
 #endif
 
 /*==================[external data declaration]==============================*/

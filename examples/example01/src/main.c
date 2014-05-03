@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -105,61 +105,66 @@ void ErrorHook(void)
 	ShutdownOS(0);
 }
 
-ISR(CanRx)
-{
+TASK(InitTask) {
+    printf("InitTask is running\n");
+
+    ActivateTask(TaskA);
+
+    Schedule();
+
+    printf("InitTask sets TaskA Event1\n");
+    SetEvent(TaskA, Event1);
+
+    printf("InitTask is Terminating\n");
+    TerminateTask();
 }
 
-ISR(CanTx)
-{
+TASK(TaskA) {
+    printf("TaskA is running\n");
+
+    printf("TaskA espera Event1\n");
+    WaitEvent(Event1);
+    printf("TaskA recibio la notficacion del Event1\n");
+
+   
+    ActivateTask(TaskB);
+
+    printf("Pedimos recurso\n");
+    GetResource(Res1);
+
+
+    printf("Liberamos recurso\n");
+    ReleaseResource(Res1);
+
+    printf("TaskA is Terminating\n");
+    TerminateTask();
 }
 
-ISR(NMI)
-{
+TASK(TaskB) {
+    printf("TaskB is running\n");
+
+   ActivateTask(TaskC);
+   ActivateTask(TaskC);
+
+   SetRelAlarm(ActivateTaskC, 350, 100);
+
+    printf("TaskB is Terminating\n");
+    TerminateTask();
 }
 
-TASK(InitTask)
-{
-	/* init */
-
-	/* ... */
-
-	/* end init */
-
-	ActivateTask(TaskA);
-	TerminateTask();
+ISR(IsrName) {
 }
 
-TASK(TaskA)
-{
-	printf("TaskA is running\n");
-	ChainTask(TaskB);
-}
 
-TASK(TaskB)
-{
-	printf("TaskB is running\n");
-	ChainTask(TaskC);
-}
+TASK(TaskC) {
+    static int count = 0;
 
-TASK(TaskC)
-{
-	printf("TaskC is running\n");
-	ChainTask(TaskA);
-}
+    printf("TaskC is running\n");
 
-TASK(TaskD)
-{
-	TerminateTask();
-}
+    
 
-TASK(TaskE)
-{
-	TerminateTask();
-}
-
-ALARMCALLBACK(AlarmCallback)
-{
-
+    printf("TaskC is Terminating\n");
+    TerminateTask();
 }
 
 /** @} doxygen end group definition */

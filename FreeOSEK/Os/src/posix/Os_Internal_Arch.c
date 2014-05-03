@@ -95,9 +95,15 @@ uint32 OsekHWTimer0;
 
 InterruptFlagsType InterruptFlag;
 
+#ifdef posix64
+uint64 PosixStack;
+
+uint64 OsekStack;
+#else
 uint32 PosixStack;
 
 uint32 OsekStack;
+#endif
 
 /*==================[internal functions definition]==========================*/
 
@@ -178,25 +184,62 @@ void HWTimerFork(uint8 timer)
 	int mq_ret;
 	char msg;
 	struct timespec rqtp;
+   int lasterror = -1;
 
 	if (timer <= 2)
 	{
+		/* set timer interrupts
+         * HWCOUNTER0: Interrupt 4
+         * HWCOUNTER1: Interrupt 5
+		 */
 		msg = timer + 4;
 
+		/* intererupt every
+         * 0 seconds and
+         * 10 ms */
 		rqtp.tv_sec=0;
-   	rqtp.tv_nsec=1000000;
+    	rqtp.tv_nsec=100000000;
 
 		while(1)
 		{
+			/* send message */
 			mq_ret = mq_send(MessageQueue, &msg, sizeof(msg), 0);
 			if (mq_ret < 0)
 			{
-				/* printf("Error HW Timer can not generate an interrupt\n"); */
+				switch(errno)
+				{
+					case EAGAIN:
+                  if (lasterror != errno) {
+                     lasterror = errno;
+      					printf("Error HW Timer can not generate an interrupt: %s\n", strerror(errno));
+                  }
+						break;
+					case EBADF:
+						printf("Not valued queue descriptor\n");
+						break;
+					case EMSGSIZE:
+						printf("Message buffer to small\n");
+						break;
+					case EINTR:
+						printf("Reception interrupted by a signal\n");
+						break;
+					default:
+						printf("other error\n");
+						break;
+				}
+				sleep(1);
+			}
+			else
+			{
+				if (-1 != lasterror)
+				{
+					printf("HW Timer generates interrupts\n");
+					lasterror = -1;
+				}
 			}
 			nanosleep(&rqtp,NULL);
 		}
 	}
-
 	exit(0);
 }
 

@@ -164,20 +164,26 @@ ISR(ISR2)
 	StatusType ret;
 
 	Sequence(3);
-	/* \treq RM_03 nmf B1B2E1E2 e Call GetResource() from ISR category 2
+    /* \treq RM_03 nmf B1B2E1E2 e Call GetResource() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
 	 */
+    /* this test is an error in the specification see #40
+     * Issue in TestPlan RM_03 Call GetResource and ReleaseResource from ISR2
+     */
 	ret = GetResource(Resource1);
-	ASSERT(RM_03, ret != E_OS_CALLEVEL);
+	ASSERT(RM_03, ret != E_OK);
 
 	Sequence(4);
 	/* \treq RM_10 nmf B1B2E1E2 e Call ReleaseResource() from ISR category 2
 	 *
 	 * \result Service returns E_OS_CALLEVEL
 	 */
+    /* this test is an error in the specification see #40
+     * Issue in TestPlan Call GetResource and ReleaseResource from ISR2
+     */
 	ret = ReleaseResource(Resource1);
-	ASSERT(RM_10, ret != E_OS_CALLEVEL);
+	ASSERT(RM_10, ret != E_OK);
 }
 
 #if ( ISR_CATEGORY_3 == ENABLE )

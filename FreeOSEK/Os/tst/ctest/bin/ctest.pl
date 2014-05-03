@@ -8,7 +8,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-#             
+#
 # Linking FreeOSEK statically or dynamically with other modules is making a
 # combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
 # General Public License cover the whole combination.
@@ -16,7 +16,7 @@
 # In addition, as a special exception, the copyright holders of FreeOSEK give
 # you permission to combine FreeOSEK program with free software programs or
 # libraries that are released under the GNU LGPL and with independent modules
-# that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+# that communicate with FreeOSEK solely through the FreeOSEK defined interface.
 # You may copy and distribute such a system following the terms of the GNU GPL
 # for FreeOSEK and the licenses of the other code concerned, provided that you
 # include the source code of that other code when and as the GNU GPL requires
@@ -27,7 +27,7 @@
 # whether to do so. The GNU General Public License gives permission to release
 # a modified version without this exception; this exception also makes it
 # possible to release a modified version which carries forward this exception.
-# 
+#
 # FreeOSEK is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -38,6 +38,7 @@
 #
 use Switch;
 use File::Copy;
+use Data::Dumper;
 
 $errors = 0;
 $warnings = 0;
@@ -271,7 +272,7 @@ sub EvaluateResults
 	`hexdump -C $tsfileok`;
 	`rm $tsfile`;
 	`rm $tsfileok`;
-	
+
 
 	for($loopi = 0; $loopi < @ts; $loopi++)
 	{
@@ -418,17 +419,20 @@ info("------- LICENSE END -------");
 
 if ($#ARGV + 1 < 2)
 {
-	info("ctest.pl -f ctest.cfg");
+	info("ctest.pl -f ctest.cfg [ctest_tm_01] [--debug SEQUENCE]");
 }
 
-$onlytc = $ARGV[3];
+$onlytc = $ARGV[2];
 
 $cfgfile = $ARGV[1];
 
-if ($ARGV[4] eq "--debug")
+print "Configuration file: " . $cfgfile . "\n";
+
+if ($ARGV[3] eq "--debug")
 {
 	$debug = 1;
-	$subtestcase = $ARGV[5];
+	$subtestcase = $ARGV[4];
+	print "Debugging modes for: " . $subtestcase . "\n";
 }
 else
 {
@@ -448,9 +452,10 @@ info("Starting FreeOSEK Conformance Test Runner");
 
 if($onlytc ne "")
 {
+	print "Running only one Test Configuration: " . $onlytc . "\n";
 	@tmptests = @tests;
 	@tests = ();
-	
+
 	foreach (@tmptests)
 	{
 		if(index($_,$onlytc)>-1)
@@ -464,7 +469,7 @@ foreach $testfn (@tests)
 {
 	@test = split(/:/,$testfn);
 	$test = @test[0];
-	
+
 	info("Testing $test");
 
 	@configs = GetTestSequencesConfigs($TESTS, $testfn);
@@ -490,7 +495,7 @@ foreach $testfn (@tests)
 		if ($runthistestcase)
 		{
 			print "Config: $config\n";
-	
+
 			$error = "";
 
 			info("make clean of $test");
@@ -516,11 +521,15 @@ foreach $testfn (@tests)
 			if ($outmakecleanstatus == 0)
 			{
 				info("make generate of $test");
+            info("running \"make generate PROJECT=$test\"");
 				$outmakegenerate = `make generate PROJECT=$test`;
 				$outmakegeneratestatus = $?;
 				info("make generate status: $outmakegeneratestatus");
 				logffull("make generate output:\n$outmakegenerate");
-				#print "$outmakegenerate";
+            if ($debug)
+            {
+               print "$outmakegenerate";
+            }
 				if ($outmakegeneratestatus == 0)
 				{
 					info("make of $test");
@@ -528,6 +537,10 @@ foreach $testfn (@tests)
 					$outmakestatus = $?;
 					info("make status: $outmakestatus");
 					logffull("make output:\n$outmake");
+               if ($debug)
+               {
+                  print "$outmake";
+               }
 					if ($outmakestatus == 0)
 					{
 						$out = $BINDIR . "/" . $test;

@@ -320,7 +320,7 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
 	AlarmType AlarmID;
 	AlarmIncrementType MinimalCount = -1;
 	AlarmIncrementType TmpCount;
-
+	
 	/* increment counter */
 	CountersVar[CounterID].Time+=Increment;
 
