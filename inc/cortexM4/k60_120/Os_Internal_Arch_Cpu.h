@@ -66,7 +66,7 @@
 #ifndef CPU
 #error CPU is not defined
 #elif (CPU == mk60fx512vlq15)
-#include "core_cm4.h"
+#include "MK60F12.h"
 #else
 #error Unknown CPU value
 #endif
