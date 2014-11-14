@@ -33,76 +33,48 @@
  *
  */
 
-/** \brief FreeOSEK Os Arch Implementation File
+#ifndef _CTEST_ARCH_H_
+#define _CTEST_ARCH_H_
+/** \brief FreeOSEK Os Conformance Test
  **
- ** \file x86/Os_Arch.c
- ** \arch x86
+ ** \file FreeOSEK/Os/tst/ctest/inc/posix/ctest_arch.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * MaCe         Mariano Cerdeiro
+ * MaCe			 Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090719 v0.2.1 MaCe rename file to Os_
- * 20080922 v0.2.0 MaCe initial version
+ * 20140503 v0.1.0 MaCe	initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal.h"
 
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
+#define TriggerISR2_Arch()                                                 \
+      do {                                                                 \
+      } while(0)
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal data definition]===============================*/
-
-/*==================[external data definition]===============================*/
-InterruptFlagsType InterruptMask;
-
-InterruptStateType InterruptState;
-
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-void ScheduleInterrupts(void)
-{
-	int loopi = 0;
-	uint32 InterruptToBeExecuted;
-
-	if (InterruptState)
-	{
-		InterruptToBeExecuted = ( InterruptFlag & ( (InterruptFlagsType) ~InterruptMask ) );
-		while(InterruptToBeExecuted != 0)
-		{
-			if (InterruptToBeExecuted & 1)
-			{
-				InterruptFlag &= ~(1<<loopi);
-
-				InterruptTable[loopi]();
-			}
-
-			InterruptToBeExecuted >>=1;
-			loopi++;
-		}
-	}
-}
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _CTEST_ARCH_H_ */
 
