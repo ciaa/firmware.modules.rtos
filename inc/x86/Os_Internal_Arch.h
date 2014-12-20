@@ -67,7 +67,6 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "ciaaLibs_CircBuf.h"
 #include "stdio.h"      /* used to print debug information */
 #include "signal.h"     /* used to simulate interrupts */
 #include "unistd.h"     /* used to create a fork to poll the interrupts */
@@ -344,11 +343,24 @@ extern InterruptFlagsType InterruptFlag;
  **/
 extern uint32 OsekHWTimer0;
 
-extern uint8 * OSEK_IntCircBuffer;
+/** \brief Interrupt flags
+ **
+ ** This variable is used to simulate HW interrupts in x86. Each bit represents
+ ** an interrupt:
+ **   byte 0 bit 0 -> interrupt 0
+ **   byte 0 bit 1 -> interrupt 1
+ **   ...
+ **   byte 0 bit 7 -> interrupt 7
+ **   ...
+ **   byte 7 bit 0 -> interrupt 56
+ **   ..
+ **   byte 7 bit 7 -> interrupt 63
+ **
+ ** Up to 64 (0..63) interruptions are supported in x86.
+ **/
+extern uint8 OSEK_InterruptFlags[8];
 
-extern ciaaLibs_CircBufType * OSEK_IntCircBuf;
-
-extern bool Os_Terminate_Flag;
+extern uint8 Os_Terminate_Flag;
 
 extern pthread_t Os_Thread_Timer;
 
