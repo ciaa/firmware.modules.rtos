@@ -91,6 +91,8 @@ uint32 OsekHWTimer0;
 
 InterruptFlagsType InterruptFlag;
 
+uint32* OSEK_InterruptFlags;
+
 #ifdef CPUTYPE
 #if ( CPUTYPE == ia64 )
 uint64 OsStack;
