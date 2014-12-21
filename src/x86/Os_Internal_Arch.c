@@ -110,6 +110,11 @@ uint32 OsekStack;
 #endif /* #idef CPUTYPE */
 
 /*==================[internal functions definition]==========================*/
+/** \brief Check if at least one ISR has been set
+ **
+ ** \returns 1 if at least one isr has been triggered
+ **          0 if no isr has been triggered
+ **/
 static uint8 OSEK_IsIsrWaiting(void)
 {
    uint8 ret = 0;
@@ -126,6 +131,13 @@ static uint8 OSEK_IsIsrWaiting(void)
    return ret;
 }
 
+/** \brief Returns the first Isr waiting to be executed
+ **
+ ** Returns the isr whith higher prio which has been triggered. Isr 0 has the
+ ** highest priority and 63 the lowerst.
+ **
+ ** \returns a value between 0 and 63 representing the triggered isr
+ **/
 static uint8 OSEK_GetFirstIsr(void)
 {
    uint32 mask;
