@@ -68,6 +68,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "stdio.h"      /* used to print debug information */
+#include "stdbool.h"    /* needed for bool type */
 #include "signal.h"     /* used to simulate interrupts */
 #include "unistd.h"     /* used to create a fork to poll the interrupts */
 #include "stdlib.h"     /* used to call exit to terminate the process */
@@ -350,17 +351,17 @@ extern uint32 OsekHWTimer0;
  **   byte 0 bit 0 -> interrupt 0
  **   byte 0 bit 1 -> interrupt 1
  **   ...
- **   byte 0 bit 7 -> interrupt 7
+ **   byte 0 bit 31 -> interrupt 31
  **   ...
- **   byte 7 bit 0 -> interrupt 56
+ **   byte 1 bit 0 -> interrupt 32
  **   ..
- **   byte 7 bit 7 -> interrupt 63
+ **   byte 1 bit 31 -> interrupt 63
  **
  ** Up to 64 (0..63) interruptions are supported in x86.
  **/
-extern uint8 OSEK_InterruptFlags[8];
+extern uint32* OSEK_InterruptFlags;
 
-extern uint8 Os_Terminate_Flag;
+extern bool Os_Terminate_Flag;
 
 extern pthread_t Os_Thread_Timer;
 
