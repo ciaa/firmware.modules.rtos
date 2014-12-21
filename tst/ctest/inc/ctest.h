@@ -66,6 +66,7 @@
 #include "ctest_arch.h"
 #include "ctest_cfg.h"
 #include "Os_Internal.h"
+#include "ciaaPlatforms.h"
 
 /*==================[macros]=================================================*/
 #define TM_01		0

@@ -60,7 +60,6 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "ciaaLibs_CircBuf.h"
 #include <signal.h>
 #include <unistd.h>
 
@@ -70,8 +69,8 @@
          /* force interrupt 9 */                                           \
          uint8 interrupt = 9;                                              \
                                                                            \
-         /* add simulated interrupt to the interrupt queue */              \
-         ciaaLibs_circBufPut(OSEK_IntCircBuf, &interrupt, 1);              \
+         /* add simulated interrupt */                                     \
+         OSEK_InterruptFlags[0] |= 1 << interrupt;                         \
                                                                            \
          /* indicate interrupt using a signal */                           \
          kill(getpid(), SIGALRM);                                          \
@@ -82,8 +81,8 @@
          /* force interrupt 8 */                                           \
          uint8 interrupt = 8;                                              \
                                                                            \
-         /* add simulated interrupt to the interrupt queue */              \
-         ciaaLibs_circBufPut(OSEK_IntCircBuf, &interrupt, 1);              \
+         /* add simulated interrupt */                                     \
+         OSEK_InterruptFlags[0] |= 1 << interrupt;                         \
                                                                            \
          /* indicate interrupt using a signal */                           \
          kill(getpid(), SIGALRM);                                          \

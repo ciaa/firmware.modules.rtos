@@ -167,7 +167,7 @@ static uint8 OSEK_GetFirstIsr(void)
          ret = interrupt;
 
          /* reset interrupt flag */
-         OSEK_InterruptFlags[offset] &= mask;
+         OSEK_InterruptFlags[offset] &= ~mask;
       }
    }
 
