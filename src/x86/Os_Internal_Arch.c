@@ -52,7 +52,7 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
- * JuCe         Juan Cecconi 
+ * JuCe         Juan Cecconi
  */
 
 /*
@@ -66,7 +66,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-#include "ciaaLibs_CircBuf.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
@@ -91,6 +91,8 @@ uint32 OsekHWTimer0;
 
 InterruptFlagsType InterruptFlag;
 
+uint32* OSEK_InterruptFlags;
+
 #ifdef CPUTYPE
 #if ( CPUTYPE == ia64 )
 uint64 OsStack;
@@ -108,6 +110,69 @@ uint32 OsekStack;
 #endif /* #idef CPUTYPE */
 
 /*==================[internal functions definition]==========================*/
+/** \brief Check if at least one ISR has been set
+ **
+ ** \returns 1 if at least one isr has been triggered
+ **          0 if no isr has been triggered
+ **/
+static uint8 OSEK_IsIsrWaiting(void)
+{
+   uint8 ret = 0;
+
+   if (0 != OSEK_InterruptFlags[0])
+   {
+      ret = 1;
+   }
+   if (0 != OSEK_InterruptFlags[1])
+   {
+      ret = 1;
+   }
+
+   return ret;
+}
+
+/** \brief Returns the first Isr waiting to be executed
+ **
+ ** Returns the isr whith higher prio which has been triggered. Isr 0 has the
+ ** highest priority and 63 the lowerst.
+ **
+ ** \returns a value between 0 and 63 representing the triggered isr
+ **/
+static uint8 OSEK_GetFirstIsr(void)
+{
+   uint32 mask;
+   uint8 ret = 255;
+   uint8 found = 0;
+   uint8 offset;
+   uint8 interrupt;
+
+   /* TODO improve this code for speed, initial version was
+    * implemented to avoid the dependency to circular buffer library */
+   for(interrupt = 0; (0 == found) && (64 > interrupt); interrupt++)
+   {
+      if (32 > interrupt)
+      {
+         mask = 1 << interrupt;
+         offset = 0;
+      }
+      else
+      {
+         mask = 1 << (interrupt-32);
+         offset = 1;
+      }
+
+      if (OSEK_InterruptFlags[offset] & mask)
+      {
+         found = 1;
+         ret = interrupt;
+
+         /* reset interrupt flag */
+         OSEK_InterruptFlags[offset] &= ~mask;
+      }
+   }
+
+   return ret;
+}
 
 /*==================[external functions definition]==========================*/
 void OSEK_ISR_HWTimer0(void)
@@ -138,12 +203,12 @@ void OsInterruptHandler(int signal)
       pthread_join(Os_Thread_Timer, NULL);
       /* kill Main process */
       OsekKillSigHandler(0);
-   }      
-   /* repeat until the buffer is empty */
-   while(!ciaaLibs_circBufEmpty(OSEK_IntCircBuf))
+   }
+   /* repeat until no more int flags are set */
+   while( OSEK_IsIsrWaiting() )
    {
       /* read one interrupt */
-      ciaaLibs_circBufGet(OSEK_IntCircBuf, &interrupt, 1);
+      interrupt = OSEK_GetFirstIsr();
 
       /* only 0 .. 31 interrupts are allowed */
       if (INTERRUPTS_COUNT > interrupt)
@@ -188,7 +253,7 @@ void* HWTimerThread(void *pThread_Arg)
          interrupt = 4;
 
          /* add simulated interrupt to the interrupt queue */
-         ciaaLibs_circBufPut(OSEK_IntCircBuf, &interrupt, 1);
+         OSEK_InterruptFlags[0] |= 1 << interrupt;
 
          /* indicate interrupt using a signal */
          kill(getpid(), SIGALRM);

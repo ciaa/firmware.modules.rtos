@@ -53,7 +53,7 @@
  * Initials     Name
  * ---------------------------
  * MaCe         Mariano Cerdeiro
- * JuCe         Juan Cecconi 
+ * JuCe         Juan Cecconi
  */
 
 /*
@@ -65,8 +65,8 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-#include "ciaaLibs_CircBuf.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -86,11 +86,8 @@
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
-uint8 * OSEK_IntCircBuffer;
 
 /*==================[external data definition]===============================*/
-ciaaLibs_CircBufType * OSEK_IntCircBuf;
-
 bool Os_Terminate_Flag;
 
 pthread_t Os_Thread_Timer;
@@ -115,24 +112,16 @@ void StartOs_Arch(void)
    signal(SIGALRM,OsInterruptHandler);
    signal(SIGUSR1,OsInterruptHandler);
    signal(SIGTERM,OsInterruptHandler);
-   
-   /* shared memory for circular buffer management block */
-   OSEK_IntCircBuf = mmap(NULL,
-         sizeof(ciaaLibs_CircBufType),
+
+   /* shared memory for interrupts */
+   OSEK_InterruptFlags = mmap(NULL,
+         sizeof(8),
          PROT_READ | PROT_WRITE,
          MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
-   /* shared memory for the circular buffer */
-   OSEK_IntCircBuffer = mmap(NULL,
-         sizeof(uint8) * 64,
-         PROT_READ | PROT_WRITE,
-         MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-
-	/* init circular buffer */
-   ciaaLibs_circBufInit(OSEK_IntCircBuf, OSEK_IntCircBuffer, 64);
    /* init Thread Terminate flag */
    Os_Terminate_Flag = false;
-   
+
     if(0 != pthread_create(&Os_Thread_Timer, NULL, HWTimerThread, (void*)0))
    {
       printf("Error creating OS Thread timer!\n");
@@ -140,7 +129,7 @@ void StartOs_Arch(void)
    }
 #if 0
    printf("Process ID: %d\n", getpid());
-#endif	     
+#endif
 
    /* All these is done in a similar way in StartOS.c, Is it code to be deleted? */
 #if 0
@@ -149,13 +138,13 @@ void StartOs_Arch(void)
 
    /* enable HWTimer0,  interrupt 4 */
    InterruptMask = ~(1 << 4);
-   
+
 #if (defined HWCOUNTER1)
    /* enable HWTimer0,  interrupt 5 */
    InterruptMask &= ~(1 << 5);
 #endif
 #endif
-   
+
    SaveOsStack();
 }
 

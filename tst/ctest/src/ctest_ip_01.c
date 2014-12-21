@@ -105,7 +105,7 @@ TASK(Task1)
    /* disable interrupts ISR1 */
    SuspendAllInterrupts();
    ASSERT(IP_03, 0);
-   
+
    Sequence(2);
    /* trigger ISR 1...pending IRQ */
    TriggerISR1();
@@ -115,7 +115,7 @@ TASK(Task1)
    ResumeAllInterrupts();
    ASSERT(IP_01, 0);
    /*
-      This is a deviation from standard, when Resume the interrupts 
+      This is a deviation from standard, when Resume the interrupts
       there is a pending IRQ which will trigger the ISR
    */
 
@@ -132,7 +132,7 @@ TASK(Task1)
    /* disable interrupts ISR2 */
    SuspendOSInterrupts();
    ASSERT(IP_03, 0);
-   
+
    Sequence(9);
    /* trigger ISR 2...pending IRQ */
    TriggerISR2();
@@ -142,7 +142,7 @@ TASK(Task1)
    ResumeOSInterrupts();
    ASSERT(IP_01, 0);
    /*
-      This is a deviation from standard, when Resume the interrupts 
+      This is a deviation from standard, when Resume the interrupts
       there is a pending IRQ which will trigger the ISR
    */
 
@@ -161,14 +161,14 @@ TASK(Task1)
 
 ISR(ISR1)
 {
-   static uint8_t ISR1_Trigger_Number = 0;
-   
+   static uint8 ISR1_Trigger_Number = 0;
+
    switch(ISR1_Trigger_Number)
    {
       case 0:
          Sequence(4);
          ISR1_Trigger_Number++;
-         ASSERT(OTHER, 0);         
+         ASSERT(OTHER, 0);
          break;
       case 1:
          Sequence(6);
@@ -184,8 +184,8 @@ ISR(ISR1)
 
 ISR(ISR2)
 {
-   static uint8_t ISR2_Trigger_Number = 0;
-   
+   static uint8 ISR2_Trigger_Number = 0;
+
    switch(ISR2_Trigger_Number)
    {
       case 0:
