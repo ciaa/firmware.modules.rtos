@@ -35,8 +35,10 @@
 ###############################################################################
 # library
 LIBS 				     += rtos
+# version
+rtos_VERSION			= v0.4.0-master
 # library path
-rtos_PATH 		   	  = $(ROOT_DIR)$(DS)modules$(DS)rtos
+rtos_PATH 		   	= $(ROOT_DIR)$(DS)modules$(DS)rtos
 # library source path
 rtos_SRC_PATH 	      = $(rtos_PATH)$(DS)src
 # library include path
