@@ -128,7 +128,7 @@ StatusType GetTaskState
 	{
 		SetError_Api(OSServiceId_GetTaskState);
 		SetError_Param1(TaskID);
-		SetError_Param2((size_t)State);
+		SetError_Param2((unsigned int)State);
 		SetError_Ret(ret);
 		SetError_Msg("GetTaskState returns != than E_OK");
 		SetError_ErrorHook();

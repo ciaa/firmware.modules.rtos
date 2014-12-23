@@ -128,7 +128,7 @@ StatusType GetAlarmBase
 	{
 		SetError_Api(OSServiceId_GetAlarmBase);
 		SetError_Param1(AlarmID);
-		SetError_Param2((size_t)Info);
+		SetError_Param2((unsigned int)Info);
 		SetError_Ret(ret);
 		SetError_Msg("GetAlarmBase returns != than E_OK");
 		SetError_ErrorHook();

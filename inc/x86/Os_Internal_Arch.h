@@ -76,6 +76,15 @@
 #include "string.h"     /* used to call the function strerror */
 
 /*==================[macros]=================================================*/
+/** \brief Extra size reserved for each stack
+ **
+ ** This macro shall be set to the amount of extra stack needed for each task
+ ** in the simulation of the rtos in systems like windows/linux. In real
+ ** embedded hw this macro shall be set to 0.
+ **
+ ** TASK_STAC_ADDITIONAL_STACK bytes of extra stack are reserver for each task
+ ** running on the system.
+ **/
 #define TASK_STACK_ADDITIONAL_SIZE      10000
 
 /*==================[cputype macros]=========================================*/

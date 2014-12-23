@@ -127,7 +127,7 @@ StatusType GetAlarm
    {
 	  SetError_Api(OSServiceId_GetAlarm);
       SetError_Param1(AlarmID);
-      SetError_Param2((size_t)Tick);
+      SetError_Param2((unsigned int)Tick);
       SetError_Ret(ret);
       SetError_Msg("GetAlarm returns != than E_OK");
       SetError_ErrorHook();

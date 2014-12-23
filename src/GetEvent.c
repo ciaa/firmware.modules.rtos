@@ -133,7 +133,7 @@ StatusType GetEvent
 	{
 		SetError_Api(OSServiceId_SetEvent);
 		SetError_Param1(TaskID);
-		SetError_Param2((size_t)Event);
+		SetError_Param2((unsigned int)Event);
 		SetError_Ret(ret);
 		SetError_Msg("ActivateTask returns != than E_OK");
 		SetError_ErrorHook();
