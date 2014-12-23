@@ -81,7 +81,7 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "Osek_Internal.h"
+#include "Os_Internal.h"
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * add any needed include, please take into account that normaly NO INCLUDE
