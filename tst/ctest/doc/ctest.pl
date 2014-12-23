@@ -82,7 +82,7 @@ close(FILE);
 foreach (split(//, $buffer)) {
 
 	#printf("%02x ", ord($_));
-	
+
 	for($loopi = 0; $loopi < 4; $loopi++)
 	{
 		$test = ( ord($_) >> (2 * $loopi) ) & 0x3;
@@ -100,7 +100,7 @@ foreach (@testresult)
 	switch ($_)
 	{
 		case 0 {	print "INIT"; }
-		case 1 { print "FAILED"; } 
+		case 1 { print "FAILED"; }
 		case 2 { print "OTHER"; }
 		case 3 { print "OK"; }
 	}

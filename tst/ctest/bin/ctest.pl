@@ -140,7 +140,7 @@ sub GetTestSequencesConfigs
    {
       chomp($line);
       # Skips empty lines and starting with # (comments)
-      if ($line ne "" && substr($line, 0, 1) !~ /^\#/)      
+      if ($line ne "" && substr($line, 0, 1) !~ /^\#/)
       {
          $tabcount = ($line =~ tr/\t//);
          $line =~ s/\t+//;
@@ -187,7 +187,7 @@ sub GetTestSequencesCon
       # removes carry return + line-feed
 	   $line =~ tr/\r\n//d;
       # Skips empty lines and starting with # (comments)
-      if ($line ne "" && substr($line, 0, 1) !~ /^\#/)     
+      if ($line ne "" && substr($line, 0, 1) !~ /^\#/)
       {
          # Count TABs
          $tabcount = ($line =~ tr/\t//);
@@ -615,7 +615,7 @@ foreach $testfn (@tests)
          CreateTestProject($test, $config);
 
          $error = "";
-		 
+
          if($clean_generate != 0)
          {
             info("make clean of $test");
@@ -635,7 +635,7 @@ foreach $testfn (@tests)
          if ($outmakecleanstatus == 0)
          {
             if($clean_generate != 0)
-            {		 
+            {
                info("make generate of $test");
                info("running \"make generate PROJECT=out/rtos/$test/$config");
                $outmakegenerate = `make generate PROJECT=out/rtos/$test/$config`;
@@ -741,8 +741,8 @@ while ( $line = <SUMMARYFILE> )
    # print the individual line
    print "$line";
 }
-close(SUMMARYFILE); 
-   
+close(SUMMARYFILE);
+
 close(LOGFILE);
 close(LOGFILEFULL);
 close(RESFILE);

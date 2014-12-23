@@ -6,7 +6,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *             
+ *
  * Linking FreeOSEK statically or dynamically with other modules is making a
  * combined work based on FreeOSEK. Thus, the terms and conditions of the GNU
  * General Public License cover the whole combination.
@@ -14,7 +14,7 @@
  * In addition, as a special exception, the copyright holders of FreeOSEK give
  * you permission to combine FreeOSEK program with free software programs or
  * libraries that are released under the GNU LGPL and with independent modules
- * that communicate with FreeOSEK solely through the FreeOSEK defined interface. 
+ * that communicate with FreeOSEK solely through the FreeOSEK defined interface.
  * You may copy and distribute such a system following the terms of the GNU GPL
  * for FreeOSEK and the licenses of the other code concerned, provided that you
  * include the source code of that other code when and as the GNU GPL requires
@@ -25,7 +25,7 @@
  * whether to do so. The GNU General Public License gives permission to release
  * a modified version without this exception; this exception also makes it
  * possible to release a modified version which carries forward this exception.
- * 
+ *
  * FreeOSEK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -149,7 +149,7 @@
  * 	- \b Running: the task is running, only one task every time can be running
  * 	- \b Read: the task ready and waiting on the execution queue.
  * 	- \b Suspended: the task is stopped.
- *	
+ *
  *	Extended tasks have an extra state:
  *		- \b Waiting: the task is waiting for the occurence of one or more events.
  *
@@ -177,7 +177,7 @@
  * was activated before will be executed.
  *
  * Task priorites are set on configuration time. A higer value represents
- * a higher priority. 
+ * a higher priority.
  *
  * The OS has one ready queue for every priority.
  *
@@ -382,7 +382,7 @@
  *
  * /* The task Checksum_Task has to be defined on the OIL configuration */
  * /* Activate Checksum_Task */
- * ret = ActivateTask(Checksum_Task); 
+ * ret = ActivateTask(Checksum_Task);
  *
  * /* ... */
  * \endcode
@@ -681,7 +681,7 @@
  * have to create any \<CPUTYPE\> directory, same if you don't need any special
  * make file you don't need a FreeOSEK/mak/\<ARCH\> or
  * FreeOSEK/mak/\<ARCH\>/\<CPUTYPE\>.
- * 
+ *
  * \subsection FreeOSEK_Porting_Files Files to be ported
  *
  * The following files have to be defined since they are included
@@ -724,7 +724,7 @@
  *
  * \b DisableAllInterrupts_Arch()
  *
- * This service shall disable all interrupts of the system. 
+ * This service shall disable all interrupts of the system.
  *
  * \section FreeOSEK_Requirements Requirements
  *
