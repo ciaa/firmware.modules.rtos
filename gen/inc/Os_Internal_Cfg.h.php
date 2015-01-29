@@ -210,7 +210,7 @@ elseif($posttaskhook == "TRUE")
 {
    print "#define HOOK_POSTTASKHOOK OSEK_ENABLE\n";
 }
-elseif($pretaskhook == "FALSE")
+elseif($posttaskhook == "FALSE")
 {
    print "#define HOOK_POSTTASKHOOK OSEK_DISABLE\n";
 }
