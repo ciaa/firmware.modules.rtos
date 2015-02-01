@@ -123,7 +123,7 @@ $count = 0;
 foreach ($resources as $resource)
 {
 	print "/** \brief Definition of the resource $resource */\n";
-	print "#define " . $resource . " " . $count++ . "\n";
+	print "#define " . $resource . " ((ResourceType)" . $count++ . ")\n";
 }
 print "\n";
 
