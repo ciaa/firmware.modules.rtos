@@ -73,7 +73,15 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch_SysTick(void)
 {
-   /* Activate MemFault, UsageFault and BusFault exceptions */
+#if (CPU == mk60fx512vlq15)
+	//implements here for K60_120 the next things:
+	/* Activate MemFault, UsageFault and BusFault exceptions */
+	/* Set lowest priority for SysTick and PendSV */
+	/* Activate SysTick */
+	/* Update priority set by SysTick_Config */
+
+#else
+	/* Activate MemFault, UsageFault and BusFault exceptions */
    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
 
    /* Set lowest priority for SysTick and PendSV */
@@ -85,7 +93,9 @@ void StartOs_Arch_SysTick(void)
 
    /* Update priority set by SysTick_Config */
    NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+#endif
 }
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
