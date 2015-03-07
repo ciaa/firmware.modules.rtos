@@ -2,9 +2,10 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2014, Mariano Cerdeiro
+/* Copyright 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, Pablo Ridolfi
  * Copyright 2015, Alejandro Permingeat
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -68,6 +69,10 @@
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 
+#if (CPU == mk60fx512vlq15)
+#include "Cpu.h"
+#endif
+
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data declaration]==============================*/
@@ -77,22 +82,19 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-
 #if (CPU == mk60fx512vlq15)
-  #include "Cpu.h"
-/* __thumb_startup is defined in startup.c */
-  void __thumb_startup( void );
+   /* __thumb_startup is defined in startup.c */
+   void __thumb_startup( void );
 
-  extern uint32_t __SP_INIT;
-
-#else
-
+   extern uint32_t __SP_INIT;
+#elif (CPU == lpc4337)
 /* ResetISR is defined in cr_startup_lpc43xx.c */
 extern void ResetISR(void);
 
 /** \brief External declaration for the pointer to the stack top from the Linker Script */
 extern void _vStackTop(void);
-
+#else
+#error Not supported CPU
 #endif
 
 /** \brief Handlers used by OSEK */
@@ -100,7 +102,6 @@ extern void SysTick_Handler(void);
 extern void PendSV_Handler(void);
 
 /*==================[internal functions definition]==========================*/
-
 /* Default exception handlers. */
 __attribute__ ((section(".after_vectors")))
 void NMI_Handler(void) {
@@ -273,13 +274,10 @@ $intList_k60_120 = array (
 $MAX_INT_COUNT_k60_120 = max(array_keys($intList_k60_120))+1;
 ?>
 
-
-
-
 #if (CPU == mk60fx512vlq15)
 /** \brief mk60fx512vlq15 Interrupt vector */
 __attribute__ ((section (".vectortable"))) const tVectorTable __vect_table = { /* Interrupt vector table */
-  
+
     /* ISR name                             No. Address      Pri Name                           Description */
     &__SP_INIT,                        /* 0x00  0x00000000   -   ivINT_Initial_Stack_Pointer    used by PE */
     {
@@ -336,7 +334,7 @@ for($i=16; $i < $MAX_INT_COUNT_k60_120; $i++)
 	}
   };
 
-#else
+#elif (CPU == lpc4337)
 
 <?php
 /* Interrupt sources for LPC43xx.
@@ -459,6 +457,8 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
 }
 ?>
 };
+#else
+#error Not supported CPU
 #endif
 
 /** \brief Interrupt enabling and priority setting function */
