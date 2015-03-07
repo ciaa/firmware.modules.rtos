@@ -55,11 +55,13 @@
  * ---------------------------
  * MaCe         Mariano Cerdeiro
  * PR           Pablo Ridolfi
+ * Apermingeat  Alejandro Permingeat
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * v0.1.4 20150307 MaCe rework port for CIAA-FLS
  * v0.1.3 20150303 Apermingeat added K60_120 interrupt sources
  * v0.1.2 20141130 PR   Added ISR cat. 2 enabling and disabling functions.
  * v0.1.1 20141115 PR   added LPC43xx interrupt sources, spelling mistake fixed
@@ -68,7 +70,6 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-
 #if (CPU == mk60fx512vlq15)
 #include "Cpu.h"
 #endif
@@ -140,141 +141,194 @@ void DebugMon_Handler(void) {
 }
 
 /*==================[external functions definition]==========================*/
-
 <?php
-/* Interrupt sources for MK60F15.
- * See externals/platforms/cortexM4/k60_120/inc/MK60F15.h.
- */
-$intList_k60_120 = array (
-   0 => "Initial_Stack_Pointer",
-   1 => "Initial_Program_Counter",
-   2 => "NMI",
-   3 => "Hard_Fault",
-   4 => "Mem_Manage_Fault",
-   5 => "Bus_Fault",
-   6 => "Usage_Fault",
-   7 => "Reserved7",
-   8 => "Reserved8",
-   9 => "Reserved9",
-   10 => "Reserved10",
-   11 => "SVCall",
-   12 => "DebugMonitor",
-   13 => "Reserved13",
-   14 => "PendableSrvReq",
-   15 => "SysTick",
-   16 => "DMA0_DMA16",
-   17 => "DMA1_DMA17",
-   18 => "DMA2_DMA18",
-   19 => "DMA3_DMA19",
-   20 => "DMA4_DMA20",
-   21 => "DMA5_DMA21",
-   22 => "DMA6_DMA22",
-   23 => "DMA7_DMA23",
-   24 => "DMA8_DMA24",
-   25 => "DMA9_DMA25",
-   26 => "DMA10_DMA26",
-   27 => "DMA11_DMA27",
-   28 => "DMA12_DMA28",
-   29 => "DMA13_DMA29",
-   30 => "DMA14_DMA30",
-   31 => "DMA15_DMA31",
-   32 => "DMA_Error",
-   33 => "MCM",
-   34 => "FTFE",
-   35 => "Read_Collision",
-   36 => "LVD_LVW",
-   37 => "LLW",
-   38 => "Watchdog",
-   39 => "RNG",
-   40 => "I2C0",
-   41 => "I2C1",
-   42 => "SPI0",
-   43 => "SPI1",
-   44 => "SPI2",
-   45 => "CAN0_ORed_Message_buffer",
-   46 => "CAN0_Bus_Off",
-   47 => "CAN0_Error",
-   48 => "CAN0_Tx_Warning",
-   49 => "CAN0_Rx_Warning",
-   50 => "CAN0_Wake_Up",
-   51 => "I2S0_Tx",
-   52 => "I2S0_Rx",
-   53 => "CAN1_ORed_Message_buffer",
-   54 => "CAN1_Bus_Off",
-   55 => "CAN1_Error",
-   56 => "CAN1_Tx_Warning",
-   57 => "CAN1_Rx_Warning",
-   58 => "CAN1_Wake_Up",
-   59 => "Reserved59",
-   60 => "UART0_LON",
-   61 => "UART0_RX_TX",
-   62 => "UART0_ERR",
-   63 => "UART1_RX_TX",
-   64 => "UART1_ERR",
-   65 => "UART2_RX_TX",
-   66 => "UART2_ERR",
-   67 => "UART3_RX_TX",
-   68 => "UART3_ERR",
-   69 => "UART4_RX_TX",
-   70 => "UART4_ERR",
-   71 => "UART5_RX_TX",
-   72 => "UART5_ERR",
-   73 => "ADC0",
-   74 => "ADC1",
-   75 => "CMP0",
-   76 => "CMP1",
-   77 => "CMP2",
-   78 => "FTM0",
-   79 => "FTM1",
-   80 => "FTM2",
-   81 => "CMT",
-   82 => "RTC",
-   83 => "RTC_Seconds",
-   84 => "PIT0",
-   85 => "PIT1",
-   86 => "PIT2",
-   87 => "PIT3",
-   88 => "PDB0",
-   89 => "USB0",
-   90 => "USBDCD",
-   91 => "ENET_1588_Timer",
-   92 => "ENET_Transmit",
-   93 => "ENET_Receive",
-   94 => "ENET_Error",
-   95 => "Reserved95",
-   96 => "SDHC",
-   97 => "DAC0",
-   98 => "DAC1",
-   99 => "TSI0",
-   100 => "MCG",
-   101 => "LPTimer",
-   102 => "Reserved102",
-   103 => "PORTA",
-   104 => "PORTB",
-   105 => "PORTC",
-   106 => "PORTD",
-   107 => "PORTE",
-   108 => "PORTF",
-   109 => "Reserved109",
-   110 => "SWI",
-   111 => "NFC",
-   112 => "USBHS",
-   113 => "Reserved113",
-   114 => "CMP3",
-   115 => "Reserved115",
-   116 => "Reserved116",
-   117 => "FTM3",
-   118 => "ADC2",
-   119 => "ADC3",
-   120 => "I2S1_Tx",
-   121 => "I2S1_Rx",
+switch ($definition["CPU"])
+{
+   case "mk60fx512vlq15":
+      /* Interrupt sources for MK60F15.
+       * See externals/platforms/cortexM4/k60_120/inc/MK60F15.h.
+       */
+      $intList = array (
+         0 => "DMA0_DMA16",
+         1 => "DMA1_DMA17",
+         2 => "DMA2_DMA18",
+         3 => "DMA3_DMA19",
+         4 => "DMA4_DMA20",
+         5 => "DMA5_DMA21",
+         6 => "DMA6_DMA22",
+         7 => "DMA7_DMA23",
+         8 => "DMA8_DMA24",
+         9 => "DMA9_DMA25",
+         10 => "DMA10_DMA26",
+         11 => "DMA11_DMA27",
+         12 => "DMA12_DMA28",
+         13 => "DMA13_DMA29",
+         14 => "DMA14_DMA30",
+         15 => "DMA15_DMA31",
+         16 => "DMA_ERR",
+         17 => "MCM",
+         18 => "FTFE",
+         19 => "Read_Collision",
+         20 => "LVD_LVW",
+         21 => "LLW",
+         22 => "WDG",
+         23 => "RNG",
+         24 => "I2C0",
+         25 => "I2C1",
+         26 => "SPI0",
+         27 => "SPI1",
+         28 => "SPI2",
+         29 => "CAN0_READ",
+         30 => "CAN0_BOFF",
+         31 => "CAN0_ERR",
+         32 => "CAN0_TXW",
+         33 => "CAN0_RXW",
+         34 => "CAN0_WAKEUP",
+         35 => "I2S0_TX",
+         36 => "I2S0_RR",
+         37 => "CAN1_READ",
+         38 => "CAN1_BOFF",
+         39 => "CAN1_EERROR",
+         40 => "CAN1_TXW",
+         41 => "CAN1_RXW",
+         42 => "CAN1_WAKEUP",
+         43 => "RES59",
+         44 => "UART0_LON",
+         45 => "UART0",
+         46 => "UART0_ERR",
+         47 => "UART1",
+         48 => "UART1_ERR",
+         49 => "UART2",
+         50 => "UART2_ERR",
+         51 => "UART3",
+         52 => "UART3_ERR",
+         53 => "UART4",
+         54 => "UART4_ERR",
+         55 => "UART5",
+         56 => "UART5_ERR",
+         57 => "ADC0",
+         58 => "ADC1",
+         59 => "CMP0",
+         60 => "CMP1",
+         61 => "CMP2",
+         62 => "FTM0",
+         63 => "FTM1",
+         64 => "FTM2",
+         65 => "CMT",
+         66 => "RTC",
+         67 => "RTC_SEC",
+         68 => "PIT0",
+         69 => "PIT1",
+         70 => "PIT2",
+         71 => "PIT3",
+         72 => "PDB0",
+         73 => "USB0",
+         74 => "USBDCD",
+         75 => "ENET_1588_Timer",
+         76 => "ENET_TX",
+         77 => "ENET_RX",
+         78 => "ENET_ERR",
+         79 => "RES95",
+         80 => "SDHC",
+         81 => "DAC0",
+         82 => "DAC1",
+         83 => "TSI0",
+         84 => "MCG",
+         84 => "LPTimer",
+         86 => "RES102",
+         87 => "PORTA",
+         88 => "PORTB",
+         89 => "PORTC",
+         90 => "PORTD",
+         91 => "PORTE",
+         92 => "PORTF",
+         93 => "RES109",
+         94 => "SWI",
+         95 => "NFC",
+         96 => "USBHS",
+         97 => "RES113",
+         98 => "CMP3",
+         99 => "RES115",
+         100 => "RES116",
+         101 => "FTM3",
+         102 => "ADC2",
+         103 => "ADC3",
+         104 => "I2S1_TX",
+         105 => "I2S1_RX",
+      );
+      break;
 
-);
+   case "lpc4337":
+      /* Interrupt sources for LPC43xx.
+       * See externals/platforms/cortexM4/lpc43xx/inc/cmsis_43xx.h.
+       */
+      $intList = array (
+         0 => "DAC",
+         1 => "M0APP",
+         2 => "DMA",
+         3 => "RES1",
+         4 => "FLASH_EEPROM",
+         5 => "ETH",
+         6 => "SDIO",
+         7 => "LCD",
+         8 => "USB0",
+         9 => "USB1",
+         10 => "SCT",
+         11 => "RIT",
+         12 => "TIMER0",
+         13 => "TIMER1",
+         14 => "TIMER2",
+         15 => "TIMER3",
+         16 => "MCPWM",
+         17 => "ADC0",
+         18 => "I2C0",
+         19 => "I2C1",
+         20 => "SPI",
+         21 => "ADC1",
+         22 => "SSP0",
+         23 => "SSP1",
+         24 => "UART0",
+         25 => "UART1",
+         26 => "UART2",
+         27 => "UART3",
+         28 => "I2S0",
+         29 => "I2S1",
+         30 => "SPIFI",
+         31 => "SGPIO",
+         32 => "GPIO0",
+         33 => "GPIO1",
+         34 => "GPIO2",
+         35 => "GPIO3",
+         36 => "GPIO4",
+         37 => "GPIO5",
+         38 => "GPIO6",
+         39 => "GPIO7",
+         40 => "GINT0",
+         41 => "GINT1",
+         42 => "EVRT",
+         43 => "CAN1",
+         44 => "RES6",
+         45 => "ADCHS",
+         46 => "ATIMER",
+         47 => "RTC",
+         48 => "RES8",
+         49 => "WDT",
+         50 => "M0SUB",
+         51 => "CAN0",
+         52 => "QEI"
+      );
+      break;
 
-$MAX_INT_COUNT_k60_120 = max(array_keys($intList_k60_120))+1;
+   default:
+      error("the CPU " . $definition["CPU"] . " is not supported.");
+      break;
+}
+
+$MAX_INT_COUNT = max(array_keys($intList))+1;
 ?>
 
 #if (CPU == mk60fx512vlq15)
+<?php if ($definition["CPU"] == "mk60fx512vlq15") : ?>
 /** \brief mk60fx512vlq15 Interrupt vector */
 __attribute__ ((section (".vectortable"))) const tVectorTable __vect_table = { /* Interrupt vector table */
 
@@ -301,7 +355,7 @@ __attribute__ ((section (".vectortable"))) const tVectorTable __vect_table = { /
 /* get ISRs defined by user application */
 $intnames = $config->getList("/OSEK","ISR");
 
-for($i=16; $i < $MAX_INT_COUNT_k60_120; $i++)
+for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
    foreach ($intnames as $int)
@@ -309,15 +363,15 @@ for($i=16; $i < $MAX_INT_COUNT_k60_120; $i++)
       $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
       $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
 
-      if($intList_k60_120[$i] == $source)
+      if($intList[$i] == $source)
       {
          if ($intcat == 2)
          {
-            print "    (tIsrFunc)&OSEK_ISR2_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))." ISR for " . $intList_k60_120[$i] . " (IRQ $i) Category 2 */\n";
+            print "    (tIsrFunc)&OSEK_ISR2_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
             $src_found = 1;
          } elseif ($intcat == 1)
          {
-            print "    (tIsrFunc)&OSEK_ISR_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."  ISR for " . $intList_k60_120[$i] . " (IRQ $i) Category 1 */\n";
+            print "    (tIsrFunc)&OSEK_ISR_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."  ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
             $src_found = 1;
          } else
          {
@@ -327,78 +381,14 @@ for($i=16; $i < $MAX_INT_COUNT_k60_120; $i++)
    }
    if($src_found == 0)
    {
-      print "    (tIsrFunc)&OSEK_ISR_NoHandler,     /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."   -   No Handler set for ISR " . $intList_k60_120[$i] . " (IRQ $i) */\n";
+      print "    (tIsrFunc)&OSEK_ISR_NoHandler,     /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."   -   No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
    }
 }
 ?>
-	}
-  };
+   }
+};
 
-#elif (CPU == lpc4337)
-
-<?php
-/* Interrupt sources for LPC43xx.
- * See externals/platforms/cortexM4/lpc43xx/inc/cmsis_43xx.h.
- */
-$intList = array (
-   0 => "DAC",
-   1 => "M0APP",
-   2 => "DMA",
-   3 => "RESERVED1",
-   4 => "FLASH_EEPROM",
-   5 => "ETH",
-   6 => "SDIO",
-   7 => "LCD",
-   8 => "USB0",
-   9 => "USB1",
-   10 => "SCT",
-   11 => "RIT",
-   12 => "TIMER0",
-   13 => "TIMER1",
-   14 => "TIMER2",
-   15 => "TIMER3",
-   16 => "MCPWM",
-   17 => "ADC0",
-   18 => "I2C0",
-   19 => "I2C1",
-   20 => "SPI",
-   21 => "ADC1",
-   22 => "SSP0",
-   23 => "SSP1",
-   24 => "UART0",
-   25 => "UART1",
-   26 => "UART2",
-   27 => "UART3",
-   28 => "I2S0",
-   29 => "I2S1",
-   30 => "SPIFI",
-   31 => "SGPIO",
-   32 => "GPIO0",
-   33 => "GPIO1",
-   34 => "GPIO2",
-   35 => "GPIO3",
-   36 => "GPIO4",
-   37 => "GPIO5",
-   38 => "GPIO6",
-   39 => "GPIO7",
-   40 => "GINT0",
-   41 => "GINT1",
-   42 => "EVRT",
-   43 => "CAN1",
-   44 => "RESERVED6",
-   45 => "ADCHS",
-   46 => "ATIMER",
-   47 => "RTC",
-   48 => "RESERVED8",
-   49 => "WDT",
-   50 => "M0SUB",
-   51 => "CAN0",
-   52 => "QEI"
-);
-
-$MAX_INT_COUNT = max(array_keys($intList))+1;
-?>
-
+<?php elseif ($definition["CPU"] == "lpc4337") : ?>
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
@@ -422,7 +412,6 @@ void (* const g_pfnVectors[])(void) = {
 
    /* Chip Level - LPC43xx (M4 core) */
 <?php
-
 /* get ISRs defined by user application */
 $intnames = $config->getList("/OSEK","ISR");
 
