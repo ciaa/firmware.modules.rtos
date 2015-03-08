@@ -367,11 +367,11 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       {
          if ($intcat == 2)
          {
-            print "    (tIsrFunc)&OSEK_ISR2_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
+            print "    (tIsrFunc)&OSEK_ISR2_$int,          /* 0x".dechex($i+16)."  0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
             $src_found = 1;
          } elseif ($intcat == 1)
          {
-            print "    (tIsrFunc)&OSEK_ISR_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."  ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
+            print "    (tIsrFunc)&OSEK_ISR_$int,          /* 0x".dechex($i+16)."  0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)."  ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
             $src_found = 1;
          } else
          {
@@ -381,7 +381,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    }
    if($src_found == 0)
    {
-      print "    (tIsrFunc)&OSEK_ISR_NoHandler,     /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."   -   No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
+      print "    (tIsrFunc)&OSEK_ISR_NoHandler,     /* 0x".dechex($i+16)."  0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)."   -   No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
    }
 }
 ?>
