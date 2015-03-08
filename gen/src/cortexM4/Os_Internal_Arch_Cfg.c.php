@@ -326,7 +326,6 @@ $MAX_INT_COUNT = max(array_keys($intList))+1;
 if ($definition["CPU"] == "mk60fx512vlq15") : ?>
 /** \brief mk60fx512vlq15 Interrupt vector */
 __attribute__ ((section (".vectortable"))) void const * const  __vect_table[] = { /* Interrupt vector table */
-
    /* System ISRs */
    &__SP_INIT,
    (void*)&__thumb_startup,
@@ -348,7 +347,7 @@ __attribute__ ((section (".vectortable"))) void const * const  __vect_table[] = 
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
-   /* Core Level - CM4 */
+   /* System ISRs */
    &_vStackTop,                    /* The initial stack pointer  */
    ResetISR,                       /* The reset handler          */
    NMI_Handler,                    /* The NMI handler            */
@@ -387,11 +386,11 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       {
          if ($intcat == 2)
          {
-            print "   OSEK_ISR2_$int, /* ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
+            print "   OSEK_ISR2_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
             $src_found = 1;
          } elseif ($intcat == 1)
          {
-            print "   OSEK_ISR_$int, /* ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
+            print "   OSEK_ISR_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
             $src_found = 1;
          } else
          {
@@ -401,7 +400,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    }
    if($src_found == 0)
    {
-      print "   OSEK_ISR_NoHandler, /* No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
+      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n"; 
    }
 }
 ?>
