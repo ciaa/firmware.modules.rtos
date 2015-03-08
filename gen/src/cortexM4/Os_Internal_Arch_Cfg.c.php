@@ -70,9 +70,6 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-#if (CPU == mk60fx512vlq15)
-#include "Cpu.h"
-#endif
 
 /*==================[macros and definitions]=================================*/
 
@@ -325,69 +322,28 @@ switch ($definition["CPU"])
 }
 
 $MAX_INT_COUNT = max(array_keys($intList))+1;
-?>
 
-#if (CPU == mk60fx512vlq15)
-<?php if ($definition["CPU"] == "mk60fx512vlq15") : ?>
+if ($definition["CPU"] == "mk60fx512vlq15") : ?>
 /** \brief mk60fx512vlq15 Interrupt vector */
-__attribute__ ((section (".vectortable"))) const tVectorTable __vect_table = { /* Interrupt vector table */
+__attribute__ ((section (".vectortable"))) void const * const  __vect_table[] = { /* Interrupt vector table */
 
-    /* ISR name                             No. Address      Pri Name                           Description */
-    &__SP_INIT,                        /* 0x00  0x00000000   -   ivINT_Initial_Stack_Pointer    used by PE */
-    {
-    (tIsrFunc)&__thumb_startup,        /* 0x01  0x00000004   -   ivINT_Initial_Program_Counter  used by PE */
-    (tIsrFunc)&Cpu_INT_NMIInterrupt,   /* 0x02  0x00000008   -2   ivINT_NMI                      used by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x03  0x0000000C   -1   ivINT_Hard_Fault               unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x04  0x00000010   -   ivINT_Mem_Manage_Fault         unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x05  0x00000014   -   ivINT_Bus_Fault                unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x06  0x00000018   -   ivINT_Usage_Fault              unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x07  0x0000001C   -   ivINT_Reserved7                unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x08  0x00000020   -   ivINT_Reserved8                unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x09  0x00000024   -   ivINT_Reserved9                unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x0A  0x00000028   -   ivINT_Reserved10               unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x0B  0x0000002C   -   ivINT_SVCall                   unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x0C  0x00000030   -   ivINT_DebugMonitor             unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x0D  0x00000034   -   ivINT_Reserved13               unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x0E  0x00000038   -   ivINT_PendableSrvReq           unused by PE */
-    (tIsrFunc)&SysTick_Handler,        /* 0x0F  0x0000003C   -   ivINT_SysTick                  unused by PE */
-<?php
-
-/* get ISRs defined by user application */
-$intnames = $config->getList("/OSEK","ISR");
-
-for($i=0; $i < $MAX_INT_COUNT; $i++)
-{
-   $src_found = 0;
-   foreach ($intnames as $int)
-   {
-      $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-      $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-
-      if($intList[$i] == $source)
-      {
-         if ($intcat == 2)
-         {
-            print "    (tIsrFunc)&OSEK_ISR2_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
-            $src_found = 1;
-         } elseif ($intcat == 1)
-         {
-            print "    (tIsrFunc)&OSEK_ISR_$int,          /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."  ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
-            $src_found = 1;
-         } else
-         {
-            error("Interrupt $int type $inttype has an invalid category $intcat");
-         }
-      }
-   }
-   if($src_found == 0)
-   {
-      print "    (tIsrFunc)&OSEK_ISR_NoHandler,     /* 0x".dechex($i)."  0x00000".strtoupper(dechex($i*4))."   -   No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
-   }
-}
-?>
-   }
-};
-
+   /* System ISRs */
+   &__SP_INIT,
+   (void*)&__thumb_startup,
+   (void*)&NMI_Handler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&OSEK_ISR_NoHandler,
+   (void*)&SysTick_Handler,
 <?php elseif ($definition["CPU"] == "lpc4337") : ?>
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
@@ -409,9 +365,13 @@ void (* const g_pfnVectors[])(void) = {
    0,                              /* Reserved                   */
    PendSV_Handler,                 /* The PendSV handler         */
    SysTick_Handler,                /* The SysTick handler        */
-
-   /* Chip Level - LPC43xx (M4 core) */
+<?php else :
+      error("Not supported CPU: " . $definition["CPU"]);
+   endif;
+?>
+   /*** User Interruptions ***/
 <?php
+
 /* get ISRs defined by user application */
 $intnames = $config->getList("/OSEK","ISR");
 
@@ -444,10 +404,8 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       print "   OSEK_ISR_NoHandler, /* No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
    }
 }
-else :
-   error("Not supported CPU: " . $definition["CPU"]);
-endif;
 ?>
+};
 
 /** \brief Interrupt enabling and priority setting function */
 void Enable_User_ISRs(void)
