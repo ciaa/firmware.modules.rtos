@@ -235,26 +235,26 @@ switch ($definition["CPU"])
          83 => "TSI0",
          84 => "MCG",
          84 => "LPTimer",
-         86 => "RES102",
-         87 => "PORTA",
-         88 => "PORTB",
-         89 => "PORTC",
-         90 => "PORTD",
-         91 => "PORTE",
-         92 => "PORTF",
-         93 => "RES109",
-         94 => "SWI",
-         95 => "NFC",
-         96 => "USBHS",
-         97 => "RES113",
-         98 => "CMP3",
-         99 => "RES115",
-         100 => "RES116",
-         101 => "FTM3",
-         102 => "ADC2",
-         103 => "ADC3",
-         104 => "I2S1_TX",
-         105 => "I2S1_RX",
+         85 => "RES102",
+         86 => "PORTA",
+         87 => "PORTB",
+         88 => "PORTC",
+         89 => "PORTD",
+         90 => "PORTE",
+         91 => "PORTF",
+         92 => "RES109",
+         93 => "SWI",
+         94 => "NFC",
+         95 => "USBHS",
+         96 => "RES113",
+         97 => "CMP3",
+         98 => "RES115",
+         99 => "RES116",
+         100 => "FTM3",
+         101 => "ADC2",
+         102 => "ADC3",
+         103 => "I2S1_TX",
+         104 => "I2S1_RX",
       );
       break;
 
@@ -444,11 +444,10 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       print "   OSEK_ISR_NoHandler, /* No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
    }
 }
+else :
+   error("Not supported CPU: " . $definition["CPU"]);
+endif;
 ?>
-};
-#else
-#error Not supported CPU
-#endif
 
 /** \brief Interrupt enabling and priority setting function */
 void Enable_User_ISRs(void)
