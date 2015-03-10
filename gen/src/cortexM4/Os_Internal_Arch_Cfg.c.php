@@ -81,10 +81,10 @@
 
 /*==================[external data definition]===============================*/
 #if (CPU == mk60fx512vlq15)
-   /* __thumb_startup is defined in startup.c */
-   void __thumb_startup( void );
+   /* Reset_Handler is defined in startup_MK60F15.S_CPP */
+   void Reset_Handler( void );
 
-   extern uint32_t __SP_INIT;
+   extern uint32_t __StackTop;
 #elif (CPU == lpc4337)
 /* ResetISR is defined in cr_startup_lpc43xx.c */
 extern void ResetISR(void);
@@ -324,25 +324,25 @@ switch ($definition["CPU"])
 $MAX_INT_COUNT = max(array_keys($intList))+1;
 
 if ($definition["CPU"] == "mk60fx512vlq15") : ?>
-/** \brief mk60fx512vlq15 Interrupt vector */
-__attribute__ ((section (".vectortable"))) void const * const  __vect_table[] = { /* Interrupt vector table */
+__attribute__ ((section(".isr_vector")))
+void (* const g_pfnVectors[])(void) = {
    /* System ISRs */
-   &__SP_INIT,
-   (void*)&__thumb_startup,
-   (void*)&NMI_Handler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&OSEK_ISR_NoHandler,
-   (void*)&SysTick_Handler,
+   &__StackTop,                    /* The initial stack pointer  */
+   Reset_Handler,                       /* The reset handler          */
+   NMI_Handler,                    /* The NMI handler            */
+   HardFault_Handler,              /* The hard fault handler     */
+   MemManage_Handler,              /* The MPU fault handler      */
+   BusFault_Handler,               /* The bus fault handler      */
+   UsageFault_Handler,             /* The usage fault handler    */
+   0,                              /* Reserved                   */
+   0,                              /* Reserved                   */
+   0,                              /* Reserved                   */
+   0,                              /* Reserved                   */
+   SVC_Handler,                    /* SVCall handler             */
+   DebugMon_Handler,               /* Debug monitor handler      */
+   0,                              /* Reserved                   */
+   PendSV_Handler,                 /* The PendSV handler         */
+   SysTick_Handler,                /* The SysTick handler        */
 <?php elseif ($definition["CPU"] == "lpc4337") : ?>
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
