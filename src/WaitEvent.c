@@ -63,7 +63,7 @@
  * 20090330 v0.1.3 MaCe add NO_EVENTS evaluation
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080814 v0.1.0 MaCe	initial version
+ * 20080814 v0.1.0 MaCe   initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -91,7 +91,7 @@ StatusType WaitEvent
    /* \req OSEK_SYS_3.18: The system service StatusType
     * WaitEvent ( EventMaskType Mask ) shall be defined */
 
-   volatile uint8	flag = 1;
+   volatile uint8   flag = 1;
 
    /* \req OSEK_SYS_3.18.3 Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;

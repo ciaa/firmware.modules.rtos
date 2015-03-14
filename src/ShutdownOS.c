@@ -84,24 +84,24 @@
 /*==================[external functions definition]==========================*/
 void ShutdownOS
 (
-	StatusType Error
+   StatusType Error
 )
 {
-	/* \req OSEK_SYS_3.26 The system service void
-	 * ShutdownOS ( StatusType Error ) shall be defined */
+   /* \req OSEK_SYS_3.26 The system service void
+    * ShutdownOS ( StatusType Error ) shall be defined */
 
-	/* achitecture dependent shutdown service */
-	ShutdownOs_Arch();
+   /* achitecture dependent shutdown service */
+   ShutdownOs_Arch();
 
 #if (HOOK_SHUTDOWNHOOK == OSEK_ENABLE)
-	/* \req OSEK_ERR_1.2 The ShutdownHook hook routine shall be called when a
-	 * system shutdown is requested by the application or by the operating
-	 * system in case of a severe error */
-	ShutdownHook();
+   /* \req OSEK_ERR_1.2 The ShutdownHook hook routine shall be called when a
+    * system shutdown is requested by the application or by the operating
+    * system in case of a severe error */
+   ShutdownHook();
 #endif
 
-	/* this function shall never return */
-	while(1);
+   /* this function shall never return */
+   while(1);
 }
 
 /** @} doxygen end group definition */

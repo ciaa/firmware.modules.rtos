@@ -83,79 +83,79 @@
 /*==================[external functions definition]==========================*/
 StatusType SetAbsAlarm
 (
-	AlarmType AlarmID,
-	TickType Start,
-	TickType Cycle
+   AlarmType AlarmID,
+   TickType Start,
+   TickType Cycle
 )
 {
-	/* \req OSEK_SYS_3.22 The system service StatusType
-	 ** SetAbsAlarm ( AlarmType AlarmID, TickType Start, TickType Cycle )
-	 ** shall be defined */
+   /* \req OSEK_SYS_3.22 The system service StatusType
+    ** SetAbsAlarm ( AlarmType AlarmID, TickType Start, TickType Cycle )
+    ** shall be defined */
 
-	/* \req OSEK_SYS_3.22.3-1/2 Possible return values in Standard mode are E_OK,
-	 ** E_OS_STATE */
-	StatusType ret = E_OK;
+   /* \req OSEK_SYS_3.22.3-1/2 Possible return values in Standard mode are E_OK,
+    ** E_OS_STATE */
+   StatusType ret = E_OK;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-	/* check if the alarm id is in range */
-	if(AlarmID >= ALARMS_COUNT)
-	{
-		/* \req OSEK_SYS_3.22.4-1/2 Extra possible return values in Extended mode
-		 ** are E_OS_ID, E_OS_VALUE */
-		ret = E_OS_ID;
-	}
-	/* check that increment and cycle are in range */
-	else if( (Start > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
-				( ( Cycle != 0 ) &&
-					( (Cycle > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
-						(Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
-	{
-		/* \req OSEK_SYS_3.22.4-2/2 Extra possible return values in Extended mode
-		 ** are E_OS_ID, E_OS_VALUE */
-		ret = E_OS_VALUE;
-	}
-	else
-#endif
-	/* check if the alarm is disable */
-	if(AlarmsVar[AlarmID].AlarmState != 0)
+   /* check if the alarm id is in range */
+   if(AlarmID >= ALARMS_COUNT)
    {
-		/* \req OSEK_SYS_3.22.3-2/2 Possible return values in Standard mode are E_OK,
-		 ** E_OS_STATE */
+      /* \req OSEK_SYS_3.22.4-1/2 Extra possible return values in Extended mode
+       ** are E_OS_ID, E_OS_VALUE */
+      ret = E_OS_ID;
+   }
+   /* check that increment and cycle are in range */
+   else if( (Start > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
+            ( ( Cycle != 0 ) &&
+               ( (Cycle > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
+                  (Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
+   {
+      /* \req OSEK_SYS_3.22.4-2/2 Extra possible return values in Extended mode
+       ** are E_OS_ID, E_OS_VALUE */
+      ret = E_OS_VALUE;
+   }
+   else
+#endif
+   /* check if the alarm is disable */
+   if(AlarmsVar[AlarmID].AlarmState != 0)
+   {
+      /* \req OSEK_SYS_3.22.3-2/2 Possible return values in Standard mode are E_OK,
+       ** E_OS_STATE */
       ret = E_OS_STATE;
    }
-	else
-	{
+   else
+   {
 
-		IntSecure_Start();
+      IntSecure_Start();
 
-		/* enable alarm */
-		AlarmsVar[AlarmID].AlarmState = 1;
+      /* enable alarm */
+      AlarmsVar[AlarmID].AlarmState = 1;
 
-		/* set abs alarm */
-		AlarmsVar[AlarmID].AlarmTime = GetCounter(AlarmsConst[AlarmID].Counter) + Start;
-		AlarmsVar[AlarmID].AlarmCycleTime = Cycle;
+      /* set abs alarm */
+      AlarmsVar[AlarmID].AlarmTime = GetCounter(AlarmsConst[AlarmID].Counter) + Start;
+      AlarmsVar[AlarmID].AlarmCycleTime = Cycle;
 
-		IntSecure_End();
-	}
+      IntSecure_End();
+   }
 
 #if (HOOK_ERRORHOOK == OSEK_ENABLE)
-	/* \req OSEK_ERR_1.3-14/xx The ErrorHook hook routine shall be called if a
-	 ** system service returns a StatusType value not equal to E_OK.*/
-	/* \req OSEK_ERR_1.3.1-14/xx The hook routine ErrorHook is not called if a
-	 ** system service is called from the ErrorHook itself. */
+   /* \req OSEK_ERR_1.3-14/xx The ErrorHook hook routine shall be called if a
+    ** system service returns a StatusType value not equal to E_OK.*/
+   /* \req OSEK_ERR_1.3.1-14/xx The hook routine ErrorHook is not called if a
+    ** system service is called from the ErrorHook itself. */
    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
-	{
-		SetError_Api(OSServiceId_SetAbsAlarm);
-		SetError_Param1(AlarmID);
-		SetError_Param2(Start);
-		SetError_Param3(Cycle);
-		SetError_Ret(ret);
-		SetError_Msg("SetAbsAlarm returns != than E_OK");
-		SetError_ErrorHook();
-	}
+   {
+      SetError_Api(OSServiceId_SetAbsAlarm);
+      SetError_Param1(AlarmID);
+      SetError_Param2(Start);
+      SetError_Param3(Cycle);
+      SetError_Ret(ret);
+      SetError_Msg("SetAbsAlarm returns != than E_OK");
+      SetError_ErrorHook();
+   }
 #endif
 
-	return ret;
+   return ret;
 }
 
 /** @} doxygen end group definition */

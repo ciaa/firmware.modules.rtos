@@ -145,7 +145,7 @@ StatusType Schedule
       nextTask = GetNextTask();
 
       /* while until one or boths are not more invalid tasks */
-      while (	( actualTask == INVALID_TASK ) &&
+      while (   ( actualTask == INVALID_TASK ) &&
             ( nextTask == INVALID_TASK) )
       {
          IntSecure_End();
