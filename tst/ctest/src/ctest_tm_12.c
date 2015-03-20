@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_tm_12.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_tm_12.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,120 +82,120 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(0);
-	ret = ActivateTask(Task2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(0);
+   ret = ActivateTask(Task2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(1);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(1);
+   ret = ActivateTask(Task3);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(2);
-	ret = ActivateTask(Task2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(2);
+   ret = ActivateTask(Task2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(3);
-	ret = ActivateTask(Task2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(3);
+   ret = ActivateTask(Task2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(4);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(4);
+   ret = ActivateTask(Task3);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(5);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(5);
+   ret = ActivateTask(Task3);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(6);
-	TerminateTask();
+   Sequence(6);
+   TerminateTask();
 
 }
 
 TASK(Task2)
 {
-	static uint8 count = 0;
+   static uint8 count = 0;
 
-	switch (count)
-	{
-		case 0:
-			/* increment task call counter */
-			count++;
+   switch (count)
+   {
+      case 0:
+         /* increment task call counter */
+         count++;
 
-			Sequence(7);
-			TerminateTask();
-			break;
-		case 1:
-			/* increment task call counter */
-			count++;
+         Sequence(7);
+         TerminateTask();
+         break;
+      case 1:
+         /* increment task call counter */
+         count++;
 
-			Sequence(9);
-			TerminateTask();
-			break;
-		case 2:
-			/* increment task call counter */
-			count++;
+         Sequence(9);
+         TerminateTask();
+         break;
+      case 2:
+         /* increment task call counter */
+         count++;
 
-			Sequence(10);
-			TerminateTask();
-			break;
-		default:
-			while(1);
-			break;
-	}
+         Sequence(10);
+         TerminateTask();
+         break;
+      default:
+         while(1);
+         break;
+   }
 }
 
 TASK(Task3)
 {
-	static uint8 count = 0;
+   static uint8 count = 0;
 
-	switch (count)
-	{
-		case 0:
-			/* increment task call counter */
-			count++;
+   switch (count)
+   {
+      case 0:
+         /* increment task call counter */
+         count++;
 
-			Sequence(8);
-			TerminateTask();
-			break;
-		case 1:
-			/* increment task call counter */
-			count++;
+         Sequence(8);
+         TerminateTask();
+         break;
+      case 1:
+         /* increment task call counter */
+         count++;
 
-			Sequence(11);
-			TerminateTask();
-			break;
-		case 2:
-			/* increment task call counter */
-			count++;
+         Sequence(11);
+         TerminateTask();
+         break;
+      case 2:
+         /* increment task call counter */
+         count++;
 
-			Sequence(12);
+         Sequence(12);
 
-			/* evaluate conformance tests */
-			ConfTestEvaluation();
+         /* evaluate conformance tests */
+         ConfTestEvaluation();
 
-			/* finish the conformance test */
-			ConfTestFinish();
-			break;
-		default:
-			while(1);
-			break;
-	}
+         /* finish the conformance test */
+         ConfTestFinish();
+         break;
+      default:
+         while(1);
+         break;
+   }
 }
 
 /** @} doxygen end group definition */

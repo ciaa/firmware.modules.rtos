@@ -48,13 +48,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * PR		Pablo Ridolfi
+ * PR           Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20140608 v0.1.2 PR	First version for Cortex-M processors.
+ * 20140608 v0.1.2 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
@@ -82,16 +82,16 @@ void StartOs_Arch_Cpu(void)
 
 void StartOs_Arch(void)
 {
-	uint8f loopi;
+   uint8f loopi;
 
-	/* init every task */
-	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
-		InitStack_Arch(loopi);
-	}
+   /* init every task */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
+      InitStack_Arch(loopi);
+   }
 
-	/* CPU dependent initialisation */
-	StartOs_Arch_Cpu();
+   /* CPU dependent initialisation */
+   StartOs_Arch_Cpu();
 
 }
 

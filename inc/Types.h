@@ -51,7 +51,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe                  Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
@@ -148,25 +148,25 @@
 
 #if defined(C99_COMPILER) || defined(CPP_COMPILER)
 /** \brief boolean type type definition */
-typedef _Bool				boolean;
+typedef _Bool             boolean;
 
 /** \brief default usigned 8 bits integer type definition */
-typedef int8_t				sint8;
+typedef int8_t            sint8;
 /** \brief default signed 8 bits integer type definition */
-typedef uint8_t			uint8;
+typedef uint8_t           uint8;
 /** \brief default signed 16 bits integer type definition */
-typedef int16_t			sint16;
+typedef int16_t           sint16;
 /** \brief default unsigned 16 bits integer type definition */
-typedef uint16_t			uint16;
+typedef uint16_t          uint16;
 /** \brief default signed 32 bits integer type definition */
-typedef int32_t			sint32;
+typedef int32_t           sint32;
 /** \brief default unsigned 32 bits integer type definition */
-typedef uint32_t			uint32;
+typedef uint32_t          uint32;
 /** \brief default unsigned 64 bits integer type definition */
-typedef uint64_t		uint64;
+typedef uint64_t          uint64;
 
 /** \brief default signed 8 bits fast integer type definition */
-typedef int_least8_t		sint8_least;
+typedef int_least8_t      sint8_least;
 /** \brief default usigned 8 bits fast integer type definition */
 typedef uint_least8_t   uint8_least;
 /** \brief default signed 16 bits fast integer type definition */
@@ -179,15 +179,15 @@ typedef int_least32_t   sint32_least;
 typedef uint_least32_t  uint32_least;
 
 /** \brief default signed 8 bits fast integer type definition */
-typedef int_fast8_t		sint8f;
+typedef int_fast8_t       sint8f;
 /** \brief default unsigned 8 bits fast integer type definition */
-typedef uint_fast8_t		uint8f;
+typedef uint_fast8_t      uint8f;
 /** \brief default signed 16 bits fast integer type definition */
-typedef int_fast16_t		sint16f;
+typedef int_fast16_t      sint16f;
 /** \brief default unsigned 16 bits fast integer type definition */
 typedef uint_fast16_t   uint16f;
 /** \brief default signed 32 bits fast integer type definition */
-typedef int_fast32_t		sint32f;
+typedef int_fast32_t      sint32f;
 /** \brief default unsigned 32 bits fast integer type definition */
 typedef uint_fast32_t   uint32f;
 

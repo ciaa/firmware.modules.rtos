@@ -85,7 +85,7 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-uint8	InterruptState;
+uint8 InterruptState;
 
 uint32 OsekHWTimer0;
 

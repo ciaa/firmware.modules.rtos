@@ -73,7 +73,7 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch_SysTick(void)
 {
-	/* Activate MemFault, UsageFault and BusFault exceptions */
+   /* Activate MemFault, UsageFault and BusFault exceptions */
    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
 
    /* Set lowest priority for SysTick and PendSV */

@@ -54,7 +54,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
@@ -67,7 +67,7 @@
 
 /*==================[macros]=================================================*/
 /** \brief Enable All Interrupts Arch */
-#define EnableAllInterrupts_Arch()	ResumeAllInterrupts_Arch()
+#define EnableAllInterrupts_Arch() ResumeAllInterrupts_Arch()
 
 /** \brief Disable All Interrupts Arch */
 #define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
@@ -76,35 +76,35 @@
  **
  ** This macro shall resume (enable) all interrupts.
  **/
-#define ResumeAllInterrupts_Arch()						\
-	{																\
-	}
+#define ResumeAllInterrupts_Arch()                   \
+   {                                                 \
+   }
 
 /** \brief Suspend All Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts.
  **/
-#define SuspendAllInterrupts_Arch()						\
-	{																\
-	}
+#define SuspendAllInterrupts_Arch()                  \
+   {                                                 \
+   }
 
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR1 or ISR2.
  **/
-#define ResumeOSInterrupts_Arch()						\
-	{																\
-	}
+#define ResumeOSInterrupts_Arch()                    \
+   {                                                 \
+   }
 
 /** \brief Suspend OS Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR1 or ISR2.
  **/
-#define SuspendOSInterrupts_Arch()					\
-	{															\
-	}
+#define SuspendOSInterrupts_Arch()                  \
+   {                                                \
+   }
 
 /*==================[typedef]================================================*/
 

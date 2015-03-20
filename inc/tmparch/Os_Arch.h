@@ -70,7 +70,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 #error this is a remember to remove the comment on the following line
@@ -111,7 +111,7 @@
 
 #error check the following macro and remove this comment
 /** \brief Enable All Interrupts Arch */
-#define EnableAllInterrupts_Arch()	ResumeAllInterrupts_Arch()
+#define EnableAllInterrupts_Arch() ResumeAllInterrupts_Arch()
 
 #error check the following macro and remove this comment
 /** \brief Disable All Interrupts Arch */
@@ -122,18 +122,18 @@
  **
  ** This macro shall resume (enable) all interrupts.
  **/
-#define ResumeAllInterrupts_Arch()						\
-	{																\
-	}
+#define ResumeAllInterrupts_Arch()                  \
+   {                                                \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Suspend All Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts.
  **/
-#define SuspendAllInterrupts_Arch()						\
-	{																\
-	}
+#define SuspendAllInterrupts_Arch()                 \
+   {                                                \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Resume OS Interrupts Arch
@@ -141,9 +141,9 @@
  ** This macro shall resume (enable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR1 or ISR2.
  **/
-#define ResumeOSInterrupts_Arch()						\
-	{																\
-	}
+#define ResumeOSInterrupts_Arch()                  \
+   {                                               \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Suspend OS Interrupts Arch
@@ -151,9 +151,9 @@
  ** This macro shall suspend (disable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR1 or ISR2.
  **/
-#define SuspendOSInterrupts_Arch()					\
-	{															\
-	}
+#define SuspendOSInterrupts_Arch()               \
+   {                                             \
+   }
 
 /*==================[typedef]================================================*/
 #error this is a remember to remove the comment on the following line

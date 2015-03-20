@@ -46,13 +46,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090526 MaCe	FreeOSEK architecture template file
+ * v0.1.0 20090526 MaCe FreeOSEK architecture template file
  */
 
 /*==================[inclusions]=============================================*/

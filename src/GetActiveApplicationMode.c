@@ -81,19 +81,19 @@
 /*==================[external functions definition]==========================*/
 AppModeType GetActiveApplicationMode
 (
-	void
+   void
 )
 {
-	/* \req OSEK_SYS_3.24 The system service AppModeType
-	 ** GetActiveApplicationMode ( void ) shall be defined */
+   /* \req OSEK_SYS_3.24 The system service AppModeType
+    ** GetActiveApplicationMode ( void ) shall be defined */
 
-	/* \req OSEK_SYS_3.24.1 This service shall return the current
-	 ** application mode */
+   /* \req OSEK_SYS_3.24.1 This service shall return the current
+    ** application mode */
 
-	/* \req OSEK_ERR_1.1.1 The macro GetActiveApplicationMode()
-	 ** shall be provided */
+   /* \req OSEK_ERR_1.1.1 The macro GetActiveApplicationMode()
+    ** shall be provided */
 
-	return ApplicationMode;
+   return ApplicationMode;
 }
 
 /** @} doxygen end group definition */

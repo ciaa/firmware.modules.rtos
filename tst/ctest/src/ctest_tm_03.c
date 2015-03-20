@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_tm_03.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_tm_03.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,73 +82,73 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	ASSERT(OTHER, 0);
+   ASSERT(OTHER, 0);
 
-	Sequence(0);
-	/* \treq TM_03 mf B1B2E1E2 se Call ActivateTask() from preemptive
- 	 * task on suspend basic task which has higher priority than running
-	 * task
-	 *
-	 * \result Runnin task is preempted. Activated task becomes ready.
-	 * Service returns E_OK
-	 */
-	ret = ActivateTask(Task3);
-	ASSERT(TM_03, ret != E_OK);
+   Sequence(0);
+   /* \treq TM_03 mf B1B2E1E2 se Call ActivateTask() from preemptive
+    * task on suspend basic task which has higher priority than running
+    * task
+    *
+    * \result Runnin task is preempted. Activated task becomes ready.
+    * Service returns E_OK
+    */
+   ret = ActivateTask(Task3);
+   ASSERT(TM_03, ret != E_OK);
 
-	Sequence(4);
+   Sequence(4);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 TASK(Task2)
 {
-	Sequence(3);
-	TerminateTask();
+   Sequence(3);
+   TerminateTask();
 }
 
 TASK(Task3)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(1);
-	/* \treq TM_04 mf B1B2E1E2 se Call ActivateTask() from preemptive
- 	 * task on suspend basic task which has lower priority than running
-	 * task
-	 *
-	 * \result Non preemption of running task. Activated task becomes ready.
-	 * Service returns E_OK
-	 */
-	ret = ActivateTask(Task2);
-	ASSERT(TM_04, ret != E_OK);
+   Sequence(1);
+   /* \treq TM_04 mf B1B2E1E2 se Call ActivateTask() from preemptive
+    * task on suspend basic task which has lower priority than running
+    * task
+    *
+    * \result Non preemption of running task. Activated task becomes ready.
+    * Service returns E_OK
+    */
+   ret = ActivateTask(Task2);
+   ASSERT(TM_04, ret != E_OK);
 
-	Sequence(2);
-	TerminateTask();
+   Sequence(2);
+   TerminateTask();
 }
 
 /* This task is not used, only to change the scheduling police */
 TASK(Task4)
 {
-	TerminateTask();
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_tm_05.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_tm_05.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,89 +82,89 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(0);
-	/* \treq TM_07 mf E1E2 se Call ActivateTask() from preemptive task on
-	 * suspended extended task which has higher priority than the running
-	 * task
-	 *
-	 * \result Running task is preempted. Activated tasks becomes running and
-	 * its events are cleared. Service returns E_OK
-	 */
-	ret = ActivateTask(Task3);
-	ASSERT(TM_07, ret != E_OK);
+   Sequence(0);
+   /* \treq TM_07 mf E1E2 se Call ActivateTask() from preemptive task on
+    * suspended extended task which has higher priority than the running
+    * task
+    *
+    * \result Running task is preempted. Activated tasks becomes running and
+    * its events are cleared. Service returns E_OK
+    */
+   ret = ActivateTask(Task3);
+   ASSERT(TM_07, ret != E_OK);
 
-	Sequence(7);
+   Sequence(7);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 TASK(Task2)
 {
-	StatusType ret;
-	EventMaskType event;
+   StatusType ret;
+   EventMaskType event;
 
-	Sequence(5);
-	ret = GetEvent(Task2, &event);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, event != 0);
+   Sequence(5);
+   ret = GetEvent(Task2, &event);
+   ASSERT(OTHER, ret != E_OK);
+   ASSERT(OTHER, event != 0);
 
-	Sequence(6);
-	TerminateTask();
+   Sequence(6);
+   TerminateTask();
 }
 
 TASK(Task3)
 {
-	StatusType ret;
-	EventMaskType event;
+   StatusType ret;
+   EventMaskType event;
 
-	Sequence(1);
-	ret = GetEvent(Task3, &event);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, event != 0);
+   Sequence(1);
+   ret = GetEvent(Task3, &event);
+   ASSERT(OTHER, ret != E_OK);
+   ASSERT(OTHER, event != 0);
 
-	Sequence(2);
-	/* \treq TM_08 mf E1E2 se Call ActivateTask() from preemptive task on
-	 * suspended extended task which has lower priority than the running
-	 * task
-	 *
-	 * \result No preemption of running task. Activated tasks becomes ready and
-	 * its events are cleared. Service returns E_OK
-	 */
-	ret = ActivateTask(Task2);
-	ASSERT(TM_08, ret != E_OK);
-	Sequence(3);
-	ret = GetEvent(Task2, &event);
-	ASSERT(TM_08, ret != E_OK);
-	ASSERT(TM_08, event != 0);
+   Sequence(2);
+   /* \treq TM_08 mf E1E2 se Call ActivateTask() from preemptive task on
+    * suspended extended task which has lower priority than the running
+    * task
+    *
+    * \result No preemption of running task. Activated tasks becomes ready and
+    * its events are cleared. Service returns E_OK
+    */
+   ret = ActivateTask(Task2);
+   ASSERT(TM_08, ret != E_OK);
+   Sequence(3);
+   ret = GetEvent(Task2, &event);
+   ASSERT(TM_08, ret != E_OK);
+   ASSERT(TM_08, event != 0);
 
-	Sequence(4);
-	TerminateTask();
+   Sequence(4);
+   TerminateTask();
 }
 
 /* This task is not used, only to change the scheduling police */
 TASK(Task4)
 {
-	TerminateTask();
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

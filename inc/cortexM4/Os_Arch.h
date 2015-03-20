@@ -59,7 +59,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * PR		Pablo Ridolfi
+ * PR           Pablo Ridolfi
  */
 
 /*****************************************************************************
@@ -73,7 +73,7 @@
 /*
  * modification history (new versions first)
  * ----------------------------------------------------------
- * 20140608 v0.1.1 PR	First version for Cortex-M processors.
+ * 20140608 v0.1.1 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/

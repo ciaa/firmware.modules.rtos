@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_al_07.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_al_07.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,116 +82,116 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(1);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(1);
+   ret = ActivateTask(Task3);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(13);
+   Sequence(13);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 TASK(Task2)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(0);
-	ret = WaitEvent(Event2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(0);
+   ret = WaitEvent(Event2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(6);
-	ret = ClearEvent(Event2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(6);
+   ret = ClearEvent(Event2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(7);
-	ret = ActivateTask(Task4);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(7);
+   ret = ActivateTask(Task4);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(12);
-	TerminateTask();
+   Sequence(12);
+   TerminateTask();
 }
 
 TASK(Task3)
 {
-	StatusType ret;
-	TaskStateType TaskState;
+   StatusType ret;
+   TaskStateType TaskState;
 
-	Sequence(2);
-	ret = SetRelAlarm(Alarm1, 1, 0);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(2);
+   ret = SetRelAlarm(Alarm1, 1, 0);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(3);
-	/* \treq AL_36 mf E1E2 se Expiration of alarm wich sets an event
-	 * while running task is preemptive. Task which owns the event is
-	 * waiting for this event
-	 *
-	 * \result Event is set. Task which is owner of this event becomes ready.
-	 * Task with highest priority is executed (Rescheduling)
-	 */
-	IncAlarmCounter();
-	ASSERT(AL_36, 0);
+   Sequence(3);
+   /* \treq AL_36 mf E1E2 se Expiration of alarm wich sets an event
+    * while running task is preemptive. Task which owns the event is
+    * waiting for this event
+    *
+    * \result Event is set. Task which is owner of this event becomes ready.
+    * Task with highest priority is executed (Rescheduling)
+    */
+   IncAlarmCounter();
+   ASSERT(AL_36, 0);
 
-	Sequence(4);
-	ret = GetTaskState(Task2, &TaskState);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, TaskState != READY);
+   Sequence(4);
+   ret = GetTaskState(Task2, &TaskState);
+   ASSERT(OTHER, ret != E_OK);
+   ASSERT(OTHER, TaskState != READY);
 
-	Sequence(5);
-	TerminateTask();
+   Sequence(5);
+   TerminateTask();
 }
 
 TASK(Task4)
 {
-	StatusType ret;
-	EventMaskType EventMask;
+   StatusType ret;
+   EventMaskType EventMask;
 
-	Sequence(8);
-	ret = SetRelAlarm(Alarm1, 1, 0);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(8);
+   ret = SetRelAlarm(Alarm1, 1, 0);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(9);
-	/* \treq AL_35 mf E1E2 se Expiration of alarm wich sets an event
-	 * while running task is preemptive. Task which owns the event is not
-	 * waiting for this event and not suspended
-	 *
-	 * \result Event is set.
-	 */
-	IncAlarmCounter();
-	ASSERT(AL_35, 0);
+   Sequence(9);
+   /* \treq AL_35 mf E1E2 se Expiration of alarm wich sets an event
+    * while running task is preemptive. Task which owns the event is not
+    * waiting for this event and not suspended
+    *
+    * \result Event is set.
+    */
+   IncAlarmCounter();
+   ASSERT(AL_35, 0);
 
-	Sequence(10);
-	ret = GetEvent(Task2, &EventMask);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, EventMask != Event2);
+   Sequence(10);
+   ret = GetEvent(Task2, &EventMask);
+   ASSERT(OTHER, ret != E_OK);
+   ASSERT(OTHER, EventMask != Event2);
 
-	Sequence(11);
-	TerminateTask();
+   Sequence(11);
+   TerminateTask();
 }
 
 /* This task is not used, only to change the scheduling police */
 TASK(Task5)
 {
-	TerminateTask();
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

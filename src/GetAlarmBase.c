@@ -83,59 +83,59 @@
 /*==================[external functions definition]==========================*/
 StatusType GetAlarmBase
 (
-	AlarmType AlarmID,
-	AlarmBaseRefType Info
+   AlarmType AlarmID,
+   AlarmBaseRefType Info
 )
 {
-	/* \req OSEK_SYS_3.19 The system service StatusType
-	 ** GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
-	 ** shall be defined. */
+   /* \req OSEK_SYS_3.19 The system service StatusType
+    ** GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
+    ** shall be defined. */
 
-	/* \req OSEK_SYS_3.19.2 Possible return values in Standard mode is E_OK */
-	StatusType ret = E_OK;
+   /* \req OSEK_SYS_3.19.2 Possible return values in Standard mode is E_OK */
+   StatusType ret = E_OK;
 
-	CounterType counter;
+   CounterType counter;
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
-	/* check that the AlarmID is in range */
-	if(AlarmID >= ALARMS_COUNT)
-	{
-		/* \req OSEK_SYS_3.19.: Extra possible return values in Extended mode
-		 ** is E_OS_ID */
-		ret = E_OS_ID;
-	}
-	else
+   /* check that the AlarmID is in range */
+   if(AlarmID >= ALARMS_COUNT)
+   {
+      /* \req OSEK_SYS_3.19.: Extra possible return values in Extended mode
+       ** is E_OS_ID */
+      ret = E_OS_ID;
+   }
+   else
 #endif
-	{
-		/* get counter of this alarm */
-		counter = AlarmsConst[AlarmID].Counter;
+   {
+      /* get counter of this alarm */
+      counter = AlarmsConst[AlarmID].Counter;
 
-		/* \req OSEK_SYS_3.19.1 The system service GetAlarmBase reads the alarm base
-		 ** characteristics. The return value Info is a structure in which the
-		 ** information of data type AlarmBaseType is stored */
-		Info->maxallowedvalue = CountersConst[counter].MaxAllowedValue;
-		Info->ticksperbase = CountersConst[counter].TicksPerBase;
-		Info->mincycle = CountersConst[counter].MinCycle;
-	}
+      /* \req OSEK_SYS_3.19.1 The system service GetAlarmBase reads the alarm base
+       ** characteristics. The return value Info is a structure in which the
+       ** information of data type AlarmBaseType is stored */
+      Info->maxallowedvalue = CountersConst[counter].MaxAllowedValue;
+      Info->ticksperbase = CountersConst[counter].TicksPerBase;
+      Info->mincycle = CountersConst[counter].MinCycle;
+   }
 
 #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
       (HOOK_ERRORHOOK == OSEK_ENABLE) )
-	/* \req OSEK_ERR_1.3-12/xx The ErrorHook hook routine shall be called if a
-	 ** system service returns a StatusType value not equal to E_OK.*/
-	/* \req OSEK_ERR_1.3.1-12/xx The hook routine ErrorHook is not called if a
-	 ** system service is called from the ErrorHook itself. */
-	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
-	{
-		SetError_Api(OSServiceId_GetAlarmBase);
-		SetError_Param1(AlarmID);
-		SetError_Param2((unsigned int)Info);
-		SetError_Ret(ret);
-		SetError_Msg("GetAlarmBase returns != than E_OK");
-		SetError_ErrorHook();
-	}
+   /* \req OSEK_ERR_1.3-12/xx The ErrorHook hook routine shall be called if a
+    ** system service returns a StatusType value not equal to E_OK.*/
+   /* \req OSEK_ERR_1.3.1-12/xx The hook routine ErrorHook is not called if a
+    ** system service is called from the ErrorHook itself. */
+   if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+   {
+      SetError_Api(OSServiceId_GetAlarmBase);
+      SetError_Param1(AlarmID);
+      SetError_Param2((unsigned int)Info);
+      SetError_Ret(ret);
+      SetError_Msg("GetAlarmBase returns != than E_OK");
+      SetError_ErrorHook();
+   }
 #endif
 
-	return ret;
+   return ret;
 }
 
 /** @} doxygen end group definition */

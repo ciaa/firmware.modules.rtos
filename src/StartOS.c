@@ -83,72 +83,72 @@
 /*==================[external functions definition]==========================*/
 void StartOS
 (
-	AppModeType Mode
+   AppModeType Mode
 )
 {
-	/* \req OSEK_SYS_3.25 The system service void
-	 ** StartOS ( AppModeType Mode ) shall be defined */
+   /* \req OSEK_SYS_3.25 The system service void
+    ** StartOS ( AppModeType Mode ) shall be defined */
 
-	/* \req OSEK_SYS_3.25.1 This system service shall starts the operating
-	 ** system */
-	uint8f loopi;
+   /* \req OSEK_SYS_3.25.1 This system service shall starts the operating
+    ** system */
+   uint8f loopi;
 
-	IntSecure_Start();
+   IntSecure_Start();
 
-	/* save the aplication mode */
-	ApplicationMode = Mode;
+   /* save the aplication mode */
+   ApplicationMode = Mode;
 
-	/* StartOs_Arch */
-	StartOs_Arch();
+   /* StartOs_Arch */
+   StartOs_Arch();
 
 
-	/* init every task */
+   /* init every task */
    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
-		/* \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
-		 ** code is being executed from the first statement. */
-		SetEntryPoint(loopi); /* set task entry point */
-	}
+   {
+      /* \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
+       ** code is being executed from the first statement. */
+      SetEntryPoint(loopi); /* set task entry point */
+   }
 
-	/* set sys context */
-	SetActualContext(CONTEXT_SYS);
+   /* set sys context */
+   SetActualContext(CONTEXT_SYS);
 
-	/* set actual task to invalid task */
-	SetRunningTask(INVALID_TASK);
+   /* set actual task to invalid task */
+   SetRunningTask(INVALID_TASK);
 
-	/* add to ready the corresponding tasks for this
+   /* add to ready the corresponding tasks for this
     * Application Mode */
-	for (loopi = 0; loopi < AutoStart[Mode].TotalTasks; loopi++)
-	{
-		/* activate task */
-		ActivateTask(AutoStart[Mode].TasksRef[loopi]);
-	}
+   for (loopi = 0; loopi < AutoStart[Mode].TotalTasks; loopi++)
+   {
+      /* activate task */
+      ActivateTask(AutoStart[Mode].TasksRef[loopi]);
+   }
 
-	for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
-	{
-		if (AutoStartAlarm[loopi].Mode == Mode)
-		{
-			(void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[loopi].AlarmCycleTime);
-		}
-	}
+   for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
+   {
+      if (AutoStartAlarm[loopi].Mode == Mode)
+      {
+         (void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[loopi].AlarmCycleTime);
+      }
+   }
 
 #if (HOOK_STARTUPHOOK == OSEK_ENABLE)
-	StartupHook();
+   StartupHook();
 #endif
 
-	IntSecure_End();
+   IntSecure_End();
 
-	/* enable all OS interrupts */
-	EnableOSInterrupts();
+   /* enable all OS interrupts */
+   EnableOSInterrupts();
 
-	/* enable interrupts */
-	EnableInterrupts();
+   /* enable interrupts */
+   EnableInterrupts();
 
-	/* call Scheduler */
-	(void)Schedule();
+   /* call Scheduler */
+   (void)Schedule();
 
-	/* this function shall never return */
-	while(1);
+   /* this function shall never return */
+   while(1);
 }
 
 /** @} doxygen end group definition */

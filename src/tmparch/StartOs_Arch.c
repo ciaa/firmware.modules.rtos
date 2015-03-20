@@ -65,7 +65,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 #error this is a remember to remove the comment on the following line
@@ -80,7 +80,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090526 MaCe	FreeOSEK architecture template file
+ * v0.1.0 20090526 MaCe FreeOSEK architecture template file
  */
 
 
@@ -161,40 +161,40 @@
  **
  ** This function is defined in Osek_Internal.h and has to be defined for
  ** every architecture. This function shall set for all tasks:
- **	- init the stack for all tasks.
- **	- init the entry point of all stack
- **	- init all other necessary registers to the init value for the first
- **	  time that the task will be executed.
- **	- if necessary to call StartOs_Arch_Cpu
+ ** - init the stack for all tasks.
+ ** - init the entry point of all stack
+ ** - init all other necessary registers to the init value for the first
+ **   time that the task will be executed.
+ ** - if necessary to call StartOs_Arch_Cpu
  **
  ** Needed variables for this function will be:
- **	- TasksConst[].TaskContext
- **	- TasksConst[].StackPtr
- **	- TasksConst[].StackSize
- **	- TasksConst[].EntryPoint
+ ** - TasksConst[].TaskContext
+ ** - TasksConst[].StackPtr
+ ** - TasksConst[].StackSize
+ ** - TasksConst[].EntryPoint
  **
  ** Needed macros for this function will be:
- **	- TASKS_COUNT
+ ** - TASKS_COUNT
  **
  **/
 void StartOs_Arch(void)
 {
-	uint8f loopi;
+   uint8f loopi;
 
-	/* init every task */
-	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
-		/* init stack */
+   /* init every task */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
+      /* init stack */
 #error update here and remove this comment
 
-		/* init entry point */
+      /* init entry point */
 #error update here and remove this comment
 
-		/* init registers */
+      /* init registers */
 #error update here and remove this comment
-	}
+   }
 
-	/* call CPU dependent initialisation */
+   /* call CPU dependent initialisation */
 #error update here and remove this comment
 
 }

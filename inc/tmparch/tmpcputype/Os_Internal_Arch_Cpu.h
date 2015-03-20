@@ -66,7 +66,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 #error this is a remember to remove the comment on the following line
@@ -94,17 +94,17 @@
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
 /** \brief lpc2xxx cpu definition */
-#define lpc2101	1
+#define lpc2101 1
 /** \brief lpc2xxx cpu definition */
-#define lpc2102	2
+#define lpc2102 2
 /** \brief lpc2xxx cpu definition */
-#define lpc2103	3
+#define lpc2103 3
 /* ... */
-#define lpc2478	46
+#define lpc2478 46
 /** \brief lpc2xxx cpu definition */
-#define lpc2880	47
+#define lpc2880 47
 /** \brief lpc2xxx cpu definition */
-#define lpc2888	48
+#define lpc2888 48
 
 /*==================[inclusions]=============================================*/
 #error this is a remember to remove the comment on the following line

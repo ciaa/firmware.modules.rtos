@@ -50,13 +50,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20140503 v0.1.0 MaCe	initial version
+ * 20140503 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/

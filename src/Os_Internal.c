@@ -85,82 +85,82 @@ uint8 OSEK_ISR2_SchedulerCall;
 /*==================[external functions definition]==========================*/
 void AddReady(TaskType TaskID)
 {
-	TaskPriorityType priority;
-	TaskRefType readylist;
-	TaskTotalType maxtasks;
-	TaskTotalType position;
+   TaskPriorityType priority;
+   TaskRefType readylist;
+   TaskTotalType maxtasks;
+   TaskTotalType position;
 
-	/* get task priority */
-	priority = TasksConst[TaskID].StaticPriority;
+   /* get task priority */
+   priority = TasksConst[TaskID].StaticPriority;
 
-	/* set the start priority for this task */
-	TasksVar[TaskID].ActualPriority = priority;
+   /* set the start priority for this task */
+   TasksVar[TaskID].ActualPriority = priority;
 
-	/* conver the priority to the array index */
-	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
-	* the valida entries for this array are between 0 and 3, so the -1 is needed
-	* since the lower priority is 0.
-	*/
-	priority = (READYLISTS_COUNT-1)-priority;
+   /* conver the priority to the array index */
+   /* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+   * the valida entries for this array are between 0 and 3, so the -1 is needed
+   * since the lower priority is 0.
+   */
+   priority = (READYLISTS_COUNT-1)-priority;
 
-	/* get ready list */
-	readylist = ReadyConst[priority].TaskRef;
-	/* get max number of entries */
-	maxtasks = ReadyConst[priority].ListLength;
+   /* get ready list */
+   readylist = ReadyConst[priority].TaskRef;
+   /* get max number of entries */
+   maxtasks = ReadyConst[priority].ListLength;
 
-	/* get position incrementtion */
-	position = ReadyVar[priority].ListStart + ReadyVar[priority].ListCount;
+   /* get position incrementtion */
+   position = ReadyVar[priority].ListStart + ReadyVar[priority].ListCount;
 
-	/* go arround maxtasks */
-	/* this if works like  % instruction */
-	if (position >= maxtasks)
-	{
-		position -= maxtasks;
-	}
+   /* go arround maxtasks */
+   /* this if works like  % instruction */
+   if (position >= maxtasks)
+   {
+      position -= maxtasks;
+   }
 
-	/* set the task id in ready the list */
-	readylist[position] = TaskID;
-	/* increment the list counter */
-	ReadyVar[priority].ListCount++;
+   /* set the task id in ready the list */
+   readylist[position] = TaskID;
+   /* increment the list counter */
+   ReadyVar[priority].ListCount++;
 }
 
 void RemoveTask
 (
-	TaskType TaskID
+   TaskType TaskID
 )
 {
-	TaskPriorityType priority;
-	TaskTotalType maxtasks;
+   TaskPriorityType priority;
+   TaskTotalType maxtasks;
 
-	/* get task priority */
-	priority = TasksConst[TaskID].StaticPriority;
-	/* conver the priority to the array index */
-	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
-	* the valida entries for this array are between 0 and 3, so the -1 is needed
-	* since the lower priority is 0.
-	*/
-	priority = (READYLISTS_COUNT-1)-priority;
+   /* get task priority */
+   priority = TasksConst[TaskID].StaticPriority;
+   /* conver the priority to the array index */
+   /* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+   * the valida entries for this array are between 0 and 3, so the -1 is needed
+   * since the lower priority is 0.
+   */
+   priority = (READYLISTS_COUNT-1)-priority;
 
-	/* get max number of entries */
-	maxtasks = ReadyConst[priority].ListLength;
+   /* get max number of entries */
+   maxtasks = ReadyConst[priority].ListLength;
 
-	/* increment the ListStart */
-	ReadyVar[priority].ListStart = ReadyVar[priority].ListStart + 1;
+   /* increment the ListStart */
+   ReadyVar[priority].ListStart = ReadyVar[priority].ListStart + 1;
 
-	/* go arround maxtasks */
-	/* this if works like a % instruction */
-	if (ReadyVar[priority].ListStart >= maxtasks)
-	{
-		ReadyVar[priority].ListStart -= maxtasks;
-	}
+   /* go arround maxtasks */
+   /* this if works like a % instruction */
+   if (ReadyVar[priority].ListStart >= maxtasks)
+   {
+      ReadyVar[priority].ListStart -= maxtasks;
+   }
 
-	/* decrement the count of ready tasks */
-	ReadyVar[priority].ListCount--;
+   /* decrement the count of ready tasks */
+   ReadyVar[priority].ListCount--;
 }
 
 TaskType GetNextTask
 (
-	void
+   void
 )
 {
    /* if at least one resource is configured */
@@ -169,30 +169,30 @@ TaskType GetNextTask
    uint8 prio = 0;
 #endif /* #if (RESOURCES_COUNT != 0) */
 
-	uint8f loopi;
-	boolean found = FALSE;
-	TaskType ret = INVALID_TASK;
+   uint8f loopi;
+   boolean found = FALSE;
+   TaskType ret = INVALID_TASK;
 
-	/* check in all ready lists */
-	for (loopi = 0; ( loopi < READYLISTS_COUNT ) && (!found) ; loopi++)
-	{
-		/* if one or more tasks are ready */
-		if (ReadyVar[loopi].ListCount > 0)
-		{
-			/* return the first ready task */
-			ret = ReadyConst[loopi].TaskRef[ReadyVar[loopi].ListStart];
+   /* check in all ready lists */
+   for (loopi = 0; ( loopi < READYLISTS_COUNT ) && (!found) ; loopi++)
+   {
+      /* if one or more tasks are ready */
+      if (ReadyVar[loopi].ListCount > 0)
+      {
+         /* return the first ready task */
+         ret = ReadyConst[loopi].TaskRef[ReadyVar[loopi].ListStart];
 
-			/* set found true */
-			found = TRUE;
-		}
-	}
+         /* set found true */
+         found = TRUE;
+      }
+   }
 
    /* if at least one resource is configured */
 #if (RESOURCES_COUNT != 0)
    for (loopi = 0; loopi < TASKS_COUNT; loopi++)
    {
       /* if at least one resource is occupied */
-		if ( ( 0 != TasksVar[loopi].Resources ) &&
+      if ( ( 0 != TasksVar[loopi].Resources ) &&
            /* and the prio is higher */
            ( TasksVar[loopi].ActualPriority > prio ) )
       {
@@ -213,163 +213,163 @@ TaskType GetNextTask
    }
 #endif /* #if (RESOURCES_COUNT != 0) */
 
-	return ret;
+   return ret;
 }
 
 void OSEK_ISR_NoHandler(void)
 {
-	while(1);
+   while(1);
 }
 
 #if (ALARMS_COUNT != 0)
 AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Increment)
 {
-	AlarmIncrementType RestIncrements;
-	AlarmIncrementType AlarmCount;
-	CounterIncrementType CounterIncrement;
+   AlarmIncrementType RestIncrements;
+   AlarmIncrementType AlarmCount;
+   CounterIncrementType CounterIncrement;
 
-	/* init arlarms count */
-	AlarmCount = 0;
+   /* init arlarms count */
+   AlarmCount = 0;
 
-	/* check if the increment is smaller than the expiration time */
-	if ( AlarmsVar[AlarmID].AlarmTime > Increment )
-	{
-		/* decrement the alarm*/
-		AlarmsVar[AlarmID].AlarmTime -= Increment;
+   /* check if the increment is smaller than the expiration time */
+   if ( AlarmsVar[AlarmID].AlarmTime > Increment )
+   {
+      /* decrement the alarm*/
+      AlarmsVar[AlarmID].AlarmTime -= Increment;
 
-		/* alarm doesn't expires now */
-		RestIncrements = AlarmsVar[AlarmID].AlarmTime;
-	}
-	else
-	{
-		/* increment is graeter or equal than the alarm time, the alarm may
-			expire one or more times */
+      /* alarm doesn't expires now */
+      RestIncrements = AlarmsVar[AlarmID].AlarmTime;
+   }
+   else
+   {
+      /* increment is graeter or equal than the alarm time, the alarm may
+         expire one or more times */
 
-		/* check if new alarm time has to be set */
-		if(AlarmsVar[AlarmID].AlarmCycleTime == 0)
-		{
-			/* in case of a non cyclic alarm */
+      /* check if new alarm time has to be set */
+      if(AlarmsVar[AlarmID].AlarmCycleTime == 0)
+      {
+         /* in case of a non cyclic alarm */
 
-			/* alarm has expires 1 time */
-			AlarmCount = 1;
+         /* alarm has expires 1 time */
+         AlarmCount = 1;
 
-			/* set alarm to 0 */
-			AlarmsVar[AlarmID].AlarmTime = 0;
+         /* set alarm to 0 */
+         AlarmsVar[AlarmID].AlarmTime = 0;
 
-			/* disable alarm */
-			AlarmsVar[AlarmID].AlarmState = 0;
+         /* disable alarm */
+         AlarmsVar[AlarmID].AlarmState = 0;
 
-			/* set rest increments to zero */
-			RestIncrements = 0;
-		}
-		else
-		{
-			/* the alarm is cyclic */
+         /* set rest increments to zero */
+         RestIncrements = 0;
+      }
+      else
+      {
+         /* the alarm is cyclic */
 
-			/* decrement alarm */
-			while ( AlarmsVar[AlarmID].AlarmTime <= Increment )
-			{
-				/* add cycle time */
-				AlarmsVar[AlarmID].AlarmTime += AlarmsVar[AlarmID].AlarmCycleTime;
+         /* decrement alarm */
+         while ( AlarmsVar[AlarmID].AlarmTime <= Increment )
+         {
+            /* add cycle time */
+            AlarmsVar[AlarmID].AlarmTime += AlarmsVar[AlarmID].AlarmCycleTime;
 
-				/* increment Alarms expiration times */
-				AlarmCount++;
-			}
+            /* increment Alarms expiration times */
+            AlarmCount++;
+         }
 
-			/* decrement the increments of this alarm */
-			AlarmsVar[AlarmID].AlarmTime -= Increment;
+         /* decrement the increments of this alarm */
+         AlarmsVar[AlarmID].AlarmTime -= Increment;
 
-			/* store the rest increments */
-			RestIncrements = AlarmsVar[AlarmID].AlarmTime;
-		}
+         /* store the rest increments */
+         RestIncrements = AlarmsVar[AlarmID].AlarmTime;
+      }
 
-		if (AlarmsConst[AlarmID].AlarmAction == INCREMENT)
-		{
-			/* call counter function */
-			CounterIncrement = IncrementCounter(AlarmsConst[AlarmID].AlarmActionInfo.Counter, AlarmCount);
+      if (AlarmsConst[AlarmID].AlarmAction == INCREMENT)
+      {
+         /* call counter function */
+         CounterIncrement = IncrementCounter(AlarmsConst[AlarmID].AlarmActionInfo.Counter, AlarmCount);
 
-			/* re-calculate the rest of the increments */
-			RestIncrements += AlarmsVar[AlarmID].AlarmCycleTime * ( CounterIncrement-1 );
-		}
-		else
-		{
-			/* execute the alarm so many times as needed */
-			for ( ;AlarmCount > 0; AlarmCount--)
-			{
-				/* check alarm actions differents to INCREMENT */
-				switch(AlarmsConst[AlarmID].AlarmAction)
-				{
-					case ACTIVATETASK:
-						/* activate task */
-						ActivateTask(AlarmsConst[AlarmID].AlarmActionInfo.TaskID);
-						break;
-					case ALARMCALLBACK:
-						/* callback */
-						if(AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction != NULL)
-						{
-							AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
-						}
-						break;
+         /* re-calculate the rest of the increments */
+         RestIncrements += AlarmsVar[AlarmID].AlarmCycleTime * ( CounterIncrement-1 );
+      }
+      else
+      {
+         /* execute the alarm so many times as needed */
+         for ( ;AlarmCount > 0; AlarmCount--)
+         {
+            /* check alarm actions differents to INCREMENT */
+            switch(AlarmsConst[AlarmID].AlarmAction)
+            {
+               case ACTIVATETASK:
+                  /* activate task */
+                  ActivateTask(AlarmsConst[AlarmID].AlarmActionInfo.TaskID);
+                  break;
+               case ALARMCALLBACK:
+                  /* callback */
+                  if(AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction != NULL)
+                  {
+                     AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
+                  }
+                  break;
 #if (NO_EVENTS == OSEK_DISABLE)
-					case SETEVENT:
-						/* set event */
-						SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Event);
-						break;
+               case SETEVENT:
+                  /* set event */
+                  SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Event);
+                  break;
 #endif /* #if (NO_EVENTS == OSEK_DISABLE) */
-					default:
-						/* some error */
-						/* possibly TODO, report an error */
-						break;
-				}
-			}
-		}
-	}
+               default:
+                  /* some error */
+                  /* possibly TODO, report an error */
+                  break;
+            }
+         }
+      }
+   }
 
-	return RestIncrements;
+   return RestIncrements;
 }
 #endif /* #if (ALARMS_COUNT != 0) */
 
 #if (ALARMS_COUNT != 0)
 CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementType Increment)
 {
-	uint8f loopi;
-	AlarmType AlarmID;
-	AlarmIncrementType MinimalCount = -1;
-	AlarmIncrementType TmpCount;
+   uint8f loopi;
+   AlarmType AlarmID;
+   AlarmIncrementType MinimalCount = -1;
+   AlarmIncrementType TmpCount;
 
-	/* increment counter */
-	CountersVar[CounterID].Time+=Increment;
+   /* increment counter */
+   CountersVar[CounterID].Time+=Increment;
 
-	/* check if the timer has an overvlow */
-	while ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
-	{
-		/* reset counter */
-		CountersVar[CounterID].Time -= CountersConst[CounterID].MaxAllowedValue;
-	}
+   /* check if the timer has an overvlow */
+   while ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
+   {
+      /* reset counter */
+      CountersVar[CounterID].Time -= CountersConst[CounterID].MaxAllowedValue;
+   }
 
-	/* for alarms on this counter */
-	for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
-	{
-		/* get alarm id */
-		AlarmID = CountersConst[CounterID].AlarmRef[loopi];
+   /* for alarms on this counter */
+   for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
+   {
+      /* get alarm id */
+      AlarmID = CountersConst[CounterID].AlarmRef[loopi];
 
-		/* check if the alarm is eanble */
-		if (AlarmsVar[AlarmID].AlarmState == 1)
-		{
-			/* increment alarm and get the next alarm time */
-			TmpCount = IncrementAlarm(AlarmID, Increment);
+      /* check if the alarm is eanble */
+      if (AlarmsVar[AlarmID].AlarmState == 1)
+      {
+         /* increment alarm and get the next alarm time */
+         TmpCount = IncrementAlarm(AlarmID, Increment);
 
-			/* if the actual count is smaller */
-			if (MinimalCount > TmpCount)
-			{
-				/* set it as minimal count */
-				MinimalCount = TmpCount;
-			}
-		}
-	}
+         /* if the actual count is smaller */
+         if (MinimalCount > TmpCount)
+         {
+            /* set it as minimal count */
+            MinimalCount = TmpCount;
+         }
+      }
+   }
 
-	/* return the minimal increment */
-	return (CounterIncrementType)MinimalCount;
+   /* return the minimal increment */
+   return (CounterIncrementType)MinimalCount;
 }
 #endif /* #if (ALARMS_COUNT != 0) */
 
