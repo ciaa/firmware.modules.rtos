@@ -63,12 +63,12 @@
  * 20090331 v0.1.5 MaCe add support to NO_RES_SCHEDULER
  * 20090330 v0.1.5 MaCe correct errors done in v0.1.3
  * 20090330 v0.1.4 MaCe add support to NON_PREEMPTIVE systems and add non
- *                        preemptive check
+ *                      preemptive check
  * 20090329 v0.1.3 MaCe add RES_SCHEDULER and imp. code if RESOURCE_COUNT is
- *                        different than 0
+ *                      different than 0
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080909 v0.1.0 MaCe   initial version
+ * 20080909 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -185,7 +185,7 @@ StatusType ReleaseResource
       if ( GetCallingContext() ==  CONTEXT_TASK )
       {
          if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
-              ( ret == E_OK )   )
+              ( ret == E_OK ) )
          {
             /* \req OSEK_SYS_3.14.4 Rescheduling shall take place only if called from a
              * preemptable task. */

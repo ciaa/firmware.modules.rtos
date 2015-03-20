@@ -49,13 +49,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20141223 MaCe	FreeOSEK architecture template file
+ * v0.1.0 20141223 MaCe FreeOSEK architecture template file
  */
 
 
@@ -79,37 +79,37 @@
  **
  ** This function is defined in Osek_Internal.h and has to be defined for
  ** every architecture. This function shall set for all tasks:
- **	- init the stack for all tasks.
- **	- init the entry point of all stack
- **	- init all other necessary registers to the init value for the first
- **	  time that the task will be executed.
- **	- if necessary to call StartOs_Arch_Cpu
+ ** - init the stack for all tasks.
+ ** - init the entry point of all stack
+ ** - init all other necessary registers to the init value for the first
+ **   time that the task will be executed.
+ ** - if necessary to call StartOs_Arch_Cpu
  **
  ** Needed variables for this function will be:
- **	- TasksConst[].TaskContext
- **	- TasksConst[].StackPtr
- **	- TasksConst[].StackSize
- **	- TasksConst[].EntryPoint
+ ** - TasksConst[].TaskContext
+ ** - TasksConst[].StackPtr
+ ** - TasksConst[].StackSize
+ ** - TasksConst[].EntryPoint
  **
  ** Needed macros for this function will be:
- **	- TASKS_COUNT
+ ** - TASKS_COUNT
  **
  **/
 void StartOs_Arch(void)
 {
-	uint8f loopi;
+   uint8f loopi;
 
-	/* init every task */
-	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
-		/* init stack */
+   /* init every task */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
+      /* init stack */
 
-		/* init entry point */
+      /* init entry point */
 
-		/* init registers */
-	}
+      /* init registers */
+   }
 
-	/* call CPU dependent initialisation */
+   /* call CPU dependent initialisation */
 }
 
 /** @} doxygen end group definition */

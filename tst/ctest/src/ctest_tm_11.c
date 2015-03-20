@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_tm_11.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_tm_11.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,83 +82,83 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(2);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(2);
+   ret = ActivateTask(Task3);
+   ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
+   /* force scheduling */
+   Schedule();
 #endif /* #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE) */
 
-	Sequence(8);
+   Sequence(8);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 TASK(Task2)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(0);
-	ret = ActivateTask(Task1);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(0);
+   ret = ActivateTask(Task1);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(1);
-	ret = WaitEvent(Event2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(1);
+   ret = WaitEvent(Event2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(7);
-	TerminateTask();
+   Sequence(7);
+   TerminateTask();
 }
 
 TASK(Task3)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(3);
-	ret = ActivateTask(Task4);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(3);
+   ret = ActivateTask(Task4);
+   ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task3 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
+   /* force scheduling */
+   Schedule();
 #endif /* #if (CT_SCHEDULING_Task3 == CT_NON_PREEMPTIVE) */
 
-	Sequence(6);
-	TerminateTask();
+   Sequence(6);
+   TerminateTask();
 }
 
 TASK(Task4)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(4);
-	ret = SetEvent(Task2, Event2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(4);
+   ret = SetEvent(Task2, Event2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(5);
-	TerminateTask();
+   Sequence(5);
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

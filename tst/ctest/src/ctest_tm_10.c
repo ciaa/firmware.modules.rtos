@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_tm_10.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_tm_10.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,77 +82,77 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(0);
-	ret = ActivateTask(Task2);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(0);
+   ret = ActivateTask(Task2);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(6);
+   Sequence(6);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 TASK(Task2)
 {
-	StatusType ret;
+   StatusType ret;
    EventMaskType EventMask;
 
-	Sequence(1);
+   Sequence(1);
    ret = GetEvent(Task2, &EventMask);
    ASSERT(OTHER, EventMask != 0);
    ASSERT(OTHER, ret != E_OK);
 
-	Sequence(2);
-	/* \treq TM_09 mf E2 s,e Call ActivateTask() from preemptive
-	 * task on suspended extended task which has equal priority as running task
-	 *
-	 * \result Non preemption of running task. Activated task becomes ready and its
-	 * events are cleared. Service returns E_OK
-	 */
-	ret = ActivateTask(Task3);
-	ASSERT(TM_09, ret != E_OK);
+   Sequence(2);
+   /* \treq TM_09 mf E2 s,e Call ActivateTask() from preemptive
+    * task on suspended extended task which has equal priority as running task
+    *
+    * \result Non preemption of running task. Activated task becomes ready and its
+    * events are cleared. Service returns E_OK
+    */
+   ret = ActivateTask(Task3);
+   ASSERT(TM_09, ret != E_OK);
 
-	Sequence(3);
-	TerminateTask();
+   Sequence(3);
+   TerminateTask();
 }
 
 TASK(Task3)
 {
-	StatusType ret;
-	EventMaskType EventMask;
+   StatusType ret;
+   EventMaskType EventMask;
 
-	Sequence(4);
-	ret = GetEvent(Task3, &EventMask);
-	ASSERT(OTHER, EventMask != 0);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(4);
+   ret = GetEvent(Task3, &EventMask);
+   ASSERT(OTHER, EventMask != 0);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(5);
-	TerminateTask();
+   Sequence(5);
+   TerminateTask();
 }
 
 /* This task is not used, only to change the scheduling police */
 TASK(Task4)
 {
-	TerminateTask();
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

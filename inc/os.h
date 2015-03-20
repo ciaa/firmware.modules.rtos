@@ -54,7 +54,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  * KLi          Kang Li
  * AsKa         Asnoka
  */
@@ -96,7 +96,7 @@
 
 /** \brief ALARMCALLBACK macro definition
  **/
-#define ALARMCALLBACK(name)	void OSEK_CALLBACK_ ## name (void)
+#define ALARMCALLBACK(name) void OSEK_CALLBACK_ ## name (void)
 
 /** \brief SUSPEND Task State */
 #define SUSPENDED 0U
@@ -111,31 +111,31 @@
 
 /** \brief Definition return value E_OK */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OK					((StatusType)0U)
+#define E_OK               ((StatusType)0U)
 /** \brief Definition return value E_OS_ACCESS */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_ACCESS			((StatusType)1U)
+#define E_OS_ACCESS        ((StatusType)1U)
 /** \brief Definition return value E_OS_CALLEVEL */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_CALLEVEL		((StatusType)2U)
+#define E_OS_CALLEVEL      ((StatusType)2U)
 /** \brief Definition return value E_OS_ID */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_ID				((StatusType)3U)
+#define E_OS_ID            ((StatusType)3U)
 /** \brief Definition return value E_OS_LIMIT */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_LIMIT			((StatusType)4U)
+#define E_OS_LIMIT         ((StatusType)4U)
 /** \brief Definition return value E_OS_NOFUNC */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_NOFUNC			((StatusType)5U)
+#define E_OS_NOFUNC        ((StatusType)5U)
 /** \brief Definition return value E_OS_RESOURCE */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_RESOURCE		((StatusType)6U)
+#define E_OS_RESOURCE      ((StatusType)6U)
 /** \brief Definition return value E_OS_STATE */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_STATE			((StatusType)7U)
+#define E_OS_STATE         ((StatusType)7U)
 /** \brief Definition return value E_OS_VALUE */
 /* \req OSEK_SYS_1.1.1 */
-#define E_OS_VALUE			((StatusType)8U)
+#define E_OS_VALUE         ((StatusType)8U)
 
 /** \brief Enable All Interrupts
  **
@@ -153,17 +153,17 @@
  * \req OSEK_SYS_3.7.1 This service restores the state saved by
  * DisableAllInterrupts
  */
-#define EnableAllInterrupts()						\
-	{														\
-		DisableAllInterrupts_Counter--;			\
-		if(DisableAllInterrupts_Counter <=		\
-			((InterruptCounterType)0U))			\
-		{													\
-			DisableAllInterrupts_Counter =		\
-				((InterruptCounterType)0U);		\
-			EnableAllInterrupts_Arch();			\
-		}													\
-	}
+#define EnableAllInterrupts()                  \
+   {                                           \
+      DisableAllInterrupts_Counter--;          \
+      if(DisableAllInterrupts_Counter <=       \
+         ((InterruptCounterType)0U))           \
+      {                                        \
+         DisableAllInterrupts_Counter =        \
+            ((InterruptCounterType)0U);        \
+         EnableAllInterrupts_Arch();           \
+      }                                        \
+   }
 
 /** \brief Disable All Interrupts
  **
@@ -181,11 +181,11 @@
  * \req OSEK_SYS_3.8.2 The state before is saved for the EnableAllInterrupts
  *  call
  */
-#define DisableAllInterrupts()			\
-	{												\
-		DisableAllInterrupts_Counter++;	\
-		DisableAllInterrupts_Arch();		\
-	}
+#define DisableAllInterrupts()          \
+   {                                    \
+      DisableAllInterrupts_Counter++;   \
+      DisableAllInterrupts_Arch();      \
+   }
 
 /** \brief Resume All Interrupts
  **
@@ -202,17 +202,17 @@
  *  call of SuspendAllInterrupts is restored by the last call of the
  *  ResumeAllInterrupts service.
  **/
-#define ResumeAllInterrupts() 					\
-	{														\
-		SuspendAllInterrupts_Counter--;			\
-		if(SuspendAllInterrupts_Counter <=		\
-			((InterruptCounterType)0U))			\
-		{													\
-			SuspendAllInterrupts_Counter =		\
-				((InterruptCounterType)0U);		\
-			ResumeAllInterrupts_Arch();			\
-		}													\
-	}
+#define ResumeAllInterrupts()                 \
+   {                                          \
+      SuspendAllInterrupts_Counter--;         \
+      if(SuspendAllInterrupts_Counter <=      \
+         ((InterruptCounterType)0U))          \
+      {                                       \
+         SuspendAllInterrupts_Counter =       \
+            ((InterruptCounterType)0U);       \
+         ResumeAllInterrupts_Arch();          \
+      }                                       \
+   }
 
 /** \brief Suspend All Interrupts
  **
@@ -226,11 +226,11 @@
  * \req OSEK_SYS_3.10.2 and disables all interrupts for which the hardware
  *  supports disabling
  */
-#define SuspendAllInterrupts()					\
-	{														\
-		SuspendAllInterrupts_Counter++;			\
-		SuspendAllInterrupts_Arch();				\
-	}
+#define SuspendAllInterrupts()                \
+   {                                          \
+      SuspendAllInterrupts_Counter++;         \
+      SuspendAllInterrupts_Arch();            \
+   }
 
 /** \brief Resume OS Interrupts
  **
@@ -247,17 +247,17 @@
  *  of SuspendOSInterrupts is restored by the last call of the
  *  ResumeOSInterrupts service
  */
-#define ResumeOSInterrupts()						\
-	{														\
-		SuspendOSInterrupts_Counter--;			\
-		if(SuspendOSInterrupts_Counter <= 		\
-			((InterruptCounterType)0U))			\
-		{													\
-			SuspendOSInterrupts_Counter =			\
-				((InterruptCounterType)0U);		\
-			ResumeOSInterrupts_Arch();				\
-		}													\
-	}
+#define ResumeOSInterrupts()                  \
+   {                                          \
+      SuspendOSInterrupts_Counter--;          \
+      if(SuspendOSInterrupts_Counter <=       \
+         ((InterruptCounterType)0U))          \
+      {                                       \
+         SuspendOSInterrupts_Counter =        \
+            ((InterruptCounterType)0U);       \
+         ResumeOSInterrupts_Arch();           \
+      }                                       \
+   }
 
 /** \brief Suspend OS Interrupts
  **
@@ -272,41 +272,41 @@
  *  interrupts of category 2
  * \req OSEK_SYS_3.12.2 and disables the recognition of these interrupts
  */
-#define SuspendOSInterrupts()						\
-	{														\
-		SuspendOSInterrupts_Counter++;			\
-		SuspendOSInterrupts_Arch();				\
-	}
+#define SuspendOSInterrupts()                  \
+   {                                           \
+      SuspendOSInterrupts_Counter++;           \
+      SuspendOSInterrupts_Arch();              \
+   }
 
-#define OSServiceId_ActivateTask						1
-#define OSServiceId_TerminateTask					2
-#define OSServiceId_ChainTask							3
-#define OSServiceId_Schedule							4
-#define OSServiceId_GetTaskID							5
-#define OSServiceId_GetTaskState						6
-#define OSServiceId_DisableAllInterrupts			7
-#define OSServiceId_EnableAllInterrupts			8
-#define OSServiceId_SuspendAllInterrupts			9
-#define OSServiceId_ResumeAllInterrupts			10
-#define OSServiceId_SuspendOSInterrupts			11
-#define OSServiceId_ResumeOSInterrupts				12
-#define OSServiceId_GetResource						13
-#define OSServiceId_ReleaseResource					14
-#define OSServiceId_SetEvent							15
-#define OSServiceId_ClearEvent						16
-#define OSServiceId_GetEvent							17
-#define OSServiceId_WaitEvent							18
-#define OSServiceId_GetAlarmBase						19
-#define OSServiceId_GetAlarm							20
-#define OSServiceId_SetRelAlarm						21
-#define OSServiceId_SetAbsAlarm						22
-#define OSServiceId_CancelAlarm						23
-#define OSServiceId_GetActiveApplicationMode		24
-#define OSServiceId_StartOS							25
-#define OSServiceId_ShutdownOS						26
+#define OSServiceId_ActivateTask                1
+#define OSServiceId_TerminateTask               2
+#define OSServiceId_ChainTask                   3
+#define OSServiceId_Schedule                    4
+#define OSServiceId_GetTaskID                   5
+#define OSServiceId_GetTaskState                6
+#define OSServiceId_DisableAllInterrupts        7
+#define OSServiceId_EnableAllInterrupts         8
+#define OSServiceId_SuspendAllInterrupts        9
+#define OSServiceId_ResumeAllInterrupts         10
+#define OSServiceId_SuspendOSInterrupts         11
+#define OSServiceId_ResumeOSInterrupts          12
+#define OSServiceId_GetResource                 13
+#define OSServiceId_ReleaseResource             14
+#define OSServiceId_SetEvent                    15
+#define OSServiceId_ClearEvent                  16
+#define OSServiceId_GetEvent                    17
+#define OSServiceId_WaitEvent                   18
+#define OSServiceId_GetAlarmBase                19
+#define OSServiceId_GetAlarm                    20
+#define OSServiceId_SetRelAlarm                 21
+#define OSServiceId_SetAbsAlarm                 22
+#define OSServiceId_CancelAlarm                 23
+#define OSServiceId_GetActiveApplicationMode    24
+#define OSServiceId_StartOS                     25
+#define OSServiceId_ShutdownOS                  26
 
 /** \brief Resource Scheduler */
-#define RES_SCHEDULER									255
+#define RES_SCHEDULER                           255
 
 /*==================[typedef]================================================*/
 /** \brief Type definition of StatusType
@@ -388,9 +388,9 @@ typedef TickType* TickRefType;
  ** This type is used to represent references to AlarmBase
  **/
 typedef struct {
-	TickType maxallowedvalue;
-	TickType ticksperbase;
-	TickType mincycle;
+   TickType maxallowedvalue;
+   TickType ticksperbase;
+   TickType mincycle;
 } AlarmBaseType;
 
 /** \brief Type definition of AlarmBaseRefType

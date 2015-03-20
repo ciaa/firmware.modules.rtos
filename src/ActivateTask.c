@@ -173,7 +173,7 @@
       if ( GetCallingContext() ==  CONTEXT_TASK )
       {
          if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
-               ( ret == E_OK )   )
+              ( ret == E_OK ) )
          {
             /* This is needed to avoid Schedule to perform standard checks
              * which are done when normally called from the application

@@ -46,13 +46,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * PR		Pablo Ridolfi
+ * PR           Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20140608 v0.1.0 PR	First version for Cortex-M processors.
+ * 20140608 v0.1.0 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
@@ -80,65 +80,65 @@ TaskType WaitingTask = INVALID_TASK;
 
 void ReturnHook_Arch(void)
 {
-	/* Tasks shouldn't return here... */
-	while(1) osekpause();
+   /* Tasks shouldn't return here... */
+   while(1) osekpause();
 
 }
 
 void CheckTerminatingTask_Arch(void)
 {
-	if(TerminatingTask != INVALID_TASK)
-	{
-//		int i;
-//		for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
-//			((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
-		InitStack_Arch(TerminatingTask);
-	}
-	TerminatingTask = INVALID_TASK;
+   if(TerminatingTask != INVALID_TASK)
+   {
+//      int i;
+//      for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
+//         ((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
+      InitStack_Arch(TerminatingTask);
+   }
+   TerminatingTask = INVALID_TASK;
 }
 
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
 
-	uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
-	int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
+   uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
+   int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
 
-	taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
-	taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
-	taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
-	taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+   taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
+   taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
+   taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
+   taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
 
-	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
+   *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
 
 }
 
 /* Periodic Interrupt Timer, included in all Cortex-M4 processors */
 void SysTick_Handler(void)
 {
-	/* store the calling context in a variable */
-	ContextType actualContext = GetCallingContext();
-	/* set isr 2 context */
-	SetActualContext(CONTEXT_ISR2);
+   /* store the calling context in a variable */
+   ContextType actualContext = GetCallingContext();
+   /* set isr 2 context */
+   SetActualContext(CONTEXT_ISR2);
 
 #if (ALARMS_COUNT != 0)
-	/* counter increment */
-	static CounterIncrementType CounterIncrement = 1;
+   /* counter increment */
+   static CounterIncrementType CounterIncrement = 1;
    (void)CounterIncrement; /* TODO remove me */
 
-	/* increment the disable interrupt conter to avoid enable the interrupts */
-	IntSecure_Start();
+   /* increment the disable interrupt conter to avoid enable the interrupts */
+   IntSecure_Start();
 
-	/* call counter interrupt handler */
-	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
+   /* call counter interrupt handler */
+   CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
 
-	/* set the disable interrupt counter back */
-	IntSecure_End();
+   /* set the disable interrupt counter back */
+   IntSecure_End();
 
 #endif /* #if (ALARMS_COUNT != 0) */
 
-	/* reset context */
-	SetActualContext(actualContext);
+   /* reset context */
+   SetActualContext(actualContext);
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
    /* check if the actual task is preemptive */

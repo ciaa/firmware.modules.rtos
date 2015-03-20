@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_rm_05.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_rm_05.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 

@@ -61,7 +61,7 @@
  * 20090417 v0.1.3 MaCe update license
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080713 v0.1.0 MaCe   initial version
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/

@@ -53,7 +53,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  * KLi          Kang Li
  */
 
@@ -64,7 +64,7 @@
  * 20090329 v0.1.3 MaCe add TASK_MAX_PRIORITY macro
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080713 v0.1.0 MaCe	initial version
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -84,19 +84,19 @@
 #define INVALID_TASK  ((TaskType)~0)
 
 /** \brief State for Suspended Tasks */
-#define TASK_ST_SUSPENDED	SUSPENDED
+#define TASK_ST_SUSPENDED   SUSPENDED
 
 /** \brief State for Ready Tasks */
-#define TASK_ST_READY		READY
+#define TASK_ST_READY       READY
 
 /** \brief State for Running Task */
-#define TASK_ST_RUNNING		RUNNING
+#define TASK_ST_RUNNING     RUNNING
 
 /** \brief State for Wating Tasks */
-#define TASK_ST_WAITING 	WAITING
+#define TASK_ST_WAITING     WAITING
 
 /** \brief Invalid Task State */
-#define TASK_ST_INVALID		((TaskStateType)~0)
+#define TASK_ST_INVALID     ((TaskStateType)~0)
 
 /** \brief Task Maximal Priority */
 #define TASK_MAX_PRIORITY ((TaskPriorityType)~0)
@@ -111,8 +111,8 @@
  **
  ** This interface release the internal resources of the actual task
  **/
-#define ReleaseInternalResources()							\
-{																	   \
+#define ReleaseInternalResources()                     \
+{                                                      \
 }
 
 /** \brief Invalid Context */
@@ -124,9 +124,9 @@
 /** \brief ISR Category 2 Context */
 #define CONTEXT_ISR2 ((ContextType)3U)
 /** \brief SYS Context */
-#define CONTEXT_SYS	((ContextType)4U)
+#define CONTEXT_SYS  ((ContextType)4U)
 /** \brief DBG Context */
-#define CONTEXT_DBG	((ContextType)5U)
+#define CONTEXT_DBG  ((ContextType)5U)
 
 /** \brief Get Context at Calling point
  **
@@ -146,9 +146,9 @@
  **               - CONTEXT_ISR1
  **               - CONTEXT_ISR2
  **/
-#define SetActualContext(newcontext)    \
-   do {							    \
-      ActualContext = (newcontext);	\
+#define SetActualContext(newcontext)  \
+   do {                               \
+      ActualContext = (newcontext);   \
    } while(0)
 
 /** \brief Get Running Task

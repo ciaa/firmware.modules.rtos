@@ -80,25 +80,25 @@ InterruptStateType InterruptState;
 /*==================[external functions definition]==========================*/
 void ScheduleInterrupts(void)
 {
-	int loopi = 0;
-	uint32 InterruptToBeExecuted;
+   int loopi = 0;
+   uint32 InterruptToBeExecuted;
 
-	if (InterruptState)
-	{
-		InterruptToBeExecuted = ( InterruptFlag & ( (InterruptFlagsType) ~InterruptMask ) );
-		while(InterruptToBeExecuted != 0)
-		{
-			if (InterruptToBeExecuted & 1)
-			{
-				InterruptFlag &= ~(1<<loopi);
+   if (InterruptState)
+   {
+      InterruptToBeExecuted = ( InterruptFlag & ( (InterruptFlagsType) ~InterruptMask ) );
+      while(InterruptToBeExecuted != 0)
+      {
+         if (InterruptToBeExecuted & 1)
+         {
+            InterruptFlag &= ~(1<<loopi);
 
-				InterruptTable[loopi]();
-			}
+            InterruptTable[loopi]();
+         }
 
-			InterruptToBeExecuted >>=1;
-			loopi++;
-		}
-	}
+         InterruptToBeExecuted >>=1;
+         loopi++;
+      }
+   }
 }
 
 /** @} doxygen end group definition */

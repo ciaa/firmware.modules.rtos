@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_al_04.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_al_04.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,60 +82,60 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
-	TaskStateType TaskState;
+   StatusType ret;
+   TaskStateType TaskState;
 
-	Sequence(0);
-	ret = SetRelAlarm(Alarm1, 1, 0);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(0);
+   ret = SetRelAlarm(Alarm1, 1, 0);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(1);
-	/* \treq AL_30 nm B1B2E1E2 se Expiration of alarm wich activates a task
-	 * while no tasks are currently running
-	 *
-	 * \result Task is activated
-	 */
-	IncAlarmCounter();
-	ASSERT(AL_30, 0);
+   Sequence(1);
+   /* \treq AL_30 nm B1B2E1E2 se Expiration of alarm wich activates a task
+    * while no tasks are currently running
+    *
+    * \result Task is activated
+    */
+   IncAlarmCounter();
+   ASSERT(AL_30, 0);
 
-	Sequence(2);
-	ret = GetTaskState(Task2, &TaskState);
-	ASSERT(OTHER, ret != E_OK);
-	ASSERT(OTHER, TaskState != READY);
+   Sequence(2);
+   ret = GetTaskState(Task2, &TaskState);
+   ASSERT(OTHER, ret != E_OK);
+   ASSERT(OTHER, TaskState != READY);
 
-	Sequence(3);
-	TerminateTask();
+   Sequence(3);
+   TerminateTask();
 }
 
 TASK(Task2)
 {
-	Sequence(4);
+   Sequence(4);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 /* This task is not used, only to change the scheduling police */
 TASK(Task3)
 {
-	TerminateTask();
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

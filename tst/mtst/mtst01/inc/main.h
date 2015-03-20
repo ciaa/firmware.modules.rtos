@@ -53,14 +53,14 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090130 v0.1.1 MaCe add MAIN_MEMMAP check
- * 20081205 v0.1.0 MaCe	initial version
+ * 20081205 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/

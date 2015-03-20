@@ -59,13 +59,13 @@
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090417 v0.1.5 MaCe correct task status when seting it ready and update GPL
- *                   link exception
+ *                      link exception
  * 20090330 v0.1.4 MaCe add NO_EVENTS evaluation
  * 20090330 v0.1.3 MaCe add support to NON_PREEMPTIVE systems and add non
- *                        preemptive check
+ *                      preemptive check
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080814 v0.1.0 MaCe   initial version
+ * 20080814 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -123,9 +123,9 @@ StatusType SetEvent
       IntSecure_Start();
 
       /* the event shall be set only if the task is running ready or waiting */
-      if (    ( TasksVar[TaskID].Flags.State == TASK_ST_RUNNING ) ||
-            ( TasksVar[TaskID].Flags.State == TASK_ST_READY ) ||
-            ( TasksVar[TaskID].Flags.State == TASK_ST_WAITING) )
+      if ( ( TasksVar[TaskID].Flags.State == TASK_ST_RUNNING ) ||
+           ( TasksVar[TaskID].Flags.State == TASK_ST_READY ) ||
+           ( TasksVar[TaskID].Flags.State == TASK_ST_WAITING) )
       {
          /* set the events */
          /* \req OSEK_SYS_3.15.1-1/3 The events of task TaskID are set according to the
@@ -135,8 +135,8 @@ StatusType SetEvent
          TasksVar[TaskID].Events |= ( Mask & TasksConst[TaskID].EventsMask );
 
          /* if the task is waiting and one waiting event occurrs set it to ready */
-         if (   ( TasksVar[TaskID].Flags.State == TASK_ST_WAITING ) &&
-               ( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
+         if ( ( TasksVar[TaskID].Flags.State == TASK_ST_WAITING ) &&
+              ( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
          {
             /* \req OSEK_SYS_3.15.1-2/3 The events of task TaskID are set according to the
              * event mask Mask. Calling SetEvent causes the task TaskID to be
@@ -157,7 +157,7 @@ StatusType SetEvent
             if ( GetCallingContext() ==  CONTEXT_TASK )
             {
                if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
-                    ( ret == E_OK )   )
+                    ( ret == E_OK ) )
                {
                   /* \req OSEK_SYS_3.15.4 Rescheduling shall take place only if called from a
                    * preemptable task. */

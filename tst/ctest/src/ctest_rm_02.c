@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_rm_02.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_rm_02.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,93 +82,93 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(0);
-	/* \treq RM_06 nm B1B2E1E2 se Test Priority Ceiling Protocol: Call
-	 * GetResource() rom non-preemptive task, activate task with priority
-	 * higher than the running task but lower than ceiling priority, and force
-	 * rescheduling
-	 *
-	 * \result Resource is occupied and running task's priority is set to the
-	 * resource's ceiling priority. Service returns E_OK. No preemption occurrs
-	 * after activating the task with higher priotiy and rescheduling
-	 */
-	ret = GetResource(Resource1);
-	ASSERT(RM_06, ret != E_OK);
+   Sequence(0);
+   /* \treq RM_06 nm B1B2E1E2 se Test Priority Ceiling Protocol: Call
+    * GetResource() rom non-preemptive task, activate task with priority
+    * higher than the running task but lower than ceiling priority, and force
+    * rescheduling
+    *
+    * \result Resource is occupied and running task's priority is set to the
+    * resource's ceiling priority. Service returns E_OK. No preemption occurrs
+    * after activating the task with higher priotiy and rescheduling
+    */
+   ret = GetResource(Resource1);
+   ASSERT(RM_06, ret != E_OK);
 
-	Sequence(1);
-	ret = ActivateTask(Task2);
-	ASSERT(OTHER, ret != E_OK);
-
-#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
-#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
-
-	Sequence(2);
-	ret = ActivateTask(Task3);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(1);
+   ret = ActivateTask(Task2);
+   ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
+   /* force scheduling */
+   Schedule();
 #endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
 
-	Sequence(4);
-	/* \treq RM_13 nm B1B2E1E2 se Call ReleaseResource() from a non-preemptive
-	 * task
-	 *
-	 * \result Resource is released and running task's priority is reset. No
-	 * preemption of running task. Service returns E_OK
-	 */
-	ret = ReleaseResource(Resource1);
-	ASSERT(RM_13, ret != E_OK);
+   Sequence(2);
+   ret = ActivateTask(Task3);
+   ASSERT(OTHER, ret != E_OK);
 
 #if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
-	/* force scheduling */
-	Schedule();
+   /* force scheduling */
+   Schedule();
 #endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
 
-	Sequence(6);
+   Sequence(4);
+   /* \treq RM_13 nm B1B2E1E2 se Call ReleaseResource() from a non-preemptive
+    * task
+    *
+    * \result Resource is released and running task's priority is reset. No
+    * preemption of running task. Service returns E_OK
+    */
+   ret = ReleaseResource(Resource1);
+   ASSERT(RM_13, ret != E_OK);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+#if (CT_SCHEDULING_Task1 == CT_NON_PREEMPTIVE)
+   /* force scheduling */
+   Schedule();
+#endif /* #if (CT_SCHEDULING_TASK1 == CT_NON_PREEMPTIVE) */
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   Sequence(6);
+
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
+
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 TASK(Task2)
 {
-	Sequence(5);
-	TerminateTask();
+   Sequence(5);
+   TerminateTask();
 }
 
 TASK(Task3)
 {
-	Sequence(3);
-	TerminateTask();
+   Sequence(3);
+   TerminateTask();
 }
 
 /* This task is not used, only to change the scheduling police */
 TASK(Task4)
 {
-	TerminateTask();
+   TerminateTask();
 }
 
 /** @} doxygen end group definition */

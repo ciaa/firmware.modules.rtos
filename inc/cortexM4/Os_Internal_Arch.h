@@ -56,7 +56,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * PR		Pablo Ridolfi
+ * PR           Pablo Ridolfi
  */
 
 /*****************************************************************************
@@ -70,7 +70,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20140608 v0.1.1 PR	First version for Cortex-M processors.
+ * 20140608 v0.1.1 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
@@ -127,34 +127,34 @@ extern TaskType TerminatingTask;
  ** occurs, like for example an interrupt.
  **
  **/
-#define osekpause()	__asm volatile("wfi")
+#define osekpause() __asm volatile("wfi")
 
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(actualtask, nexttask)										\
-{																			\
-	Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;		\
-	Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;		\
-	__asm__ __volatile__ (													\
-		/* Call PendSV */													\
-		"push {r0,r1}												\n\t"	\
-		/* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-		"ldr r0,=0xE000ED04											\n\t"	\
-		"ldr r1,[r0]												\n\t"	\
-		"orr r1,1<<28												\n\t"	\
-		"str r1,[r0]												\n\t"	\
-		"pop {r0,r1}												\n\t"	\
-	);																		\
+#define CallTask(actualtask, nexttask)                                    \
+{                                                                         \
+   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;    \
+   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;      \
+   __asm__ __volatile__ (                                                 \
+      /* Call PendSV */                                                   \
+      "push {r0,r1}                                               \n\t"   \
+      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
+      "ldr r0,=0xE000ED04                                         \n\t"   \
+      "ldr r1,[r0]                                                \n\t"   \
+      "orr r1,1<<28                                               \n\t"   \
+      "str r1,[r0]                                                \n\t"   \
+      "pop {r0,r1}                                                \n\t"   \
+   );                                                                     \
 }
 
 /** \brief Jmp to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define JmpTask(task)														            \
-{									                                                \
+#define JmpTask(task)                                                      \
+{                                                                          \
    extern TaskType WaitingTask;                                            \
    if(WaitingTask != INVALID_TASK)                                         \
    {                                                                       \
@@ -165,17 +165,17 @@ extern TaskType TerminatingTask;
    {                                                                       \
       Osek_OldTaskPtr_Arch = (void*)0;                                     \
    }                                                                       \
-	Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;			   \
-	__asm__ __volatile__ (													            \
-		/* Call PendSV */													               \
-		"push {r0,r1}												\n\t"	               \
-		/* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-		"ldr r0,=0xE000ED04											\n\t"	            \
-		"ldr r1,[r0]												\n\t"	               \
-		"orr r1,1<<28												\n\t"	               \
-		"str r1,[r0]												\n\t"	               \
-		"pop {r0,r1}												\n\t"	               \
-	);																		                  \
+   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
+   __asm__ __volatile__ (                                                  \
+      /* Call PendSV */                                                    \
+      "push {r0,r1}                                          \n\t"         \
+      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
+      "ldr r0,=0xE000ED04                                    \n\t"         \
+      "ldr r1,[r0]                                           \n\t"         \
+      "orr r1,1<<28                                          \n\t"         \
+      "str r1,[r0]                                           \n\t"         \
+      "pop {r0,r1}                                           \n\t"         \
+   );                                                                      \
 }
 
 /** \brief Save context */
@@ -202,15 +202,15 @@ extern TaskType TerminatingTask;
 }
 
 /** \brief */
-#define ResetStack(task)		\
-{								      \
-	TerminatingTask = (task);	\
+#define ResetStack(task)       \
+{                              \
+   TerminatingTask = (task);   \
 }
 
 /** \brief Set the entry point for a task */
-#define SetEntryPoint(task)   \
-{								      \
-	TerminatingTask = (task);	\
+#define SetEntryPoint(task)    \
+{                              \
+   TerminatingTask = (task);   \
 }
 
 /** \brief Enable OS Interruptions
@@ -228,7 +228,7 @@ extern TaskType TerminatingTask;
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use EnableOSInterrupts.
  **/
-#define EnableInterrupts()	EnableOSInterrupts()
+#define EnableInterrupts() EnableOSInterrupts()
 
 
 /** \brief Disable OS Interruptions
@@ -245,7 +245,7 @@ extern TaskType TerminatingTask;
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use DisableOSInterrupts.
  **/
-#define DisableInterrupts()	DisableOSInterrupts()
+#define DisableInterrupts() DisableOSInterrupts()
 
 /** \brief Get Counter Actual Value
  **

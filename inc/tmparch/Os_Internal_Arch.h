@@ -66,7 +66,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 #error this is a remember to remove the comment on the following line
@@ -144,9 +144,9 @@
  ** occurs, like for example an interrupt.
  **
  **/
-#define osekpause()			\
-	{								\
-	}
+#define osekpause()         \
+   {                        \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Call to an other Task
@@ -155,15 +155,15 @@
  ** on the actualtask context.
  **
  ** The Tasks context can be found under the following variables:
- **	- TasksConst[actualtask].TaskContext
- ** 	- TasksConst[nexttask].TaskContext
+ ** - TasksConst[actualtask].TaskContext
+ ** - TasksConst[nexttask].TaskContext
  **
  ** \param[in] actualtask actual running task id
  ** \param[in] nexttask next task task id
  **/
-#define CallTask(actualtask, nexttask)														\
-	{																									\
-	}
+#define CallTask(actualtask, nexttask)                                          \
+   {                                                                           \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Jmp to an other Task
@@ -172,13 +172,13 @@
  ** necessary to save the actual task state since the task was finished.
  **
  ** The Tasks context can be found under the following variable:
- **	- TasksConst[task].TaskContext
+ ** - TasksConst[task].TaskContext
  **
  ** \param[in] task task id of the task to be executed
  **/
-#define JmpTask(task)															\
-	{																					\
-	}
+#define JmpTask(task)                                             \
+   {                                                               \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Save context
@@ -188,13 +188,13 @@
  ** with a JmpTask or CallTask macro.
  **
  ** The task context can be found under the following variable:
- **	- TasksConst[task].TaskContext
+ ** - TasksConst[task].TaskContext
  **
  ** \param[in] task task id to save the task context
  **/
-#define SaveContext(task) 														\
-	{																					\
-	}
+#define SaveContext(task)                                           \
+   {                                                               \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Reset the entry point for a task
@@ -203,17 +203,17 @@
  ** point of a task is updated every time when a task is completed.
  **
  ** The task context can be found under the following variable:
- **	- TasksConst[task].TaskContext
+ ** - TasksConst[task].TaskContext
  **
  ** The start configured task entry point can be found on the following
  ** variable:
- **	- TasksConst[task].EntryPoint
+ ** - TasksConst[task].EntryPoint
  **
  ** \param[in] task task id to reset the task entry point
  **/
-#define SetEntryPoint(task)							\
-	{															\
-	}
+#define SetEntryPoint(task)                     \
+   {                                             \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Reset stack task
@@ -222,17 +222,17 @@
  ** point of a task is updated every time when a task is completed.
  **
  ** The task context can be found under the following variable:
- **	- TasksConst[task].TaskContext
+ ** - TasksConst[task].TaskContext
  **
  ** The start configured stack can be found on the following
  ** variables:
- **	- TasksConst[task].StackPtr
- **	- TasksConst[task].StackSize
+ ** - TasksConst[task].StackPtr
+ ** - TasksConst[task].StackSize
  **
  ** \param[in] task task id to reset the stack
  **/
-#define ResetStack(task)											\
-	{																		\
+#define ResetStack(task)                                 \
+   {                                                     \
    }
 
 #error update the following macro and remove this comment
@@ -241,9 +241,9 @@
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
  ** is called only ones in StartUp.c function.
  **/
-#define EnableOSInterrupts()															\
-	{																							\
-	}
+#define EnableOSInterrupts()                                             \
+   {                                                                     \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Enable Interruptions
@@ -254,9 +254,9 @@
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use EnableOSInterrupts.
  **/
-#define EnableInterrupts()		\
-	{									\
-	}
+#define EnableInterrupts()      \
+   {                            \
+   }
 
 #error update the following macro and remove this comment
 /** \brief Get Counter Actual Value

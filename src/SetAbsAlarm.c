@@ -107,8 +107,8 @@ StatusType SetAbsAlarm
    /* check that increment and cycle are in range */
    else if( (Start > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
             ( ( Cycle != 0 ) &&
-               ( (Cycle > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
-                  (Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
+              ( (Cycle > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
+                (Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
    {
       /* \req OSEK_SYS_3.22.4-2/2 Extra possible return values in Extended mode
        ** are E_OS_ID, E_OS_VALUE */

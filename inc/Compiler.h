@@ -53,22 +53,22 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090130 v0.1.1 MaCe add OpenGEN_MEMMAP check
- * 20081201 v0.1.0 MaCe	initial version
+ * 20081201 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
 /* check for C99 compiler */
-#if ( ( defined __STDC_VERSION__ ) && 	\
-		( __STDC_VERSION__ >= 199901L ) )
+#if ( ( defined __STDC_VERSION__ ) &&    \
+      ( __STDC_VERSION__ >= 199901L ) )
 #define C99_COMPILER
 #else
 #undef  C99_COMPILER

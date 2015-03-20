@@ -97,16 +97,16 @@ pthread_t Os_Thread_Timer;
 /*==================[external functions definition]==========================*/
 void StartOs_Arch(void)
 {
-	uint8f loopi;
+   uint8f loopi;
 
-	/* init every task */
-	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
+   /* init every task */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
         /* init stack */
         ResetStack(loopi);
         /* set entry point */
         SetEntryPoint(loopi);
-	}
+   }
 
    /* initialize singals handler */
    signal(SIGALRM,OsInterruptHandler);

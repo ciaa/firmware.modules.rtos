@@ -62,9 +62,9 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "os.h"				/* include os header file */
-#include "ctest_em_01.h"	/* include test header file */
-#include "ctest.h"			/* include ctest header file */
+#include "os.h"            /* include os header file */
+#include "ctest_em_01.h"   /* include test header file */
+#include "ctest.h"         /* include ctest header file */
 
 /*==================[macros and definitions]=================================*/
 
@@ -82,165 +82,165 @@ const uint32f SequenceCounterOk = MAX_SEQUENCE;
 /*==================[external functions definition]==========================*/
 int main
 (
-	void
+   void
 )
 {
-	/* start OS in AppMode 1 */
-	StartOS(AppMode1);
+   /* start OS in AppMode 1 */
+   StartOS(AppMode1);
 
-	/* shall never return */
-	while(1);
+   /* shall never return */
+   while(1);
 
-	return 0;
+   return 0;
 }
 
 TASK(Task1)
 {
-	StatusType ret;
-	EventMaskType EventMask;
+   StatusType ret;
+   EventMaskType EventMask;
 
-	Sequence(0);
-	/* enable interrupts ISR2 and ISR3 */
-	/* nothing to do */
+   Sequence(0);
+   /* enable interrupts ISR2 and ISR3 */
+   /* nothing to do */
 
-	Sequence(1);
-	/* \treq EM_01 nmf E1E2 e Call SetEvent() with an invalid Task ID
-	 *
-	 * \result Service returns E_OS_ID
-	 */
-	ret = SetEvent(INVALID_TASK, Event1);
-	ASSERT(EM_01, ret != E_OS_ID);
+   Sequence(1);
+   /* \treq EM_01 nmf E1E2 e Call SetEvent() with an invalid Task ID
+    *
+    * \result Service returns E_OS_ID
+    */
+   ret = SetEvent(INVALID_TASK, Event1);
+   ASSERT(EM_01, ret != E_OS_ID);
 
-	Sequence(2);
-	/* \treq EM_02 nmf E1E2 e Call SetEvent() for basic task
-	 *
-	 * \result Service returns E_OS_ACCESS
-	 */
-	ret = SetEvent(Task1, Event1);
-	ASSERT(EM_02, ret != E_OS_ACCESS);
+   Sequence(2);
+   /* \treq EM_02 nmf E1E2 e Call SetEvent() for basic task
+    *
+    * \result Service returns E_OS_ACCESS
+    */
+   ret = SetEvent(Task1, Event1);
+   ASSERT(EM_02, ret != E_OS_ACCESS);
 
-	Sequence(3);
-	/* \treq EM_03 nmf E1E2 e Call SetEvent() for suspended extended task
-	 *
-	 * \result Service returns E_OS_STATE
-	 */
-	ret = SetEvent(Task2, Event1);
-	ASSERT(EM_03, ret != E_OS_STATE);
+   Sequence(3);
+   /* \treq EM_03 nmf E1E2 e Call SetEvent() for suspended extended task
+    *
+    * \result Service returns E_OS_STATE
+    */
+   ret = SetEvent(Task2, Event1);
+   ASSERT(EM_03, ret != E_OS_STATE);
 
-	Sequence(4);
-	/* \treq EM_11 nmf E1E2 e Call ClearEvent() from basic task
-	 *
-	 * \result Service returns E_OS_ACCESS
-	 */
-	ret = ClearEvent(Event1);
-	ASSERT(EM_11, ret != E_OS_ACCESS);
+   Sequence(4);
+   /* \treq EM_11 nmf E1E2 e Call ClearEvent() from basic task
+    *
+    * \result Service returns E_OS_ACCESS
+    */
+   ret = ClearEvent(Event1);
+   ASSERT(EM_11, ret != E_OS_ACCESS);
 
-	Sequence(5);
-	/*  trigger ISR 2 */
-	TriggerISR2();
+   Sequence(5);
+   /*  trigger ISR 2 */
+   TriggerISR2();
 
 #if ( ISR_CATEGORY_3 == OSEK_ENABLE )
-	/* trigger ISR 3 */
-	TriggerISR3();
+   /* trigger ISR 3 */
+   TriggerISR3();
 #endif /* #if ( ISR_CATEGORY_3 == OSEK_ENABLE ) */
 
-	Sequence(8);
-	/* \treq EM_15 nmf E1E2 e Call GetEvent() with invalid Task ID
-	 *
-	 * \result Service returns E_OS_ID
-	 */
-	ret = GetEvent(INVALID_TASK, &EventMask);
-	ASSERT(EM_15, ret != E_OS_ID);
+   Sequence(8);
+   /* \treq EM_15 nmf E1E2 e Call GetEvent() with invalid Task ID
+    *
+    * \result Service returns E_OS_ID
+    */
+   ret = GetEvent(INVALID_TASK, &EventMask);
+   ASSERT(EM_15, ret != E_OS_ID);
 
-	Sequence(9);
-	/* \treq EM_16 nmf E1E2 e Call GetEvent() from basic task
-	 *
-	 * \result Service returns E_OS_ACCESS
-	 */
-	ret = GetEvent(Task1, &EventMask);
-	ASSERT(EM_16, ret != E_OS_ACCESS);
+   Sequence(9);
+   /* \treq EM_16 nmf E1E2 e Call GetEvent() from basic task
+    *
+    * \result Service returns E_OS_ACCESS
+    */
+   ret = GetEvent(Task1, &EventMask);
+   ASSERT(EM_16, ret != E_OS_ACCESS);
 
-	Sequence(10);
-	/* \treq EM_17 nmf E1E2 e Call GetEvent() from suspended extended task
-	 *
-	 * \result Service returns E_OS_STATE
-	 */
-	ret = GetEvent(Task2, &EventMask);
-	ASSERT(EM_17, ret != E_OS_STATE);
+   Sequence(10);
+   /* \treq EM_17 nmf E1E2 e Call GetEvent() from suspended extended task
+    *
+    * \result Service returns E_OS_STATE
+    */
+   ret = GetEvent(Task2, &EventMask);
+   ASSERT(EM_17, ret != E_OS_STATE);
 
-	Sequence(11);
-	/* \treq EM_21 nmf E1E2 e Call WaitEvent() from basic task
-	 *
-	 * \result Service returns E_OS_ACCESS
-	 */
-	ret = WaitEvent(Event1);
-	ASSERT(EM_21, ret != E_OS_ACCESS);
+   Sequence(11);
+   /* \treq EM_21 nmf E1E2 e Call WaitEvent() from basic task
+    *
+    * \result Service returns E_OS_ACCESS
+    */
+   ret = WaitEvent(Event1);
+   ASSERT(EM_21, ret != E_OS_ACCESS);
 
-	Sequence(12);
-	ChainTask(Task2);
+   Sequence(12);
+   ChainTask(Task2);
 }
 
 TASK(Task2)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(13);
-	ret = GetResource(Resource1);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(13);
+   ret = GetResource(Resource1);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(14);
-	/* \treq EM_22 nmf E1E2 e Call WaitEvent() from extended task with occupies
-	 * resource
-	 *
-	 * \result Service returns E_OS_RESOURCE
-	 */
-	ret = WaitEvent(Event1);
-	ASSERT(EM_22, ret != E_OS_RESOURCE);
+   Sequence(14);
+   /* \treq EM_22 nmf E1E2 e Call WaitEvent() from extended task with occupies
+    * resource
+    *
+    * \result Service returns E_OS_RESOURCE
+    */
+   ret = WaitEvent(Event1);
+   ASSERT(EM_22, ret != E_OS_RESOURCE);
 
-	Sequence(15);
-	ret = ReleaseResource(Resource1);
-	ASSERT(OTHER, ret != E_OK);
+   Sequence(15);
+   ret = ReleaseResource(Resource1);
+   ASSERT(OTHER, ret != E_OK);
 
-	Sequence(16);
+   Sequence(16);
 
-	/* evaluate conformance tests */
-	ConfTestEvaluation();
+   /* evaluate conformance tests */
+   ConfTestEvaluation();
 
-	/* finish the conformance test */
-	ConfTestFinish();
+   /* finish the conformance test */
+   ConfTestFinish();
 }
 
 ISR(ISR2)
 {
-	StatusType ret;
+   StatusType ret;
 
-	Sequence(6);
-	/* \treq EM_12 nmf E1E2 e Call ClearEvent() from ISR category 2
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = ClearEvent(Event1);
-	ASSERT(EM_12, ret != E_OS_CALLEVEL);
+   Sequence(6);
+   /* \treq EM_12 nmf E1E2 e Call ClearEvent() from ISR category 2
+    *
+    * \result Service returns E_OS_CALLEVEL
+    */
+   ret = ClearEvent(Event1);
+   ASSERT(EM_12, ret != E_OS_CALLEVEL);
 
-	Sequence(7);
-	/* \treq EM_23 nmf E1E2 e Call WaitEvent() from ISR category 2
-	 *
-	 * \result Service returns E_OS_CALLEVEL
-	 */
-	ret = WaitEvent(Event1);
-	ASSERT(EM_23, ret != E_OS_CALLEVEL);
+   Sequence(7);
+   /* \treq EM_23 nmf E1E2 e Call WaitEvent() from ISR category 2
+    *
+    * \result Service returns E_OS_CALLEVEL
+    */
+   ret = WaitEvent(Event1);
+   ASSERT(EM_23, ret != E_OS_CALLEVEL);
 }
 
 #if ( ISR_CATEGORY_3 == OSEK_ENABLE )
 ISR(ISR3)
 {
-	StatusType ret;
+   StatusType ret;
 
-	EnterISR();
+   EnterISR();
 
-	/* ISR3 are not supported by FreeOSEK OS*/
+   /* ISR3 are not supported by FreeOSEK OS*/
 
-	LeaveISR();
+   LeaveISR();
 }
 #endif /* #if ( ISR_CATEGORY_3 == OSEK_ENABLE ) */
 
