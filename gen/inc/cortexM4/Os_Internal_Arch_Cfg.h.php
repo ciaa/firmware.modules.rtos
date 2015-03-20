@@ -3,7 +3,7 @@
  ********************************************************/
 
 /* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
- *
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
