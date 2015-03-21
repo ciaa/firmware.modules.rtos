@@ -185,7 +185,7 @@ sub GetTestSequencesCon
    {
       chomp($line);
       # removes carry return + line-feed
-	   $line =~ tr/\r\n//d;
+      $line =~ tr/\r\n//d;
       # Skips empty lines and starting with # (comments)
       if ($line ne "" && substr($line, 0, 1) !~ /^\#/)
       {
@@ -428,11 +428,9 @@ sub CreateTestProject
   print FILE "SRC_FILES += \$(wildcard \$(\$(project)_PATH)\$(DS)src\$(DS)*.c) \\\n";
   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
   print FILE "OIL_FILES += \$(\$(project)_PATH)\$(DS)etc\$(DS)\$(project).oil\n\n";
-  print FILE "MODS = modules\$(DS)bsp \\\n";
-  print FILE " modules\$(DS)platforms \\\n";
+  print FILE "MODS = modules\$(DS)drivers \\\n";
   print FILE " modules\$(DS)libs \\\n";
   print FILE " modules\$(DS)posix \\\n";
-  print FILE " modules\$(DS)config \\\n";
   print FILE " modules\$(DS)ciaak \\\n";
   print FILE " modules\$(DS)rtos\n\n";
   print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
