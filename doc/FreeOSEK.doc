@@ -106,9 +106,9 @@
  * \section FreeOSEK_Introduction Introduction
  *
  * FreeOSEK is an Open Source implementation of the real time operating
- * system specified by OSEK-VDX. The phylosophy of this OS is to provide a
- * syste with standardised interfaces, scalabilty, standard error checkin
- * mechanismus and poritability.
+ * system specified by OSEK-VDX. The philosophy of this OS is to provide a
+ * system with standardized interfaces, scalability, standard error checking
+ * mechanisms and portability.
  *
  * \subsection FreeOSEK_Introduction_RunLevels Run Levels
  *
@@ -116,9 +116,9 @@
  *		- Task level
  *		- ISR level
  *
- * ISR level have allways precedens to task level. Tasks to each other
+ * ISR level have always precedence to task level. Tasks to each other
  * and ISR to each others have precedence with their assigned priorities.
- * Task priorites are signed on configuration time. ISR priorites are
+ * Task priorities are signed on configuration time. ISR priorities are
  * assigned per hardware.
  *
  * \subsection FreeOSEK_Introduction_ISR ISR Concept
@@ -138,7 +138,7 @@
  *
  * Different as in Windows or Linux on FreeOSEK the tasks are defined statically
  * on configuration time. This means that after generating the system and
- * compiling it, no more taks can be added to the system. Is not possibly to
+ * compiling it, no more task can be added to the system. Is not possibly to
  * create new tasks in a dynamic way.
  *
  * FreeOSEK provides two types of tasks:
@@ -151,81 +151,81 @@
  * 	- \b Suspended: the task is stopped.
  *
  *	Extended tasks have an extra state:
- *		- \b Waiting: the task is waiting for the occurence of one or more events.
+ *		- \b Waiting: the task is waiting for the occurrence of one or more events.
  *
- *	Not all convinations of state changes are allowed, here a list of allowed
+ *	Not all combinations of state changes are allowed, here a list of allowed
  *	task state changes:
  *		- \b activate: the task is moved from the suspended state to the ready state
  *		- \b start: the task is moved from the ready state to the running state
- *		- \b wait: the taks is moved from the running state to the waiting state
+ *		- \b wait: the task is moved from the running state to the waiting state
  *		- \b release: the task is moved from the waiting state to the ready state
- *		- \b preempt: the taks is moved from the running state to the ready state
- *		- \b teminate: the task is moved from the running state to the suspended state
+ *		- \b preempt: the task is moved from the running state to the ready state
+ *		- \b terminate: the task is moved from the running state to the suspended state
  *
  * State changes wait and release are only allowed to extended tasks.
  *
  * The state changes start, release, and preempt are performed by the
  * scheduler. The user can only indirect influent this changes. For
- * example activating a task whith a higher priority will preemt any lower
- * priority preemtive task. Setting a event of a task waiting for it
+ * example activating a task with a higher priority will preempt any lower
+ * priority preemptive task. Setting a event of a task waiting for it
  * will release this task
  *
  * \subsubsection FreeOSEK_Introduction_Task_Priority Task Priority
  *
- * The Scheduler decides in function of the task priority which is the naxt
+ * The Scheduler decides in function of the task priority which is the next
  * task to be started. When two tasks have the same priority the tasks which
  * was activated before will be executed.
  *
- * Task priorites are set on configuration time. A higer value represents
+ * Task priorities are set on configuration time. A higher value represents
  * a higher priority.
  *
  * The OS has one ready queue for every priority.
  *
  * \subsection FreeOSEK_Introduction_Scheduling
  *
- * There are to Scheduling methods which can be set to each task. \b preemtive
- * and \b non \b preemtive.
+ * There are to Scheduling methods which can be set to each task. \b preemptive
+ * and \b non \b preemptive.
  *
- * \subsubsection FreeOSEK_Introduction_Scheduling_Preemtive Preemtive Tasks
+ * \subsubsection FreeOSEK_Introduction_Scheduling_Preemtive Preemptive Tasks
  *
- * \b Preemtive tasks can be preemted (interrrupted) while running and set back in
- * rady state when a higher priority task has been activated.
+ * \b Preemptive tasks can be preempted (interrupted) while running and set back in
+ * ready state when a higher priority task has been activated.
  *
- * \subsubsection FreeOSEK_Introduction_Scheduling_Nonpreemtive Non Preemtive
+ * \subsubsection FreeOSEK_Introduction_Scheduling_Nonpreemtive Non Preemptive
  * Tasks
  *
- * \b Non \b Preemtive tasks can not be interrupted while running. After the
+ * \b Non \b Preemptive tasks can not be interrupted while running. After the
  * task is to running only the task can decide when it will be finished or
- * preemted. Interrupts may be executed on this time, but not other tasks.
- * This type of tasks have their scene specialy in small tasks where a task
- * context swtich may take so long time as finishing the task.
+ * preempted. Interrupts may be executed on this time, but not other tasks.
+ * This type of tasks have their scene specially in small tasks where a task
+ * context switch may take so long time as finishing the task.
  *
- * Non Preemtive task may call the Scheduler function to explicit decide points
- * where a preemtion may be possibly.
+ * Non Preemptive task may call the Scheduler function to explicit decide points
+ * where a preemption may be possibly.
  *
- * In Non Preemtvie tasks which doesn't call the Scheduler the OS can make some
- * resources optimisation since this task doesn't need a context space to save
- * the registers if a task swtich occurs.
+ * In Non Preemptive tasks which doesn't call the Scheduler the OS can make some
+ * resources optimization since this task doesn't need a context space to save
+ * the registers if a task switch occurs.
  *
  * \subsection FreeOSEK_Introduction_TaskGroup Group of Tasks
  *
- * The user may be interesed to have some types or Non Preemtive task for
+ * The user may be interested to have some types or Non Preemptive task for
  * a group of tasks. This means that some tasks all in a task group  may be
- * non preemtive to each other but may be preemted by task with higher
+ * non preemptive to each other but may be preempted by task with higher
  * priorities of other groups. Every task can belong to one group.
  *
  * \subsection FreeOSEK_Introduction_ApplMode Application Modes
  *
- * FreeOSEK can be confiured to have one or more Application Modes. At
+ * FreeOSEK can be configured to have one or more Application Modes. At
  * least one Application Mode has to be defined. For every Application
- * Mode the user can select some tasks and alarms to be started autmaticaly.
+ * Mode the user can select some tasks and alarms to be started automatically.
  * The user has to take care to select the adequate Application Mode after
  * every reset and call the StartOS OS interfaces indicating the Application
  * Mode.
  *
  * \subsection FreeOSEK_Introduction_Events Event Mechanism
  *
- * Events are used in FreeOSEK to synconize events and are only allowed for
+ * Events are used in FreeOSEK to synchronize events and are only allowed for
  * extended tasks.
  *
  * An extended task can clear and wait for his pre configured events. Every
@@ -237,10 +237,10 @@
  * Resources are used in FreeOSEK to coordinate access of many tasks with
  * different priorities to one resource.
  *
- * The resource mechanism avoid that two tasks get access to a same resorce
+ * The resource mechanism avoid that two tasks get access to a same resource
  * any time. To avoid this a \b Priority \b Ceiling \b Protocol is used. This
- * protocol avoids the posbility that a task tries to use a resource which
- * is beeing accessed by other task. This avoids protocol avoids deadlocks too.
+ * protocol avoids the possibility that a task tries to use a resource which
+ * is being accessed by other task. This avoids protocol avoids deadlocks too.
  *
  * \subsubsection FreeOSEK_Introduction_Resources_CeilingProtocol Ceiling Protocol
  *
@@ -248,7 +248,7 @@
  * 	- shall be set to at least the highest priority of all tasks using this
  * 	  resource.
  * 	- shall be lower to the lowest priority of all tasks that do not use this
- * 	  resource and have higher priority to all taks that use the resource.
+ * 	  resource and have higher priority to all task that use the resource.
  *
  * When a task get a resource it priority is set to the resource priority and set
  * back to the original priority when the resource is released.
@@ -260,9 +260,9 @@
  * task is started the internal resources will be getted and released when the
  * tasks terminates.
  *
- * This allow a task to have two priorites, one on the ready state to decide when
+ * This allow a task to have two priorities, one on the ready state to decide when
  * the task will be executed and other priority when running, this priority decide
- * when the task will be set back to ready state if preemtion occurs.
+ * when the task will be set back to ready state if preemption occurs.
  *
  * \subsection FreeOSEK_Introduction_Alarms Alarms
  *
@@ -461,7 +461,7 @@
  *
  * /* add the critical code */
  *
- * /* end ciritical code */
+ * /* end critical code */
  * EnableAllInterrupts();
  *
  * /* ... */
@@ -575,7 +575,7 @@
  * For the interrupt mechanisms a message queue with signal is used. Every time that you
  * send a message of only one byte to the message queue /dev/mqueue/BINNAME where BINNAME
  * is the binary name of the project defined in the Makefile with the PROJECT variable.
- * As defualt /dev/mqueue/FreeOSEK. The received byte in this queue is interprated as an interrupt.
+ * As default /dev/mqueue/FreeOSEK. The received byte in this queue is interpreted as an interrupt.
  *
  * In posix you need to mount the queues before using this feature, use following 2 commands:
  *    sudo mkdir /dev/mqueue
@@ -584,14 +584,14 @@
  * \subsubsection FreeOSEK_Arch_Posix_Timers Timers Simulations
  *
  * The POSIX variant has two simulated HW timers which have an interrupt every 10ms. Anyway
- * alarms are not working on the prebeta release.
+ * alarms are not working on the pre-beta release.
  *
  * \subsection FreeOSEK_Windows Windows dependencies
  *
  * If you do not have Linux or any posix compatible system you can run FreeOSEK on windows.
- * For this propouse you are going to need cygwin.
+ * For this propose you are going to need cygwin.
  * <a href="http://www.cygwin.com/">http://www.cygwin.com/</a>. You can
- * download and get help for the instalation on cygwin page.
+ * download and get help for the installation on cygwin page.
  *
  * \subsubsection FreeOSEK_Windows_Int Interrupt Simulation on Windows
  *
@@ -643,7 +643,7 @@
  * FreeOSEK to a new platform you have only to work on the project specific
  * files, you DON'T have to change anything on the generic directories. If
  * you change anything on a generic directory the code may not run any more
- * in an other platform, so please take care of this.
+ * in another platform, so please take care of this.
  *
  * Platform specific directories are:
  *
@@ -660,21 +660,21 @@
  *
  * Not all directories are needed to all platforms. This depends on how you
  * create the structure for your platform. First of all you have to define
- * an architecture name, for example for Windows (cygwin) we are sugin win and
- * for Linux (posix) posix. Please use a lower case name with only alphabetica
+ * an architecture name, for example for Windows (cygwin) we suggest win and
+ * for Linux (posix) posix. Please use a lower case name with only alphabetical
  * letters (a-z).
  *
  * After defining your \<ARCH\> name you have to decide if you need one or more
- * \<CPUTYPEs\>. Some microcontrollers are a main controller with many sub
+ * \<CPUTYPEs\>. Some micro-controllers are a main controller with many sub
  * controllers which for example may have less or more timers, i/o channels
  * or any other small HW differences. In the case that there is no appreciable
  * difference you can work only with the \<ARCH\> directories, if you want to
  * make a difference between \<CPUTYPES\> you can define one or more
  * \<CPUTYPEs\>. Again for all \<CPUTYPES\> names use lower cases and only
- * alphabeticals letters (a-z).
+ * alphabetical letters (a-z).
  *
  * Important is that all files that you will write generic for all
- * \<CPUTYPEs\> have to be written on the \<ARCH\> directorie and all specific
+ * \<CPUTYPEs\> have to be written on the \<ARCH\> directories and all specific
  * for an \<CPUTYPE\> have to be written on the \<CPUTYPE\> directory.
  *
  * For example if you don't need separated files for \<CPUTYPEs\> you don't
