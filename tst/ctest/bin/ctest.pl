@@ -418,16 +418,15 @@ sub CreateTestProject
   }
   # create makefile for this project
   open FILE, "> $base/mak/Makefile" or die "can not open: $!";
-  print FILE "project = $test-$config\n\n";
-  print FILE "\$(project)_PATH = \$(ROOT_DIR)\$(DS)$base\n\n";
-  print FILE "\$(project)_SRC_PATH += \$(\$(project)_PATH)\$(DS)src\$(DS) \\\n";
+  print FILE "PROJECT_NAME = $test-$config\n\n";
+  print FILE "\$(PROJECT_NAME)_SRC_PATH += \$(PROJECT_PATH)\$(DS)src\$(DS) \\\n";
   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\n\n";
-  print FILE "INCLUDE += \$(\$(project)_PATH)\$(DS)inc \\\n";
-  print FILE " \$(\$(project)_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
+  print FILE "INC_FILES += \$(PROJECT_PATH)\$(DS)inc \\\n";
+  print FILE " \$(PROJECT_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
   print FILE " modules/posix/inc\n";
-  print FILE "SRC_FILES += \$(wildcard \$(\$(project)_PATH)\$(DS)src\$(DS)*.c) \\\n";
+  print FILE "SRC_FILES += \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)*.c) \\\n";
   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
-  print FILE "OIL_FILES += \$(\$(project)_PATH)\$(DS)etc\$(DS)\$(project).oil\n\n";
+  print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
   print FILE "MODS = modules\$(DS)drivers \\\n";
   print FILE " modules\$(DS)libs \\\n";
   print FILE " modules\$(DS)posix \\\n";
@@ -635,8 +634,8 @@ foreach $testfn (@tests)
             if($clean_generate != 0)
             {
                info("make generate of $test");
-               info("running \"make generate PROJECT=out/rtos/$test/$config");
-               $outmakegenerate = `make generate PROJECT=out/rtos/$test/$config`;
+               info("running \"make generate PROJECT_PATH=out/rtos/$test/$config");
+               $outmakegenerate = `make generate PROJECT_PATH=out/rtos/$test/$config`;
                $outmakegeneratestatus = $?;
                info("make generate status: $outmakegeneratestatus");
                logffull("make generate output:\n$outmakegenerate");
@@ -654,7 +653,7 @@ foreach $testfn (@tests)
             {
                # Make project skipping make dependencies
                info("make of $test");
-               $outmake = `make PROJECT=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
+               $outmake = `make PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
                $outmakestatus = $?;
                info("make status: $outmakestatus");
                logffull("make output:\n$outmake");
