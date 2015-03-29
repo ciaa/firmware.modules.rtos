@@ -57,7 +57,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
@@ -70,7 +70,7 @@
  * 20090131 v0.1.3 MaCe add extern to CountersVar declaration
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
  * 20090128 v0.1.1 MaCe remove OSEK_ENABLE and OSEK_DISABLE macro, now defined in OpenGEN
- * 20080713 v0.1.0 MaCe	initial version
+ * 20080713 v0.1.0 MaCe initial version
  */
 <?php
 
@@ -141,41 +141,41 @@ arsort($priority);
 $taskscount = $config->getCount("/OSEK","TASK");
 if ($taskscount<=0)
 {
-	error("No tasks found in the configuration.\n");
+   error("No tasks found in the configuration.\n");
 }
-print "#define TASKS_COUNT	$taskscount" . "U\n\n";
+print "#define TASKS_COUNT $taskscount" . "U\n\n";
 
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
 if(count($resources)>31)
 {
-	error("more than 31 resources were defined");
+   error("more than 31 resources were defined");
 }
 else
 {
-	print "/** \brief Count of resources */\n";
-	print "#define RESOURCES_COUNT " . count($resources) . "\n\n";
+   print "/** \brief Count of resources */\n";
+   print "#define RESOURCES_COUNT " . count($resources) . "\n\n";
 }
 
 $os = $config->getList("/OSEK","OS");
 if (count($os)>1)
 {
-	error("More than one OS defined on the configuration");
+   error("More than one OS defined on the configuration");
 }
 $osattr = $config->getValue("/OSEK/" . $os[0],"STATUS");
-print	"/** \brief Error Checking Type */\n";
+print "/** \brief Error Checking Type */\n";
 if ( $osattr == "EXTENDED" )
 {
-	print	"#define ERROR_CHECKING_TYPE	ERROR_CHECKING_EXTENDED\n";
+   print "#define ERROR_CHECKING_TYPE ERROR_CHECKING_EXTENDED\n";
 }
 elseif ( $osattr == "STANDARD" )
 {
-	print "#define ERROR_CHECKING_TYPE  ERROR_CHECKING_STANDARD\n";
+   print "#define ERROR_CHECKING_TYPE  ERROR_CHECKING_STANDARD\n";
 }
 else
 {
-	error("Wrong OS Status configuration");
+   error("Wrong OS Status configuration");
 }
 
 /* PRETASKHOOK */
@@ -183,12 +183,12 @@ $pretaskhook=$config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 print "/** \brief pre task hook enable-disable macro */\n";
 if($pretaskhook == "")
 {
-	warning("PRETASKHOOK isn't defined on the configuration, set disable as default");
-	print "#define HOOK_PRETASKHOOK OSEK_DISABLE\n";
+   warning("PRETASKHOOK isn't defined on the configuration, set disable as default");
+   print "#define HOOK_PRETASKHOOK OSEK_DISABLE\n";
 }
 elseif($pretaskhook == "TRUE")
 {
-	print "#define HOOK_PRETASKHOOK OSEK_ENABLE\n";
+   print "#define HOOK_PRETASKHOOK OSEK_ENABLE\n";
 }
 elseif($pretaskhook == "FALSE")
 {
@@ -196,7 +196,7 @@ elseif($pretaskhook == "FALSE")
 }
 else
 {
-	error("PRETASKHOOK set to an invalid value \"$pretaskhook\"");
+   error("PRETASKHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* POSTTAKHOOK */
 $posttaskhook=$config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
@@ -291,22 +291,22 @@ else
 #define SetError_Ret(ret) ( Osek_ErrorRet = (uint32)(ret) )
 #define SetError_Msg(msg)
 /* { printf ("Error found in file: \"%s\" line \"%d\" ", __FILE__, __LINE__); printf(msg); } */
-#define SetError_ErrorHook()			\
-	{											\
-		ErrorHookRunning = (uint8)1U;	\
-		ErrorHook();						\
-		ErrorHookRunning = (uint8)0U;	\
-	}
+#define SetError_ErrorHook()          \
+   {                                  \
+      ErrorHookRunning = (uint8)1U;   \
+      ErrorHook();                    \
+      ErrorHookRunning = (uint8)0U;   \
+   }
 
 <?php
 $alarms = $config->getList("/OSEK","ALARM");
 $count = 0;
 foreach ($alarms as $alarm)
 {
-	if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
-	{
-		$count++;
-	}
+   if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+   {
+      $count++;
+   }
 }
 ?>
 #define ALARM_AUTOSTART_COUNT <?php echo $count ?>
@@ -317,8 +317,8 @@ $counters = $config->getList("/OSEK","COUNTER");
 $count = 0;
 foreach ($counters as $counter)
 {
-	print "#define	OSEK_COUNTER_" . $counter . " " . $count . "\n";
-	$count++;
+   print "#define OSEK_COUNTER_" . $counter . " " . $count . "\n";
+   $count++;
 }
 
 $alarms = $config->getList("/OSEK","ALARM");
@@ -328,48 +328,48 @@ print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
 $preemptive = false;
 foreach($tasks as $task)
 {
-	$schedule = $config->getValue("/OSEK/" .$task, "SCHEDULE");
-	if($schedule == "FULL")
-	{
-		$preemptive = true;
-	}
+   $schedule = $config->getValue("/OSEK/" .$task, "SCHEDULE");
+   if($schedule == "FULL")
+   {
+      $preemptive = true;
+   }
 }
 
 print "/** \brief NON_PREEMPTIVE macro definition */\n";
 if ($preemptive == false)
 {
-	print "#define NON_PREEMPTIVE	OSEK_ENABLE\n\n";
+   print "#define NON_PREEMPTIVE OSEK_ENABLE\n\n";
 }
 else
 {
-	print "#define NON_PREEMPTIVE	OSEK_DISABLE\n\n";
+   print "#define NON_PREEMPTIVE OSEK_DISABLE\n\n";
 }
 
 $events = $config->getList("/OSEK","EVENT");
 print "/** \brief NO_EVENTS macro definition */\n";
 if(count($events) == 0)
 {
-	print "#define NO_EVENTS OSEK_ENABLE\n\n";
+   print "#define NO_EVENTS OSEK_ENABLE\n\n";
 }
 else
 {
-	print "#define NO_EVENTS OSEK_DISABLE\n\n";
+   print "#define NO_EVENTS OSEK_DISABLE\n\n";
 }
 
 $schedulerpolicy = $config->getValue("/OSEK/" . $os[0],"USERESSCHEDULER");
 print "/** \brief NO_RES_SCHEDULER macro definition */\n";
 switch($schedulerpolicy)
 {
-	case "FALSE":
-		print "#define NO_RES_SCHEDULER OSEK_ENABLE\n\n";
-		break;
-	case "TRUE":
-		print "#define NO_RES_SCHEDULER OSEK_DISABLE\n\n";
-		break;
-	default :
-		warning("USERESSCHEDULER not defined on the configuration, using FALSE as default");
-		print "#define NO_RES_SCHEDULER OSEK_ENABLE\n\n";
-		break;
+   case "FALSE":
+      print "#define NO_RES_SCHEDULER OSEK_ENABLE\n\n";
+      break;
+   case "TRUE":
+      print "#define NO_RES_SCHEDULER OSEK_DISABLE\n\n";
+      break;
+   default :
+      warning("USERESSCHEDULER not defined on the configuration, using FALSE as default");
+      print "#define NO_RES_SCHEDULER OSEK_ENABLE\n\n";
+      break;
 }
 
 
@@ -410,15 +410,15 @@ typedef uint8 TaskTotalType;
  ** \param MaxActivations maximal activations for this task
  **/
 typedef struct {
-	EntryPointType EntryPoint;
-	TaskContextRefType TaskContext;
-	StackPtrType StackPtr;
-	StackSizeType StackSize;
-	TaskPriorityType StaticPriority;
-	TaskActivationsType MaxActivations;
-	TaskFlagsType ConstFlags;
-	TaskEventsType EventsMask;
-	TaskResourcesType ResourcesMask;
+   EntryPointType EntryPoint;
+   TaskContextRefType TaskContext;
+   StackPtrType StackPtr;
+   StackSizeType StackSize;
+   TaskPriorityType StaticPriority;
+   TaskActivationsType MaxActivations;
+   TaskFlagsType ConstFlags;
+   TaskEventsType EventsMask;
+   TaskResourcesType ResourcesMask;
 } TaskConstType;
 
 /** \brief Task Variable type definition
@@ -432,12 +432,12 @@ typedef struct {
  ** \param Resource of this task
  **/
 typedef struct {
-	TaskPriorityType ActualPriority;
-	TaskActivationsType Activations;
-	TaskFlagsType Flags;
-	TaskEventsType Events;
-	TaskEventsType EventsWait;
-	TaskResourcesType Resources;
+   TaskPriorityType ActualPriority;
+   TaskActivationsType Activations;
+   TaskFlagsType Flags;
+   TaskEventsType Events;
+   TaskEventsType EventsWait;
+   TaskResourcesType Resources;
 } TaskVariableType;
 
 /** \brief Auto Start Structure Type
@@ -446,8 +446,8 @@ typedef struct {
  ** \param Reference to the tasks on this Application Mode
  **/
 typedef struct {
-	TaskTotalType TotalTasks;
-	TaskRefType TasksRef;
+   TaskTotalType TotalTasks;
+   TaskRefType TasksRef;
 } AutoStartType;
 
 /** \brief Ready List Constatn Type
@@ -456,8 +456,8 @@ typedef struct {
  ** \param TaskRef Reference to the Ready Array for this Priority
  **/
 typedef struct {
-	TaskTotalType ListLength;
-	TaskRefType TaskRef;
+   TaskTotalType ListLength;
+   TaskRefType TaskRef;
 } ReadyConstType;
 
 /** \brief Ready List Variable Type
@@ -466,8 +466,8 @@ typedef struct {
  ** \param ListCount count of valid components on this list
  **/
 typedef struct {
-	TaskTotalType ListStart;
-	TaskTotalType ListCount;
+   TaskTotalType ListStart;
+   TaskTotalType ListCount;
 } ReadyVarType;
 
 /** \brief Alarm State
@@ -495,10 +495,10 @@ typedef uint32f AlarmIncrementType;
 
 /** \brief Alarm Action Type */
 typedef enum {
-	ALARMCALLBACK = 0,
-	SETEVENT = 1,
-	ACTIVATETASK = 2,
-	INCREMENT = 3
+   ALARMCALLBACK = 0,
+   SETEVENT = 1,
+   ACTIVATETASK = 2,
+   INCREMENT = 3
 } AlarmActionType;
 
 /** \brief Alarm Action Info Type
@@ -506,44 +506,44 @@ typedef enum {
  ** This type has extra information of the Alarm action
  **/
 typedef struct {
-	CallbackType CallbackFunction;
-	TaskType TaskID;
+   CallbackType CallbackFunction;
+   TaskType TaskID;
    EventMaskType Event;
-	CounterType Counter;
+   CounterType Counter;
 } AlarmActionInfoType;
 
 /** \brief Alarm Variable Type */
 typedef struct {
-	AlarmStateType AlarmState;
-	AlarmTimeType AlarmTime;
-	AlarmCycleTimeType AlarmCycleTime;
+   AlarmStateType AlarmState;
+   AlarmTimeType AlarmTime;
+   AlarmCycleTimeType AlarmCycleTime;
 } AlarmVarType;
 
 /** \brief Alarm Constant Type */
 typedef struct {
-	CounterType Counter;
-	AlarmActionType AlarmAction;
-	AlarmActionInfoType AlarmActionInfo;
+   CounterType Counter;
+   AlarmActionType AlarmAction;
+   AlarmActionInfoType AlarmActionInfo;
 } AlarmConstType;
 
 /** \brief Auto Start Alarm Type */
 typedef struct {
-	AppModeType Mode;
-	AlarmType Alarm;
-	AlarmTimeType AlarmTime;
-	AlarmCycleTimeType AlarmCycleTime;
+   AppModeType Mode;
+   AlarmType Alarm;
+   AlarmTimeType AlarmTime;
+   AlarmCycleTimeType AlarmCycleTime;
 } AutoStartAlarmType;
 
 typedef struct {
-	uint8	AlarmsCount;
-	AlarmType* AlarmRef;
-	TickType MaxAllowedValue;
-	TickType MinCycle;
-	TickType TicksPerBase;
+   uint8   AlarmsCount;
+   AlarmType* AlarmRef;
+   TickType MaxAllowedValue;
+   TickType MinCycle;
+   TickType TicksPerBase;
 } CounterConstType;
 
 typedef struct {
-	TickType Time;
+   TickType Time;
 } CounterVarType;
 
 /*==================[external data declaration]==============================*/
@@ -579,24 +579,24 @@ $appmodes = $config->getList("/OSEK", "APPMODE");
 
 foreach ($appmodes as $appmode)
 {
-	$tasksinmode = array();
-	foreach($tasks as $task)
-	{
-		$taskappmodes = $config->getList("/OSEK/" . $task, "APPMODE");
-		foreach ($taskappmodes as $taskappmode)
-		{
-			if ($taskappmode == $appmode)
-			{
-				$tasksinmode[] = $task;
-			}
-		}
-	}
-	if (count($tasksinmode) > 0)
-	{
-		$count = 0;
-		print "/** \brief List of Auto Start Tasks in Application Mode $appmode */\n";
-		print "extern const TaskType TasksAppMode" . $appmode . "[" . count($tasksinmode). "];\n";
-	}
+   $tasksinmode = array();
+   foreach($tasks as $task)
+   {
+      $taskappmodes = $config->getList("/OSEK/" . $task, "APPMODE");
+      foreach ($taskappmodes as $taskappmode)
+      {
+         if ($taskappmode == $appmode)
+         {
+            $tasksinmode[] = $task;
+         }
+      }
+   }
+   if (count($tasksinmode) > 0)
+   {
+      $count = 0;
+      print "/** \brief List of Auto Start Tasks in Application Mode $appmode */\n";
+      print "extern const TaskType TasksAppMode" . $appmode . "[" . count($tasksinmode). "];\n";
+   }
 }
 
 $appmodes = $config->getList("/OSEK","APPMODE");

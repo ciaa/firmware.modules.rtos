@@ -130,7 +130,7 @@ foreach ($counters as $counter)
    {
       if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))
       {
-         print "	$alarm, /* this alarm has to be incremented with this counter */\n";
+         print "   $alarm, /* this alarm has to be incremented with this counter */\n";
       }
    }
    print "};\n\n";
@@ -144,12 +144,12 @@ foreach ($counters as $counter)
  * This table show the relationship between the user selected
  * priorities and the OpenOSE priorities:
  *
- * User P.			Osek P.
+ * User P.         Osek P.
 <?php
 $pkey = array_keys($priority);
 for($i = 0; $i < count($priority); $i++)
 {
-   print " * " . $pkey[$i] . "					" . $priority[$pkey[$i]] . "\n";
+   print " * " . $pkey[$i] . "               " . $priority[$pkey[$i]] . "\n";
 }
 print " */\n";
 
@@ -162,23 +162,23 @@ $count = 0;
 foreach ($tasks as $task)
 {
    if ( $count++ != 0 ) print ",\n";
-   print "	/* Task $task */\n";
-   print "	{\n";
-   print " 		OSEK_TASK_$task,	/* task entry point */\n";
-   print "		&ContextTask" . $task . ", /* pointer to task context */\n";
-   print "		StackTask" . $task . ", /* pointer stack memory */\n";
-   print "		sizeof(StackTask" . $task . "), /* stack size */\n";
-   print "		" . $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] . ", /* task priority */\n";
-   print "		" . $config->getValue("/OSEK/" . $task, "ACTIVATION"). ", /* task max activations */\n";
-   print	"		{\n";
+   print "   /* Task $task */\n";
+   print "   {\n";
+   print "       OSEK_TASK_$task,   /* task entry point */\n";
+   print "       &ContextTask" . $task . ", /* pointer to task context */\n";
+   print "       StackTask" . $task . ", /* pointer stack memory */\n";
+   print "       sizeof(StackTask" . $task . "), /* stack size */\n";
+   print "       " . $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] . ", /* task priority */\n";
+   print "       " . $config->getValue("/OSEK/" . $task, "ACTIVATION"). ", /* task max activations */\n";
+   print "       {\n";
    $extended = $config->getValue("/OSEK/" . $task, "TYPE");
    if($extended == "BASIC")
    {
-      print	"			0, /* basic task */\n";
+      print "         0, /* basic task */\n";
    }
    elseif ($extended == "EXTENDED")
    {
-      print "			1, /* extended task */\n";
+      print "         1, /* extended task */\n";
    }
    else
    {
@@ -187,33 +187,33 @@ foreach ($tasks as $task)
    $schedule = $config->getValue("/OSEK/" .$task, "SCHEDULE");
    if ($schedule == "FULL")
    {
-      print	"			1, /* preemtive task */\n";
+      print "         1, /* preemtive task */\n";
    }
    elseif($schedule == "NON")
    {
-      print "			0, /* non preemtive task */\n";
+      print "         0, /* non preemtive task */\n";
    }
    else
    {
       error("Wrong definition of task schedule \"" . $schedule . "\" for task \"" . $task . "\".");
    }
-   print "			0\n";
-   print "		}, /* task const flags */\n";
+   print "         0\n";
+   print "      }, /* task const flags */\n";
    $events = $config->getList("/OSEK/" . $task, "EVENT");
    $elist = "0 ";
    foreach ($events as $event)
    {
       $elist .= "| $event ";
    }
-   print "		$elist, /* events mask */\n";
+   print "      $elist, /* events mask */\n";
    $rlist = "0 ";
    $resources = $config->getList("/OSEK/" . $task, "RESOURCE");
    foreach($resources as $resource)
    {
       $rlist .= "| ( 1 << $resource ) ";
    }
-   print "		$rlist/* resources mask */\n";
-   print "	}";
+   print "      $rlist/* resources mask */\n";
+   print "   }";
 }
 print "\n";
 ?>
@@ -247,7 +247,7 @@ foreach ($appmodes as $appmode)
       foreach($tasksinmode as $task)
       {
          if ($count++ != 0) print ",\n";
-         print "	$task";
+         print "   $task";
       }
       print "\n};\n";
    }
@@ -259,8 +259,8 @@ $count = 0;
 foreach ($appmodes as $appmode)
 {
    if ( $count++ != 0 ) print ",\n";
-   print "	/* Application Mode $appmode */\n";
-   print "	{\n";
+   print "   /* Application Mode $appmode */\n";
+   print "   {\n";
    $tasksinmode = array();
    foreach($tasks as $task)
    {
@@ -273,16 +273,16 @@ foreach ($appmodes as $appmode)
          }
       }
    }
-   print "		" . count($tasksinmode) .", /* Total Auto Start Tasks in this Application Mode */\n";
+   print "      " . count($tasksinmode) .", /* Total Auto Start Tasks in this Application Mode */\n";
    if (count($tasksinmode)>0)
    {
-      print "		(TaskRefType)TasksAppMode" . $appmode . " /* Pointer to the list of Auto Start Stacks on this Application Mode */\n";
+      print "      (TaskRefType)TasksAppMode" . $appmode . " /* Pointer to the list of Auto Start Stacks on this Application Mode */\n";
    }
    else
    {
-      print "		NULL /* no tasks on this mode */\n";
+      print "      NULL /* no tasks on this mode */\n";
    }
-   print "	}";
+   print "   }";
 }
 print "\n};\n";
 ?>
@@ -293,7 +293,7 @@ $c = 0;
 foreach ($priority as $prio)
 {
    if ($c++ != 0) print ",\n";
-   print "	{\n";
+   print "   {\n";
    $count = 0;
    foreach ($tasks as $task)
    {
@@ -302,9 +302,9 @@ foreach ($priority as $prio)
          $count += $config->getValue("/OSEK/" . $task, "ACTIVATION");
       }
    }
-   print "		$count, /* Length of this ready list */\n";
-   print "		ReadyList" . $prio . " /* Pointer to the Ready List */\n";
-   print "	}";
+   print "      $count, /* Length of this ready list */\n";
+   print "      ReadyList" . $prio . " /* Pointer to the Ready List */\n";
+   print "   }";
 }
 print "\n};\n\n";
 
@@ -336,8 +336,8 @@ foreach ($resources as $resource)
          }
       }
    }
-   if ($c++ != 0)	print ",\n";
-   print "	$count";
+   if ($c++ != 0) print ",\n";
+   print "   $count";
 
 }
 print "\n};\n";
@@ -356,43 +356,43 @@ foreach ($alarms as $alarm)
    {
       print ",\n";
    }
-   print "	{\n";
-   print	"		OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+   print "   {\n";
+   print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
    $action = $config->getValue("/OSEK/" . $alarm, "ACTION");
-   print "		" . $action . ", /* Alarm action */\n";
-   print "		{\n";
+   print "      " . $action . ", /* Alarm action */\n";
+   print "      {\n";
    switch ($action)
    {
    case "INCREMENT":
-      print "			NULL, /* no callback */\n";
-      print "			0, /* no task id */\n";
-      print "			0, /* no event */\n";
-      print "			OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
+      print "         NULL, /* no callback */\n";
+      print "         0, /* no task id */\n";
+      print "         0, /* no event */\n";
+      print "         OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
       break;
    case "ACTIVATETASK":
-      print "			NULL, /* no callback */\n";
-      print "			" . $config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
-      print "			0, /* no event */\n";
-      print "			0 /* no counter */\n";
+      print "         NULL, /* no callback */\n";
+      print "         " . $config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
+      print "         0, /* no event */\n";
+      print "         0 /* no counter */\n";
       break;
    case "SETEVENT":
-      print "			NULL, /* no callback */\n";
-      print "			" . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
-      print "			" . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
-      print "			0 /* no counter */\n";
+      print "         NULL, /* no callback */\n";
+      print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
+      print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
+      print "         0 /* no counter */\n";
       break;
    case "ALARMCALLBACK":
-      print "			OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
-      print "			0, /* no taskid */\n";
-      print "			0, /* no event */\n";
-      print "			0 /* no counter */\n";
+      print "         OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
+      print "         0, /* no taskid */\n";
+      print "         0, /* no event */\n";
+      print "         0 /* no counter */\n";
       break;
    default:
       error("Alarm $alarm has an invalid action: $action");
       break;
    }
-   print	"		},\n";
-   print "	}";
+   print "      },\n";
+   print "   }";
 
 }
 print "\n};\n\n";
@@ -409,12 +409,12 @@ foreach ($alarms as $alarm)
       }
       print "  {\n";
 
-      print "		" . $config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
-      // print "		OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-      print "		$alarm, /* Alarms */\n";
-      print "		" . $config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
-      print "		" . $config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
-      print "	}";
+      print "      " . $config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
+      // print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+      print "      $alarm, /* Alarms */\n";
+      print "      " . $config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
+      print "      " . $config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+      print "   }";
    }
 }
 print "\n};\n\n";
@@ -431,7 +431,7 @@ foreach ($counters as $counter)
    {
       print ",\n";
    }
-   print "	{\n";
+   print "   {\n";
    $countalarms = 0;
    foreach ($alarms as $alarm)
    {
@@ -440,12 +440,12 @@ foreach ($counters as $counter)
          $countalarms++;
       }
    }
-   print "		$countalarms, /* quantity of alarms for this counter */\n";
-   print "		(AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
-   print "		" . $config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
-   print "		" . $config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
-   print "		" . $config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
-   print	"	}";
+   print "      $countalarms, /* quantity of alarms for this counter */\n";
+   print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
+   print "      " . $config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
+   print "      " . $config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
+   print "      " . $config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
+   print "   }";
 }
 print "\n};\n\n";
 
@@ -498,7 +498,7 @@ void OSEK_ISR2_<?php print $int;?>(void)
 #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
 }
 
-<?php	}
+<?php }
 
 }
 ?>

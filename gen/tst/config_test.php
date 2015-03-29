@@ -49,12 +49,12 @@ $task_count=0;
 
 foreach ($tasks as $task)
 {
-	print "Task " . $task_count++ . " Location " . $task . "\n";
-	$attributes = $config->getAttributes($task,"*");
-	foreach ($attributes as $attr)
-	{
-		print $attr . ": " . $config->getValue($task, $attr) . "\n";
-	}
+   print "Task " . $task_count++ . " Location " . $task . "\n";
+   $attributes = $config->getAttributes($task,"*");
+   foreach ($attributes as $attr)
+   {
+      print $attr . ": " . $config->getValue($task, $attr) . "\n";
+   }
 }
 
 ?>

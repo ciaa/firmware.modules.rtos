@@ -65,7 +65,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
@@ -74,14 +74,14 @@
  * 20090719 v0.1.3 MaCe rename file to Os_
  * 20090424 v0.1.2 MaCe add counters defines
  * 20090128 v0.1.1 MaCe add MEMMAP off configuration
- * 20080810 v0.1.0 MaCe	initial version
+ * 20080810 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
 /** \brief Definition of the  DeclareTask Macro */
-#define DeclareTask(name)	void OSEK_TASK_ ## name (void)
+#define DeclareTask(name) void OSEK_TASK_ ## name (void)
 
 #define OSEK_OS_INTERRUPT_MASK ((InterruptFlagsType)0xFFFFFFFFU)
 
@@ -91,9 +91,9 @@ $tasks = $config->getList("/OSEK","TASK");
 $count = 0;
 foreach ($tasks as $task)
 {
-	print "/** \brief Task Definition */\n";
-	print "#define $task $count\n";
-	$count++;
+   print "/** \brief Task Definition */\n";
+   print "#define $task $count\n";
+   $count++;
 }
 print "\n";
 
@@ -102,8 +102,8 @@ $appmodes = $config->getList("/OSEK","APPMODE");
 $count = 0;
 foreach ($appmodes as $appmode)
 {
-	print "/** \brief Definition of the Application Mode $appmode */\n";
-	print "#define " . $appmode . " " . $count++ . "\n";
+   print "/** \brief Definition of the Application Mode $appmode */\n";
+   print "#define " . $appmode . " " . $count++ . "\n";
 }
 print "\n";
 
@@ -112,8 +112,8 @@ $events = $config->getList("/OSEK","EVENT");
 $count = 0;
 foreach ($events as $event)
 {
-	print "/** \brief Definition of the Event $event */\n";
-	print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count++)) . "\n";
+   print "/** \brief Definition of the Event $event */\n";
+   print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count++)) . "\n";
 }
 print "\n";
 
@@ -122,8 +122,8 @@ $resources = $config->getList("/OSEK","RESOURCE");
 $count = 0;
 foreach ($resources as $resource)
 {
-	print "/** \brief Definition of the resource $resource */\n";
-	print "#define " . $resource . " ((ResourceType)" . $count++ . ")\n";
+   print "/** \brief Definition of the resource $resource */\n";
+   print "#define " . $resource . " ((ResourceType)" . $count++ . ")\n";
 }
 print "\n";
 
@@ -174,16 +174,16 @@ $memmap = $config->getValue("/OSEK/" . $os[0],"MEMMAP");
 print "/** \brief OSEK_MEMMAP macro (OSEK_DISABLE not MemMap is used for FreeOSEK, OSEK_ENABLE\n ** MemMap is used for FreeOSEK) */\n";
 if ($memmap == "TRUE")
 {
-	print "#define OSEK_MEMMAP OSEK_ENABLE\n";
+   print "#define OSEK_MEMMAP OSEK_ENABLE\n";
 }
 elseif ($memmap == "FALSE")
 {
-	print "#define OSEK_MEMMAP OSEK_DISABLE\n";
+   print "#define OSEK_MEMMAP OSEK_DISABLE\n";
 }
 else
 {
-	warning("MEMMAP configuration not found in FreeOSEK configuration, disabling as default");
-	print "#define OSEK_MEMMAP OSEK_DISABLE\n";
+   warning("MEMMAP configuration not found in FreeOSEK configuration, disabling as default");
+   print "#define OSEK_MEMMAP OSEK_DISABLE\n";
 }
 
 ?>
@@ -239,8 +239,8 @@ extern unsigned int Osek_ErrorRet;
 $pretaskhook=$config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 if ($pretaskhook == "TRUE")
 {
-	print "/** \brief Pre Task Hook */\n";
-	print "extern void PreTaskHook(void);\n\n";
+   print "/** \brief Pre Task Hook */\n";
+   print "extern void PreTaskHook(void);\n\n";
 }
 $posttaskhook=$config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
 if ($posttaskhook == "TRUE")
@@ -271,28 +271,28 @@ if ($errorhook == "TRUE")
 $count = 0;
 foreach ($tasks as $task)
 {
-	print "/** \brief Task Declaration of Task $task */\n";
-	print "DeclareTask($task);\n";
+   print "/** \brief Task Declaration of Task $task */\n";
+   print "DeclareTask($task);\n";
 }
 print "\n";
 
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
-	print "/** \brief ISR Declaration */\n";
-	print "extern void OSEK_ISR_$int(void); /* Interrupt Handler $int */\n";
+   print "/** \brief ISR Declaration */\n";
+   print "extern void OSEK_ISR_$int(void); /* Interrupt Handler $int */\n";
 }
 print "\n";
 
 $alarms = $config->getList("/OSEK","ALARM");
 foreach ($alarms as $alarm)
 {
-	$action = $config->getValue("/OSEK/" . $alarm, "ACTION");
-	if ($action == "ALARMCALLBACK")
-	{
-		print "/** \brief Alarm Callback declaration */\n";
-		print "extern void OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . "(void);\n";
-	}
+   $action = $config->getValue("/OSEK/" . $alarm, "ACTION");
+   if ($action == "ALARMCALLBACK")
+   {
+      print "/** \brief Alarm Callback declaration */\n";
+      print "extern void OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . "(void);\n";
+   }
 }
 print "\n";
 
