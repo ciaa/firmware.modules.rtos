@@ -142,8 +142,8 @@ void DebugMon_Handler(void) {
 switch ($definition["CPU"])
 {
    case "mk60fx512vlq15":
-      /* Interrupt sources for MK60F15.
-       * See externals/platforms/cortexM4/k60_120/inc/MK60F15.h.
+      /* Interrupt sources for MK60F12.
+       * See externals/platforms/cortexM4/k60_120/inc/device/MK60F12/MK60F12.h.
        */
       $intList = array (
          0 => "DMA0_DMA16",
