@@ -66,7 +66,7 @@
 #ifndef CPU
 #error CPU is not defined
 #elif (CPU == mk60fx512vlq15)
-#include fsl_device_registers.h
+#include "fsl_device_registers.h"
 #else
 #error Unknown CPU value
 #endif
