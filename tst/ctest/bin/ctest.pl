@@ -410,6 +410,9 @@ sub CreateTestProject
   # removes carry return + line-feed
   $testfn =~ tr/\r\n//d;
   @replace = GetTestSequencesCon($TESTS, $testfn, $config);
+  # TODO this shall be improved
+  push @replace, "CT_ISR1:" . $ISR1;
+  push @replace, "CT_ISR2:" . $ISR2;
   foreach $rep (@replace)
   {
     info("Replacing: $rep");
@@ -514,6 +517,15 @@ info("Removing old files");
 system("rm -rf out/rtos/*");
 
 readparam($cfgfile);
+
+# TODO this has to be improved
+$ISR1 = "GPIO1";
+$ISR2 = "GPIO0";
+if ("k60_120" eq $CPUTYPE)
+{
+   $ISR1 = "PORTB";
+   $ISR2 = "PORTC";
+}
 
 mkpath(dirname($logfile));
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
