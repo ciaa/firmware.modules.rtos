@@ -63,8 +63,11 @@
  */
 
 /*==================[inclusions]=============================================*/
-
+#include "ciaaPlatforms.h"
 /*==================[macros]=================================================*/
+
+#if (CPUTYPE == lpc43xx)
+
 /* Use GPIO0, IRQ32 as interrupt for tests */
 #define TriggerISR2_Arch()                                                 \
 {                                                                          \
@@ -76,6 +79,24 @@
 {                                                                          \
    NVIC_SetPendingIRQ(33);                                                 \
 }
+
+#elif (CPUTYPE == k60_120)
+
+/* Use PORTC, IRQ88 as interrupt for tests */
+#define TriggerISR2_Arch()                                                \
+{                                                                          \
+   NVIC_SetPendingIRQ(88);                                                 \
+}
+
+/* Use PORTB, IRQ87 as interrupt for tests */
+#define TriggerISR1_Arch()                                                \
+{                                                                          \
+   NVIC_SetPendingIRQ(87);                                                 \
+}
+
+#else
+   #error please define CPU variable!
+#endif
 
 /*==================[typedef]================================================*/
 
