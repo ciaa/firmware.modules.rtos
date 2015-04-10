@@ -328,7 +328,7 @@ __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
    /* System ISRs */
    &__StackTop,                    /* The initial stack pointer  */
-   Reset_Handler,                       /* The reset handler          */
+   Reset_Handler,                  /* The reset handler          */
    NMI_Handler,                    /* The NMI handler            */
    HardFault_Handler,              /* The hard fault handler     */
    MemManage_Handler,              /* The MPU fault handler      */
@@ -400,7 +400,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    }
    if($src_found == 0)
    {
-      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n"; 
+      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
    }
 }
 ?>
