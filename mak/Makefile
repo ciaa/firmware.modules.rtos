@@ -1,8 +1,10 @@
 ###############################################################################
 #
-# Copyright 2014, Mariano Cerdeiro, ACSE, CADIEEL
+# Copyright 2014, 2015, Mariano Cerdeiro
+# Copyright 2014, ACSE, CADIEEL
 #    ACSE   : http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
 #    CADIEEL: http://www.cadieel.org.ar
+# All rights reserved.
 #
 # This file is part of CIAA Firmware.
 #
@@ -36,7 +38,7 @@
 # library
 LIBS 				     += rtos
 # version
-rtos_VERSION			= v0.4.0-master
+rtos_VERSION		   = 1.0.0
 # library path
 rtos_PATH 		   	= $(ROOT_DIR)$(DS)modules$(DS)rtos
 # library source path
@@ -63,5 +65,4 @@ rtos_GEN_FILES += $(rtos_PATH)$(DS)gen$(DS)inc$(DS)Os_Internal_Cfg.h.php	\
 	$(rtos_PATH)$(DS)gen$(DS)src$(DS)Os_Internal_Cfg.c.php					\
 	$(rtos_PATH)$(DS)gen$(DS)src$(DS)$(ARCH)$(DS)Os_Internal_Arch_Cfg.c.php \
 	$(rtos_PATH)$(DS)gen$(DS)inc$(DS)$(ARCH)$(DS)Os_Internal_Arch_Cfg.h.php
-
 
