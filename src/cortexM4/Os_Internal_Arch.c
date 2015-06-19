@@ -47,11 +47,13 @@
  * Initials     Name
  * ---------------------------
  * PR           Pablo Ridolfi
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.1 MaCe fix issue #279
  * 20140608 v0.1.0 PR   First version for Cortex-M processors.
  */
 
@@ -145,9 +147,6 @@ void SysTick_Handler(void)
    if ( ( CONTEXT_TASK == actualContext ) &&
         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
    {
-      /* indicate that the scheduler will be called from isr2 */
-      OSEK_ISR2_SchedulerCall = 1;
-
       /* this shall force a call to the scheduler */
       PostIsr2_Arch(isr);
    }

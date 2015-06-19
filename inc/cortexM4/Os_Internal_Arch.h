@@ -30,7 +30,6 @@
  *
  */
 
-
 #ifndef _OS_INTERNAL_ARCH_H_
 #define _OS_INTERNAL_ARCH_H_
 
@@ -47,29 +46,17 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*****************************************************************************
- * add your name to the developers and create for you a nick with
- * 3 or 4 letters. Please do not use any given nick.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /*
  * Initials     Name
  * ---------------------------
  * PR           Pablo Ridolfi
+ * MaCe         Mariano Cerdeiro
  */
 
-/*****************************************************************************
- * add a new version to this file, add the date, your initials and the main
- * changes, only main changes shall be listed here. A detailed message log
- * is saved in svn log and on the tracker system since every svn login message
- * shalle indicate the related tracker id.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.2 MaCe fix issue #279
  * 20140608 v0.1.1 PR   First version for Cortex-M processors.
  */
 
@@ -266,7 +253,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) Schedule()
+#define PostIsr2_Arch(isr) Schedule_WOChecks()
 
 /** \brief ShutdownOs Arch service
  **
