@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -62,6 +62,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.8 MaCe fix issue #279
  * 20090719 v0.1.7 MaCe rename file to Os_
  * 20090420 v0.1.6 MaCe correct AlarmBaseType members to lower cases
  * 20090418 v0.1.5 MaCe bugfix correct StartOS and ShutdownOS services names
@@ -309,13 +310,6 @@
 #define RES_SCHEDULER                           255
 
 /*==================[typedef]================================================*/
-/** \brief Type definition of StatusType
- **
- ** This type is used to represent the status returned by all FreeOSEK APIs
- **/
-/* \req OSEK_SYS_1.1 */
-typedef unsigned char StatusType;
-
 /** \brief Type definition of TaskType
  **
  ** This type is used to represent the Task IDs
@@ -489,17 +483,6 @@ extern StatusType TerminateTask(void);
  ** \return E_OS_CALLEVEL if call at interrupt level
  **/
 extern StatusType ChainTask(TaskType TaskID);
-
-/** \brief Schedule this Task if higher priority Task are Active
- **
- ** This API shall Schedule the calling Task if a higher priority Task
- ** is active. This API shall only be used from non preemtive tasks.
- **
- ** \return E_OK if no error
- ** \return E_OS_CALLEVEL if call at interrupt level
- ** \return E_OS_RESOURCE if the calling task occupies resources
- **/
-extern StatusType Schedule(void);
 
 /** \brief Get Task ID of the calling Task
  **

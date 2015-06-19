@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -58,6 +58,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.2.1 MaCe fix issue #279
  * 20141121 v0.2.0 MaCe rework Schedule
  * 20090418 v0.1.5 MaCe add Pre/Post TaskHook handling
  * 20090417 v0.1.4 MaCe update license
@@ -83,10 +84,17 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-StatusType Schedule
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+extern StatusType Schedule_Int
+(
+   boolean PerformChecks
+)
+#elif (ERROR_CHECKING_TYPE == ERROR_CHECKING_STANDARD)
+extern StatusType Schedule
 (
    void
 )
+#endif
 {
    /* \req OSEK_SYS_3.4 The system service StatusType Schedule ( void ) shall
     ** be defined */
@@ -112,9 +120,9 @@ StatusType Schedule
    actualContext = GetCallingContext();
 
    /* if called from scheduler no checks shall be performed */
-   if (1 == OSEK_ISR2_SchedulerCall)
+   if (FALSE == PerformChecks)
    {
-      OSEK_ISR2_SchedulerCall = 0;
+      /* no checks shall be performed */
    }
    else if ( ( CONTEXT_TASK != actualContext ) &&
         ( CONTEXT_SYS != actualContext ) )

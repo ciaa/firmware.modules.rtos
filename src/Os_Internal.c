@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -55,6 +55,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.5 MaCe fix issue #279
  * 20090719 v0.1.4 MaCe rename file to Os_
  * 20090424 v0.1.3 MaCe correct initial task priority
  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -77,8 +78,6 @@
 TaskType RunningTask;
 
 ContextType ActualContext;
-
-uint8 OSEK_ISR2_SchedulerCall;
 
 /*==================[internal functions definition]==========================*/
 
