@@ -129,6 +129,8 @@ TASK(Task2)
 
          Sequence(2);
          TerminateTask();
+         /* This is intentional, the break; would be unreachable code, and TerminateTask(); */
+         /* should not return a value. If this happens, the test will fail. */
       case 1:
          /* increment call count */
          count++;

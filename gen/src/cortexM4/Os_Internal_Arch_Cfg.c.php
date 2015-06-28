@@ -142,8 +142,8 @@ void DebugMon_Handler(void) {
 switch ($definition["CPU"])
 {
    case "mk60fx512vlq15":
-      /* Interrupt sources for MK60F15.
-       * See externals/platforms/cortexM4/k60_120/inc/MK60F15.h.
+      /* Interrupt sources for MK60F12.
+       * See externals/platforms/cortexM4/k60_120/inc/device/MK60F12/MK60F12.h.
        */
       $intList = array (
          0 => "DMA0_DMA16",
@@ -328,7 +328,7 @@ __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
    /* System ISRs */
    &__StackTop,                    /* The initial stack pointer  */
-   Reset_Handler,                       /* The reset handler          */
+   Reset_Handler,                  /* The reset handler          */
    NMI_Handler,                    /* The NMI handler            */
    HardFault_Handler,              /* The hard fault handler     */
    MemManage_Handler,              /* The MPU fault handler      */
@@ -400,7 +400,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    }
    if($src_found == 0)
    {
-      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n"; 
+      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
    }
 }
 ?>
