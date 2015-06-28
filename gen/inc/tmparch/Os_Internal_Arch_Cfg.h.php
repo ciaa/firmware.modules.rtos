@@ -84,7 +84,7 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 #error this is a remember to remove the comment on the following line
@@ -99,7 +99,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20090526 MaCe	FreeOSEK architecture template file
+ * v0.1.0 20090526 MaCe FreeOSEK architecture template file
  */
 
 /*==================[inclusions]=============================================*/

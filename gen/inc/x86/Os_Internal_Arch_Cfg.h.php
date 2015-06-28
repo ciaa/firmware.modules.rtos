@@ -57,33 +57,33 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090719 v0.1.1 MaCe rename file to Os_
- * 20080713 v0.1.0 MaCe	initial version
+ * 20080713 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
-#define INTERRUPTS_COUNT		32
+#define INTERRUPTS_COUNT      32
 
 /*==================[typedef]================================================*/
 /** \brief Task Context Type */
 #if ( CPUTYPE == ia64 )
 typedef struct {
-	uint64 tss_rsp;
-	uint64 tss_rbp;
+   uint64 tss_rsp;
+   uint64 tss_rbp;
    uint64 tss_rip;
 } TaskContextType;
 #elif ( CPUTYPE == ia32 )
 typedef struct {
-	uint32 tss_esp;
-	uint32 tss_ebp;
+   uint32 tss_esp;
+   uint32 tss_ebp;
    uint32 tss_eip;
 } TaskContextType;
 #endif

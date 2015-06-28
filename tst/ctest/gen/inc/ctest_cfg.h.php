@@ -48,13 +48,13 @@
 /*
  * Initials     Name
  * ---------------------------
- * MaCe			 Mariano Cerdeiro
+ * MaCe         Mariano Cerdeiro
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20090403 v0.1.0 MaCe	initial version based on module tests
+ * 20090403 v0.1.0 MaCe initial version based on module tests
  */
 
 /*==================[inclusions]=============================================*/
@@ -63,14 +63,14 @@
 <?php
 $os = $config->getList("/OSEK","OS");
 $osattr = $config->getValue("/OSEK/" . $os[0],"STATUS");
-print	"/** \brief Error Checking Type */\n";
+print "/** \brief Error Checking Type */\n";
 if ( $osattr == "EXTENDED" )
 {
-	print	"#define CT_ERROR_CHECKING_TYPE	CT_ERROR_CHECKING_EXTENDED\n\n";
+   print "#define CT_ERROR_CHECKING_TYPE CT_ERROR_CHECKING_EXTENDED\n\n";
 }
 elseif ( $osattr == "STANDARD" )
 {
-	print "#define CT_ERROR_CHECKING_TYPE  CT_ERROR_CHECKING_STANDARD\n\n";
+   print "#define CT_ERROR_CHECKING_TYPE  CT_ERROR_CHECKING_STANDARD\n\n";
 }
 
 /* get tasks */
@@ -78,20 +78,20 @@ $tasks = $config->getList("/OSEK","TASK");
 
 foreach($tasks as $task)
 {
-	print	"/** \brief Confromance Test Scheduling information for task $task */\n";
-	$schedule = $config->getValue("/OSEK/" . $task, "SCHEDULE");
-	if($schedule == "FULL")
-	{
-		print "#define CT_SCHEDULING_" . $task . "	CT_PREEMPTIVE\n\n";
-	}
-	elseif ($schedule == "NON")
-	{
-		print "#define CT_SCHEDULING_" . $task . "	CT_NON_PREEMPTIVE\n\n";
-	}
-	else
-	{
-		error("No Scheduling type was specified for task $task");
-	}
+   print "/** \brief Confromance Test Scheduling information for task $task */\n";
+   $schedule = $config->getValue("/OSEK/" . $task, "SCHEDULE");
+   if($schedule == "FULL")
+   {
+      print "#define CT_SCHEDULING_" . $task . "   CT_PREEMPTIVE\n\n";
+   }
+   elseif ($schedule == "NON")
+   {
+      print "#define CT_SCHEDULING_" . $task . "   CT_NON_PREEMPTIVE\n\n";
+   }
+   else
+   {
+      error("No Scheduling type was specified for task $task");
+   }
 }
 
 ?>
