@@ -59,14 +59,12 @@
  */
 
 /*==================[cpu macros]=============================================*/
-/** \brief mk60fx512vlq15 cpu definition */
-#define mk60fx512vlq15 1
 
 /*==================[inclusions]=============================================*/
 #ifndef CPU
 #error CPU is not defined
 #elif (CPU == mk60fx512vlq15)
-#include "MK60F15.h"
+#include "fsl_device_registers.h"
 #else
 #error Unknown CPU value
 #endif
