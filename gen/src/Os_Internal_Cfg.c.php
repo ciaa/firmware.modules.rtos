@@ -470,7 +470,11 @@ uint8 ApplicationMode;
 
 /** TODO replace the next line with
  ** uint8 ErrorHookRunning; */
-uint8 ErrorHookRunning;
+/* This variable needs to be initialized to 0. This is the normal
+ * behaviour in C, but in embedded C sometimes to save startup time
+ * variables which do not have initialization are not initialized.
+ */
+uint8 ErrorHookRunning = 0;
 
 /*==================[internal functions definition]==========================*/
 
