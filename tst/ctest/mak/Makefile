@@ -34,4 +34,4 @@
 ###############################################################################
 #
 # ctest dependent makefile
--include module$(DS)rtos$(DS)tst$(DS)ctest$(DS)mak$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)Makefile
+-include modules$(DS)rtos$(DS)tst$(DS)ctest$(DS)mak$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)Makefile
