@@ -593,7 +593,7 @@ foreach $testfn (@tests)
 {
    @test = split(/:/,$testfn);
    $test = @test[0];
-
+   $flash_once = 0;
    info("Testing $test");
 
    @configs = GetTestSequencesConfigs($TESTS, $testfn);
@@ -677,7 +677,28 @@ foreach $testfn (@tests)
                {
                   if ($ARCH eq "cortexM4")
                   {
+                     if($flash_once == 0)
+                     {
+                        # Initialize Flash memory only once
+                        $flashfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/gcc/Initialize_Flash.axf";
+                        info("Target Test Initialization, flashing only once...");
+                        $initializefile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/gcc/Initialize.scr";
+                        info("$GDB $flashfile -x $initializefile");
+                        $outinit = `$GDB $flashfile -x $initializefile`;
+                        if ($debug)
+                        {
+                           print "$outinit";
+                        }
+                        $flash_once = 1;
+                     }
+                     # Removing flash section from .axf file
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
+                     info("Removing text_flash section of $out");
+                     $out_remove_flash_section = `arm-none-eabi-objcopy -R .text_flash $out $out`;
+                     if ($debug)
+                     {
+                        print "$out_remove_flash_section";
+                     }                     
                   }
                   else
                   {
