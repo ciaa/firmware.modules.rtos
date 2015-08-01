@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -60,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.5 MaCe fix issue #279
  * 20090719 v0.1.4 MaCe rename file to Os_
  * 20090329 v0.1.3 MaCe add TASK_MAX_PRIORITY macro
  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
@@ -178,6 +179,27 @@
  **/
 #define GetCounter(CounterID) GetCounter_Arch(CounterID)
 
+#if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+/** \brief Schedule the Task running after the ISR ends if a higher
+ **        priority Task is Active
+ **
+ ** This API shall Schedule the calling Task if a higher priority Task
+ ** is active. This API shall only be used internally by the system.
+ **
+ ** \remarks This interfaces calls the Scheduler and indicate it to avoid
+ **          any checks regarding the context where it has been called, or
+ **          the use of resources. This interface is only for internal use
+ **          and shall not be used by the rtos user.
+ **
+ ** \return E_OK
+ **/
+#define Schedule_WOChecks() Schedule_Int(FALSE)
+#elif (ERROR_CHECKING_TYPE == ERROR_CHECKING_STANDARD)
+/* if standard error checking is used, the scheduler does not perform any check
+ * and cann be called irectly */
+#define Schedule_WOChecks() Schedule()
+#endif
+
 /*==================[typedef]================================================*/
 /** \brief ContextType
  **
@@ -194,13 +216,6 @@ extern ContextType ActualContext;
 
 /** \brief RunningTask variable */
 extern TaskType RunningTask;
-
-/** \brief Schedule called from ISR2
- **
- ** Variable to indicate that the sheduler is beeing called from ISR2
- **
- **/
-extern uint8 OSEK_ISR2_SchedulerCall;
 
 /*==================[external functions declaration]=========================*/
 /** \brief Architecture Dependnece Start Os function

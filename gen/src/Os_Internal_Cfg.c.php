@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -60,6 +60,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.4 MaCe fix issue #279
  * 20141125 v0.1.3 JuCe additional stack for x86 ARCH
  * 20090719 v0.1.2 MaCe rename file to Os_
  * 20090128 v0.1.1 MaCe add OSEK_MEMMAP check
@@ -489,9 +490,6 @@ void OSEK_ISR2_<?php print $int;?>(void)
    if ( ( CONTEXT_TASK == actualContext ) &&
         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
    {
-      /* indicate that the scheduler will be called from isr2 */
-      OSEK_ISR2_SchedulerCall = 1;
-
       /* this shall force a call to the scheduler */
       PostIsr2_Arch(isr);
    }
