@@ -679,6 +679,7 @@ foreach $testfn (@tests)
                $outmakestatus = $?;
                info("make status: $outmakestatus");
                logffull("make output:\n$outmake");
+#                exit(0);
                if ($debug)
                {
                   print "$outmake";
@@ -688,6 +689,7 @@ foreach $testfn (@tests)
                   if ($ARCH eq "cortexM4")
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
+#                     if($flash_once == 1)
                      if($flash_once == 0)
                      {
                         # Initialize Flash memory only once
