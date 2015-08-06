@@ -47,7 +47,8 @@ $fatalerrors = 0;
 $SummaryTestsOk = 0;
 $SummaryTestsFailed = 0;
 $TestsSummaryFile  = "out/rtos/doc/ctest/ctestSummary.log";
-$flash_once = 0;
+$flashed_once_flag = 0;
+$flash_once = 1;
 
 #Hide experimental warning (given/when)
 no if $] >= 5.018, warnings => "experimental::smartmatch";
@@ -340,6 +341,7 @@ sub readparam
          when ("LOG") { $logfile = $val; }
          when ("LOGFULL") { $logfilefull = $val; }
          when ("CLEAN_GENERATE") { $clean_generate = $val; }
+         when ("FLASH_ONCE") { $flash_once = $val; }
          when ("TESTS") { $TESTS = $val; }
          when ("RES") { $RES = $val; }
          when ("TESTCASES") { $TESTCASES = $val; }
@@ -690,24 +692,31 @@ foreach $testfn (@tests)
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
                      if($flash_once == 0)
                      {
-                        # Initialize Flash memory only once
-                        info("Target Test Initialization, flashing the whole .axf file only once...");
-                        info("    ...loading all the sections from $out");
-                        $flash_once = 1;
+                        # Non optimized flash memory cycles
+                        info("Flashing the whole .axf file, loading all the sections from $out");
                      }
                      else
                      {
-                        # Removing flash section from .axf file
-                        $out2 = $BINDIR . "/" ."test.axf";
-                        $xx = `cp $out $out2`;
-                        info("Target flash already initialized...");
-                        info("    ...Removing .text_flash section from $out, only RAM sections must be loaded");
-                        $out_remove_flash_section = `arm-none-eabi-objcopy -R .text_Flash $out $out`;
-                        $out_remove_flash_status = $?;
-                        logffull("Remove flash section, status: $out_remove_flash_status");
-                        if ($debug)
+                        # Optimized flash memory cycles
+                        if($flashed_once_flag == 0)
                         {
-                           print "$out_remove_flash_section";
+                           # Initialize Flash memory only once
+                           info("Target Test Initialization, flashing the whole .axf file only once...");
+                           info("    ...loading all the sections from $out");
+                           $flashed_once_flag = 1;
+                        }
+                        else
+                        {
+                           # Removing flash section from .axf file
+                           info("Target flash already initialized...");
+                           info("    ...Removing .text_flash section from $out, only RAM sections must be loaded");
+                           $out_remove_flash_section = `arm-none-eabi-objcopy -R .text_Flash $out $out`;
+                           $out_remove_flash_status = $?;
+                           logffull("Remove flash section, status: $out_remove_flash_status");
+                           if ($debug)
+                           {
+                              print "$out_remove_flash_section";
+                           }
                         }
                      }
                   }
