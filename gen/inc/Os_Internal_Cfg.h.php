@@ -76,36 +76,35 @@
 
 function remove($a,$index)
 {
-if ($index < count($a))
-{
-for ($i = $index; $i < count($a)-1; $i++)
-{
- $a[$i] = $a[$i+1];
-}
-array_pop($a);
-}
-return $a;
+   if ($index < count($a))
+   {
+      for ($i = $index; $i < count($a)-1; $i++)
+      {
+         $a[$i] = $a[$i+1];
+      }
+      array_pop($a);
+   }
+   return $a;
 }
 
 function remove_doubles($a)
 {
-sort($a);
-$old = NULL;
-for($loopi = 0; $loopi < count($a); $loopi++)
-{
-if ($old == $a[$loopi])
-{
- /* if equal remove this element */
- $a = remove($a,$loopi);
- $loopi--;
-}
-else
-{
- $old = $a[$loopi];
-}
-}
-
-return $a;
+   sort($a);
+   $old = NULL;
+   for($loopi = 0; $loopi < count($a); $loopi++)
+   {
+      if ($old == $a[$loopi])
+      {
+         /* if equal remove this element */
+         $a = remove($a,$loopi);
+         $loopi--;
+      }
+      else
+      {
+         $old = $a[$loopi];
+      }
+   }
+   return $a;
 }
 
 /* get tasks */
@@ -115,14 +114,14 @@ $tasks = $config->getList("/OSEK","TASK");
 $priorities = array();
 foreach ($tasks as $task)
 {
-$priorities[] = $config->getValue("/OSEK/" . $task, "PRIORITY");
+   $priorities[] = $config->getValue("/OSEK/" . $task, "PRIORITY");
 }
 $priorities = remove_doubles($priorities);
-$count = 0;
+
 $priority = array();
-foreach ($priorities as $prio)
+foreach ($priorities as $count=>$prio)
 {
-$priority[$prio] = $count++;
+   $priority[$prio] = $count;
 }
 arsort($priority);
 
@@ -141,7 +140,7 @@ arsort($priority);
 $taskscount = $config->getCount("/OSEK","TASK");
 if ($taskscount<=0)
 {
-  $this->log->error("No tasks found in the configuration.\n");
+   $this->log->error("No tasks found in the configuration.\n");
 }
 print "#define TASKS_COUNT $taskscount" . "U\n\n";
 
@@ -150,7 +149,7 @@ print "#define TASKS_COUNT $taskscount" . "U\n\n";
 $resources = $config->getList("/OSEK","RESOURCE");
 if(count($resources)>31)
 {
-  $this->log->error("more than 31 resources were defined");
+   $this->log->error("more than 31 resources were defined");
 }
 else
 {
@@ -161,7 +160,7 @@ else
 $os = $config->getList("/OSEK","OS");
 if (count($os)>1)
 {
-  $this->log->error("More than one OS defined on the configuration");
+   $this->log->error("More than one OS defined on the configuration");
 }
 $osattr = $config->getValue("/OSEK/" . $os[0],"STATUS");
 print "/** \brief Error Checking Type */\n";
@@ -175,7 +174,7 @@ elseif ( $osattr == "STANDARD" )
 }
 else
 {
-  $this->log->error("Wrong OS Status configuration");
+   $this->log->error("Wrong OS Status configuration");
 }
 
 /* PRETASKHOOK */
@@ -183,7 +182,7 @@ $pretaskhook=$config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 print "/** \brief pre task hook enable-disable macro */\n";
 if($pretaskhook == "")
 {
-  $this->log->warning("PRETASKHOOK isn't defined on the configuration, set disable as default");
+   $this->log->warning("PRETASKHOOK isn't defined on the configuration, set disable as default");
    print "#define HOOK_PRETASKHOOK OSEK_DISABLE\n";
 }
 elseif($pretaskhook == "TRUE")
@@ -196,14 +195,14 @@ elseif($pretaskhook == "FALSE")
 }
 else
 {
-  $this->log->error("PRETASKHOOK set to an invalid value \"$pretaskhook\"");
+   $this->log->error("PRETASKHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* POSTTAKHOOK */
 $posttaskhook=$config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
 print "/** \brief post task hook enable-disable macro */\n";
 if($posttaskhook == "")
 {
-  $this->log->warning("POSTTASKHOOK isn't defined on the configuration, set disable as default");
+   $this->log->warning("POSTTASKHOOK isn't defined on the configuration, set disable as default");
    print "#define HOOK_POSTTASKHOOK OSEK_DISABLE\n";
 }
 elseif($posttaskhook == "TRUE")
@@ -216,14 +215,14 @@ elseif($posttaskhook == "FALSE")
 }
 else
 {
-  $this->log->error("POSTTASKHOOK set to an invalid value \"$pretaskhook\"");
+   $this->log->error("POSTTASKHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* ERRORHOOK */
 $errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 print "/** \brief error hook enable-disable macro */\n";
 if($errorhook == "")
 {
-  $this->log->warning("ERRORHOOK isn't defined on the configuration, set disable as default");
+   $this->log->warning("ERRORHOOK isn't defined on the configuration, set disable as default");
    print "#define HOOK_ERRORHOOK OSEK_DISABLE\n";
 }
 elseif($errorhook == "TRUE")
@@ -236,14 +235,14 @@ elseif($errorhook == "FALSE")
 }
 else
 {
-  $this->log->error("ERRORHOOK set to an invalid value \"$pretaskhook\"");
+   $this->log->error("ERRORHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* STARTUPHOOK */
 $startuphook=$config->getValue("/OSEK/" . $os[0],"STARTUPHOOK");
 print "/** \brief startup hook enable-disable macro */\n";
 if($startuphook == "")
 {
-  $this->log->warning("STARTUPHOOK isn't defined on the configuration, set disable as default");
+   $this->log->warning("STARTUPHOOK isn't defined on the configuration, set disable as default");
    print "#define HOOK_STARTUPHOOK OSEK_DISABLE\n";
 }
 elseif($startuphook == "TRUE")
@@ -256,14 +255,14 @@ elseif($startuphook == "FALSE")
 }
 else
 {
-  $this->log->error("STARTUPHOOK set to an invalid value \"$pretaskhook\"");
+   $this->log->error("STARTUPHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* SHUTDOWNHOOK */
 $shutdownhook=$config->getValue("/OSEK/" . $os[0],"SHUTDOWNHOOK");
 print "/** \brief shutdown hook enable-disable macro */\n";
 if($shutdownhook == "")
 {
-  $this->log->warning("SHUTDOWNHOOK isn't defined on the configuration, set disable as default");
+   $this->log->warning("SHUTDOWNHOOK isn't defined on the configuration, set disable as default");
    print "#define HOOK_SHUTDOWNHOOK OSEK_DISABLE\n";
 }
 elseif($shutdownhook == "TRUE")
@@ -276,7 +275,7 @@ elseif($shutdownhook == "FALSE")
 }
 else
 {
-  $this->log->error("SHUTDOWNHOOK set to an invalid value \"$pretaskhook\"");
+   $this->log->error("SHUTDOWNHOOK set to an invalid value \"$pretaskhook\"");
 }
 
 
@@ -314,11 +313,10 @@ foreach ($alarms as $alarm)
 
 <?php
 $counters = $config->getList("/OSEK","COUNTER");
-$count = 0;
-foreach ($counters as $counter)
+
+foreach ($counters as $count => $counter)
 {
    print "#define OSEK_COUNTER_" . $counter . " " . $count . "\n";
-   $count++;
 }
 
 $alarms = $config->getList("/OSEK","ALARM");
@@ -367,7 +365,7 @@ switch($schedulerpolicy)
       print "#define NO_RES_SCHEDULER OSEK_DISABLE\n\n";
       break;
    default :
-     $this->log->warning("USERESSCHEDULER not defined on the configuration, using FALSE as default");
+      $this->log->warning("USERESSCHEDULER not defined on the configuration, using FALSE as default");
       print "#define NO_RES_SCHEDULER OSEK_ENABLE\n\n";
       break;
 }
