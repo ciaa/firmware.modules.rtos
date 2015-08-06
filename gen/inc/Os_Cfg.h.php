@@ -182,7 +182,7 @@ elseif ($memmap == "FALSE")
 }
 else
 {
-   warning("MEMMAP configuration not found in FreeOSEK configuration, disabling as default");
+  $this->log->warning("MEMMAP configuration not found in FreeOSEK configuration, disabling as default");
    print "#define OSEK_MEMMAP OSEK_DISABLE\n";
 }
 
