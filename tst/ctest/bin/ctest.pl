@@ -394,57 +394,62 @@ sub halt
 #*
 sub CreateTestProject
 {
-  my $test = shift;
-  my $config = shift;
-  my $base = "out/rtos/$test/$config";
-  info("Creating Test: $test - Config: $config under $base/$test/$config");
-  # create needed directories
-  `mkdir -p $base/etc`;
-  `mkdir -p $base/src`;
-  `mkdir -p $base/mak`;
-  `mkdir -p $base/inc`;
-  `mkdir -p $base/inc/$ARCH`;
-  # get configuration file for this project
-  $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
-  $dst = "$base/etc/$test-$config.oil";
-  copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
-  # prepare the configuration for this project
-  # removes carry return + line-feed
-  $testfn =~ tr/\r\n//d;
-  @replace = GetTestSequencesCon($TESTS, $testfn, $config);
-  # TODO this shall be improved
-  push @replace, "CT_ISR1:" . $ISR1;
-  push @replace, "CT_ISR2:" . $ISR2;
-  foreach $rep (@replace)
-  {
-    info("Replacing: $rep");
-    @rep = split (/:/,$rep);
-    searchandreplace($dst,@rep[0],@rep[1]);
-  }
-  # create makefile for this project
-  open FILE, "> $base/mak/Makefile" or die "can not open: $!";
-  print FILE "PROJECT_NAME = $test-$config\n\n";
-  print FILE "\$(PROJECT_NAME)_SRC_PATH += \$(PROJECT_PATH)\$(DS)src\$(DS) \\\n";
-  print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\n\n";
-  print FILE "INC_FILES += \$(PROJECT_PATH)\$(DS)inc \\\n";
-  print FILE " \$(PROJECT_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
-  print FILE " modules/posix/inc\n";
-  print FILE "SRC_FILES += \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)*.c) \\\n";
-  print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
-  print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
-  print FILE "MODS = modules\$(DS)drivers \\\n";
-  print FILE " modules\$(DS)libs \\\n";
-  print FILE " modules\$(DS)posix \\\n";
-  print FILE " modules\$(DS)ciaak \\\n";
-  print FILE " modules\$(DS)rtos\n\n";
-  print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
-  print FILE "CFLAGS += -D$test\n";
-  close FILE;
-  #copy needed files
-  copy("modules/rtos/tst/ctest/src/$test.c","$base/src/$test.c");
-  copy("modules/rtos/tst/ctest/inc/$test.h","$base/inc/$test.h");
-  copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
-  copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
+   my $test = shift;
+   my $config = shift;
+   my $base = "out/rtos/$test/$config";
+   info("Creating Test: $test - Config: $config under $base/$test/$config");
+   # create needed directories
+   `mkdir -p $base/etc`;
+   `mkdir -p $base/src`;
+   `mkdir -p $base/mak`;
+   `mkdir -p $base/inc`;
+   `mkdir -p $base/inc/$ARCH`;
+   # get configuration file for this project
+   $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
+   $dst = "$base/etc/$test-$config.oil";
+   copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
+   # prepare the configuration for this project
+   # removes carry return + line-feed
+   $testfn =~ tr/\r\n//d;
+   @replace = GetTestSequencesCon($TESTS, $testfn, $config);
+   # TODO this shall be improved
+   push @replace, "CT_ISR1:" . $ISR1;
+   push @replace, "CT_ISR2:" . $ISR2;
+   foreach $rep (@replace)
+   {
+      info("Replacing: $rep");
+      @rep = split (/:/,$rep);
+      searchandreplace($dst,@rep[0],@rep[1]);
+   }
+   # create makefile for this project
+   open FILE, "> $base/mak/Makefile" or die "can not open: $!";
+   print FILE "PROJECT_NAME = $test-$config\n\n";
+   print FILE "\$(PROJECT_NAME)_SRC_PATH += \$(PROJECT_PATH)\$(DS)src\$(DS) \\\n";
+   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\n\n";
+   print FILE "INC_FILES += \$(PROJECT_PATH)\$(DS)inc \\\n";
+   print FILE " \$(PROJECT_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
+   print FILE " modules/posix/inc\n";
+   print FILE "SRC_FILES += \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)*.c) \\\n";
+   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
+   print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
+   print FILE "MODS = modules\$(DS)drivers \\\n";
+   print FILE " modules\$(DS)libs \\\n";
+   print FILE " modules\$(DS)posix \\\n";
+   print FILE " modules\$(DS)ciaak \\\n";
+   print FILE " modules\$(DS)rtos\n\n";
+   print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
+   print FILE "CFLAGS += -D$test\n";
+   if (($ARCH eq "cortexM4") && ($flash_once != 0))
+   {
+      # User special Linker Script: RAM Execute
+      print FILE "LINKER_SCRIPT = ciaa_lpc4337_RAM_Exec.ld\n";
+   }
+   close FILE;
+   #copy needed files
+   copy("modules/rtos/tst/ctest/src/$test.c","$base/src/$test.c");
+   copy("modules/rtos/tst/ctest/inc/$test.h","$base/inc/$test.h");
+   copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
+   copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
 }
 
 sub finish
