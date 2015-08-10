@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright 2008, 2009, 2014 Mariano Cerdeiro
+# Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
 # Copyright 2014, 2015, Juan Cecconi
 # Copyright 2014, ACSE & CADIEEL
 #      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
@@ -404,6 +404,7 @@ sub CreateTestProject
    `mkdir -p $base/mak`;
    `mkdir -p $base/inc`;
    `mkdir -p $base/inc/$ARCH`;
+   `mkdir -p $base/src/$ARCH`;
    # get configuration file for this project
    $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
    $dst = "$base/etc/$test-$config.oil";
@@ -425,12 +426,14 @@ sub CreateTestProject
    open FILE, "> $base/mak/Makefile" or die "can not open: $!";
    print FILE "PROJECT_NAME = $test-$config\n\n";
    print FILE "\$(PROJECT_NAME)_SRC_PATH += \$(PROJECT_PATH)\$(DS)src\$(DS) \\\n";
+   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\$(ARCH)\$(DS)\\\n";
    print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\n\n";
    print FILE "INC_FILES += \$(PROJECT_PATH)\$(DS)inc \\\n";
    print FILE " \$(PROJECT_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
    print FILE " modules/posix/inc\n";
    print FILE "SRC_FILES += \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)*.c) \\\n";
-   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
+   print FILE "             \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)\$(ARCH)\$(DS)*.c)\\\n";
+   print FILE "             modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
    print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
    print FILE "MODS = modules\$(DS)drivers \\\n";
    print FILE " modules\$(DS)libs \\\n";
@@ -450,6 +453,7 @@ sub CreateTestProject
    copy("modules/rtos/tst/ctest/inc/$test.h","$base/inc/$test.h");
    copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
    copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
+   copy("modules/rtos/tst/ctest/src/$ARCH/ctest_arch.c","$base/src/$ARCH/ctest_arch.c");
 }
 
 sub finish

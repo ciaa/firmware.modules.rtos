@@ -64,25 +64,14 @@
 
 /*==================[inclusions]=============================================*/
 #include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
-#endif
 
 /*==================[macros]=================================================*/
-
 #if (CPUTYPE == lpc43xx)
-
 /* Use GPIO0, IRQ32 as interrupt for tests */
-#define TriggerISR2_Arch()                                                 \
-{                                                                          \
-   NVIC_SetPendingIRQ(32);                                                 \
-}
+extern void TriggerISR2_Arch(void);
 
 /* Use GPIO1, IRQ33 as interrupt for tests */
-#define TriggerISR1_Arch()                                                 \
-{                                                                          \
-   NVIC_SetPendingIRQ(33);                                                 \
-}
+extern void TriggerISR1_Arch(void);
 
 #elif (CPUTYPE == k60_120)
 
