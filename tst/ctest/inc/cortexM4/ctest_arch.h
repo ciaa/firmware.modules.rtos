@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, Juan Cecconi
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
@@ -64,6 +64,10 @@
 
 /*==================[inclusions]=============================================*/
 #include "ciaaPlatforms.h"
+#if (CPU == lpc4337)
+#include "chip.h"
+#endif
+
 /*==================[macros]=================================================*/
 
 #if (CPUTYPE == lpc43xx)

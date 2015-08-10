@@ -57,7 +57,9 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal_Arch_Cpu.h"
+#if (CPU == lpc4337)
 #include "chip.h"
+#endif
 
 /*==================[macros and definitions]=================================*/
 
