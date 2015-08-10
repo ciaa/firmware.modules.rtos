@@ -57,6 +57,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal_Arch_Cpu.h"
+#include "ciaaPlatforms.h"
 #if (CPU == lpc4337)
 #include "chip.h"
 #endif
