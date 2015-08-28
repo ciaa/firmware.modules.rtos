@@ -126,13 +126,14 @@ extern TaskType TerminatingTask;
    Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;      \
    __asm__ __volatile__ (                                                 \
       /* Call PendSV */                                                   \
-      "push {r0,r1}                                               \n\t"   \
+      "push {r0-r2}                                               \n\t"   \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
       "ldr r0,=0xE000ED04                                         \n\t"   \
       "ldr r1,[r0]                                                \n\t"   \
-      "orr r1,1<<28                                               \n\t"   \
+      "ldr r2,=(1<<28)                                            \n\t"   \
+      "orr r1,r2                                                  \n\t"   \
       "str r1,[r0]                                                \n\t"   \
-      "pop {r0,r1}                                                \n\t"   \
+      "pop {r0-r2}                                                \n\t"   \
    );                                                                     \
 }
 
@@ -153,15 +154,16 @@ extern TaskType TerminatingTask;
       Osek_OldTaskPtr_Arch = (void*)0;                                     \
    }                                                                       \
    Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
-   __asm__ __volatile__ (                                                  \
-      /* Call PendSV */                                                    \
-      "push {r0,r1}                                          \n\t"         \
+   __asm__ __volatile__ (                                                 \
+      /* Call PendSV */                                                   \
+      "push {r0-r2}                                               \n\t"   \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                    \n\t"         \
-      "ldr r1,[r0]                                           \n\t"         \
-      "orr r1,1<<28                                          \n\t"         \
-      "str r1,[r0]                                           \n\t"         \
-      "pop {r0,r1}                                           \n\t"         \
+      "ldr r0,=0xE000ED04                                         \n\t"   \
+      "ldr r1,[r0]                                                \n\t"   \
+      "ldr r2,=(1<<28)                                            \n\t"   \
+      "orr r1,r2                                                  \n\t"   \
+      "str r1,[r0]                                                \n\t"   \
+      "pop {r0-r2}                                                \n\t"   \
    );                                                                      \
 }
 
@@ -288,4 +290,3 @@ void InitStack_Arch(uint8 TaskID);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
-

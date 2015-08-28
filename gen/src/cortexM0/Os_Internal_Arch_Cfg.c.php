@@ -343,9 +343,9 @@ void (* const g_pfnVectors[])(void) = {
    ResetISR,                       /* The reset handler          */
    NMI_Handler,                    /* The NMI handler            */
    HardFault_Handler,              /* The hard fault handler     */
-   MemManage_Handler,              /* The MPU fault handler      */
-   BusFault_Handler,               /* The bus fault handler      */
-   UsageFault_Handler,             /* The usage fault handler    */
+   0,                              /* The MPU fault handler      */
+   0,                              /* The bus fault handler      */
+   0,                              /* The usage fault handler    */
    0,                              /* Reserved                   */
    0,                              /* Reserved                   */
    0,                              /* Reserved                   */
@@ -354,7 +354,7 @@ void (* const g_pfnVectors[])(void) = {
    DebugMon_Handler,               /* Debug monitor handler      */
    0,                              /* Reserved                   */
    PendSV_Handler,                 /* The PendSV handler         */
-   SysTick_Handler,                /* The SysTick handler        */
+   0,                              /* The SysTick handler        */
 <?php else :
       error("Not supported CPU: " . $definition["CPU"]);
    endif;
@@ -459,4 +459,3 @@ foreach ($intnames as $int)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

@@ -66,30 +66,66 @@ PendSV_Handler:
 	cpsid f
 
 	/* reinicio el stack de la tarea que termino */
-   push {lr}
+   mov r0,lr
+   push {r0}
    bl CheckTerminatingTask_Arch
-   pop {lr}
+   pop {r0}
+   mov lr,r0
 
 	/* uso el sp correspondiente, segun si vengo de user o kernel */
-	tst lr,4
-	ite eq
-	mrseq r0,msp
-	mrsne r0,psp
+   movs r1,4
+   mov r0,lr
+	tst r0,r1
+   bne no_igual
+   mrs r0,msp
+   b no_igual_end
+no_igual:
+   mrs r0,psp
+no_igual_end:
 
-	/* Integer context saving */
-	stmdb r0!,{r4-r11,lr}
+	/* Integer context saving, including lr */
+   subs r0,4
+   str r4,[r0]
+   subs r0,4
+   str r5,[r0]
+   subs r0,4
+   str r6,[r0]
+   subs r0,4
+   str r7,[r0]
+
+   mov r4,r8
+   mov r5,r9
+   mov r6,r10
+   mov r7,r11
+
+   subs r0,4
+   str r4,[r0]
+   subs r0,4
+   str r5,[r0]
+   subs r0,4
+   str r6,[r0]
+   subs r0,4
+   str r7,[r0]
+
+   subs r0,4
+   mov r1,lr
+   str r1,[r0]
 
 	/* restituyo MSP, por si existen irqs anidadas */
-	tst lr,4
-	it eq
-	msreq msp,r0
+	movs r1,4
+   mov r2,lr
+   tst r2,r1
+	bne no_actualizo
+	msr msp,r0
+no_actualizo:
 
 	/* guardo stack actual si corresponde */
 	ldr r1,=Osek_OldTaskPtr_Arch
 	ldr r1,[r1]
 	cmp r1,0
-	it ne
-	strne r0,[r1]
+	beq no_guardo
+	str r0,[r1]
+no_guardo:
 
 	/* cargo stack siguiente */
 	ldr r1,=Osek_NewTaskPtr_Arch
@@ -97,19 +133,49 @@ PendSV_Handler:
 	ldr r0,[r1]
 
 	/* recupero contexto actual */
-	ldmia r0!,{r4-r11,lr}
+   ldr r1,[r0]
+   mov lr,r1
+   adds r0,4
+
+   ldr r7,[r0]
+   adds r0,4
+   ldr r6,[r0]
+   adds r0,4
+   ldr r5,[r0]
+   adds r0,4
+   ldr r4,[r0]
+   adds r0,4
+
+   mov r11,r7
+   mov r10,r6
+   mov r9,r5
+   mov r8,r4
+
+   ldr r7,[r0]
+   adds r0,4
+   ldr r6,[r0]
+   adds r0,4
+   ldr r5,[r0]
+   adds r0,4
+   ldr r4,[r0]
+   adds r0,4
 
 	/* Me fijo si tengo que volver a modo privilegiado.
 	   Actualizo el registro CONTROL */
 	mrs r1,control
-	tst lr,4
-	ittee eq
-	/* modo thread -> privilegiado, usar MSP */
-	biceq r1,3
-	msreq msp,r0
-	/* modo thread -> privilegiado, usar PSP */
-	orrne r1,2
-	msrne psp,r0
+	mov r2,lr
+   movs r3,4
+   tst r2,r3
+   bne modo_thread
+   movs r3,3
+   bics r1,r3
+   msr msp,r0
+   b modo_end
+modo_thread:
+   movs r3,2
+   orrs r1,r3
+   msr psp,r0
+modo_end:
 
 	msr control,r1
 
