@@ -54,28 +54,28 @@
  * -----------------------------------------------------------
  * 20150828 v0.1.0 PR	Initial version.
  */
-	.thumb_func
-	.syntax unified
+   .thumb_func
+   .syntax unified
 
-	.global PendSV_Handler
-	.extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
+   .global PendSV_Handler
+   .extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
 
 /* Pendable Service Call, used for context-switching in all Cortex-M processors */
 PendSV_Handler:
-	/* disable IRQs */
-	cpsid f
+   /* disable IRQs */
+   cpsid f
 
-	/* reinicio el stack de la tarea que termino */
+   /* reinicio el stack de la tarea que termino */
    mov r0,lr
    push {r0}
    bl CheckTerminatingTask_Arch
    pop {r0}
    mov lr,r0
 
-	/* uso el msp */
+   /* uso el msp */
    mrs r0,msp
 
-	/* Integer context saving, including lr */
+   /* Integer context saving, including lr */
    subs r0,4
    mov r1,lr
    str r1,[r0]
@@ -103,23 +103,23 @@ PendSV_Handler:
    subs r0,4
    str r7,[r0]
 
-	/* restituyo MSP, por si existen irqs anidadas */
-	msr msp,r0
+   /* restituyo MSP, por si existen irqs anidadas */
+   msr msp,r0
 
-	/* guardo stack actual si corresponde */
-	ldr r1,=Osek_OldTaskPtr_Arch
-	ldr r1,[r1]
-	cmp r1,0
-	beq no_guardo
-	str r0,[r1]
+   /* guardo stack actual si corresponde */
+   ldr r1,=Osek_OldTaskPtr_Arch
+   ldr r1,[r1]
+   cmp r1,0
+   beq no_guardo
+   str r0,[r1]
 no_guardo:
 
-	/* cargo stack siguiente */
-	ldr r1,=Osek_NewTaskPtr_Arch
-	ldr r1,[r1]
-	ldr r0,[r1]
+   /* cargo stack siguiente */
+   ldr r1,=Osek_NewTaskPtr_Arch
+   ldr r1,[r1]
+   ldr r0,[r1]
 
-	/* recupero contexto actual */
+   /* recupero contexto actual */
    ldr r7,[r0]
    adds r0,4
    ldr r6,[r0]
@@ -147,10 +147,12 @@ no_guardo:
    mov lr,r1
    adds r0,4
 
-	/* restituyo msp */
+   /* restituyo msp */
    msr msp,r0
 
    /* enable IRQs */
-	cpsie f
+   cpsie f
 
-	bx lr
+   bx lr
+
+   .end
