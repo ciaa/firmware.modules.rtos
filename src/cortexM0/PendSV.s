@@ -72,18 +72,14 @@ PendSV_Handler:
    pop {r0}
    mov lr,r0
 
-	/* uso el sp correspondiente, segun si vengo de user o kernel */
-   movs r1,4
-   mov r0,lr
-	tst r0,r1
-   bne no_igual
+	/* uso el msp */
    mrs r0,msp
-   b no_igual_end
-no_igual:
-   mrs r0,psp
-no_igual_end:
 
 	/* Integer context saving, including lr */
+   subs r0,4
+   mov r1,lr
+   str r1,[r0]
+
    subs r0,4
    str r4,[r0]
    subs r0,4
@@ -107,17 +103,8 @@ no_igual_end:
    subs r0,4
    str r7,[r0]
 
-   subs r0,4
-   mov r1,lr
-   str r1,[r0]
-
 	/* restituyo MSP, por si existen irqs anidadas */
-	movs r1,4
-   mov r2,lr
-   tst r2,r1
-	bne no_actualizo
 	msr msp,r0
-no_actualizo:
 
 	/* guardo stack actual si corresponde */
 	ldr r1,=Osek_OldTaskPtr_Arch
@@ -133,10 +120,6 @@ no_guardo:
 	ldr r0,[r1]
 
 	/* recupero contexto actual */
-   ldr r1,[r0]
-   mov lr,r1
-   adds r0,4
-
    ldr r7,[r0]
    adds r0,4
    ldr r6,[r0]
@@ -160,26 +143,14 @@ no_guardo:
    ldr r4,[r0]
    adds r0,4
 
-	/* Me fijo si tengo que volver a modo privilegiado.
-	   Actualizo el registro CONTROL */
-	mrs r1,control
-	mov r2,lr
-   movs r3,4
-   tst r2,r3
-   bne modo_thread
-   movs r3,3
-   bics r1,r3
+   ldr r1,[r0]
+   mov lr,r1
+   adds r0,4
+
+	/* restituyo msp */
    msr msp,r0
-   b modo_end
-modo_thread:
-   movs r3,2
-   orrs r1,r3
-   msr psp,r0
-modo_end:
 
-	msr control,r1
-
-	/* enable IRQs */
+   /* enable IRQs */
 	cpsie f
 
 	bx lr

@@ -104,6 +104,13 @@ extern void _vStackTop(void);
 /** \brief Handlers used by OSEK */
 extern void PendSV_Handler(void);
 
+<?php
+if ($definition["ARCH"] == "cortexM0")
+{
+   echo "extern void RIT_IRQHandler(void);\n";
+}
+?>
+
 /*==================[internal functions definition]==========================*/
 /* Default exception handlers. */
 __attribute__ ((section(".after_vectors")))
@@ -246,64 +253,42 @@ switch ($definition["CPU"])
       break;
 
    case "lpc4337":
-      /* Interrupt sources for LPC43xx.
-       * See externals/platforms/cortexM4/lpc43xx/inc/cmsis_43xx.h.
-       * TODO: Check Vector for Cortex-M0!!!
+      /* Interrupt sources for LPC43xx (Cortex-M0 core).
+       * See externals/platforms/cortexM0/lpc43xx/inc/cmsis_43xx_m0app.h.
        */
       $intList = array (
-         0 => "DAC",
-         1 => "M0APP",
+         0 => "RTC",
+         1 => "M4CORE",
          2 => "DMA",
          3 => "RES1",
-         4 => "FLASH_EEPROM",
+         4 => "FLASH_EEPROM_ATIMER",
          5 => "ETH",
          6 => "SDIO",
          7 => "LCD",
          8 => "USB0",
          9 => "USB1",
          10 => "SCT",
-         11 => "RIT",
+         11 => "RIT_WWDT",
          12 => "TIMER0",
-         13 => "TIMER1",
-         14 => "TIMER2",
+         13 => "GINT1",
+         14 => "PIN_INT4",
          15 => "TIMER3",
          16 => "MCPWM",
          17 => "ADC0",
-         18 => "I2C0",
-         19 => "I2C1",
-         20 => "SPI",
+         18 => "I2C0_I2C1",
+         19 => "SGPIO",
+         20 => "SPI_DAC",
          21 => "ADC1",
-         22 => "SSP0",
-         23 => "SSP1",
+         22 => "SSP0_SSP1",
+         23 => "EVENTROUTER",
          24 => "UART0",
          25 => "UART1",
-         26 => "UART2",
+         26 => "UART2_CCAN1",
          27 => "UART3",
-         28 => "I2S0",
-         29 => "I2S1",
-         30 => "SPIFI",
-         31 => "SGPIO",
-         32 => "GPIO0",
-         33 => "GPIO1",
-         34 => "GPIO2",
-         35 => "GPIO3",
-         36 => "GPIO4",
-         37 => "GPIO5",
-         38 => "GPIO6",
-         39 => "GPIO7",
-         40 => "GINT0",
-         41 => "GINT1",
-         42 => "EVRT",
-         43 => "CAN1",
-         44 => "RES6",
-         45 => "ADCHS",
-         46 => "ATIMER",
-         47 => "RTC",
-         48 => "RES8",
-         49 => "WDT",
-         50 => "M0SUB",
-         51 => "CAN0",
-         52 => "QEI"
+         28 => "I2S0_I2S1_QEI",
+         29 => "CCAN_0",
+         30 => "ADCHS",
+         31 => "M0SUB",
       );
       break;
 
@@ -351,7 +336,7 @@ void (* const g_pfnVectors[])(void) = {
    0,                              /* Reserved                   */
    0,                              /* Reserved                   */
    SVC_Handler,                    /* SVCall handler             */
-   DebugMon_Handler,               /* Debug monitor handler      */
+   0,                              /* Debug monitor handler      */
    0,                              /* Reserved                   */
    PendSV_Handler,                 /* The PendSV handler         */
    0,                              /* The SysTick handler        */
@@ -367,31 +352,39 @@ $intnames = $config->getList("/OSEK","ISR");
 
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
-   $src_found = 0;
-   foreach ($intnames as $int)
+   /* LPC4337-CortexM0 core uses RIT timer for OSEK periodic interrupt */
+   if( ($i==11) && ($definition["ARCH"] == "cortexM0") )
    {
-      $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-      $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-
-      if($intList[$i] == $source)
+      print "   RIT_IRQHandler,\n";
+   }
+   else
+   {
+      $src_found = 0;
+      foreach ($intnames as $int)
       {
-         if ($intcat == 2)
+         $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+         $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+
+         if($intList[$i] == $source)
          {
-            print "   OSEK_ISR2_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
-            $src_found = 1;
-         } elseif ($intcat == 1)
-         {
-            print "   OSEK_ISR_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
-            $src_found = 1;
-         } else
-         {
-            error("Interrupt $int type $inttype has an invalid category $intcat");
+            if ($intcat == 2)
+            {
+               print "   OSEK_ISR2_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
+               $src_found = 1;
+            } elseif ($intcat == 1)
+            {
+               print "   OSEK_ISR_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
+               $src_found = 1;
+            } else
+            {
+               error("Interrupt $int type $inttype has an invalid category $intcat");
+            }
          }
       }
-   }
-   if($src_found == 0)
-   {
-      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
+      if($src_found == 0)
+      {
+         print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
+      }
    }
 }
 ?>

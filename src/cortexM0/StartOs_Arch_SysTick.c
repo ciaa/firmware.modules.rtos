@@ -81,12 +81,13 @@ void StartOs_Arch_SysTick(void)
    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
 
    /* Activate RIT Timer for periodic IRQs */
+#if 1
    Chip_RIT_Init(LPC_RITIMER);
-	Chip_RIT_SetTimerInterval(LPC_RITIMER, 1); /* 1ms Period */
-	Chip_RIT_Enable(LPC_RITIMER);
+   Chip_RIT_SetTimerInterval(LPC_RITIMER, 1); /* 1ms Period */
+   Chip_RIT_Enable(LPC_RITIMER);
 
    NVIC_EnableIRQ(RITIMER_IRQn);
-
+#endif
    /* Update priority set by SysTick_Config */
    NVIC_SetPriority(RITIMER_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
 

@@ -111,7 +111,7 @@ void InitStack_Arch(uint8 TaskID)
    taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
    taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
    taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
-   taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+   taskStack[taskStackSizeWords-9] = 0xFFFFFFF9; /* current LR, return using MSP */
 
    *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
 
@@ -155,8 +155,8 @@ void RIT_IRQHandler(void)
          PostIsr2_Arch(isr);
       }
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
-
-		NVIC_ClearPendingIRQ(RITIMER_IRQn);
+      Chip_RIT_ClearInt(LPC_RITIMER);
+      NVIC_ClearPendingIRQ(RITIMER_IRQn);
    }
 }
 
