@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -32,8 +33,8 @@
 
 /** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file cortexM4/Os_Internal_Arch.c
- ** \arch cortexM4
+ ** \file cortexM0/Os_Internal_Arch.c
+ ** \arch cortexM0
  **/
 
 /** \addtogroup FreeOSEK
@@ -53,13 +54,13 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150831 v0.1.2 PR   First version for Cortex-M0.
  * 20150619 v0.1.1 MaCe fix issue #279
  * 20140608 v0.1.0 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
 #include "chip.h"
-
 #include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
@@ -68,11 +69,9 @@
 
 /*==================[internal functions declaration]=========================*/
 void* Osek_NewTaskPtr_Arch;
-
 void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
-
 TaskType TerminatingTask = INVALID_TASK;
 TaskType WaitingTask = INVALID_TASK;
 
@@ -93,9 +92,6 @@ void CheckTerminatingTask_Arch(void)
 {
    if(TerminatingTask != INVALID_TASK)
    {
-//      int i;
-//      for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
-//         ((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
       InitStack_Arch(TerminatingTask);
    }
    TerminatingTask = INVALID_TASK;
@@ -159,7 +155,6 @@ void RIT_IRQHandler(void)
       NVIC_ClearPendingIRQ(RITIMER_IRQn);
    }
 }
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -1,4 +1,5 @@
 /* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -52,6 +53,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20140831 v0.1.1 PR   First functional version.
  * 20150828 v0.1.0 PR	Initial version.
  */
    .thumb_func
@@ -65,14 +67,14 @@ PendSV_Handler:
    /* disable IRQs */
    cpsid f
 
-   /* reinicio el stack de la tarea que termino */
+   /* Restart terminating task stack. */
    mov r0,lr
    push {r0}
    bl CheckTerminatingTask_Arch
    pop {r0}
    mov lr,r0
 
-   /* uso el msp */
+   /* Use MSP to store context */
    mrs r0,msp
 
    /* Integer context saving, including lr */
@@ -103,10 +105,7 @@ PendSV_Handler:
    subs r0,4
    str r7,[r0]
 
-   /* restituyo MSP, por si existen irqs anidadas */
-   msr msp,r0
-
-   /* guardo stack actual si corresponde */
+   /* Check if actual context need to be saved */
    ldr r1,=Osek_OldTaskPtr_Arch
    ldr r1,[r1]
    cmp r1,0
@@ -114,12 +113,12 @@ PendSV_Handler:
    str r0,[r1]
 no_guardo:
 
-   /* cargo stack siguiente */
+   /* Load new context SP */
    ldr r1,=Osek_NewTaskPtr_Arch
    ldr r1,[r1]
    ldr r0,[r1]
 
-   /* recupero contexto actual */
+   /* Restore registers */
    ldr r7,[r0]
    adds r0,4
    ldr r6,[r0]
@@ -147,12 +146,16 @@ no_guardo:
    mov lr,r1
    adds r0,4
 
-   /* restituyo msp */
+   /* Restore MSP */
    msr msp,r0
 
-   /* enable IRQs */
+   /* Enable IRQs */
    cpsie f
 
+   /* IRQ end */
    bx lr
 
    .end
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */

@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -38,8 +39,8 @@
  ** This file is included form os.h and defines macros
  ** and types which depends on the architecture.
  **
- ** \file cortexM4/Os_Arch.h
- ** \arch cortexM4
+ ** \file cortexM0/Os_Arch.h
+ ** \arch cortexM0
  **
  **/
 
@@ -50,30 +51,16 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*****************************************************************************
- * add your name to the developers and create for you a nick with
- * 3 or 4 letters. Please do not use any given nick.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /*
  * Initials     Name
  * ---------------------------
  * PR           Pablo Ridolfi
  */
 
-/*****************************************************************************
- * add a new version to this file, add the date, your initials and the main
- * changes, only main changes shall be listed here. A detailed message log
- * is saved in svn log and on the tracker system since every svn login message
- * shalle indicate the related tracker id.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /*
  * modification history (new versions first)
  * ----------------------------------------------------------
- * 20140608 v0.1.1 PR   First version for Cortex-M processors.
+ * 20150831 v0.0.1 PR   First version for Cortex-M0 processors.
  */
 
 /*==================[inclusions]=============================================*/
@@ -81,13 +68,6 @@
 #include "Os_Internal_Arch_Cfg.h"
 
 /*==================[macros]=================================================*/
-/*****************************************************************************
- * Please define here all needed macros that will be visible to the OS user
- * for this architecutre. This means that anyone including os.h will have
- * access to this definitions if the actual architecutre is used.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /** \brief Enable All Interrupts Arch */
 #define EnableAllInterrupts_Arch() ResumeAllInterrupts_Arch()
@@ -122,38 +102,13 @@
 #define SuspendOSInterrupts_Arch() Disable_ISR2_Arch()
 
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be visible to the OS user
- * for this architecutre. This means that anyone including os.h will have
- * access to these type definitions if the actual architecutre is used.
- * Normaly no type has to be declared here.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Arch.c that will
- * be visible to the OS user for this architectire. This means that anyone
- * including os.h will have access to these variables, if the actual
- * architecutre is used. Normaly no variables has to be declared here.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
-/*****************************************************************************
- * Please declare here all exported functions defined in Osek_Arch.c that will
- * be visible to the OS user for this architectire. This means that anyone
- * including os.h will have access to these variables, if the actual
- * architecutre is used. Normaly no variables has to be declared here.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_ARCH_H_ */
-

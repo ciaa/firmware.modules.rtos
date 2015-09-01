@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -34,8 +35,8 @@
  **
  ** This file implements the StartOs Arch API
  **
- ** \file cortexM4/StartOs_Arch.c
- ** \arch cortexM4
+ ** \file cortexM0/StartOs_Arch.c
+ ** \arch cortexM0
  **/
 
 /** \addtogroup FreeOSEK
@@ -54,7 +55,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20140608 v0.1.2 PR   First version for Cortex-M processors.
+ * 20150831 v0.1.0 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/

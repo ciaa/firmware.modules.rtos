@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2014, 2015 Pablo Ridolfi (UTN-FRBA)
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -122,4 +122,3 @@ void Disable_ISR2_Arch(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */
-

@@ -1,4 +1,5 @@
 /* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -52,7 +53,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20140608 v0.1.0 PR   initial version
+ * 20150828 v0.1.0 PR   initial version
  */
 
 /*==================[inclusions]=============================================*/
