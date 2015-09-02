@@ -48,7 +48,7 @@ $SummaryTestsOk = 0;
 $SummaryTestsFailed = 0;
 $TestsSummaryFile  = "out/rtos/doc/ctest/ctestSummary.log";
 $flashed_once_flag = 0;
-$flash_once = 1;
+$flash_once = 0;
 
 #Hide experimental warning (given/when)
 no if $] >= 5.018, warnings => "experimental::smartmatch";
@@ -545,6 +545,11 @@ if ("k60_120" eq $CPUTYPE)
    $ISR1 = "PORTB";
    $ISR2 = "PORTC";
 }
+if ("cortexM0" eq $ARCH)
+{
+   $ISR1 = "UART0";
+   $ISR2 = "UART1";
+}
 
 mkpath(dirname($logfile));
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
@@ -696,7 +701,7 @@ foreach $testfn (@tests)
                }
                if ($outmakestatus == 0)
                {
-                  if ($ARCH eq "cortexM4")
+                  if (($ARCH eq "cortexM4") || ($ARCH eq "cortexM0"))
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
                      if($flash_once == 0)

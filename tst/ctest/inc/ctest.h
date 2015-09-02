@@ -400,7 +400,7 @@ void ConfTestEvaluation
    }                                                                                   \
 }
 #endif
-#if (cortexM4 == ARCH)
+#if ((cortexM4 == ARCH) || (cortexM0 == ARCH))
 #define ASSERT(tc,cond) \
 {                                                                                      \
    if (cond)                                                                           \
