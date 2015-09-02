@@ -38,12 +38,6 @@
 #ifndef _OS_INTERNAL_ARCH_CFG_H_
 #define _OS_INTERNAL_ARCH_CFG_H_
 
-/*****************************************************************************
- * update the tmparch directory on the \file doxygen comment with your
- * architecture
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
  **
  ** This file content the internal generated architecture dependent
@@ -60,26 +54,12 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*****************************************************************************
- * add your name to the developers and create for you a nick with
- * 3 or 4 letters. Please do not use any given nick.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /*
  * Initials     Name
  * ---------------------------
  * PR           Pablo Ridolfi
  */
 
-/*****************************************************************************
- * add a new version to this file, add the date, your initials and the main
- * changes, only main changes shall be listed here. A detailed message log
- * is saved in svn log and on the tracker system since every svn login message
- * shalle indicate the related tracker id.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
@@ -88,12 +68,6 @@
  */
 
 /*==================[inclusions]=============================================*/
-/*****************************************************************************
- * Please define here all needed macros of your configuration that can
- * be configured or are used in Osek_Internal_Arch_Cfg.c.php
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[typedef]================================================*/
 
@@ -104,12 +78,6 @@ typedef uint32 * TaskContextType;
 typedef TaskContextType* TaskContextRefType;
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined
- * Osek_Internal_Arch_Cfg.c.php
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
 
