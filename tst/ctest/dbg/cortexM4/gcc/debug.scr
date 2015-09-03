@@ -1,5 +1,7 @@
 target remote localhost:3333
 load
+set $pc = ResetISR+1
+set $msp = &_vStackTop
 break ConfTestFinish
 continue
 dump value out/rtos/TestResults.bin TestResults
