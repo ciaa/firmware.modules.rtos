@@ -547,8 +547,8 @@ if ("k60_120" eq $CPUTYPE)
 }
 if ("cortexM0" eq $ARCH)
 {
-   $ISR1 = "UART0";
-   $ISR2 = "UART1";
+   $ISR1 = "UART1";
+   $ISR2 = "UART0";
 }
 
 mkpath(dirname($logfile));
@@ -811,5 +811,3 @@ close(SUMMARYFILE);
 close(LOGFILE);
 close(LOGFILEFULL);
 close(RESFILE);
-
-
