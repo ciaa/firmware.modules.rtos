@@ -48,7 +48,7 @@ $SummaryTestsOk = 0;
 $SummaryTestsFailed = 0;
 $TestsSummaryFile  = "out/rtos/doc/ctest/ctestSummary.log";
 $flashed_once_flag = 0;
-$flash_once = 0;
+$flash_once = 1;
 
 #Hide experimental warning (given/when)
 no if $] >= 5.018, warnings => "experimental::smartmatch";
