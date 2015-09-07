@@ -47,8 +47,7 @@ $fatalerrors = 0;
 $SummaryTestsOk = 0;
 $SummaryTestsFailed = 0;
 $TestsSummaryFile  = "out/rtos/doc/ctest/ctestSummary.log";
-$flashed_once_flag = 0;
-$flash_once = 1;
+$RAM_EXEC = 0;
 
 #Hide experimental warning (given/when)
 no if $] >= 5.018, warnings => "experimental::smartmatch";
@@ -341,7 +340,7 @@ sub readparam
          when ("LOG") { $logfile = $val; }
          when ("LOGFULL") { $logfilefull = $val; }
          when ("CLEAN_GENERATE") { $clean_generate = $val; }
-         when ("FLASH_ONCE") { $flash_once = $val; }
+         when ("RAM_EXEC") { $RAM_EXEC = $val; }
          when ("TESTS") { $TESTS = $val; }
          when ("RES") { $RES = $val; }
          when ("TESTCASES") { $TESTCASES = $val; }
@@ -442,11 +441,6 @@ sub CreateTestProject
    print FILE " modules\$(DS)rtos\n\n";
    print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
    print FILE "CFLAGS += -D$test\n";
-   if (($ARCH eq "cortexM4") && ($flash_once != 0))
-   {
-      # User special Linker Script: RAM Execute
-      print FILE "LINKER_SCRIPT = ciaa_lpc4337_RAM_Exec.ld\n";
-   }
    close FILE;
    #copy needed files
    copy("modules/rtos/tst/ctest/src/$test.c","$base/src/$test.c");
@@ -470,7 +464,7 @@ sub logtimestamp
 {
    $file = @_[0];
    ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-   printf $file "%2d-%02d-%04d %02d:%02d:%02d ",$mday,$mon+1,$year+1900,$hour,$min,$sec;
+   printf $file "%02d-%02d-%04d %02d:%02d:%02d ",$mday,$mon+1,$year+1900,$hour,$min,$sec;
 }
 
 sub logf
@@ -671,7 +665,7 @@ foreach $testfn (@tests)
             if($clean_generate != 0)
             {
                info("make generate of $test");
-               info("running \"make generate PROJECT_PATH=out/rtos/$test/$config");
+               info("running \"make generate PROJECT_PATH=out/rtos/$test/$config\"");
                $outmakegenerate = `make generate PROJECT_PATH=out/rtos/$test/$config`;
                $outmakegeneratestatus = $?;
                info("make generate status: $outmakegeneratestatus");
@@ -691,7 +685,20 @@ foreach $testfn (@tests)
             {
                # Make project skipping make dependencies
                info("make of $test");
-               $outmake = `make PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
+               if($RAM_EXEC != 0)
+               {
+                  # make Link2RAM rule
+                  $linker2RAM = "Link2RAM";
+                  info("Setting Linker option: Link2RAM");
+               }
+               else
+               {
+                  # default make rule 
+                  $linker2RAM = "";
+                  info("Setting Linker option: Link2FLASH");
+               }
+               info("running \"make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0\"");
+               $outmake = `make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
                $outmakestatus = $?;
                info("make status: $outmakestatus");
                logffull("make output:\n$outmake");
@@ -704,35 +711,6 @@ foreach $testfn (@tests)
                   if (($ARCH eq "cortexM4") || ($ARCH eq "cortexM0"))
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
-                     if($flash_once == 0)
-                     {
-                        # Non optimized flash memory cycles
-                        info("Flashing the whole .axf file, loading all the sections from $out");
-                     }
-                     else
-                     {
-                        # Optimized flash memory cycles
-                        if($flashed_once_flag == 0)
-                        {
-                           # Initialize Flash memory only once
-                           info("Target Test Initialization, flashing the whole .axf file only once...");
-                           info("    ...loading all the sections from $out");
-                           $flashed_once_flag = 1;
-                        }
-                        else
-                        {
-                           # Removing flash section from .axf file
-                           info("Target flash already initialized...");
-                           info("    ...Removing .text_flash section from $out, only RAM sections must be loaded");
-                           $out_remove_flash_section = `arm-none-eabi-objcopy -R .text_Flash $out $out`;
-                           $out_remove_flash_status = $?;
-                           logffull("Remove flash section, status: $out_remove_flash_status");
-                           if ($debug)
-                           {
-                              print "$out_remove_flash_section";
-                           }
-                        }
-                     }
                   }
                   else
                   {
