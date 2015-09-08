@@ -539,6 +539,11 @@ if ("k60_120" eq $CPUTYPE)
    $ISR1 = "PORTB";
    $ISR2 = "PORTC";
 }
+if ("cortexM0" eq $ARCH)
+{
+   $ISR1 = "UART1";
+   $ISR2 = "UART0";
+}
 
 mkpath(dirname($logfile));
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
@@ -703,7 +708,7 @@ foreach $testfn (@tests)
                }
                if ($outmakestatus == 0)
                {
-                  if ($ARCH eq "cortexM4")
+                  if (($ARCH eq "cortexM4") || ($ARCH eq "cortexM0"))
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
                   }
@@ -784,5 +789,3 @@ close(SUMMARYFILE);
 close(LOGFILE);
 close(LOGFILEFULL);
 close(RESFILE);
-
-
