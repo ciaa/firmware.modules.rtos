@@ -693,7 +693,7 @@ foreach $testfn (@tests)
                }
                else
                {
-                  # default make rule 
+                  # default make rule
                   $linker2RAM = "";
                   info("Setting Linker option: Link2FLASH");
                }
