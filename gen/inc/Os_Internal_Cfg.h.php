@@ -73,6 +73,7 @@
  * 20080713 v0.1.0 MaCe initial version
  */
 <?php
+require_once(__DIR__ . "/../../generator/multicore.php");
 
 function remove($a,$index)
 {
@@ -109,7 +110,14 @@ return $a;
 }
 
 /* get tasks */
-$tasks = $config->getList("/OSEK","TASK");
+if (isset($definition["MCORE"]))
+{
+   $tasks = getListByCore($config, "/OSEK", "TASK", $definition["MCORE"]);
+}
+else
+{
+   $tasks = $config->getList("/OSEK","TASK");
+}
 
 /* convert config priority to real osek priority */
 $priorities = array();
@@ -138,13 +146,20 @@ arsort($priority);
 
 /** \brief Count of task */
 <?php
-$taskscount = $config->getCount("/OSEK","TASK");
+if (isset($definition["MCORE"]))
+{
+   $taskscount = count(getListByCore($config, "/OSEK", "TASK", $definition["MCORE"]));
+}
+else
+{
+   $taskscount = $config->getCount("/OSEK","TASK");
+}
+
 if ($taskscount<=0)
 {
    error("No tasks found in the configuration.\n");
 }
 print "#define TASKS_COUNT $taskscount" . "U\n\n";
-
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
@@ -299,7 +314,14 @@ else
    }
 
 <?php
-$alarms = $config->getList("/OSEK","ALARM");
+if (isset($definition["MCORE"]))
+{
+   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
+}
+else
+{
+   $alarms = $config->getList("/OSEK","ALARM");
+}
 $count = 0;
 foreach ($alarms as $alarm)
 {
@@ -321,7 +343,14 @@ foreach ($counters as $counter)
    $count++;
 }
 
-$alarms = $config->getList("/OSEK","ALARM");
+if (isset($definition["MCORE"]))
+{
+   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
+}
+else
+{
+   $alarms = $config->getList("/OSEK","ALARM");
+}
 print "/** \brief ALARMS_COUNT define */\n";
 print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
 
@@ -617,7 +646,15 @@ $resources = $config->getList("/OSEK","RESOURCE");
 print "/** \brief Resources Priorities */\n";
 print "extern const TaskPriorityType ResourcesPriority[" . count($resources) . "];\n\n";
 
-$alarms = $config->getList("/OSEK","ALARM");
+if (isset($definition["MCORE"]))
+{
+   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
+}
+else
+{
+   $alarms = $config->getList("/OSEK","ALARM");
+}
+
 print "/** \brief Alarms Variable Structure */\n";
 print "extern AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
 
@@ -627,7 +664,15 @@ print "extern const AlarmConstType AlarmsConst[" . count($alarms) . "];\n\n";
 print "/** \brief Alarms Constant Structure */\n";
 print "extern const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT];\n\n";
 
-$counters = $config->getList("/OSEK","COUNTER");
+if (isset($definition["MCORE"]))
+{
+   $counters = getListByCore($config, "/OSEK", "COUNTER", $definition["MCORE"]);
+}
+else
+{
+   $counters = $config->getList("/OSEK","COUNTER");
+}
+
 print "/** \brief Counter Var Structure */\n";
 print "extern CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
@@ -637,7 +682,15 @@ print "extern const CounterConstType CountersConst[" . count($counters) . "];\n"
 ?>
 /*==================[external functions declaration]=========================*/
 <?php
-$intnames = $config->getList("/OSEK","ISR");
+if (isset($definition["MCORE"]))
+{
+   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
+}
+else
+{
+   $intnames = $config->getList("/OSEK","ISR");
+}
+
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");

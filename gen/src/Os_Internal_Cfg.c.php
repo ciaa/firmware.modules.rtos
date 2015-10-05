@@ -78,8 +78,17 @@
 
 /*==================[internal data definition]===============================*/
 <?php
+require_once(__DIR__ . "/../../generator/multicore.php");
+
 /* get tasks */
-$tasks = $config->getList("/OSEK","TASK");
+if (isset($definition["MCORE"]))
+{
+   $tasks = getListByCore($config, "/OSEK", "TASK", $definition["MCORE"]);
+}
+else
+{
+   $tasks = $config->getList("/OSEK","TASK");
+}
 
 foreach ($tasks as $task)
 {
@@ -114,8 +123,24 @@ foreach ($priority as $prio)
    print "TaskType ReadyList" . $prio . "[" . $count . "];\n\n";
 }
 
-$counters = $config->getList("/OSEK","COUNTER");
-$alarms = $config->getList("/OSEK","ALARM");
+if (isset($definition["MCORE"]))
+{
+   $counters = getListByCore($config, "/OSEK", "COUNTER", $definition["MCORE"]);
+}
+else
+{
+   $counters = $config->getList("/OSEK","COUNTER");
+}
+
+if (isset($definition["MCORE"]))
+{
+   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
+}
+else
+{
+   $alarms = $config->getList("/OSEK","ALARM");
+}
+
 foreach ($counters as $counter)
 {
    $countalarms = 0;
@@ -343,8 +368,14 @@ foreach ($resources as $resource)
 }
 print "\n};\n";
 
-$alarms = $config->getList("/OSEK","ALARM");
-
+if (isset($definition["MCORE"]))
+{
+   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
+}
+else
+{
+   $alarms = $config->getList("/OSEK","ALARM");
+}
 print "/** TODO replace next line with: \n";
 print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
 print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
@@ -420,7 +451,15 @@ foreach ($alarms as $alarm)
 }
 print "\n};\n\n";
 
-$counters = $config->getList("/OSEK","COUNTER");
+if (isset($definition["MCORE"]))
+{
+   $counters = getListByCore($config, "/OSEK", "COUNTER", $definition["MCORE"]);
+}
+else
+{
+   $counters = $config->getList("/OSEK","COUNTER");
+}
+
 print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
 $alarms = $config->getList("/OSEK","ALARM");
@@ -464,7 +503,14 @@ uint8 ErrorHookRunning;
 
 /*==================[external functions definition]==========================*/
 <?php
-$intnames = $config->getList("/OSEK","ISR");
+if (isset($definition["MCORE"]))
+{
+   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
+}
+else
+{
+   $intnames = $config->getList("/OSEK","ISR");
+}
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
