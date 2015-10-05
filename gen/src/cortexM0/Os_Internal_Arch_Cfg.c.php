@@ -227,6 +227,15 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
          $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
          $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
 
+         if ($definition["MCORE"] == "1")
+         {
+            $core = $config->getValue("/OSEK/" . $int,"CORE");
+            if ($core != "1" )
+            {
+               continue;
+            }
+         }
+
          if($intList[$i] == $source)
          {
             if ($intcat == 2)
@@ -260,6 +269,15 @@ void Enable_User_ISRs(void)
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
+   if ($definition["MCORE"] == "1")
+   {
+      $core = $config->getValue("/OSEK/" . $int,"CORE");
+      if ($core != "1" )
+      {
+         continue;
+      }
+   }
+
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $prio = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
@@ -278,6 +296,15 @@ void Enable_ISR2_Arch(void)
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
+   if ($definition["MCORE"] == "1")
+   {
+      $core = $config->getValue("/OSEK/" . $int,"CORE");
+      if ($core != "1" )
+      {
+         continue;
+      }
+   }
+
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
 
@@ -298,6 +325,15 @@ void Disable_ISR2_Arch(void)
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
+   if ($definition["MCORE"] == "1")
+   {
+      $core = $config->getValue("/OSEK/" . $int,"CORE");
+      if ($core != "1" )
+      {
+         continue;
+      }
+   }
+
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
 
