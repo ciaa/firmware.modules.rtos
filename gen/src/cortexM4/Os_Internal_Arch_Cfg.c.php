@@ -388,7 +388,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
       $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
 
-      if ($definition["MCORE"] == "0")
+      if (isset($definition["MCORE"]) && ($definition["MCORE"] == "0"))
       {
          $core = $config->getValue("/OSEK/" . $int,"CORE");
          if ($core != "0" )
@@ -429,7 +429,7 @@ void Enable_User_ISRs(void)
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
-   if ($definition["MCORE"] == "0")
+   if (isset($definition["MCORE"]) && ($definition["MCORE"] == "0"))
    {
       $core = $config->getValue("/OSEK/" . $int,"CORE");
       if ($core != "0" )
@@ -456,7 +456,7 @@ void Enable_ISR2_Arch(void)
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
-   if ($definition["MCORE"] == "0")
+   if (isset($definition["MCORE"]) && ($definition["MCORE"] == "0"))
    {
       $core = $config->getValue("/OSEK/" . $int,"CORE");
       if ($core != "0" )
@@ -485,7 +485,7 @@ void Disable_ISR2_Arch(void)
 $intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
-   if ($definition["MCORE"] == "0")
+   if (isset($definition["MCORE"]) && ($definition["MCORE"] == "0"))
    {
       $core = $config->getValue("/OSEK/" . $int,"CORE");
       if ($core != "0" )
