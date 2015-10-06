@@ -146,11 +146,8 @@ if ($taskscount<=0)
 }
 print "#define TASKS_COUNT $taskscount" . "U\n\n";
 
-if ($remotetaskscount > 0)
-{
-   print "/** \brief Remote tasks count */\n";
-   print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
-}
+print "/** \brief Remote tasks count */\n";
+print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
