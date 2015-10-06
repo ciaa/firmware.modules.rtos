@@ -78,17 +78,8 @@
 
 /*==================[internal data definition]===============================*/
 <?php
-require_once(__DIR__ . "/../../generator/multicore.php");
-
 /* get tasks */
-if (isset($definition["MCORE"]))
-{
-   $tasks = getListByCore($config, "/OSEK", "TASK", $definition["MCORE"]);
-}
-else
-{
-   $tasks = $config->getList("/OSEK","TASK");
-}
+$tasks = getLocalList("/OSEK", "TASK");
 
 foreach ($tasks as $task)
 {
@@ -123,23 +114,8 @@ foreach ($priority as $prio)
    print "TaskType ReadyList" . $prio . "[" . $count . "];\n\n";
 }
 
-if (isset($definition["MCORE"]))
-{
-   $counters = getListByCore($config, "/OSEK", "COUNTER", $definition["MCORE"]);
-}
-else
-{
-   $counters = $config->getList("/OSEK","COUNTER");
-}
-
-if (isset($definition["MCORE"]))
-{
-   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
-}
-else
-{
-   $alarms = $config->getList("/OSEK","ALARM");
-}
+$counters = getLocalList("/OSEK", "COUNTER");
+$alarms = getLocalList("/OSEK", "ALARM");
 
 foreach ($counters as $counter)
 {
@@ -368,14 +344,7 @@ foreach ($resources as $resource)
 }
 print "\n};\n";
 
-if (isset($definition["MCORE"]))
-{
-   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
-}
-else
-{
-   $alarms = $config->getList("/OSEK","ALARM");
-}
+$alarms = getLocalList("/OSEK", "ALARM");
 print "/** TODO replace next line with: \n";
 print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
 print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
@@ -451,14 +420,7 @@ foreach ($alarms as $alarm)
 }
 print "\n};\n\n";
 
-if (isset($definition["MCORE"]))
-{
-   $counters = getListByCore($config, "/OSEK", "COUNTER", $definition["MCORE"]);
-}
-else
-{
-   $counters = $config->getList("/OSEK","COUNTER");
-}
+$counters = getLocalList("/OSEK", "COUNTER");
 
 print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
@@ -503,14 +465,7 @@ uint8 ErrorHookRunning;
 
 /*==================[external functions definition]==========================*/
 <?php
-if (isset($definition["MCORE"]))
-{
-   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
-}
-else
-{
-   $intnames = $config->getList("/OSEK","ISR");
-}
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");

@@ -378,15 +378,7 @@ void (* const g_pfnVectors[])(void) = {
 <?php
 
 /* get ISRs defined by user application */
-require_once(__DIR__ . "/../../../generator/multicore.php");
-if (isset($definition["MCORE"]))
-{
-   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
-}
-else
-{
-   $intnames = $config->getList("/OSEK","ISR");
-}
+$intnames = getLocalList("/OSEK", "ISR");
 
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
@@ -425,14 +417,7 @@ void Enable_User_ISRs(void)
 {
 <?php
 /* get ISRs defined by user application */
-if (isset($definition["MCORE"]))
-{
-   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
-}
-else
-{
-   $intnames = $config->getList("/OSEK","ISR");
-}
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
 
@@ -451,14 +436,7 @@ void Enable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-if (isset($definition["MCORE"]))
-{
-   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
-}
-else
-{
-   $intnames = $config->getList("/OSEK","ISR");
-}
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
@@ -478,14 +456,7 @@ void Disable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-if (isset($definition["MCORE"]))
-{
-   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
-}
-else
-{
-   $intnames = $config->getList("/OSEK","ISR");
-}
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");

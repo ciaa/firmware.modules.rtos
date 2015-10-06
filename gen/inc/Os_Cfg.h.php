@@ -87,18 +87,9 @@
 #define OSEK_OS_INTERRUPT_MASK ((InterruptFlagsType)0xFFFFFFFFU)
 
 <?php
-require_once(__DIR__ . "/../../generator/multicore.php");
-
 /* Definitions of Tasks */
-if (isset($definition["MCORE"]))
-{
-   $tasks = getListByCore($config, "/OSEK", "TASK", $definition["MCORE"]);
-   $remote_tasks = getListByCore($config, "/OSEK", "TASK", $definition["MCORE"] == "1" ? "0" : "1");
-}
-else
-{
-   $tasks = $config->getList("/OSEK","TASK");
-}
+$tasks = getLocalList("/OSEK", "TASK");
+$remote_tasks = getRemoteList("/OSEK", "TASK");
 
 $count = 0;
 foreach ($tasks as $task)
@@ -109,7 +100,7 @@ foreach ($tasks as $task)
 }
 print "\n";
 
-if (isset($remote_tasks))
+if (count($remote_tasks) > 0)
 {
    foreach ($remote_tasks as $task)
    {
@@ -151,14 +142,7 @@ foreach ($resources as $resource)
 print "\n";
 
 /* Define the Alarms */
-if (isset($definition["MCORE"]))
-{
-   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
-}
-else
-{
-   $alarms = $config->getList("/OSEK","ALARM");
-}
+$alarms = getLocalList("/OSEK", "ALARM");
 
 $count = 0;
 foreach ($alarms as $alarm)
@@ -169,14 +153,7 @@ foreach ($alarms as $alarm)
 print "\n";
 
 /* Define the Counters */
-if (isset($definition["MCORE"]))
-{
-   $counters = getListByCore($config, "/OSEK", "COUNTER", $definition["MCORE"]);
-}
-else
-{
-   $counters = $config->getList("/OSEK","COUNTER");
-}
+$counters = getLocalList("/OSEK", "COUNTER");
 
 $count = 0;
 foreach ($counters as $counter)
@@ -341,14 +318,7 @@ foreach ($tasks as $task)
 }
 print "\n";
 
-if (isset($definition["MCORE"]))
-{
-   $intnames = getListByCore($config, "/OSEK", "ISR", $definition["MCORE"]);
-}
-else
-{
-   $intnames = $config->getList("/OSEK","ISR");
-}
+$intnames = getLocalList("/OSEK", "ISR");
 
 foreach ($intnames as $int)
 {
@@ -357,14 +327,7 @@ foreach ($intnames as $int)
 }
 print "\n";
 
-if (isset($definition["MCORE"]))
-{
-   $alarms = getListByCore($config, "/OSEK", "ALARM", $definition["MCORE"]);
-}
-else
-{
-   $alarms = $config->getList("/OSEK","ALARM");
-}
+$alarms = getLocalList("/OSEK", "ALARM");
 
 foreach ($alarms as $alarm)
 {
