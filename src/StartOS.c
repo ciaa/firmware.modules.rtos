@@ -67,9 +67,6 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-#ifdef MULTICORE
-#include "ciaaMulticore.h"
-#endif
 
 /*==================[macros and definitions]=================================*/
 

@@ -80,6 +80,9 @@
 #include "Os_Internal_Arch_Cfg.h"
 #include "Os_Internal_Cfg.h"
 #include "ciaaPlatforms.h"
+#ifdef MULTICORE
+#include "ciaaMulticore.h"
+#endif
 
 /*==================[macros]=================================================*/
 /** \brief Invalid Task */
