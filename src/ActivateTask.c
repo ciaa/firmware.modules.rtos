@@ -101,7 +101,7 @@
    {
       ciaaMulticore_ipcMsg_t m = {
          .id = {
-            .cpuid = REMOTE_CORE,
+            .cpuid = RemoteTasksCore[TaskID - TASKS_COUNT],
             .pid = 0
          },
          .data0 = CIAA_MULTICORE_CMD_ACTIVATETASK,

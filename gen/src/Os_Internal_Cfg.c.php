@@ -214,10 +214,32 @@ foreach ($tasks as $task)
    {
       $rlist .= "| ( 1 << $resource ) ";
    }
-   print "      $rlist/* resources mask */\n";
+   print "      $rlist,/* resources mask */\n";
+   if (isset($definition["MCORE"]))
+   {
+      print "      " . $config->getValue("/OSEK/" . $task, "CORE") . " /* core */\n";
+   }
+   else
+   {
+      print "      0 /* core */\n";
+   }
    print "   }";
 }
 print "\n";
+?>
+};
+
+/** \brief RemoteTaskCore Array */
+const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {<?php
+$rtasks = getRemoteList("/OSEK", "TASK");
+for($i=0; $i<count($rtasks); $i++)
+{
+   print $config->getValue("/OSEK/$rtasks[$i]", "CORE");
+   if ($i < (count($rtasks)-1))
+   {
+      print ", ";
+   }
+}
 ?>
 };
 
