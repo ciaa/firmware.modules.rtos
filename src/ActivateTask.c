@@ -101,6 +101,7 @@
    {
       ciaaMulticore_ipcMsg_t m = {
          .id = {
+            /* TODO: this should be replaced by TasksConst[remote_id].TaskCore */
             .cpuid = RemoteTasksCore[TaskID - TASKS_COUNT],
             .pid = 0
          },
