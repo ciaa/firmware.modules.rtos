@@ -96,6 +96,23 @@
    /* \req OSEK_SYS_3.1.7-1/3 Possible return values in Standard mode are E_OK or E_OS_LIMIT */
    StatusType ret = E_OK;
 
+#if (OSEK_MULTICORE == OSEK_ENABLE)
+   if ((TaskID - TASKS_COUNT) < REMOTE_TASKS_COUNT)
+   {
+      ciaaMulticore_ipcMsg_t m = {
+         .id = {
+            .cpuid = REMOTE_CORE,
+            .pid = 0
+         },
+         .data0 = CIAA_MULTICORE_CMD_ACTIVATETASK,
+         .data1 = TaskID - TASKS_COUNT
+      };
+      ciaaMulticore_sendMessage(m);
+      /* TODO: we should wait for an acknowledge from the remote core */
+      ret = E_OK;
+   }
+   else
+#endif
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    /* check if the task id is valid */
    if ( TaskID >= TASKS_COUNT )
@@ -190,22 +207,6 @@
       }
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
    }
-
-#ifdef MULTICORE
-   if (TaskID >= TASKS_COUNT)
-   {
-      ciaaMulticore_ipcMsg_t m = {
-         .id = {
-            .cpuid = REMOTE_CORE,
-            .pid = 0
-         },
-         .data0 = CIAA_MULTICORE_CMD_ACTIVATETASK,
-         .data1 = TaskID - TASKS_COUNT
-      };
-      ciaaMulticore_sendMessage(m);
-      ret = E_OK;
-   }
-#endif
 
 #if (HOOK_ERRORHOOK == OSEK_ENABLE)
    /* \req OSEK_ERR_1.3-1/xx The ErrorHook hook routine shall be called if a

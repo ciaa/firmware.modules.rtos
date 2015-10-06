@@ -80,7 +80,7 @@
 #include "Os_Internal_Arch_Cfg.h"
 #include "Os_Internal_Cfg.h"
 #include "ciaaPlatforms.h"
-#ifdef MULTICORE
+#if (OSEK_MULTICORE == OSEK_ENABLE)
 #include "ciaaMulticore.h"
 #endif
 

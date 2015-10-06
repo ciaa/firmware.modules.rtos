@@ -95,7 +95,7 @@ void StartOS
 
    IntSecure_Start();
 
-#ifdef MULTICORE
+#if (OSEK_MULTICORE == OSEK_ENABLE)
    /* start multicore stack if required */
    ciaaMulticore_init();
 #endif

@@ -149,6 +149,7 @@ arsort($priority);
 if (isset($definition["MCORE"]))
 {
    $taskscount = count(getListByCore($config, "/OSEK", "TASK", $definition["MCORE"]));
+   $remotetaskscount = count(getListByCore($config, "/OSEK", "TASK", $definition["MCORE"] == "1" ? "0" : "1"));
 }
 else
 {
@@ -160,6 +161,12 @@ if ($taskscount<=0)
    error("No tasks found in the configuration.\n");
 }
 print "#define TASKS_COUNT $taskscount" . "U\n\n";
+
+if (isset($remotetaskscount))
+{
+   print "/** \brief Remote tasks count */\n";
+   print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
+}
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
@@ -294,6 +301,13 @@ else
    error("SHUTDOWNHOOK set to an invalid value \"$pretaskhook\"");
 }
 
+/* MULTICORE */
+$multicore = $config->getValue("/OSEK/" . $os[0], "MULTICORE");
+if ($multicore == "TRUE")
+{
+   print "/** \brief multicore API */\n";
+   print "#define OSEK_MULTICORE OSEK_ENABLE\n";
+}
 
 ?>
 
