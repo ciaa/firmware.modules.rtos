@@ -95,6 +95,11 @@ void StartOS
 
    IntSecure_Start();
 
+#ifdef MULTICORE
+   /* start multicore stack if required */
+   ciaaMulticore_init();
+#endif
+
    /* save the aplication mode */
    ApplicationMode = Mode;
 

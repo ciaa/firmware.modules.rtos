@@ -67,6 +67,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
+#include "ciaaMulticore.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -191,6 +192,21 @@
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
    }
 
+#ifdef MULTICORE
+   if (TaskID >= TASKS_COUNT)
+   {
+      ciaaMulticore_ipcMsg_t m = {
+         .id = {
+            .cpuid = REMOTE_CORE,
+            .pid = 0
+         },
+         .data0 = CIAA_MULTICORE_CMD_ACTIVATETASK,
+         .data1 = TaskID - TASKS_COUNT
+      };
+      ciaaMulticore_sendMessage(m);
+      ret = E_OK;
+   }
+#endif
 
 #if (HOOK_ERRORHOOK == OSEK_ENABLE)
    /* \req OSEK_ERR_1.3-1/xx The ErrorHook hook routine shall be called if a
