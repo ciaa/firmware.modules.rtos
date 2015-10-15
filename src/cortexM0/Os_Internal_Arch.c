@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -32,8 +33,8 @@
 
 /** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file cortexM4/Os_Internal_Arch.c
- ** \arch cortexM4
+ ** \file cortexM0/Os_Internal_Arch.c
+ ** \arch cortexM0
  **/
 
 /** \addtogroup FreeOSEK
@@ -53,11 +54,13 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150831 v0.1.2 PR   First version for Cortex-M0.
  * 20150619 v0.1.1 MaCe fix issue #279
  * 20140608 v0.1.0 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
+#include "chip.h"
 #include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
@@ -66,11 +69,9 @@
 
 /*==================[internal functions declaration]=========================*/
 void* Osek_NewTaskPtr_Arch;
-
 void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
-
 TaskType TerminatingTask = INVALID_TASK;
 TaskType WaitingTask = INVALID_TASK;
 
@@ -91,9 +92,6 @@ void CheckTerminatingTask_Arch(void)
 {
    if(TerminatingTask != INVALID_TASK)
    {
-//      int i;
-//      for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
-//         ((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
       InitStack_Arch(TerminatingTask);
    }
    TerminatingTask = INVALID_TASK;
@@ -109,53 +107,56 @@ void InitStack_Arch(uint8 TaskID)
    taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
    taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
    taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
-   taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+   taskStack[taskStackSizeWords-9] = 0xFFFFFFF9; /* current LR, return using MSP */
 
    *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
 
 }
 
-/* Periodic Interrupt Timer, included in all Cortex-M4 processors */
-void SysTick_Handler(void)
+/* Cortex-M0 core of LPC4337 uses RIT Timer for periodic IRQ */
+void RIT_IRQHandler(void)
 {
-   /* store the calling context in a variable */
-   ContextType actualContext = GetCallingContext();
-   /* set isr 2 context */
-   SetActualContext(CONTEXT_ISR2);
+   if(Chip_RIT_GetIntStatus(LPC_RITIMER) == SET)
+   {
+      /* store the calling context in a variable */
+      ContextType actualContext = GetCallingContext();
+      /* set isr 2 context */
+      SetActualContext(CONTEXT_ISR2);
 
 #if (ALARMS_COUNT != 0)
-   /* counter increment */
-   static CounterIncrementType CounterIncrement = 1;
-   (void)CounterIncrement; /* TODO remove me */
+      /* counter increment */
+      static CounterIncrementType CounterIncrement = 1;
+      (void)CounterIncrement; /* TODO remove me */
 
-   /* increment the disable interrupt conter to avoid enable the interrupts */
-   IntSecure_Start();
+      /* increment the disable interrupt conter to avoid enable the interrupts */
+      IntSecure_Start();
 
-   /* call counter interrupt handler */
-   CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
+      /* call counter interrupt handler */
+      CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
 
-   /* set the disable interrupt counter back */
-   IntSecure_End();
+      /* set the disable interrupt counter back */
+      IntSecure_End();
 
 #endif /* #if (ALARMS_COUNT != 0) */
 
-   /* reset context */
-   SetActualContext(actualContext);
+      /* reset context */
+      SetActualContext(actualContext);
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
-   /* check if the actual task is preemptive */
-   if ( ( CONTEXT_TASK == actualContext ) &&
-        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
-   {
-      /* this shall force a call to the scheduler */
-      PostIsr2_Arch(isr);
-   }
+      /* check if the actual task is preemptive */
+      if ( ( CONTEXT_TASK == actualContext ) &&
+           ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+      {
+         /* this shall force a call to the scheduler */
+         PostIsr2_Arch(isr);
+      }
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+      Chip_RIT_ClearInt(LPC_RITIMER);
+      NVIC_ClearPendingIRQ(RITIMER_IRQn);
+   }
 }
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

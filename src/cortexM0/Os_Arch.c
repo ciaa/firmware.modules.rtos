@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,37 +31,33 @@
  *
  */
 
-/** \brief Start the system counter
+/** \brief FreeOSEK Os Arch Implementation File
  **
- ** This file includes the function to start the system counter
- **
+ ** \file cortexM0/Os_Arch.c
+ ** \arch cortexM0
  **/
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
+/** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- *
+ * PR           Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * yyyymmdd v0.0.1 initials initial version
+ * 20150828 v0.1.0 PR   initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal_Arch_Cpu.h"
-#include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
-#endif
+#include "Os_Internal.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -75,26 +72,8 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void StartOs_Arch_SysTick(void)
-{
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
-
-   /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
-
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
-
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
-
-}
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

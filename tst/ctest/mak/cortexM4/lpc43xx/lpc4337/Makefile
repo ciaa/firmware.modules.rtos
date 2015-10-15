@@ -1,6 +1,5 @@
 ###############################################################################
 #
-# Copyright 2008, 2009 Mariano Cerdeiro
 # Copyright 2015, Juan Cecconi (UTN-FRBA)
 #
 # This file is part of CIAA Firmware.
@@ -33,5 +32,4 @@
 #
 ###############################################################################
 #
-# ctest dependent makefile
--include modules$(DS)rtos$(DS)tst$(DS)ctest$(DS)mak$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)$(CPU)$(DS)Makefile
+

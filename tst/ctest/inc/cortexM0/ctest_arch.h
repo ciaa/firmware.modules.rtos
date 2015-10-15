@@ -1,4 +1,9 @@
-/* Copyright 2014, Pablo Ridolfi
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+ * Copyright 2014, Juan Cecconi
+ * Copyright 2014, ACSE & CADIEEL
+ *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+ *      CADIEEL: http://www.cadieel.org.ar
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,71 +35,56 @@
  *
  */
 
-/** \brief Start the system counter
+#ifndef _CTEST_ARCH_H_
+#define _CTEST_ARCH_H_
+/** \brief FreeOSEK Os Conformance Test
  **
- ** This file includes the function to start the system counter
- **
+ ** \file FreeOSEK/Os/tst/ctest/inc/posix/ctest_arch.h
  **/
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
+/** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- *
+ * MaCe         Mariano Cerdeiro
+ * JuCe         Juan Cecconi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * yyyymmdd v0.0.1 initials initial version
+ * 20141123 v0.1.0 JuCe   implements ISR1/ISR2 triggers
+ * 20140503 v0.1.0 MaCe   initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal_Arch_Cpu.h"
 #include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
+
+/*==================[macros]=================================================*/
+#if (CPUTYPE == lpc43xx)
+/* Use UART0, IRQ24 as interrupt for tests */
+extern void TriggerISR2_Arch(void);
+
+/* Use UART1, IRQ25 as interrupt for tests */
+extern void TriggerISR1_Arch(void);
+#else
+   #error please define CPU variable!
 #endif
 
-/*==================[macros and definitions]=================================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal functions declaration]=========================*/
-
-/*==================[internal data definition]===============================*/
-
-/*==================[external data definition]===============================*/
-
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-void StartOs_Arch_SysTick(void)
-{
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
-
-   /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
-
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
-
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
-
-}
-
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
+#endif /* #ifndef _CTEST_ARCH_H_ */

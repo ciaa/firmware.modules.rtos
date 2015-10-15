@@ -1,4 +1,9 @@
-/* Copyright 2014, Pablo Ridolfi
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
+/* Copyright 2014, 2015 Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,13 +35,19 @@
  *
  */
 
-/** \brief Start the system counter
+#ifndef _OS_INTERNAL_ARCH_CFG_H_
+#define _OS_INTERNAL_ARCH_CFG_H_
+
+/** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
  **
- ** This file includes the function to start the system counter
+ ** This file content the internal generated architecture dependent
+ ** configuration of FreeOSEK.
  **
+ ** \file cortexM4/Os_Internal_Arch_Cfg.h
+ ** \arch cortexM4
  **/
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
+/** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
@@ -46,55 +57,36 @@
 /*
  * Initials     Name
  * ---------------------------
- *
+ * PR           Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * yyyymmdd v0.0.1 initials initial version
+ * v0.1.1 20141130 PR   Added interrupt processing functions.
+ * v0.1.0 20140608 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal_Arch_Cpu.h"
-#include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
-#endif
 
-/*==================[macros and definitions]=================================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal data declaration]==============================*/
+/** \brief Task Context Type */
+typedef uint32 * TaskContextType;
 
-/*==================[internal functions declaration]=========================*/
+/** \brief Task Context Type */
+typedef TaskContextType* TaskContextRefType;
 
-/*==================[internal data definition]===============================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[external data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-void StartOs_Arch_SysTick(void)
-{
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
-
-   /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
-
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
-
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
-
-}
-
+void Enable_User_ISRs(void);
+void Enable_ISR2_Arch(void);
+void Disable_ISR2_Arch(void);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
+#endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */

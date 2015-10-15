@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,13 +31,15 @@
  *
  */
 
-/** \brief Start the system counter
+/** \brief FreeOSEK Os StartOs Architecture Dependece Implementation File
  **
- ** This file includes the function to start the system counter
+ ** This file implements the StartOs Arch API
  **
+ ** \file cortexM0/StartOs_Arch.c
+ ** \arch cortexM0
  **/
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
+/** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
@@ -46,21 +49,18 @@
 /*
  * Initials     Name
  * ---------------------------
- *
+ * PR           Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * yyyymmdd v0.0.1 initials initial version
+ * 20150831 v0.1.0 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal_Arch_Cpu.h"
-#include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
-#endif
+#include "Os_Internal.h"
+#include "StartOs_Arch_SysTick.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -75,26 +75,28 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-void StartOs_Arch_SysTick(void)
+void StartOs_Arch_Cpu(void)
 {
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
-
-   /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
-
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
-
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
-
+   StartOs_Arch_SysTick();
+   Enable_User_ISRs();
 }
 
+void StartOs_Arch(void)
+{
+   uint8f loopi;
+
+   /* init every task */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
+      InitStack_Arch(loopi);
+   }
+
+   /* CPU dependent initialisation */
+   StartOs_Arch_Cpu();
+
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

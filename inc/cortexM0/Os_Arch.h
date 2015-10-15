@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,71 +31,84 @@
  *
  */
 
-/** \brief Start the system counter
+#ifndef _OS_ARCH_H_
+#define _OS_ARCH_H_
+
+/** \brief FreeOSEK Os Architecture Dependent Header File
  **
- ** This file includes the function to start the system counter
+ ** This file is included form os.h and defines macros
+ ** and types which depends on the architecture.
+ **
+ ** \file cortexM0/Os_Arch.h
+ ** \arch cortexM0
  **
  **/
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
+/** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- *
+ * PR           Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
- * -----------------------------------------------------------
- * yyyymmdd v0.0.1 initials initial version
+ * ----------------------------------------------------------
+ * 20150831 v0.0.1 PR   First version for Cortex-M0 processors.
  */
 
 /*==================[inclusions]=============================================*/
-#include "Os_Internal_Arch_Cpu.h"
-#include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
-#endif
 
-/*==================[macros and definitions]=================================*/
+#include "Os_Internal_Arch_Cfg.h"
 
-/*==================[internal data declaration]==============================*/
+/*==================[macros]=================================================*/
 
-/*==================[internal functions declaration]=========================*/
+/** \brief Enable All Interrupts Arch */
+#define EnableAllInterrupts_Arch() ResumeAllInterrupts_Arch()
 
-/*==================[internal data definition]===============================*/
+/** \brief Disable All Interrupts Arch */
+#define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
 
-/*==================[external data definition]===============================*/
+/** \brief Resume All Interrupts Arch
+ **
+ ** This macro shall resume (enable) all interrupts.
+ **/
+#define ResumeAllInterrupts_Arch() __asm volatile("cpsie i")
 
-/*==================[internal functions definition]==========================*/
+/** \brief Suspend All Interrupts Arch
+ **
+ ** This macro shall suspend (disable) all interrupts.
+ **/
+#define SuspendAllInterrupts_Arch() __asm volatile("cpsid i")
 
-/*==================[external functions definition]==========================*/
-void StartOs_Arch_SysTick(void)
-{
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
+/** \brief Resume OS Interrupts Arch
+ **
+ ** This macro shall resume (enable) all interrupts configured on the
+ ** FreeOSEK OIL configuration file as ISR2.
+ **/
+#define ResumeOSInterrupts_Arch() Enable_ISR2_Arch()
 
-   /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
+/** \brief Suspend OS Interrupts Arch
+ **
+ ** This macro shall suspend (disable) all interrupts configured on the
+ ** FreeOSEK OIL configuration file as ISR2.
+ **/
+#define SuspendOSInterrupts_Arch() Disable_ISR2_Arch()
 
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
+/*==================[typedef]================================================*/
 
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+/*==================[external data declaration]==============================*/
 
-}
-
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
+#endif /* #ifndef _OS_ARCH_H_ */

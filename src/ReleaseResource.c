@@ -1,7 +1,8 @@
-/* Copyright 2008, 2009 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -113,7 +114,7 @@ StatusType ReleaseResource
    if (
 /* only if one or more resources were defined */
 #if (RESOURCES_COUNT != 0)
-        ( ResID > RESOURCES_COUNT )
+        ( ResID >= RESOURCES_COUNT )
 #endif /* #if (RESOURCES_COUNT != 0) */
 #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == OSEK_DISABLE) )
             &&

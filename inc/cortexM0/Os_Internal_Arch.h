@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -35,8 +36,8 @@
 
 /** \brief FreeOSEK Internal Architecture Dependent Header File
  **
- ** \file cortexM4/Os_Internal_Arch.h
- ** \arch cortexM4
+ ** \file cortexM0/Os_Internal_Arch.h
+ ** \arch cortexM0
  **/
 
 /** \addtogroup FreeOSEK
@@ -56,12 +57,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150831 v0.1.3 PR   First version for Cortex-M0.
  * 20150619 v0.1.2 MaCe fix issue #279
  * 20140608 v0.1.1 PR   First version for Cortex-M processors.
  */
 
 /*==================[inclusions]=============================================*/
-//#include "lpc43xx_cgu.h"
 
 /*==================[macros]=================================================*/
 /** \brief Extra size reserved for each stack
@@ -126,13 +127,14 @@ extern TaskType TerminatingTask;
    Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;      \
    __asm__ __volatile__ (                                                 \
       /* Call PendSV */                                                   \
-      "push {r0,r1}                                               \n\t"   \
+      "push {r0-r2}                                               \n\t"   \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
       "ldr r0,=0xE000ED04                                         \n\t"   \
       "ldr r1,[r0]                                                \n\t"   \
-      "orr r1,1<<28                                               \n\t"   \
+      "ldr r2,=(1<<28)                                            \n\t"   \
+      "orr r1,r2                                                  \n\t"   \
       "str r1,[r0]                                                \n\t"   \
-      "pop {r0,r1}                                                \n\t"   \
+      "pop {r0-r2}                                                \n\t"   \
    );                                                                     \
 }
 
@@ -153,15 +155,16 @@ extern TaskType TerminatingTask;
       Osek_OldTaskPtr_Arch = (void*)0;                                     \
    }                                                                       \
    Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
-   __asm__ __volatile__ (                                                  \
-      /* Call PendSV */                                                    \
-      "push {r0,r1}                                          \n\t"         \
+   __asm__ __volatile__ (                                                 \
+      /* Call PendSV */                                                   \
+      "push {r0-r2}                                               \n\t"   \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                    \n\t"         \
-      "ldr r1,[r0]                                           \n\t"         \
-      "orr r1,1<<28                                          \n\t"         \
-      "str r1,[r0]                                           \n\t"         \
-      "pop {r0,r1}                                           \n\t"         \
+      "ldr r0,=0xE000ED04                                         \n\t"   \
+      "ldr r1,[r0]                                                \n\t"   \
+      "ldr r2,=(1<<28)                                            \n\t"   \
+      "orr r1,r2                                                  \n\t"   \
+      "str r1,[r0]                                                \n\t"   \
+      "pop {r0-r2}                                                \n\t"   \
    );                                                                      \
 }
 
@@ -263,21 +266,8 @@ extern TaskType TerminatingTask;
 #define ShutdownOs_Arch()
 
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be used only internal by
- * the OS and only for this architecture and which will not depend on the
- * configuraiton. Normaly this section shall be empty.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Internal_Arch.c
- * that will be visible only internal to the OS for this architectire.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
 void InitStack_Arch(uint8 TaskID);
@@ -288,4 +278,3 @@ void InitStack_Arch(uint8 TaskID);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
-

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-# Copyright 2008, 2009, 2014 Mariano Cerdeiro
-# Copyright 2014, Juan Cecconi
+# Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+# Copyright 2014, 2015, Juan Cecconi
 # Copyright 2014, ACSE & CADIEEL
 #      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
 #      CADIEEL: http://www.cadieel.org.ar
@@ -47,7 +47,7 @@ $fatalerrors = 0;
 $SummaryTestsOk = 0;
 $SummaryTestsFailed = 0;
 $TestsSummaryFile  = "out/rtos/doc/ctest/ctestSummary.log";
-
+$RAM_EXEC = 0;
 
 #Hide experimental warning (given/when)
 no if $] >= 5.018, warnings => "experimental::smartmatch";
@@ -340,6 +340,7 @@ sub readparam
          when ("LOG") { $logfile = $val; }
          when ("LOGFULL") { $logfilefull = $val; }
          when ("CLEAN_GENERATE") { $clean_generate = $val; }
+         when ("RAM_EXEC") { $RAM_EXEC = $val; }
          when ("TESTS") { $TESTS = $val; }
          when ("RES") { $RES = $val; }
          when ("TESTCASES") { $TESTCASES = $val; }
@@ -392,57 +393,61 @@ sub halt
 #*
 sub CreateTestProject
 {
-  my $test = shift;
-  my $config = shift;
-  my $base = "out/rtos/$test/$config";
-  info("Creating Test: $test - Config: $config under $base/$test/$config");
-  # create needed directories
-  `mkdir -p $base/etc`;
-  `mkdir -p $base/src`;
-  `mkdir -p $base/mak`;
-  `mkdir -p $base/inc`;
-  `mkdir -p $base/inc/$ARCH`;
-  # get configuration file for this project
-  $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
-  $dst = "$base/etc/$test-$config.oil";
-  copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
-  # prepare the configuration for this project
-  # removes carry return + line-feed
-  $testfn =~ tr/\r\n//d;
-  @replace = GetTestSequencesCon($TESTS, $testfn, $config);
-  # TODO this shall be improved
-  push @replace, "CT_ISR1:" . $ISR1;
-  push @replace, "CT_ISR2:" . $ISR2;
-  foreach $rep (@replace)
-  {
-    info("Replacing: $rep");
-    @rep = split (/:/,$rep);
-    searchandreplace($dst,@rep[0],@rep[1]);
-  }
-  # create makefile for this project
-  open FILE, "> $base/mak/Makefile" or die "can not open: $!";
-  print FILE "PROJECT_NAME = $test-$config\n\n";
-  print FILE "\$(PROJECT_NAME)_SRC_PATH += \$(PROJECT_PATH)\$(DS)src\$(DS) \\\n";
-  print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\n\n";
-  print FILE "INC_FILES += \$(PROJECT_PATH)\$(DS)inc \\\n";
-  print FILE " \$(PROJECT_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
-  print FILE " modules/posix/inc\n";
-  print FILE "SRC_FILES += \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)*.c) \\\n";
-  print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
-  print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
-  print FILE "MODS = modules\$(DS)drivers \\\n";
-  print FILE " modules\$(DS)libs \\\n";
-  print FILE " modules\$(DS)posix \\\n";
-  print FILE " modules\$(DS)ciaak \\\n";
-  print FILE " modules\$(DS)rtos\n\n";
-  print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
-  print FILE "CFLAGS += -D$test\n";
-  close FILE;
-  #copy needed files
-  copy("modules/rtos/tst/ctest/src/$test.c","$base/src/$test.c");
-  copy("modules/rtos/tst/ctest/inc/$test.h","$base/inc/$test.h");
-  copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
-  copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
+   my $test = shift;
+   my $config = shift;
+   my $base = "out/rtos/$test/$config";
+   info("Creating Test: $test - Config: $config under $base/$test/$config");
+   # create needed directories
+   `mkdir -p $base/etc`;
+   `mkdir -p $base/src`;
+   `mkdir -p $base/mak`;
+   `mkdir -p $base/inc`;
+   `mkdir -p $base/inc/$ARCH`;
+   `mkdir -p $base/src/$ARCH`;
+   # get configuration file for this project
+   $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
+   $dst = "$base/etc/$test-$config.oil";
+   copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
+   # prepare the configuration for this project
+   # removes carry return + line-feed
+   $testfn =~ tr/\r\n//d;
+   @replace = GetTestSequencesCon($TESTS, $testfn, $config);
+   # TODO this shall be improved
+   push @replace, "CT_ISR1:" . $ISR1;
+   push @replace, "CT_ISR2:" . $ISR2;
+   foreach $rep (@replace)
+   {
+      info("Replacing: $rep");
+      @rep = split (/:/,$rep);
+      searchandreplace($dst,@rep[0],@rep[1]);
+   }
+   # create makefile for this project
+   open FILE, "> $base/mak/Makefile" or die "can not open: $!";
+   print FILE "PROJECT_NAME = $test-$config\n\n";
+   print FILE "\$(PROJECT_NAME)_SRC_PATH += \$(PROJECT_PATH)\$(DS)src\$(DS) \\\n";
+   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\$(ARCH)\$(DS)\\\n";
+   print FILE " modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)\n\n";
+   print FILE "INC_FILES += \$(PROJECT_PATH)\$(DS)inc \\\n";
+   print FILE " \$(PROJECT_PATH)\$(DS)inc\$(DS)$ARCH\\\n";
+   print FILE " modules/posix/inc\n";
+   print FILE "SRC_FILES += \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)*.c) \\\n";
+   print FILE "             \$(wildcard \$(PROJECT_PATH)\$(DS)src\$(DS)\$(ARCH)\$(DS)*.c)\\\n";
+   print FILE "             modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)src\$(DS)ctest_rst.c\n\n";
+   print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
+   print FILE "MODS = modules\$(DS)drivers \\\n";
+   print FILE " modules\$(DS)libs \\\n";
+   print FILE " modules\$(DS)posix \\\n";
+   print FILE " modules\$(DS)ciaak \\\n";
+   print FILE " modules\$(DS)rtos\n\n";
+   print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
+   print FILE "CFLAGS += -D$test\n";
+   close FILE;
+   #copy needed files
+   copy("modules/rtos/tst/ctest/src/$test.c","$base/src/$test.c");
+   copy("modules/rtos/tst/ctest/inc/$test.h","$base/inc/$test.h");
+   copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
+   copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
+   copy("modules/rtos/tst/ctest/src/$ARCH/ctest_arch.c","$base/src/$ARCH/ctest_arch.c");
 }
 
 sub finish
@@ -455,17 +460,25 @@ sub finish
    exit(0);
 }
 
+sub logtimestamp
+{
+   $file = @_[0];
+   ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+   printf $file "%02d-%02d-%04d %02d:%02d:%02d ",$mday,$mon+1,$year+1900,$hour,$min,$sec;
+}
+
 sub logf
 {
-   ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-   printf LOGFILE "%4d-%02d-%02d %02d:%02d:%02d %s\n",$year+1900,$mon+1,$mday,$hour,$min,$sec,@_[0];
-   printf LOGFILEFULL "%4d-%02d-%02d %02d:%02d:%02d %s\n",$year+1900,$mon+1,$mday,$hour,$min,$sec,@_[0];
+   logtimestamp(LOGFILE);
+   printf LOGFILE "%s\n",@_[0];
+   logtimestamp(LOGFILEFULL);
+   printf LOGFILEFULL "%s\n",@_[0];
 }
 
 sub logffull
 {
-   ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-   printf LOGFILEFULL "%4d-%02d-%02d %02d:%02d:%02d %s\n",$year+1900,$mon+1,$mday,$hour,$min,$sec,@_[0];
+   logtimestamp(LOGFILEFULL);
+   printf LOGFILEFULL "%s\n",@_[0];
 }
 
 
@@ -525,6 +538,11 @@ if ("k60_120" eq $CPUTYPE)
 {
    $ISR1 = "PORTB";
    $ISR2 = "PORTC";
+}
+if ("cortexM0" eq $ARCH)
+{
+   $ISR1 = "UART1";
+   $ISR2 = "UART0";
 }
 
 mkpath(dirname($logfile));
@@ -593,7 +611,6 @@ foreach $testfn (@tests)
 {
    @test = split(/:/,$testfn);
    $test = @test[0];
-
    info("Testing $test");
 
    @configs = GetTestSequencesConfigs($TESTS, $testfn);
@@ -619,7 +636,9 @@ foreach $testfn (@tests)
 
       if ($runthistestcase)
       {
-         info("Config: $config");
+         info("***************************************************");
+         info("   Config: $config");
+         info("***************************************************");
 
          CreateTestProject($test, $config);
 
@@ -646,7 +665,7 @@ foreach $testfn (@tests)
             if($clean_generate != 0)
             {
                info("make generate of $test");
-               info("running \"make generate PROJECT_PATH=out/rtos/$test/$config");
+               info("running \"make generate PROJECT_PATH=out/rtos/$test/$config\"");
                $outmakegenerate = `make generate PROJECT_PATH=out/rtos/$test/$config`;
                $outmakegeneratestatus = $?;
                info("make generate status: $outmakegeneratestatus");
@@ -661,11 +680,25 @@ foreach $testfn (@tests)
                info("WARNING: skipping make generate of $test");
                $outmakegeneratestatus = 0;
             }
+            logtimestamp(SUMMARYFILE);
             if ($outmakegeneratestatus == 0)
             {
                # Make project skipping make dependencies
                info("make of $test");
-               $outmake = `make PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
+               if($RAM_EXEC != 0)
+               {
+                  # make Link2RAM rule
+                  $linker2RAM = "Link2RAM";
+                  info("Setting Linker option: Link2RAM");
+               }
+               else
+               {
+                  # default make rule
+                  $linker2RAM = "";
+                  info("Setting Linker option: Link2FLASH");
+               }
+               info("running \"make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0\"");
+               $outmake = `make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
                $outmakestatus = $?;
                info("make status: $outmakestatus");
                logffull("make output:\n$outmake");
@@ -675,7 +708,7 @@ foreach $testfn (@tests)
                }
                if ($outmakestatus == 0)
                {
-                  if ($ARCH eq "cortexM4")
+                  if (($ARCH eq "cortexM4") || ($ARCH eq "cortexM0"))
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
                   }
@@ -708,7 +741,8 @@ foreach $testfn (@tests)
                   }
                   $outdbgstatus = $?;
                   info("debug status: $outdbgstatus");
-                  #info("debug output:\n$outdbg");
+                  info("debug output:\n$outdbg");
+                  logffull("$GDB output:\n$outgdb");
                   $outdbgstatus = 0;
                   if ($outdbgstatus == 0)
                   {
@@ -755,5 +789,3 @@ close(SUMMARYFILE);
 close(LOGFILE);
 close(LOGFILEFULL);
 close(RESFILE);
-
-

@@ -38,7 +38,7 @@
 # library
 LIBS 				     += rtos
 # version
-rtos_VERSION		   = 1.0.0
+rtos_VERSION		   = 1.0.2
 # library path
 rtos_PATH 		   	= $(ROOT_DIR)$(DS)modules$(DS)rtos
 # library source path

@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, Juan Cecconi
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
@@ -59,6 +59,7 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
+ * 20150619 v0.1.4 MaCe fix issue #279
  * 20090719 v0.1.3 MaCe rename file to Os_
  * 20090408 v0.1.2 Mace add ShutdownOs_Arch
  * 20090330 v0.1.2 MaCe update CallTask macro
@@ -270,7 +271,7 @@
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
 #define PostIsr2_Arch(isr) \
-   Schedule();
+   Schedule_WOChecks();
 
 #if ( CPUTYPE == ia64 )
 #define SaveOsStack()                                                                      \

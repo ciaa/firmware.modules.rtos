@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi
+/* Copyright 2015, Pablo Ridolfi (UTN-FRBA)
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,13 +31,13 @@
  *
  */
 
-/** \brief Start the system counter
+/** \brief Cortex-M PendSV Interrupt Handler, used for context switch.
  **
- ** This file includes the function to start the system counter
- **
+ ** \file cortexM0/PendSV.s
+ ** \arch cortexM0
  **/
 
-/** \addtogroup CIAA_Firmware CIAA Firmware
+/** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
@@ -46,55 +47,115 @@
 /*
  * Initials     Name
  * ---------------------------
- *
+ * PR		Pablo Ridolfi
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * yyyymmdd v0.0.1 initials initial version
+ * 20140831 v0.1.1 PR   First functional version.
+ * 20150828 v0.1.0 PR	Initial version.
  */
+   .thumb_func
+   .syntax unified
 
-/*==================[inclusions]=============================================*/
-#include "Os_Internal_Arch_Cpu.h"
-#include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
-#include "chip.h"
-#endif
+   .global PendSV_Handler
+   .extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
 
-/*==================[macros and definitions]=================================*/
+/* Pendable Service Call, used for context-switching in all Cortex-M processors */
+PendSV_Handler:
+   /* disable IRQs */
+   cpsid f
 
-/*==================[internal data declaration]==============================*/
+   /* Restart terminating task stack. */
+   mov r0,lr
+   push {r0}
+   bl CheckTerminatingTask_Arch
+   pop {r0}
+   mov lr,r0
 
-/*==================[internal functions declaration]=========================*/
+   /* Use MSP to store context */
+   mrs r0,msp
 
-/*==================[internal data definition]===============================*/
+   /* Integer context saving, including lr */
+   subs r0,4
+   mov r1,lr
+   str r1,[r0]
 
-/*==================[external data definition]===============================*/
+   subs r0,4
+   str r4,[r0]
+   subs r0,4
+   str r5,[r0]
+   subs r0,4
+   str r6,[r0]
+   subs r0,4
+   str r7,[r0]
 
-/*==================[internal functions definition]==========================*/
+   mov r4,r8
+   mov r5,r9
+   mov r6,r10
+   mov r7,r11
 
-/*==================[external functions definition]==========================*/
-void StartOs_Arch_SysTick(void)
-{
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
+   subs r0,4
+   str r4,[r0]
+   subs r0,4
+   str r5,[r0]
+   subs r0,4
+   str r6,[r0]
+   subs r0,4
+   str r7,[r0]
 
-   /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
+   /* Check if actual context need to be saved */
+   ldr r1,=Osek_OldTaskPtr_Arch
+   ldr r1,[r1]
+   cmp r1,0
+   beq no_guardo
+   str r0,[r1]
+no_guardo:
 
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
+   /* Load new context SP */
+   ldr r1,=Osek_NewTaskPtr_Arch
+   ldr r1,[r1]
+   ldr r0,[r1]
 
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+   /* Restore registers */
+   ldr r7,[r0]
+   adds r0,4
+   ldr r6,[r0]
+   adds r0,4
+   ldr r5,[r0]
+   adds r0,4
+   ldr r4,[r0]
+   adds r0,4
 
-}
+   mov r11,r7
+   mov r10,r6
+   mov r9,r5
+   mov r8,r4
 
+   ldr r7,[r0]
+   adds r0,4
+   ldr r6,[r0]
+   adds r0,4
+   ldr r5,[r0]
+   adds r0,4
+   ldr r4,[r0]
+   adds r0,4
 
+   ldr r1,[r0]
+   mov lr,r1
+   adds r0,4
+
+   /* Restore MSP */
+   msr msp,r0
+
+   /* Enable IRQs */
+   cpsie f
+
+   /* IRQ end */
+   bx lr
+
+   .end
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
-/*==================[end of file]============================================*/
-

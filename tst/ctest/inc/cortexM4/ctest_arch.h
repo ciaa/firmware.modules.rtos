@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, Juan Cecconi
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
@@ -64,21 +64,14 @@
 
 /*==================[inclusions]=============================================*/
 #include "ciaaPlatforms.h"
+
 /*==================[macros]=================================================*/
-
 #if (CPUTYPE == lpc43xx)
-
 /* Use GPIO0, IRQ32 as interrupt for tests */
-#define TriggerISR2_Arch()                                                 \
-{                                                                          \
-   NVIC_SetPendingIRQ(32);                                                 \
-}
+extern void TriggerISR2_Arch(void);
 
 /* Use GPIO1, IRQ33 as interrupt for tests */
-#define TriggerISR1_Arch()                                                 \
-{                                                                          \
-   NVIC_SetPendingIRQ(33);                                                 \
-}
+extern void TriggerISR1_Arch(void);
 
 #elif (CPUTYPE == k60_120)
 

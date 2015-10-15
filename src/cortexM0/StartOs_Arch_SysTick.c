@@ -1,4 +1,5 @@
-/* Copyright 2014, Pablo Ridolfi
+/* Copyright 2015, Pablo Ridolfi
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -34,6 +35,8 @@
  **
  ** This file includes the function to start the system counter
  **
+ ** \file cortexM0/StartOs_Arch_SysTick.c
+ ** \arch cortexM0
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
@@ -77,24 +80,22 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch_SysTick(void)
 {
-   /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
-
-   /* Set lowest priority for SysTick and PendSV */
+   /* Set lowest priority for PendSV */
    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
 
-   /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
+   /* Activate Repetitive Interrupt Timer (RIT) for periodic IRQs */
+   Chip_RIT_Init(LPC_RITIMER);
+   Chip_RIT_SetTimerInterval(LPC_RITIMER, 1); /* 1ms Period */
+   Chip_RIT_Enable(LPC_RITIMER);
 
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+   /* Enable IRQ for RIT */
+   NVIC_EnableIRQ(RITIMER_IRQn);
 
+   /* Set lowest priority for RIT */
+   NVIC_SetPriority(RITIMER_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
 }
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
