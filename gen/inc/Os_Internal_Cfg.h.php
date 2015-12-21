@@ -73,7 +73,6 @@
  * 20080713 v0.1.0 MaCe initial version
  */
 <?php
-
 function remove($a,$index)
 {
 if ($index < count($a))
@@ -109,7 +108,7 @@ return $a;
 }
 
 /* get tasks */
-$tasks = $config->getList("/OSEK","TASK");
+$tasks = getLocalList("/OSEK", "TASK");
 
 /* convert config priority to real osek priority */
 $priorities = array();
@@ -138,13 +137,17 @@ arsort($priority);
 
 /** \brief Count of task */
 <?php
-$taskscount = $config->getCount("/OSEK","TASK");
+$taskscount = count(getLocalList("/OSEK", "TASK"));
+$remotetaskscount = count(getRemoteList("/OSEK", "TASK"));
+
 if ($taskscount<=0)
 {
    error("No tasks found in the configuration.\n");
 }
 print "#define TASKS_COUNT $taskscount" . "U\n\n";
 
+print "/** \brief Remote tasks count */\n";
+print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
@@ -279,6 +282,13 @@ else
    error("SHUTDOWNHOOK set to an invalid value \"$pretaskhook\"");
 }
 
+/* MULTICORE */
+$multicore = $config->getValue("/OSEK/" . $os[0], "MULTICORE");
+if ($multicore == "TRUE")
+{
+   print "/** \brief multicore API */\n";
+   print "#define OSEK_MULTICORE OSEK_ENABLE\n";
+}
 
 ?>
 
@@ -299,7 +309,7 @@ else
    }
 
 <?php
-$alarms = $config->getList("/OSEK","ALARM");
+$alarms = getLocalList("/OSEK", "ALARM");
 $count = 0;
 foreach ($alarms as $alarm)
 {
@@ -313,7 +323,7 @@ foreach ($alarms as $alarm)
 
 
 <?php
-$counters = $config->getList("/OSEK","COUNTER");
+$counters = getLocalList("/OSEK", "COUNTER");
 $count = 0;
 foreach ($counters as $counter)
 {
@@ -321,7 +331,7 @@ foreach ($counters as $counter)
    $count++;
 }
 
-$alarms = $config->getList("/OSEK","ALARM");
+$alarms = getLocalList("/OSEK", "ALARM");
 print "/** \brief ALARMS_COUNT define */\n";
 print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
 
@@ -400,6 +410,8 @@ typedef void (* CallbackType)(void);
 
 typedef uint8 TaskTotalType;
 
+typedef uint8 TaskCoreType;
+
 /** \brief Task Constant type definition
  **
  ** This structure defines all constants and constant pointers
@@ -419,6 +431,7 @@ typedef struct {
    TaskFlagsType ConstFlags;
    TaskEventsType EventsMask;
    TaskResourcesType ResourcesMask;
+   TaskCoreType TaskCore;
 } TaskConstType;
 
 /** \brief Task Variable type definition
@@ -562,6 +575,12 @@ extern uint8 ErrorHookRunning;
  **/
 extern const TaskConstType TasksConst[TASKS_COUNT];
 
+/** \brief Remote Tasks Core Number
+ **
+ ** Contents the core number for each remote task.
+ **/
+extern const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT];
+
 /** \brief Tasks Variable
  **
  ** Contents all variables needed to manage all FreeOSEK tasks
@@ -617,7 +636,8 @@ $resources = $config->getList("/OSEK","RESOURCE");
 print "/** \brief Resources Priorities */\n";
 print "extern const TaskPriorityType ResourcesPriority[" . count($resources) . "];\n\n";
 
-$alarms = $config->getList("/OSEK","ALARM");
+$alarms = getLocalList("/OSEK", "ALARM");
+
 print "/** \brief Alarms Variable Structure */\n";
 print "extern AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
 
@@ -627,7 +647,8 @@ print "extern const AlarmConstType AlarmsConst[" . count($alarms) . "];\n\n";
 print "/** \brief Alarms Constant Structure */\n";
 print "extern const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT];\n\n";
 
-$counters = $config->getList("/OSEK","COUNTER");
+$counters = getLocalList("/OSEK", "COUNTER");
+
 print "/** \brief Counter Var Structure */\n";
 print "extern CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
@@ -637,7 +658,7 @@ print "extern const CounterConstType CountersConst[" . count($counters) . "];\n"
 ?>
 /*==================[external functions declaration]=========================*/
 <?php
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");

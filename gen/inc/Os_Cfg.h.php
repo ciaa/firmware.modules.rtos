@@ -88,7 +88,9 @@
 
 <?php
 /* Definitions of Tasks */
-$tasks = $config->getList("/OSEK","TASK");
+$tasks = getLocalList("/OSEK", "TASK");
+$remote_tasks = getRemoteList("/OSEK", "TASK");
+
 $count = 0;
 foreach ($tasks as $task)
 {
@@ -97,6 +99,17 @@ foreach ($tasks as $task)
    $count++;
 }
 print "\n";
+
+if (count($remote_tasks) > 0)
+{
+   foreach ($remote_tasks as $task)
+   {
+      print "/** \brief Remote Task Definition */\n";
+      print "#define $task $count\n";
+      $count++;
+   }
+   print "\n";
+}
 
 /* Define the Applications Modes */
 $appmodes = $config->getList("/OSEK","APPMODE");
@@ -129,7 +142,8 @@ foreach ($resources as $resource)
 print "\n";
 
 /* Define the Alarms */
-$alarms = $config->getList("/OSEK","ALARM");
+$alarms = getLocalList("/OSEK", "ALARM");
+
 $count = 0;
 foreach ($alarms as $alarm)
 {
@@ -139,7 +153,8 @@ foreach ($alarms as $alarm)
 print "\n";
 
 /* Define the Counters */
-$counters = $config->getList("/OSEK","COUNTER");
+$counters = getLocalList("/OSEK", "COUNTER");
+
 $count = 0;
 foreach ($counters as $counter)
 {
@@ -303,7 +318,8 @@ foreach ($tasks as $task)
 }
 print "\n";
 
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
+
 foreach ($intnames as $int)
 {
    print "/** \brief ISR Declaration */\n";
@@ -311,7 +327,8 @@ foreach ($intnames as $int)
 }
 print "\n";
 
-$alarms = $config->getList("/OSEK","ALARM");
+$alarms = getLocalList("/OSEK", "ALARM");
+
 foreach ($alarms as $alarm)
 {
    $action = $config->getValue("/OSEK/" . $alarm, "ACTION");

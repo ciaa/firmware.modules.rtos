@@ -54,8 +54,8 @@ rtos_INC_PATH 	      = $(rtos_PATH)$(DS)inc								\
 rtos_SRC_FILES 	      = $(wildcard $(rtos_SRC_PATH)$(DS)*.c)				\
 						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)*.c)	\
 						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)*.s)	\
-						$(wildcard out$(DS)gen$(DS)src$(DS)*.c)				\
-						$(wildcard out$(DS)gen$(DS)src$(DS)$(ARCH)$(DS)*.c)
+						$(wildcard $(OUT_DIR)$(DS)gen$(DS)src$(DS)*.c)				\
+						$(wildcard $(OUT_DIR)$(DS)gen$(DS)src$(DS)$(ARCH)$(DS)*.c)
 # include needed makefiles depending on the architecture
 -include modules$(DS)rtos$(DS)mak$(DS)$(ARCH)$(DS)Makefile
 # files to be generated for ciaa RTOS OSEK

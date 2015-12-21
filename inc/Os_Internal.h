@@ -80,6 +80,9 @@
 #include "Os_Internal_Arch_Cfg.h"
 #include "Os_Internal_Cfg.h"
 #include "ciaaPlatforms.h"
+#if (OSEK_MULTICORE == OSEK_ENABLE)
+#include "ciaaMulticore.h"
+#endif
 
 /*==================[macros]=================================================*/
 /** \brief Invalid Task */

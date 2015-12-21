@@ -79,7 +79,7 @@
 /*==================[internal data definition]===============================*/
 <?php
 /* get tasks */
-$tasks = $config->getList("/OSEK","TASK");
+$tasks = getLocalList("/OSEK", "TASK");
 
 foreach ($tasks as $task)
 {
@@ -114,8 +114,9 @@ foreach ($priority as $prio)
    print "TaskType ReadyList" . $prio . "[" . $count . "];\n\n";
 }
 
-$counters = $config->getList("/OSEK","COUNTER");
-$alarms = $config->getList("/OSEK","ALARM");
+$counters = getLocalList("/OSEK", "COUNTER");
+$alarms = getLocalList("/OSEK", "ALARM");
+
 foreach ($counters as $counter)
 {
    $countalarms = 0;
@@ -213,10 +214,32 @@ foreach ($tasks as $task)
    {
       $rlist .= "| ( 1 << $resource ) ";
    }
-   print "      $rlist/* resources mask */\n";
+   print "      $rlist,/* resources mask */\n";
+   if (isset($definition["MCORE"]))
+   {
+      print "      " . $config->getValue("/OSEK/" . $task, "CORE") . " /* core */\n";
+   }
+   else
+   {
+      print "      0 /* core */\n";
+   }
    print "   }";
 }
 print "\n";
+?>
+};
+
+/** \brief RemoteTaskCore Array */
+const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {<?php
+$rtasks = getRemoteList("/OSEK", "TASK");
+for($i=0; $i<count($rtasks); $i++)
+{
+   print $config->getValue("/OSEK/$rtasks[$i]", "CORE");
+   if ($i < (count($rtasks)-1))
+   {
+      print ", ";
+   }
+}
 ?>
 };
 
@@ -343,8 +366,7 @@ foreach ($resources as $resource)
 }
 print "\n};\n";
 
-$alarms = $config->getList("/OSEK","ALARM");
-
+$alarms = getLocalList("/OSEK", "ALARM");
 print "/** TODO replace next line with: \n";
 print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
 print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
@@ -420,7 +442,8 @@ foreach ($alarms as $alarm)
 }
 print "\n};\n\n";
 
-$counters = $config->getList("/OSEK","COUNTER");
+$counters = getLocalList("/OSEK", "COUNTER");
+
 print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
 $alarms = $config->getList("/OSEK","ALARM");
@@ -464,7 +487,7 @@ uint8 ErrorHookRunning;
 
 /*==================[external functions definition]==========================*/
 <?php
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
