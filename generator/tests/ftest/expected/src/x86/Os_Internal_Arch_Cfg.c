@@ -73,100 +73,46 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-<?php
-foreach ($tasks as $task)
-{
-   print "/** \brief $task context */\n";
-   print "TaskContextType TaskContext" . $task . ";\n";
-}
-print "\n";
+/** \brief InitTask context */
+TaskContextType TaskContextInitTask;
+/** \brief PeriodicTask context */
+TaskContextType TaskContextPeriodicTask;
 
-?>
 
 InterruptType InterruptTable[INTERRUPTS_COUNT] =
 {
-<?php
-$intnames = $config->getList("/OSEK","ISR");
-for ($loopi = 0; $loopi < 32; $loopi++)
-{
-   if ($loopi<8)
-   {
-      switch($loopi)
-      {
-         case 0:
-         case 1:
-         case 2:
-         case 3:
-            print "   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
-            break;
-         case 4:
-            print "   OSEK_ISR_HWTimer0, /* HW Timer 0 Interrupt handler */\n";
-            break;
-         case 5:
-            print "   OSEK_ISR_HWTimer1, /* HW Timer 1 Interrupt handler */\n";
-            break;
-         case 6:
-         case 7:
-            print "   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
-            break;
-      }
-   }
-   else
-   {
-      $flag = false;
-      foreach ($intnames as $int)
-      {
-         $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-         $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-         switch($inttype)
-         {
-            case "GPIO0":
-               if($loopi == 8)
-               {
-                  if($intcat == "1")
-                  {
-                     print "   OSEK_ISR_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  elseif($intcat == "2")
-                  {
-                     print "   OSEK_ISR2_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  else
-                  {
-                    $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
-                  }
-               }
-               break;
-            case "GPIO1":
-               if($loopi == 9)
-               {
-                  if($intcat == "1")
-                  {
-                     print "   OSEK_ISR_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  elseif($intcat == "2")
-                  {
-                     print "   OSEK_ISR2_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  else
-                  {
-                    $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
-                  }
-               }
-               break;
-         }
-      }
-      if ($flag == false)
-      {
-         print "   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
-      }
-   }
-}
-?>
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 0 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 1 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 2 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 3 */
+   OSEK_ISR_HWTimer0, /* HW Timer 0 Interrupt handler */
+   OSEK_ISR_HWTimer1, /* HW Timer 1 Interrupt handler */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 6 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 7 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 8 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 9 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 10 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 11 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 12 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 13 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 14 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 15 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 16 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 17 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 18 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 19 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 20 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 21 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 22 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 23 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 24 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 25 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 26 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 27 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 28 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 29 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 30 */
+   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt 31 */
 };
 
 /*==================[internal functions definition]==========================*/

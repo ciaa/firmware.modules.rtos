@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -60,7 +60,6 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20150619 v0.1.4 MaCe fix issue #279
  * 20141125 v0.1.3 JuCe additional stack for x86 ARCH
  * 20090719 v0.1.2 MaCe rename file to Os_
  * 20090128 v0.1.1 MaCe add OSEK_MEMMAP check
@@ -79,7 +78,7 @@
 /*==================[internal data definition]===============================*/
 <?php
 /* get tasks */
-$tasks = getLocalList("/OSEK", "TASK");
+$tasks = $config->getList("/OSEK","TASK");
 
 foreach ($tasks as $task)
 {
@@ -114,9 +113,8 @@ foreach ($priority as $prio)
    print "TaskType ReadyList" . $prio . "[" . $count . "];\n\n";
 }
 
-$counters = getLocalList("/OSEK", "COUNTER");
-$alarms = getLocalList("/OSEK", "ALARM");
-
+$counters = $config->getList("/OSEK","COUNTER");
+$alarms = $config->getList("/OSEK","ALARM");
 foreach ($counters as $counter)
 {
    $countalarms = 0;
@@ -214,32 +212,10 @@ foreach ($tasks as $count=>$task)
    {
       $rlist .= "| ( 1 << $resource ) ";
    }
-   print "      $rlist,/* resources mask */\n";
-   if (isset($definition["MCORE"]))
-   {
-      print "      " . $config->getValue("/OSEK/" . $task, "CORE") . " /* core */\n";
-   }
-   else
-   {
-      print "      0 /* core */\n";
-   }
+   print "      $rlist/* resources mask */\n";
    print "   }";
 }
 print "\n";
-?>
-};
-
-/** \brief RemoteTaskCore Array */
-const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {<?php
-$rtasks = getRemoteList("/OSEK", "TASK");
-for($i=0; $i<count($rtasks); $i++)
-{
-   print $config->getValue("/OSEK/$rtasks[$i]", "CORE");
-   if ($i < (count($rtasks)-1))
-   {
-      print ", ";
-   }
-}
 ?>
 };
 
@@ -365,7 +341,8 @@ foreach ($resources as $resource)
 }
 print "\n};\n";
 
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $config->getList("/OSEK","ALARM");
+
 print "/** TODO replace next line with: \n";
 print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
 print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
@@ -420,16 +397,14 @@ foreach ($alarms as $count=>$alarm)
 print "\n};\n\n";
 
 print "const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT] = {\n";
-$first = true;
+
 foreach ($alarms as $count=>$alarm)
 {
    if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
    {
-      if ($first == false)
+      if ($count != 0)
       {
          print ",\n";
-      } else {
-         $first = false;
       }
       print "  {\n";
 
@@ -443,8 +418,7 @@ foreach ($alarms as $count=>$alarm)
 }
 print "\n};\n\n";
 
-$counters = getLocalList("/OSEK", "COUNTER");
-
+$counters = $config->getList("/OSEK","COUNTER");
 print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
 $alarms = $config->getList("/OSEK","ALARM");
@@ -488,7 +462,7 @@ uint8 ErrorHookRunning;
 
 /*==================[external functions definition]==========================*/
 <?php
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
@@ -514,6 +488,9 @@ void OSEK_ISR2_<?php print $int;?>(void)
    if ( ( CONTEXT_TASK == actualContext ) &&
         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
    {
+      /* indicate that the scheduler will be called from isr2 */
+      OSEK_ISR2_SchedulerCall = 1;
+
       /* this shall force a call to the scheduler */
       PostIsr2_Arch(isr);
    }

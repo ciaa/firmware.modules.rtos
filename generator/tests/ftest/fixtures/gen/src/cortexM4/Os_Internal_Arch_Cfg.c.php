@@ -70,12 +70,6 @@
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-#if (CPU == lpc43xx)
-/* THIS IS A DIRTY WORKAROUND :( ciaa/Firmware#309*/
-#undef FALSE
-#undef TRUE
-#include "chip.h"
-#endif
 
 /*==================[macros and definitions]=================================*/
 
@@ -237,27 +231,27 @@ switch ($definitions["CPU"])
          82 => "DAC1",
          83 => "TSI0",
          84 => "MCG",
-         85 => "LPTimer",
-         86 => "RES102",
-         87 => "PORTA",
-         88 => "PORTB",
-         89 => "PORTC",
-         90 => "PORTD",
-         91 => "PORTE",
-         92 => "PORTF",
-         93 => "RES109",
-         94 => "SWI",
-         95 => "NFC",
-         96 => "USBHS",
-         97 => "RES113",
-         98 => "CMP3",
-         99 => "RES115",
-         100 => "RES116",
-         101 => "FTM3",
-         102 => "ADC2",
-         103 => "ADC3",
-         104 => "I2S1_TX",
-         105 => "I2S1_RX",
+         84 => "LPTimer",
+         85 => "RES102",
+         86 => "PORTA",
+         87 => "PORTB",
+         88 => "PORTC",
+         89 => "PORTD",
+         90 => "PORTE",
+         91 => "PORTF",
+         92 => "RES109",
+         93 => "SWI",
+         94 => "NFC",
+         95 => "USBHS",
+         96 => "RES113",
+         97 => "CMP3",
+         98 => "RES115",
+         99 => "RES116",
+         100 => "FTM3",
+         101 => "ADC2",
+         102 => "ADC3",
+         103 => "I2S1_TX",
+         104 => "I2S1_RX",
       );
       break;
 
@@ -378,7 +372,7 @@ void (* const g_pfnVectors[])(void) = {
 <?php
 
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $config->getList("/OSEK","ISR");
 
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
@@ -417,10 +411,9 @@ void Enable_User_ISRs(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
-
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $prio = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
@@ -436,7 +429,7 @@ void Enable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
@@ -456,7 +449,7 @@ void Disable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $config->getList("/OSEK","ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
