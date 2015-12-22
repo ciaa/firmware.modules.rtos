@@ -398,14 +398,16 @@ foreach ($alarms as $count=>$alarm)
 print "\n};\n\n";
 
 print "const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT] = {\n";
-
+$first = true;
 foreach ($alarms as $count=>$alarm)
 {
    if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
    {
-      if ($count != 0)
+      if ($first == false)
       {
          print ",\n";
+      } else {
+         $first = false;
       }
       print "  {\n";
 
