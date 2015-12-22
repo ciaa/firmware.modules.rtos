@@ -1,4 +1,4 @@
- /********************************************************
+/********************************************************
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
@@ -37,16 +37,16 @@
  *
  */
 
-/** \brief FreeOSEK Os Generated Internal Achitecture Configuration Implementation File
+/** \brief FreeOSEK Os Generated Configuration Implementation File
  **
- ** \file Os_Internal_Arch_Cfg.c
+ ** \file Os_Cfg.c
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Internal
+/** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
 /*
@@ -58,7 +58,8 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20080713 v0.1.0 MaCe initial version
+ * 20090719 v0.1.1 MaCe rename file to Os_
+ * 20080909 v0.1.0 MaCe initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -71,103 +72,18 @@
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
+unsigned int Osek_ErrorApi;
+
+unsigned int Osek_ErrorParam1;
+
+unsigned int Osek_ErrorParam2;
+
+unsigned int Osek_ErrorParam3;
+
+unsigned int Osek_ErrorRet;
+
 
 /*==================[external data definition]===============================*/
-<?php
-foreach ($tasks as $task)
-{
-   print "/** \brief $task context */\n";
-   print "TaskContextType TaskContext" . $task . ";\n";
-}
-print "\n";
-
-?>
-
-InterruptType InterruptTable[INTERRUPTS_COUNT] =
-{
-<?php
-$intnames = $config->getList("/OSEK","ISR");
-for ($loopi = 0; $loopi < 32; $loopi++)
-{
-   if ($loopi<8)
-   {
-      switch($loopi)
-      {
-         case 0:
-         case 1:
-         case 2:
-         case 3:
-            print "   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
-            break;
-         case 4:
-            print "   OSEK_ISR_HWTimer0, /* HW Timer 0 Interrupt handler */\n";
-            break;
-         case 5:
-            print "   OSEK_ISR_HWTimer1, /* HW Timer 1 Interrupt handler */\n";
-            break;
-         case 6:
-         case 7:
-            print "   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
-            break;
-      }
-   }
-   else
-   {
-      $flag = false;
-      foreach ($intnames as $int)
-      {
-         $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-         $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-         switch($inttype)
-         {
-            case "GPIO0":
-               if($loopi == 8)
-               {
-                  if($intcat == "1")
-                  {
-                     print "   OSEK_ISR_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  elseif($intcat == "2")
-                  {
-                     print "   OSEK_ISR2_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  else
-                  {
-                    $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
-                  }
-               }
-               break;
-            case "GPIO1":
-               if($loopi == 9)
-               {
-                  if($intcat == "1")
-                  {
-                     print "   OSEK_ISR_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  elseif($intcat == "2")
-                  {
-                     print "   OSEK_ISR2_$int, /* interrupt handler $loopi */\n";
-                     $flag = true;
-                  }
-                  else
-                  {
-                    $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
-                  }
-               }
-               break;
-         }
-      }
-      if ($flag == false)
-      {
-         print "   OSEK_ISR_NoHandler, /* no interrupt handler for interrupt $loopi */\n";
-      }
-   }
-}
-?>
-};
 
 /*==================[internal functions definition]==========================*/
 
