@@ -215,7 +215,7 @@ foreach ($tasks as $count=>$task)
       $rlist .= "| ( 1 << $resource ) ";
    }
    print "      $rlist,/* resources mask */\n";
-   if (isset($definition["MCORE"]))
+   if (isset($definitions["MCORE"]))
    {
       print "      " . $config->getValue("/OSEK/" . $task, "CORE") . " /* core */\n";
    }
