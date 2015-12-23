@@ -73,6 +73,8 @@
  * 20080713 v0.1.0 MaCe initial version
  */
 <?php
+require_once("modules/rtos/gen/ginc/multicore.php");
+
 function remove($a,$index)
 {
    if ($index < count($a))

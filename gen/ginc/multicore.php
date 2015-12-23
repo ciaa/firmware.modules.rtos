@@ -69,14 +69,14 @@
 function getLocalList($root, $type)
 {
    global $config;
-   global $definition;
+   global $definitions;
 
    $list = $config->getList($root,$type);
    $ret = array();
 
-   if (isset($definition["MCORE"]))
+   if (isset($definitions["MCORE"]))
    {
-      $core = $definition["MCORE"];
+      $core = $definitions["MCORE"];
       for ($i=0; $i < count($list); $i++)
       {
          $current_core = $config->getValue("/OSEK/$list[$i]","CORE");
@@ -101,13 +101,13 @@ function getLocalList($root, $type)
 function getRemoteList($root, $type)
 {
    global $config;
-   global $definition;
+   global $definitions;
 
    $ret = array();
-   if (isset($definition["MCORE"]))
+   if (isset($definitions["MCORE"]))
    {
       $list = $config->getList($root,$type);
-      $core = $definition["MCORE"];
+      $core = $definitions["MCORE"];
       for ($i=0; $i < count($list); $i++)
       {
          $current_core = $config->getValue("/OSEK/$list[$i]","CORE");
