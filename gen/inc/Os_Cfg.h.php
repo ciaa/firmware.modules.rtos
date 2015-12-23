@@ -96,6 +96,7 @@ foreach ($tasks as $task)
 {
    print "/** \brief Task Definition */\n";
    print "#define $task $count\n";
+   $count++;
 }
 print "\n";
 
