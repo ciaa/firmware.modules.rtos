@@ -210,7 +210,7 @@ void (* const g_pfnVectors[])(void) = {
 <?php
 
 /* get ISRs defined by user application */
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
 
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
@@ -257,7 +257,7 @@ void Enable_User_ISRs(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
@@ -275,7 +275,7 @@ void Enable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
@@ -295,7 +295,7 @@ void Disable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = $config->getList("/OSEK","ISR");
+$intnames = getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");

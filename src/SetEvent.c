@@ -97,6 +97,24 @@ StatusType SetEvent
    /* \req OSEK_SYS_3.15.2: Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
 
+#if (OSEK_MULTICORE == OSEK_ENABLE)
+   if ((TaskID - TASKS_COUNT) < REMOTE_TASKS_COUNT)
+   {
+      ciaaMulticore_ipcMsg_t m = {
+         .id = {
+            /* TODO: this should be replaced by TasksConst[remote_id].TaskCore */
+            .cpuid = RemoteTasksCore[TaskID - TASKS_COUNT],
+            .pid = 0
+         },
+         .data0 = CIAA_MULTICORE_CMD_SETEVENT | (TaskID - TASKS_COUNT),
+         .data1 = Mask
+      };
+      ciaaMulticore_sendMessage(m);
+      /* TODO: we should wait for an acknowledge from the remote core */
+      ret = E_OK;
+   }
+   else
+#endif
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    if ( TaskID >= TASKS_COUNT )
    {

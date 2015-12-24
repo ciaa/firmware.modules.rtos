@@ -95,6 +95,11 @@ void StartOS
 
    IntSecure_Start();
 
+#if (OSEK_MULTICORE == OSEK_ENABLE)
+   /* start multicore stack if required */
+   ciaaMulticore_init();
+#endif
+
    /* save the aplication mode */
    ApplicationMode = Mode;
 
