@@ -66,12 +66,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
 /*****************************************************************************
  * add a new version to this file, add the date, your initials and the main
  * changes, only main changes shall be listed here. A detailed message log
@@ -80,13 +74,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.1 20141130 PR   Added interrupt processing functions.
- * v0.1.0 20140608 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 /*****************************************************************************
  * Please define here all needed macros of your configuration that can

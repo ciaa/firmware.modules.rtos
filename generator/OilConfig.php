@@ -47,18 +47,6 @@
 /** \addtogroup Generator
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20080713 v0.1.0 MaCe       - initial version
- */
-
 /*==================[inclusions]=============================================*/
 require_once("OilParser.php");
 

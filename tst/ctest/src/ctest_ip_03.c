@@ -46,18 +46,6 @@
 /** \addtogroup FreeOSEK_Os_CT_IP_03 Test Sequence 3
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141124.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_ip_03.h"   /* include test header file */

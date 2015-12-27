@@ -43,17 +43,6 @@
 /** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- */
-
 /*==================[inclusions]=============================================*/
 #include "ciaaPlatforms.h"
 #include "ctest_arch.h"

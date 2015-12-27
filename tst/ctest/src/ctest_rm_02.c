@@ -49,18 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_RM_02 Test Sequence 2
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090414 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_rm_02.h"   /* include test header file */

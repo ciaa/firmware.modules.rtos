@@ -49,18 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_AL_04 Test Sequence 4
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090420 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_al_04.h"   /* include test header file */

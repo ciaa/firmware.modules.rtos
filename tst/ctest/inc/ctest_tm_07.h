@@ -51,18 +51,6 @@
 /** \addtogroup FreeOSEK_Os_CT_TM_07 Test Sequence 7
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090409 v0.1.0 MaCe initial version based on module tests
- */
-
 /*==================[inclusions]=============================================*/
 #include "Types.h"
 #include "ctest.h"

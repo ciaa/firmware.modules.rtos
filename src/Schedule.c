@@ -48,26 +48,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150619 v0.2.1 MaCe fix issue #279
- * 20141121 v0.2.0 MaCe rework Schedule
- * 20090418 v0.1.5 MaCe add Pre/Post TaskHook handling
- * 20090417 v0.1.4 MaCe update license
- * 20090330 v0.1.3 MaCe use new CallTask macro and add use of SetActualContext
- * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080810 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

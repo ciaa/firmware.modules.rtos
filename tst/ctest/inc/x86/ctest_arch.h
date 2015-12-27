@@ -47,18 +47,6 @@
 /** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20140503 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include <signal.h>
 #include <unistd.h>

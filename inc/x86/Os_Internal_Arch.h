@@ -49,24 +49,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * JuCe         Juan Cecconi
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150619 v0.1.4 MaCe fix issue #279
- * 20090719 v0.1.3 MaCe rename file to Os_
- * 20090408 v0.1.2 Mace add ShutdownOs_Arch
- * 20090330 v0.1.2 MaCe update CallTask macro
- * 20090130 v0.1.1 MaCe remove std type definitions, now in Types.h
- * 20080725 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "stdio.h"      /* used to print debug information */
 #include "stdbool.h"    /* needed for bool type */

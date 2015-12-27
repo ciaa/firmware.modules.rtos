@@ -51,18 +51,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
-/*
- * modification history (new versions first)
- * ----------------------------------------------------------
- * 20150831 v0.0.1 PR   First version for Cortex-M0 processors.
- */
-
 /*==================[inclusions]=============================================*/
 
 #include "Os_Internal_Arch_Cfg.h"

@@ -48,26 +48,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090417 v0.1.5 MaCe correct task status when seting it ready and update GPL
- *                      link exception
- * 20090330 v0.1.4 MaCe add NO_EVENTS evaluation
- * 20090330 v0.1.3 MaCe add support to NON_PREEMPTIVE systems and add non
- *                      preemptive check
- * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080814 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

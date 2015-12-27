@@ -50,18 +50,6 @@
 /** \addtogroup FreeOSEK_Os_CT_IP_01 Test Sequence 1
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * JuCe         Juan Cecconi
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141122 v0.1.0 JuCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_ip_01.h"   /* include test header file */

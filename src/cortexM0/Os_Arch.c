@@ -44,18 +44,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150828 v0.1.0 PR   initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

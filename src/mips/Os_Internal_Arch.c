@@ -43,18 +43,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.0 20141223 MaCe initial version to compile for pic32
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

@@ -67,12 +67,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************
  * add a new version to this file, add the date, your initials and the main
@@ -82,12 +76,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090526 v0.1.0 MaCe FreeOSEK architecture template file
- */
-
 /*==================[inclusions]=============================================*/
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************

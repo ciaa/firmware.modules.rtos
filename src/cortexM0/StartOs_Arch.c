@@ -46,18 +46,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150831 v0.1.0 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 #include "StartOs_Arch_SysTick.h"

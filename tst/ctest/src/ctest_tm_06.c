@@ -49,18 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_TM_06 Test Sequence 6
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090409 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_tm_06.h"   /* include test header file */

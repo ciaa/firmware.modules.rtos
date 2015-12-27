@@ -50,19 +50,6 @@
 /** \addtogroup FreeOSEK_Os_MT_01
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090130 v0.1.1 MaCe add MAIN_MEMMAP check
- * 20080812 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"
 #include "TestSuite.h"

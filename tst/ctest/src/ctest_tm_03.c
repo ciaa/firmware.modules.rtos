@@ -49,18 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_TM_03 Test Sequence 3
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090413 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_tm_03.h"   /* include test header file */

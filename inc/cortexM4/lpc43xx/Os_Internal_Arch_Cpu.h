@@ -54,12 +54,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
 /*****************************************************************************
  * add a new version to this file, add the date, your initials and the main
  * changes, only main changes shall be listed here. A detailed message log
@@ -68,12 +62,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20140608 v0.1.1 PR   First version for LPC4337 microcontroller.
- */
-
 /*==================[cpu macros]=============================================*/
 /*****************************************************************************
  * Please define here all cpu macros available for this cputype. arm7 and

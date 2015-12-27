@@ -51,18 +51,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141223 v0.1.0 MaCe pic32 initial version to compile
- */
-
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/

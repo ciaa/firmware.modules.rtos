@@ -46,20 +46,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150619 v0.1.2 MaCe fix issue #279
- * 20140608 v0.1.1 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 //#include "lpc43xx_cgu.h"
 

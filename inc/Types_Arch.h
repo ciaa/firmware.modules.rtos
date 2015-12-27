@@ -49,19 +49,6 @@
 /** \addtogroup FreeOSEK_Gen_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe                  Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.0 20090129 MaCe initial version
- * v0.1.1 20140503 MaCe add support for 64 bits
- */
-
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/

@@ -44,21 +44,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150831 v0.1.2 PR   First version for Cortex-M0.
- * 20150619 v0.1.1 MaCe fix issue #279
- * 20140608 v0.1.0 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 #include "chip.h"
 #include "Os_Internal.h"

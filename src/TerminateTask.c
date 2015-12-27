@@ -48,25 +48,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090418 v0.1.7 MaCe add PostTaskHook handling
- * 20090417 v0.1.6 MaCe update license
- * 20090406 v0.1.5 MaCe add support to RES_SCHEDULER
- * 20090330 v0.1.4 MaCe set system context when terminate task
- * 20090130 v0.1.3 MaCe add OSEK_MEMMAP check
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080810 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

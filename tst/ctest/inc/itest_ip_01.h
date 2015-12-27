@@ -48,18 +48,6 @@
 /** \addtogroup FreeOSEK_Os_IT_IP_01 Test Sequence 1
  ** @{ */
 
-/*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141203 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Types.h"
 #include "ctest.h"
