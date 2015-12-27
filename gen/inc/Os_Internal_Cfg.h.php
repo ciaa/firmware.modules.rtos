@@ -53,7 +53,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
-
+<?php
 require_once("modules/rtos/gen/ginc/multicore.php");
 
 function remove($a,$index)
