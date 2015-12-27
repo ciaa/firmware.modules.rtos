@@ -46,12 +46,6 @@
 /** \addtogroup FreeOSEK_Os_CT_IP_04 Test Sequence 4
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141122 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_ip_04.h"   /* include test header file */

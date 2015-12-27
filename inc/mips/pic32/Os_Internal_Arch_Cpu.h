@@ -47,12 +47,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141223 v0.1.0 MaCe initial port to compile for pic32
- */
-
 /*==================[cpu macros]=============================================*/
 #if 0
 /** \brief lpc2xxx cpu definition */

@@ -46,12 +46,6 @@
 /** \addtogroup FreeOSEK_Os_IT_IP_01 Test Sequence 1
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141202 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "itest_ip_01.h"   /* include test header file */

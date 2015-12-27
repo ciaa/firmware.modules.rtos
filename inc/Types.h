@@ -48,14 +48,6 @@
 /** \addtogroup FreeOSEK_Gen_Global Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.2 20090330 MaCe improve Types.h (many changes)
- * v0.1.1 20090128 MaCe add OSEK_DISABLE and OSEK_ENABLE macros
- * v0.1.0 20081126 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Compiler.h"
 

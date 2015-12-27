@@ -64,12 +64,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * modification history (new versions first)
- * ----------------------------------------------------------
- * 20140608 v0.1.1 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 
 #include "Os_Internal_Arch_Cfg.h"

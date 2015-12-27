@@ -46,12 +46,6 @@
 /** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090406 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "ctest.h"      /* include ctest header file */
 

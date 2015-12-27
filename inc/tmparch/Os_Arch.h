@@ -76,12 +76,6 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090526 v0.1.0 MaCe FreeOSEK architecture template file
- */
-
 /*==================[inclusions]=============================================*/
 #error this is a remember to remove the comment on the following line
 /*****************************************************************************

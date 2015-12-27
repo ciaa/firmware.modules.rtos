@@ -50,17 +50,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.5 20150831 PR   cortexM0 first version
- * v0.1.4 20150307 MaCe rework port for CIAA-FLS
- * v0.1.3 20150303 Apermingeat added K60_120 interrupt sources
- * v0.1.2 20141130 PR   Added ISR cat. 2 enabling and disabling functions.
- * v0.1.1 20141115 PR   added LPC43xx interrupt sources, spelling mistake fixed
- * v0.1.0 20141115 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 #if (CPU == lpc43xx)

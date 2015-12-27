@@ -49,12 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_TM_13 Test Sequence 13
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090414 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_tm_13.h"   /* include test header file */

@@ -50,13 +50,6 @@
 /** \addtogroup FreeOSEK_Os_MT_01 Test 1
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090130 v0.1.1 MaCe add MAIN_MEMMAP check
- * 20081205 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Types.h"
 

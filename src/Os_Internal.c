@@ -45,17 +45,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150619 v0.1.5 MaCe fix issue #279
- * 20090719 v0.1.4 MaCe rename file to Os_
- * 20090424 v0.1.3 MaCe correct initial task priority
- * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080713 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

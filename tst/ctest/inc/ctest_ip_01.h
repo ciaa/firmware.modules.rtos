@@ -52,12 +52,6 @@
 /** \addtogroup FreeOSEK_Os_CT_IP_01 Test Sequence 1
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141122 v0.1.0 JuCe initial version based on module tests
- */
-
 /*==================[inclusions]=============================================*/
 #include "Types.h"
 #include "ctest.h"

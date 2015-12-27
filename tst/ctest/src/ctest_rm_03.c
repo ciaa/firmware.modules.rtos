@@ -49,12 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_RM_03 Test Sequence 3
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090414 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_rm_03.h"   /* include test header file */

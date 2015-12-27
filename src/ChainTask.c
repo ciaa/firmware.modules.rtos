@@ -48,17 +48,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090418 v0.1.5 MaCe add PostTaskHook handling
- * 20090406 v0.1.4 MaCe add support to RES_SCHEDULER
- * 20090330 v0.1.3 MaCe add set actual context to SYS when chaining task
- * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080713 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

@@ -54,13 +54,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.1 20141130 PR   Added interrupt processing functions.
- * v0.1.0 20140608 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 
 /*==================[typedef]================================================*/

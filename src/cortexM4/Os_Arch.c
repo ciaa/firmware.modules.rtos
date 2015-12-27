@@ -43,12 +43,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20140608 v0.1.0 PR   initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

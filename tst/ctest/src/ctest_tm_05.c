@@ -49,12 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_TM_05 Test Sequence 5
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090413 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_tm_05.h"   /* include test header file */

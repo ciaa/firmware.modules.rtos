@@ -51,20 +51,6 @@
 /** \addtogroup FreeOSEK_Os_Global Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150619 v0.1.8 MaCe fix issue #279
- * 20090719 v0.1.7 MaCe rename file to Os_
- * 20090420 v0.1.6 MaCe correct AlarmBaseType members to lower cases
- * 20090418 v0.1.5 MaCe bugfix correct StartOS and ShutdownOS services names
- * 20090329 v0.1.4 MaCe add RES_SCHEDULER
- * 20090129 v0.1.3 MaCe add OSEK_MEMMAP check
- * 20081214 v0.1.2 AsKa Fix mistaken comments for SetRelAlarm
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080713 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Types.h"
 #include "Os_Cfg.h"

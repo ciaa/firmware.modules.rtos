@@ -50,12 +50,6 @@
  ** @{ */
 
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090418 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_eh_02.h"   /* include test header file */

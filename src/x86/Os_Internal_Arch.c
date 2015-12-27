@@ -48,15 +48,6 @@
  ** @{ */
 
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090719 v0.1.3 MaCe rename file to Os_
- * 20090424 v0.1.2 MaCe use the right counter macros
- * 20090130 v0.1.1 MaCe change type uint8_least to uint8f
- * 20080713 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 #include <stdbool.h>

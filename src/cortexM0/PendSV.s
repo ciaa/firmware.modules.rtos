@@ -44,13 +44,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20140831 v0.1.1 PR   First functional version.
- * 20150828 v0.1.0 PR	Initial version.
- */
-   .thumb_func
    .syntax unified
 
    .global PendSV_Handler

@@ -47,14 +47,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150831 v0.1.3 PR   First version for Cortex-M0.
- * 20150619 v0.1.2 MaCe fix issue #279
- * 20140608 v0.1.1 PR   First version for Cortex-M processors.
- */
-
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/

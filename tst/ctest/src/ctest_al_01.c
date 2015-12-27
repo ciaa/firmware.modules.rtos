@@ -49,12 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_AL_01 Test Sequence 1
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090420 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_al_01.h"   /* include test header file */

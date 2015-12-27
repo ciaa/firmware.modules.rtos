@@ -51,12 +51,6 @@
 /** \addtogroup FreeOSEK_Os_CT_AL_01 Test Sequence 1
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090420 v0.1.0 MaCe initial version based on module tests
- */
-
 /*==================[inclusions]=============================================*/
 #include "Types.h"
 #include "ctest.h"

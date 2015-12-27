@@ -48,16 +48,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090418 v0.1.4 MaCe bugfix function name to StartOS
- * 20090330 v0.1.3 MaCe use ActivateTast instead of AddReady
- * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
- * 20081113 v0.1.1 KLi  Added memory layout attribute macros
- * 20080810 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

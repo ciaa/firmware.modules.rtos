@@ -49,13 +49,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090130 v0.1.1 MaCe change type uint8_least to uint8f
- * 20080810 v0.1.0 MaCe initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 #include <stdio.h>

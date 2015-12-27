@@ -48,13 +48,6 @@
 /** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20141123 v0.1.0 JuCe   implements ISR1/ISR2 triggers
- * 20140503 v0.1.0 MaCe   initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "ciaaPlatforms.h"
 

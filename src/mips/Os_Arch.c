@@ -43,12 +43,6 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.0 20090526 MaCe FreeOSEK architecture template file
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 

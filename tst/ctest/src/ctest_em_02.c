@@ -49,12 +49,6 @@
 /** \addtogroup FreeOSEK_Os_CT_EM_02 Test Sequence 2
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20090417 v0.1.0 MaCe initial version based on old moduletest
- */
-
 /*==================[inclusions]=============================================*/
 #include "os.h"            /* include os header file */
 #include "ctest_em_02.h"   /* include test header file */

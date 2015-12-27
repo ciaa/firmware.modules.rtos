@@ -43,11 +43,6 @@
 /** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- */
-
 /*==================[inclusions]=============================================*/
 #include "ciaaPlatforms.h"
 #include "ctest_arch.h"
