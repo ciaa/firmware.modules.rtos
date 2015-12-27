@@ -49,13 +49,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20141019 v0.1.4 MaCe use spaces instead tabs

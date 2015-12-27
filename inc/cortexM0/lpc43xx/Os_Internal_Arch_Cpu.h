@@ -51,12 +51,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
-/*
  * modification history (new versions first)
  * ----------------------------------------------------------------------------
  * 20150831 v0.0.1 PR   First version for LPC4337-CortexM0 microcontroller.

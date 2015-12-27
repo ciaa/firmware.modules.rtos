@@ -49,13 +49,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090418 v0.1.3 MaCe bugfix E_OS_NOFUNC can be always returned, not only in

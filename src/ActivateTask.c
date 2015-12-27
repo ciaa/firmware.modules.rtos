@@ -49,13 +49,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090330 v0.1.4 MaCe add support to NON_PREEMPTIVE systems

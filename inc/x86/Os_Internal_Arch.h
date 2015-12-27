@@ -50,13 +50,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * JuCe         Juan Cecconi
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20150619 v0.1.4 MaCe fix issue #279

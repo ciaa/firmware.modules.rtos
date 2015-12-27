@@ -44,12 +44,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20140608 v0.1.0 PR   initial version

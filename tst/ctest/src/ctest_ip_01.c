@@ -51,12 +51,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * JuCe         Juan Cecconi
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20141122 v0.1.0 JuCe initial version based on old moduletest

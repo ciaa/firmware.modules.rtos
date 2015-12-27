@@ -49,13 +49,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20090330 v0.1.3 MaCe add NO_EVENTS evaluation

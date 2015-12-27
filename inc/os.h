@@ -52,14 +52,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- * AsKa         Asnoka
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20150619 v0.1.8 MaCe fix issue #279

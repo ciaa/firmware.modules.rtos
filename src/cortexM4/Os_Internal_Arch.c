@@ -44,13 +44,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- * MaCe         Mariano Cerdeiro
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20150619 v0.1.1 MaCe fix issue #279

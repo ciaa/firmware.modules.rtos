@@ -51,14 +51,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * PR           Pablo Ridolfi
- * Apermingeat  Alejandro Permingeat
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * v0.1.5 20150831 PR   cortexM0 first version

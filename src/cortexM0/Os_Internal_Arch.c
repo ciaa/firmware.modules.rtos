@@ -45,13 +45,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * PR           Pablo Ridolfi
- * MaCe         Mariano Cerdeiro
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20150831 v0.1.2 PR   First version for Cortex-M0.

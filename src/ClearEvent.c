@@ -49,13 +49,6 @@
  ** @{ */
 
 /*
- * Initials     Name
- * ---------------------------
- * MaCe         Mariano Cerdeiro
- * KLi          Kang Li
- */
-
-/*
  * modification history (new versions first)
  * -----------------------------------------------------------
  * 20141109 v0.1.6 MaCe ClearEvent shall E_OS_CALLEVEL is called from any
