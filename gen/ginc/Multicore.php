@@ -1,5 +1,6 @@
 <?php
 /* Copyright 2015, Pablo Ridolfi
+ * Copyright 2016 Carlos Pantelides
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -36,7 +37,7 @@
  **
  ** This file implements auxiliary functions for multicore generation
  **
- ** \file multicore.php
+ ** \file Multicore.php
  **
  **/
 
@@ -49,65 +50,73 @@
 
 /*=================[user functions]==========================================*/
 
-/**   \brief Get array of elements defined for the local core
- *    \param root Root element to search into
- *    \param type Type to filter inside Root
- *    \return array of local elements
- */
-function getLocalList($root, $type)
+class Multicore
 {
-   global $config;
-   global $definitions;
+   private $config;
+   private $definitions;
+   private $log;
 
-   $list = $config->getList($root,$type);
-   $ret = array();
-
-   if (isset($definitions["MCORE"]))
+   public function __construct($config, $definitions, $log)
    {
-      $core = $definitions["MCORE"];
-      for ($i=0; $i < count($list); $i++)
+      $this->config = $config;
+      $this->definitions = $definitions;
+      $this->log = $log;
+   }
+
+   /**   \brief Get array of elements defined for the local core
+   *    \param root Root element to search into
+   *    \param type Type to filter inside Root
+   *    \return array of local elements
+   */
+   function getLocalList($root, $type)
+   {
+
+      $list = $this->config->getList($root,$type);
+      $ret = array();
+
+      if (isset($this->definitions["MCORE"]))
       {
-         $current_core = $config->getValue("/OSEK/$list[$i]","CORE");
-         if ($current_core == $core)
+         $core = $this->definitions["MCORE"];
+         for ($i=0; $i < count($list); $i++)
          {
-            array_push($ret,$list[$i]);
+            $current_core = $this->config->getValue("/OSEK/$list[$i]","CORE");
+            if ($current_core == $core)
+            {
+               array_push($ret,$list[$i]);
+            }
          }
       }
-   }
-   else
-   {
-      $ret = $list;
-   }
-   return $ret;
-}
-
-/**   \brief Get array of elements defined for the remote core
- *    \param root Root element to search into
- *    \param type Type to filter inside Root
- *    \return array of remote elements
- */
-function getRemoteList($root, $type)
-{
-   global $config;
-   global $definitions;
-
-   $ret = array();
-   if (isset($definitions["MCORE"]))
-   {
-      $list = $config->getList($root,$type);
-      $core = $definitions["MCORE"];
-      for ($i=0; $i < count($list); $i++)
+      else
       {
-         $current_core = $config->getValue("/OSEK/$list[$i]","CORE");
-         if ($current_core != $core)
+         $ret = $list;
+      }
+      return $ret;
+   }
+
+   /**   \brief Get array of elements defined for the remote core
+   *    \param root Root element to search into
+   *    \param type Type to filter inside Root
+   *    \return array of remote elements
+   */
+   function getRemoteList($root, $type)
+   {
+      $ret = array();
+      if (isset($this->definitions["MCORE"]))
+      {
+         $list = $this->config->getList($root,$type);
+         $core = $this->definitions["MCORE"];
+         for ($i=0; $i < count($list); $i++)
          {
-            array_push($ret,$list[$i]);
+            $current_core = $this->config->getValue("/OSEK/$list[$i]","CORE");
+            if ($current_core != $core)
+            {
+               array_push($ret,$list[$i]);
+            }
          }
       }
+      return $ret;
    }
-   return $ret;
 }
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/

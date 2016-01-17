@@ -127,7 +127,7 @@ void DebugMon_Handler(void) {
 
 /*==================[external functions definition]==========================*/
 <?php
-switch ($definitions["CPU"])
+switch ($this->definitions["CPU"])
 {
    case "mk60fx512vlq15":
       /* Interrupt sources for MK60F12.
@@ -305,13 +305,13 @@ switch ($definitions["CPU"])
       break;
 
    default:
-     $this->log->error("the CPU " . $definitions["CPU"] . " is not supported.");
+     $this->log->error("the CPU " . $this->definitions["CPU"] . " is not supported.");
       break;
 }
 
 $MAX_INT_COUNT = max(array_keys($intList))+1;
 
-if ($definitions["CPU"] == "mk60fx512vlq15") : ?>
+if ($this->definitions["CPU"] == "mk60fx512vlq15") : ?>
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
    /* System ISRs */
@@ -331,7 +331,7 @@ void (* const g_pfnVectors[])(void) = {
    0,                              /* Reserved                   */
    PendSV_Handler,                 /* The PendSV handler         */
    SysTick_Handler,                /* The SysTick handler        */
-<?php elseif ($definitions["CPU"] == "lpc4337") : ?>
+<?php elseif ($this->definitions["CPU"] == "lpc4337") : ?>
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
@@ -353,22 +353,22 @@ void (* const g_pfnVectors[])(void) = {
    PendSV_Handler,                 /* The PendSV handler         */
    SysTick_Handler,                /* The SysTick handler        */
 <?php else :
-     $this->log->error("Not supported CPU: " . $definitions["CPU"]);
+     $this->log->error("Not supported CPU: " . $this->definitions["CPU"]);
    endif;
 ?>
    /*** User Interruptions ***/
 <?php
 
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
    foreach ($intnames as $int)
    {
-      $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-      $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+      $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
+      $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
 
       if($intList[$i] == $source)
       {
@@ -399,12 +399,12 @@ void Enable_User_ISRs(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
 
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $prio = $config->getValue("/OSEK/" . $int,"PRIORITY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $prio = $this->config->getValue("/OSEK/" . $int,"PRIORITY");
 
    print "   /* Enabling IRQ $source with priority $prio */\n";
    print "   NVIC_EnableIRQ(" . array_search($source, $intList) . ");\n";
@@ -418,11 +418,11 @@ void Enable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if($cat == 2)
    {
@@ -438,11 +438,11 @@ void Disable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if($cat == 2)
    {
