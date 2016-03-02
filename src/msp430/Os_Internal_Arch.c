@@ -1,4 +1,5 @@
 /* Copyright 2016, Franco Bucafusco
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -32,8 +33,8 @@
 
 /** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file cortexM4/Os_Internal_Arch.c
- ** \arch cortexM4
+ ** \file msp430/Os_Internal_Arch.c
+ ** \arch msp430
  **/
 
 /** \addtogroup FreeOSEK
@@ -76,7 +77,7 @@ void ReturnHook_Arch(void)
 {
    /* Tasks shouldn't return here... */
    while(1) 
-		osekpause();
+       osekpause();
 }
 
 void CheckTerminatingTask_Arch(void)
@@ -91,8 +92,7 @@ void CheckTerminatingTask_Arch(void)
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
-
-   uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
+   uint32 * taskStack     = (uint32 *)TasksConst[TaskID].StackPtr;
    int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
 
    taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
@@ -101,14 +101,35 @@ void InitStack_Arch(uint8 TaskID)
    taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
 
    *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
-
 }
 
-/* Periodic Interrupt Timer, included in all Cortex-M4 processors */
-void SysTick_Handler(void)
+
+/**
+ EL TICK SE IMPLEMENTA UTILIZANDO EL PRESCALER DEL MODULO RTC_A 
+ DEL UC.
+ LA SALIDA PS0 SE USA COMO FUENTE DE TICK. SE PUEDE CONFIGURAR VALORES DE aprox 1ms (1/1024)
+*/
+void RTC_A_Handler(void)
 {
+
+    temporario2 = RTCIV;
+    if( temporario2 ==  RTC_RT0PSIFG    )
+    {
+         //tick handler
+        __no_operation();
+    }
+
+      if(temporario2 ==  RTC_RT1PSIFG  )
+    {
+      //swi handler
+        __no_operation();
+      RT1PS = 0x00;
+    }
+
+
    /* store the calling context in a variable */
    ContextType actualContext = GetCallingContext();
+
    /* set isr 2 context */
    SetActualContext(CONTEXT_ISR2);
 

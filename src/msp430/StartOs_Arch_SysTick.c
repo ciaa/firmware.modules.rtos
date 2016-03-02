@@ -53,7 +53,7 @@
 #include "Os_Internal_Arch_Cpu.h"
 #include "ciaaPlatforms.h"
 #if (CPU == msp430f5529)
-//#include "chip.h"
+#include "msp430.h"
 #endif
 
 /*==================[macros and definitions]=================================*/
@@ -71,18 +71,21 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch_SysTick(void)
 {
+/*notas franco
+  aqui tengo que inicializar el timer que vaya a disparar el tick del sistema. */
+
    /* Activate MemFault, UsageFault and BusFault exceptions */
-   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
+//   SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
 
    /* Set lowest priority for SysTick and PendSV */
-   NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
+  // NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
 
    /* Activate SysTick */
-   SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
+  // SystemCoreClockUpdate();
+  // SysTick_Config(SystemCoreClock/1000);
 
    /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+ //  NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
 }
 
 

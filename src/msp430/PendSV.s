@@ -30,10 +30,10 @@
  *
  */
 
-/** \brief Cortex-M PendSV Interrupt Handler, used for context switch.
+/** \brief MSP430 PendSV Interrupt Handler, used for context switch.
  **
- ** \file cortexM4/PendSV.s
- ** \arch cortexM4
+ ** \file msp430/PendSV.s
+ ** \arch msp430
  **/
 
 /** \addtogroup FreeOSEK
@@ -48,7 +48,7 @@
  * -----------------------------------------------------------
  * 20160222 v0.1.0 FB   initial version
  */
-	.thumb_func
+	/* .thumb_func*/
 	.syntax unified
 
 /*	.section .after_vectors */
@@ -59,7 +59,7 @@
 /* Pendable Service Call, used for context-switching in all Cortex-M processors */
 PendSV_Handler:
 	/* disable IRQs */
-	cpsid f
+	dint /* PORTED */
 
 	/* reinicio el stack de la tarea que termino */
    push {lr}
@@ -120,6 +120,6 @@ PendSV_Handler:
 	msr control,r1
 
 	/* enable IRQs */
-	cpsie f
+	eint /* PORTED */
 
 	bx lr

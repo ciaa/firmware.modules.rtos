@@ -71,7 +71,7 @@
  **
  ** This define makes the Osek_Internal.h file to include the
  ** Osek_Internal_Arch_Cpu file which is not standard for all architectures.
- ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
+ ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is needed
  ** remove the macro and this comment.
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
@@ -106,12 +106,19 @@ extern TaskType TerminatingTask;
  ** occurs, like for example an interrupt.
  **
  **/
-#define osekpause() __asm volatile("wfi")
+#define osekpause() __asm volatile("nop")	//TODO revisar los low power modes
+
 
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
  **/
+ /*
+ NOTA FRANCO PARA PORT:
+ ESTA FUNCION SIMPLEMENTE CARGA EN Osek_OldTaskPtr_Arch Y Osek_NewTaskPtr_Arch
+ EL INDICE DE TAREAS, Y SETEA EL BIT DE PEND SVR PARA QUE CUANDO PUEDA, EL NVIC
+ EJECTUE EL HANDLER  PendSV_Handler que se encuentra en PendSV.s
+ */
 #define CallTask(actualtask, nexttask)                                    \
 {                                                                         \
    Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;    \
