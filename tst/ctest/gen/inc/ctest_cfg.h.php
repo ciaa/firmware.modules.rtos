@@ -49,8 +49,8 @@
 
 /*==================[macros]=================================================*/
 <?php
-$os = $config->getList("/OSEK","OS");
-$osattr = $config->getValue("/OSEK/" . $os[0],"STATUS");
+$os = $this->config->getList("/OSEK","OS");
+$osattr = $this->config->getValue("/OSEK/" . $os[0],"STATUS");
 print "/** \brief Error Checking Type */\n";
 if ( $osattr == "EXTENDED" )
 {
@@ -62,12 +62,12 @@ elseif ( $osattr == "STANDARD" )
 }
 
 /* get tasks */
-$tasks = $config->getList("/OSEK","TASK");
+$tasks = $this->config->getList("/OSEK","TASK");
 
 foreach($tasks as $task)
 {
    print "/** \brief Confromance Test Scheduling information for task $task */\n";
-   $schedule = $config->getValue("/OSEK/" . $task, "SCHEDULE");
+   $schedule = $this->config->getValue("/OSEK/" . $task, "SCHEDULE");
    if($schedule == "FULL")
    {
       print "#define CT_SCHEDULING_" . $task . "   CT_PREEMPTIVE\n\n";

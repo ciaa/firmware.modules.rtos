@@ -54,7 +54,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 <?php
-require_once("modules/rtos/gen/ginc/multicore.php");
 
 function remove($a,$index)
 {
@@ -89,14 +88,23 @@ function remove_doubles($a)
    return $a;
 }
 
+/* remove soon
+ * you can load the helper here with
+   $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+ * or when calling generator.php with
+   -H modules/rtos/gen/ginc/Multicore.php
+ *
+*/
+
 /* get tasks */
-$tasks = getLocalList("/OSEK", "TASK");
+$tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
 /* convert config priority to real osek priority */
 $priorities = array();
 foreach ($tasks as $task)
 {
-   $priorities[] = $config->getValue("/OSEK/" . $task, "PRIORITY");
+   $priorities[] = $this->config->getValue("/OSEK/" . $task, "PRIORITY");
 }
 $priorities = remove_doubles($priorities);
 
@@ -119,8 +127,8 @@ arsort($priority);
 
 /** \brief Count of task */
 <?php
-$taskscount = count(getLocalList("/OSEK", "TASK"));
-$remotetaskscount = count(getRemoteList("/OSEK", "TASK"));
+$taskscount = count($this->helper->multicore->getLocalList("/OSEK", "TASK"));
+$remotetaskscount = count($this->helper->multicore->getRemoteList("/OSEK", "TASK"));
 
 if ($taskscount<=0)
 {
@@ -132,7 +140,7 @@ print "/** \brief Remote tasks count */\n";
 print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
 
 /* Define the Resources */
-$resources = $config->getList("/OSEK","RESOURCE");
+$resources = $this->config->getList("/OSEK","RESOURCE");
 if(count($resources)>31)
 {
    $this->log->error("more than 31 resources were defined");
@@ -143,12 +151,12 @@ else
    print "#define RESOURCES_COUNT " . count($resources) . "\n\n";
 }
 
-$os = $config->getList("/OSEK","OS");
+$os = $this->config->getList("/OSEK","OS");
 if (count($os)>1)
 {
    $this->log->error("More than one OS defined on the configuration");
 }
-$osattr = $config->getValue("/OSEK/" . $os[0],"STATUS");
+$osattr = $this->config->getValue("/OSEK/" . $os[0],"STATUS");
 print "/** \brief Error Checking Type */\n";
 if ( $osattr == "EXTENDED" )
 {
@@ -164,7 +172,7 @@ else
 }
 
 /* PRETASKHOOK */
-$pretaskhook=$config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
+$pretaskhook=$this->config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 print "/** \brief pre task hook enable-disable macro */\n";
 if($pretaskhook == "")
 {
@@ -184,7 +192,7 @@ else
    $this->log->error("PRETASKHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* POSTTAKHOOK */
-$posttaskhook=$config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
+$posttaskhook=$this->config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
 print "/** \brief post task hook enable-disable macro */\n";
 if($posttaskhook == "")
 {
@@ -204,7 +212,7 @@ else
    $this->log->error("POSTTASKHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* ERRORHOOK */
-$errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
+$errorhook=$this->config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 print "/** \brief error hook enable-disable macro */\n";
 if($errorhook == "")
 {
@@ -224,7 +232,7 @@ else
    $this->log->error("ERRORHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* STARTUPHOOK */
-$startuphook=$config->getValue("/OSEK/" . $os[0],"STARTUPHOOK");
+$startuphook=$this->config->getValue("/OSEK/" . $os[0],"STARTUPHOOK");
 print "/** \brief startup hook enable-disable macro */\n";
 if($startuphook == "")
 {
@@ -244,7 +252,7 @@ else
    $this->log->error("STARTUPHOOK set to an invalid value \"$pretaskhook\"");
 }
 /* SHUTDOWNHOOK */
-$shutdownhook=$config->getValue("/OSEK/" . $os[0],"SHUTDOWNHOOK");
+$shutdownhook=$this->config->getValue("/OSEK/" . $os[0],"SHUTDOWNHOOK");
 print "/** \brief shutdown hook enable-disable macro */\n";
 if($shutdownhook == "")
 {
@@ -265,7 +273,7 @@ else
 }
 
 /* MULTICORE */
-$multicore = $config->getValue("/OSEK/" . $os[0], "MULTICORE");
+$multicore = $this->config->getValue("/OSEK/" . $os[0], "MULTICORE");
 if ($multicore == "TRUE")
 {
    print "/** \brief multicore API */\n";
@@ -291,11 +299,11 @@ if ($multicore == "TRUE")
    }
 
 <?php
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 $count = 0;
 foreach ($alarms as $alarm)
 {
-   if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+   if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
    {
       $count++;
    }
@@ -305,21 +313,21 @@ foreach ($alarms as $alarm)
 
 
 <?php
-$counters = getLocalList("/OSEK", "COUNTER");
+$counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
 
 foreach ($counters as $count => $counter)
 {
    print "#define OSEK_COUNTER_" . $counter . " " . $count . "\n";
 }
 
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 print "/** \brief ALARMS_COUNT define */\n";
 print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
 
 $preemptive = false;
 foreach($tasks as $task)
 {
-   $schedule = $config->getValue("/OSEK/" .$task, "SCHEDULE");
+   $schedule = $this->config->getValue("/OSEK/" .$task, "SCHEDULE");
    if($schedule == "FULL")
    {
       $preemptive = true;
@@ -336,7 +344,7 @@ else
    print "#define NON_PREEMPTIVE OSEK_DISABLE\n\n";
 }
 
-$events = $config->getList("/OSEK","EVENT");
+$events = $this->config->getList("/OSEK","EVENT");
 print "/** \brief NO_EVENTS macro definition */\n";
 if(count($events) == 0)
 {
@@ -347,7 +355,7 @@ else
    print "#define NO_EVENTS OSEK_DISABLE\n\n";
 }
 
-$schedulerpolicy = $config->getValue("/OSEK/" . $os[0],"USERESSCHEDULER");
+$schedulerpolicy = $this->config->getValue("/OSEK/" . $os[0],"USERESSCHEDULER");
 print "/** \brief NO_RES_SCHEDULER macro definition */\n";
 switch($schedulerpolicy)
 {
@@ -575,14 +583,14 @@ extern TaskVariableType TasksVar[TASKS_COUNT];
 extern uint8 ApplicationMode;
 
 <?php
-$appmodes = $config->getList("/OSEK", "APPMODE");
+$appmodes = $this->config->getList("/OSEK", "APPMODE");
 
 foreach ($appmodes as $appmode)
 {
    $tasksinmode = array();
    foreach($tasks as $task)
    {
-      $taskappmodes = $config->getList("/OSEK/" . $task, "APPMODE");
+      $taskappmodes = $this->config->getList("/OSEK/" . $task, "APPMODE");
       foreach ($taskappmodes as $taskappmode)
       {
          if ($taskappmode == $appmode)
@@ -599,12 +607,12 @@ foreach ($appmodes as $appmode)
    }
 }
 
-$appmodes = $config->getList("/OSEK","APPMODE");
+$appmodes = $this->config->getList("/OSEK","APPMODE");
 print "/** \brief AutoStart Array */\n";
 print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";
 
 /* Resources Priorities */
-$resources = $config->getList("/OSEK","RESOURCE");
+$resources = $this->config->getList("/OSEK","RESOURCE");
 print "/** \brief Resources Priorities */\n";
 print "extern const TaskPriorityType ResourcesPriority[" . count($resources) . "];\n\n";
 
@@ -613,11 +621,11 @@ print "extern const ReadyConstType ReadyConst[" . count($priority) .  "];\n\n";
 print "/** \brief Ready Variable List */\n";
 print "extern ReadyVarType ReadyVar[" . count($priority) . "];\n\n";
 
-$resources = $config->getList("/OSEK","RESOURCE");
+$resources = $this->config->getList("/OSEK","RESOURCE");
 print "/** \brief Resources Priorities */\n";
 print "extern const TaskPriorityType ResourcesPriority[" . count($resources) . "];\n\n";
 
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 
 print "/** \brief Alarms Variable Structure */\n";
 print "extern AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
@@ -628,7 +636,7 @@ print "extern const AlarmConstType AlarmsConst[" . count($alarms) . "];\n\n";
 print "/** \brief Alarms Constant Structure */\n";
 print "extern const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT];\n\n";
 
-$counters = getLocalList("/OSEK", "COUNTER");
+$counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
 
 print "/** \brief Counter Var Structure */\n";
 print "extern CounterVarType CountersVar[" . count($counters) . "];\n\n";
@@ -639,11 +647,11 @@ print "extern const CounterConstType CountersConst[" . count($counters) . "];\n"
 ?>
 /*==================[external functions declaration]=========================*/
 <?php
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $inttype = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if ($intcat == 2)
    {

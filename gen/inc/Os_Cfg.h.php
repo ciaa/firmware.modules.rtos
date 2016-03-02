@@ -71,9 +71,19 @@
 #define OSEK_OS_INTERRUPT_MASK ((InterruptFlagsType)0xFFFFFFFFU)
 
 <?php
+
+/* remove soon
+ * you can load the helper here with
+   $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+ * or when calling generator.php with
+   -H modules/rtos/gen/ginc/Multicore.php
+ *
+*/
+
 /* Definitions of Tasks */
-$tasks = getLocalList("/OSEK", "TASK");
-$remote_tasks = getRemoteList("/OSEK", "TASK");
+$tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
+$remote_tasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
 
 $count = 0;
 foreach ($tasks as $task)
@@ -96,7 +106,7 @@ if (count($remote_tasks) > 0)
 }
 
 /* Define the Applications Modes */
-$appmodes = $config->getList("/OSEK","APPMODE");
+$appmodes = $this->config->getList("/OSEK","APPMODE");
 
 foreach ($appmodes as $count=>$appmode)
 {
@@ -106,7 +116,7 @@ foreach ($appmodes as $count=>$appmode)
 print "\n";
 
 /* Define the Events */
-$events = $config->getList("/OSEK","EVENT");
+$events = $this->config->getList("/OSEK","EVENT");
 
 foreach ($events as $count=>$event)
 {
@@ -116,7 +126,7 @@ foreach ($events as $count=>$event)
 print "\n";
 
 /* Define the Resources */
-$resources = $config->getList("/OSEK","RESOURCE");
+$resources = $this->config->getList("/OSEK","RESOURCE");
 
 foreach ($resources as $count=>$resource)
 {
@@ -126,7 +136,7 @@ foreach ($resources as $count=>$resource)
 print "\n";
 
 /* Define the Alarms */
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 
 foreach ($alarms as $count=>$alarm)
 {
@@ -136,7 +146,7 @@ foreach ($alarms as $count=>$alarm)
 print "\n";
 
 /* Define the Counters */
-$counters = getLocalList("/OSEK", "COUNTER");
+$counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
 
 foreach ($counters as $count=>$counter)
 {
@@ -145,7 +155,7 @@ foreach ($counters as $count=>$counter)
 }
 print "\n";
 
-$errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
+$errorhook=$this->config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 if ($errorhook == "TRUE")
 {
 ?>
@@ -168,7 +178,7 @@ if ($errorhook == "TRUE")
 <?php
 }
 
-$memmap = $config->getValue("/OSEK/" . $os[0],"MEMMAP");
+$memmap = $this->config->getValue("/OSEK/" . $os[0],"MEMMAP");
 print "/** \brief OSEK_MEMMAP macro (OSEK_DISABLE not MemMap is used for FreeOSEK, OSEK_ENABLE\n ** MemMap is used for FreeOSEK) */\n";
 if ($memmap == "TRUE")
 {
@@ -184,7 +194,7 @@ else
    print "#define OSEK_MEMMAP OSEK_DISABLE\n";
 }
 
-$osattr = $config->getValue("/OSEK/" . $os[0],"STATUS");
+$osattr = $this->config->getValue("/OSEK/" . $os[0],"STATUS");
 if ($osattr == "EXTENDED") : ?>
 /** \brief Schedule this Task if higher priority Task are Active
  **
@@ -216,7 +226,7 @@ typedef unsigned char StatusType;
 
 /*==================[external data declaration]==============================*/
 <?php
-$errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
+$errorhook=$this->config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 if ($errorhook == "TRUE")
 {
 ?>
@@ -260,31 +270,31 @@ extern unsigned int Osek_ErrorRet;
 
 /*==================[external functions declaration]=========================*/
 <?php
-$pretaskhook=$config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
+$pretaskhook=$this->config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 if ($pretaskhook == "TRUE")
 {
    print "/** \brief Pre Task Hook */\n";
    print "extern void PreTaskHook(void);\n\n";
 }
-$posttaskhook=$config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
+$posttaskhook=$this->config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
 if ($posttaskhook == "TRUE")
 {
    print "/** \brief Post Task Hook */\n";
    print "extern void PostTaskHook(void);\n\n";
 }
-$shutdownhook=$config->getValue("/OSEK/" . $os[0],"SHUTDOWNHOOK");
+$shutdownhook=$this->config->getValue("/OSEK/" . $os[0],"SHUTDOWNHOOK");
 if ($shutdownhook == "TRUE")
 {
    print "/** \brief Shutdown Hook */\n";
    print "extern void ShutdownHook(void);\n\n";
 }
-$startuphook=$config->getValue("/OSEK/" . $os[0],"STARTUPHOOK");
+$startuphook=$this->config->getValue("/OSEK/" . $os[0],"STARTUPHOOK");
 if ($startuphook == "TRUE")
 {
    print "/** \brief Startup Hook */\n";
    print "extern void StartupHook(void);\n\n";
 }
-$errorhook=$config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
+$errorhook=$this->config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 if ($errorhook == "TRUE")
 {
    print "/** \brief Error Hook */\n";
@@ -300,7 +310,7 @@ foreach ($tasks as $count=>$task)
 }
 print "\n";
 
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
 foreach ($intnames as $count=>$int)
 {
@@ -309,20 +319,20 @@ foreach ($intnames as $count=>$int)
 }
 print "\n";
 
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 
 foreach ($alarms as $count=>$alarm)
 {
-   $action = $config->getValue("/OSEK/" . $alarm, "ACTION");
+   $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
    if ($action == "ALARMCALLBACK")
    {
       print "/** \brief Alarm Callback declaration */\n";
-      print "extern void OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . "(void);\n";
+      print "extern void OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . "(void);\n";
    }
 }
 print "\n";
 
-$osattr = $config->getValue("/OSEK/" . $os[0],"STATUS"); ?>
+$osattr = $this->config->getValue("/OSEK/" . $os[0],"STATUS"); ?>
 /** \brief Schedule this Task if higher priority Task are Active
  **
  ** This API shall Schedule the calling Task if a higher priority Task

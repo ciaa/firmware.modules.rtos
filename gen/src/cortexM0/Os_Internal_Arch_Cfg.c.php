@@ -82,7 +82,17 @@ extern void _vStackTop(void);
 extern void PendSV_Handler(void);
 
 <?php
-if ($definitions["ARCH"] == "cortexM0")
+
+/* remove soon
+ * you can load the helper here with
+   $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+ * or when calling generator.php with
+   -H modules/rtos/gen/ginc/Multicore.php
+ *
+*/
+
+if ($this->definitions["ARCH"] == "cortexM0")
 {
    echo "extern void RIT_IRQHandler(void);\n";
 }
@@ -113,7 +123,7 @@ void DebugMon_Handler(void) {
 
 /*==================[external functions definition]==========================*/
 <?php
-switch ($definitions["CPU"])
+switch ($this->definitions["CPU"])
 {
    case "lpc4337":
       /* Interrupt sources for LPC43xx (Cortex-M0 core).
@@ -156,13 +166,13 @@ switch ($definitions["CPU"])
       break;
 
    default:
-      error("the CPU " . $definitions["CPU"] . " is not supported.");
+      error("the CPU " . $this->definitions["CPU"] . " is not supported.");
       break;
 }
 
 $MAX_INT_COUNT = max(array_keys($intList))+1;
 
-if ($definitions["CPU"] == "lpc4337") : ?>
+if ($this->definitions["CPU"] == "lpc4337") : ?>
 /** \brief LPC4337 Interrupt vector */
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
@@ -184,19 +194,19 @@ void (* const g_pfnVectors[])(void) = {
    PendSV_Handler,                 /* The PendSV handler         */
    0,                              /* The SysTick handler        */
 <?php else :
-      error("Not supported CPU: " . $definitions["CPU"]);
+      error("Not supported CPU: " . $this->definitions["CPU"]);
    endif;
 ?>
    /*** User Interrupts ***/
 <?php
 
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    /* LPC4337-CortexM0 core uses RIT timer for OSEK periodic interrupt */
-   if( ($i==11) && ($definitions["ARCH"] == "cortexM0") )
+   if( ($i==11) && ($this->definitions["ARCH"] == "cortexM0") )
    {
       print "   RIT_IRQHandler,\n";
    }
@@ -205,8 +215,8 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       $src_found = 0;
       foreach ($intnames as $int)
       {
-         $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-         $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+         $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
+         $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
 
          if($intList[$i] == $source)
          {
@@ -238,11 +248,11 @@ void Enable_User_ISRs(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $prio = $config->getValue("/OSEK/" . $int,"PRIORITY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $prio = $this->config->getValue("/OSEK/" . $int,"PRIORITY");
 
    print "   /* Enabling IRQ $source with priority $prio */\n";
    print "   NVIC_EnableIRQ(" . array_search($source, $intList) . ");\n";
@@ -256,11 +266,11 @@ void Enable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if($cat == 2)
    {
@@ -276,11 +286,11 @@ void Disable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if($cat == 2)
    {
