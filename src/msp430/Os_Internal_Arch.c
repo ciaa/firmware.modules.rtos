@@ -46,7 +46,7 @@
 
 /*
  * modification history (new versions first)
- * ----------------------------------------------------------- 
+ * -----------------------------------------------------------
  * 20160222 v0.1.0 FB   initial version for msp430 processors
  */
 
@@ -59,7 +59,6 @@
 
 /*==================[internal functions declaration]=========================*/
 void* Osek_NewTaskPtr_Arch;
-
 void* Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
@@ -75,92 +74,117 @@ TaskType WaitingTask 		= INVALID_TASK;
 
 void ReturnHook_Arch(void)
 {
-   /* Tasks shouldn't return here... */
-   while(1) 
-       osekpause();
+	/* Tasks shouldn't return here... */
+	while(1)
+	{
+		osekpause();
+	}
 }
 
 void CheckTerminatingTask_Arch(void)
 {
-   if(TerminatingTask != INVALID_TASK)
-   { 
-      InitStack_Arch(TerminatingTask);
-   }
-   TerminatingTask = INVALID_TASK;
+	if( TerminatingTask != INVALID_TASK )
+	{
+		InitStack_Arch( TerminatingTask );
+	}
+	TerminatingTask = INVALID_TASK;
 }
 
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
-   uint32 * taskStack     = (uint32 *)TasksConst[TaskID].StackPtr;
-   int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
+ 	uint16 * taskStack     = (uint16 *)TasksConst[TaskID].StackPtr;	/* stack bottom */
 
-   taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
-   taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
-   taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
-   taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+	int taskStackSizeWords = TasksConst[TaskID].StackSize/2;				/* calculation of the size of the stack in words units (16bits) */
 
-   *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
+	taskStack[taskStackSizeWords-1] = (uint32) TasksConst[TaskID].EntryPoint; 	/*PC*/
+	taskStack[taskStackSizeWords-3] = DEFAULT_SR; 										/*SP*/
+
+ 	/* la ubicacion, reservando 13 registro para el cambio de contexto
+	*/
+	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 15]);
 }
 
 
 /**
- EL TICK SE IMPLEMENTA UTILIZANDO EL PRESCALER DEL MODULO RTC_A 
+ EL TICK SE IMPLEMENTA UTILIZANDO EL PRESCALER DEL MODULO RTC_A
  DEL UC.
  LA SALIDA PS0 SE USA COMO FUENTE DE TICK. SE PUEDE CONFIGURAR VALORES DE aprox 1ms (1/1024)
 */
 void RTC_A_Handler(void)
 {
+   /*
+   It's not necessary to disable global irqs.
+   It is done automatically when the SP is cleared.
+   */
+	unsigned char iv = RTCIV;
 
-    temporario2 = RTCIV;
-    if( temporario2 ==  RTC_RT0PSIFG    )
-    {
-         //tick handler
-        __no_operation();
-    }
+	if( iv ==  RTC_RT0PSIFG    )
+	{
+		/*  This handler service the periodic interrupt.
+      */
 
-      if(temporario2 ==  RTC_RT1PSIFG  )
-    {
-      //swi handler
-        __no_operation();
-      RT1PS = 0x00;
-    }
+		/* store the calling context in a variable */
+		ContextType actualContext = GetCallingContext();
 
-
-   /* store the calling context in a variable */
-   ContextType actualContext = GetCallingContext();
-
-   /* set isr 2 context */
-   SetActualContext(CONTEXT_ISR2);
+		/* set isr 2 context */
+		SetActualContext(CONTEXT_ISR2);
 
 #if (ALARMS_COUNT != 0)
-   /* counter increment */
-   static CounterIncrementType CounterIncrement = 1;
-   (void)CounterIncrement; /* TODO remove me */
+		/* counter increment */
+		static CounterIncrementType CounterIncrement = 1;
+		(void)CounterIncrement; /* TODO remove me */
 
-   /* increment the disable interrupt conter to avoid enable the interrupts */
-   IntSecure_Start();
+		/* increment the disable interrupt conter to avoid enable the interrupts */
+		IntSecure_Start();
 
-   /* call counter interrupt handler */
-   CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
+		/* call counter interrupt handler */
+		CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
 
-   /* set the disable interrupt counter back */
-   IntSecure_End();
+		/* set the disable interrupt counter back */
+		IntSecure_End();
 
 #endif /* #if (ALARMS_COUNT != 0) */
 
-   /* reset context */
-   SetActualContext(actualContext);
+		/* reset context */
+		SetActualContext(actualContext);
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
-   /* check if the actual task is preemptive */
-   if ( ( CONTEXT_TASK == actualContext ) &&
-        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
-   {
-      /* this shall force a call to the scheduler */
-      PostIsr2_Arch(isr);
-   }
+		/* check if the actual task is preemptive */
+		if ( ( CONTEXT_TASK == actualContext ) &&  ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+		{
+			/* this shall force a call to the scheduler */
+			PostIsr2_Arch(isr);
+		}
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+
+      return;  /*return from Tick ISR */
+	}
+
+	if( iv ==  RTC_RT1PSIFG  )
+	{
+		//swi handler
+      //ver de hacerla en asm o en c.
+      //basicamente es la funcion del context switch. pendSV
+
+		/* reinicio el stack de la tarea que termino */
+		CheckTerminatingTask_Arch();
+
+		SAVE_CONTEXT();
+
+		/* exchange stack pointers */
+	if( Osek_OldTaskPtr_Arch != NULL )
+	{
+	//	Osek_OldTaskPtr_Arch = SP;
+
+		asm volatile ( "mov SP,  Osek_OldTaskPtr_Arch \n\t"  );
+	}
+asm volatile ( "mov  Osek_NewTaskPtr_Arch, SP \n\t"  );
+//	SP = Osek_NewTaskPtr_Arch ;
+
+		RESTORE_CONTEXT()
+		RT1PS = 0x00;
+	}
 }
 
 
@@ -168,4 +192,3 @@ void RTC_A_Handler(void)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

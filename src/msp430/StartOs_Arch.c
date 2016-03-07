@@ -48,12 +48,12 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20160222 v0.1.0 FB   initial version 
+ * 20160222 v0.1.0 FB   initial version
  */
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
-#include "StartOs_Arch_SysTick.h"
+#include "StartOs_Arch_SystemTick.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -70,26 +70,25 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch_Cpu(void)
 {
-   StartOs_Arch_SysTick();
-   Enable_User_ISRs();
+	StartOs_Arch_Tick();
+	Enable_User_ISRs();
 }
 
 void StartOs_Arch(void)
 {
-   uint8f loopi;
+	uint8f loopi;
 
-   /* init every task */
-   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-   {
-      InitStack_Arch(loopi);
-   }
+	/* init every task */
+	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+	{
+		InitStack_Arch(loopi);
+	}
 
-   /* CPU dependent initialisation */
-   StartOs_Arch_Cpu();
+	/* CPU dependent initialisation */
+	StartOs_Arch_Cpu();
 }
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

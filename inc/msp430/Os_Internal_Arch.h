@@ -49,13 +49,23 @@
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20160222 v0.1.0 FB   initial version 
+ * 20160222 v0.1.0 FB   initial version
  */
 
 /*==================[inclusions]=============================================*/
-
+#include "msp430.h"
 
 /*==================[macros]=================================================*/
+
+/** \brief Default Value for Status Register
+ **
+ ** Enable GIE in SR so that the WDT never stops when we go to user task
+ ** Enable SCG0 for 25MHZ CPU execution
+
+ **/
+#define DEFAULT_SR ((uint16)0x0048)
+
+
 /** \brief Extra size reserved for each stack
  **
  ** This macro shall be set to the amount of extra stack needed for each task
@@ -106,33 +116,61 @@ extern TaskType TerminatingTask;
  ** occurs, like for example an interrupt.
  **
  **/
-#define osekpause() __asm volatile("nop")	//TODO revisar los low power modes
+#define osekpause() asm volatile("nop")	//TODO revisar los low power modes
 
+/** \brief SAVE_CONTEXT
+ **
+ ** This macro is called by the context switch routine.
+ **
+ **/
+#define SAVE_CONTEXT()           \
+  asm volatile ( "push r4  \n\t" \
+                 "push r5  \n\t" \
+                 "push r6  \n\t" \
+                 "push r7  \n\t" \
+                 "push r8  \n\t" \
+                 "push r9  \n\t" \
+                 "push r10 \n\t" \
+                 "push r11 \n\t" \
+                 "push r12 \n\t" \
+                 "push r13 \n\t" \
+                 "push r14 \n\t" \
+                 "push r15 \n\t" \
+               );
+
+#define RESTORE_CONTEXT()       \
+  asm volatile ( "pop r15 \n\t" \
+                 "pop r14 \n\t" \
+                 "pop r13 \n\t" \
+                 "pop r12 \n\t" \
+                 "pop r11 \n\t" \
+                 "pop r10 \n\t" \
+                 "pop r9  \n\t" \
+                 "pop r8  \n\t" \
+                 "pop r7  \n\t" \
+                 "pop r6  \n\t" \
+                 "pop r5  \n\t" \
+                 "pop r4  \n\t" \
+                 "reti    \n\t" \
+               );
 
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
  **/
  /*
- NOTA FRANCO PARA PORT:
- ESTA FUNCION SIMPLEMENTE CARGA EN Osek_OldTaskPtr_Arch Y Osek_NewTaskPtr_Arch
- EL INDICE DE TAREAS, Y SETEA EL BIT DE PEND SVR PARA QUE CUANDO PUEDA, EL NVIC
- EJECTUE EL HANDLER  PendSV_Handler que se encuentra en PendSV.s
- */
-#define CallTask(actualtask, nexttask)                                    \
-{                                                                         \
-   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;    \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;      \
-   __asm__ __volatile__ (                                                 \
-      /* Call PendSV */                                                   \
-      "push {r0,r1}                                               \n\t"   \
-      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                         \n\t"   \
-      "ldr r1,[r0]                                                \n\t"   \
-      "orr r1,1<<28                                               \n\t"   \
-      "str r1,[r0]                                                \n\t"   \
-      "pop {r0,r1}                                                \n\t"   \
-   );                                                                     \
+   this way of triggering the RTC1PSIFG wroks as follows:
+   1st this portion of the RTC module is unused.
+   2nd The IRQ jumps with a change from 0 to 1
+   3rd As the IE flag is set, changing all the lines from 0 to 1
+       ensures the IFG flag to be set.
+   */
+#define CallTask(actualtask, nexttask)                                     \
+{                                                                          \
+   Osek_OldTaskPtr_Arch = (void*) TasksConst[(actualtask)].TaskContext;     \
+   Osek_NewTaskPtr_Arch = (void*) TasksConst[(nexttask)].TaskContext;       \
+   RT1PS = 0x00;     /*Clear the prescaler output              */          \
+   RT1PS = 0xff;     /*Set the prescaler output in all ones. */            \
 }
 
 /** \brief Jmp to an other Task
@@ -152,16 +190,9 @@ extern TaskType TerminatingTask;
       Osek_OldTaskPtr_Arch = (void*)0;                                     \
    }                                                                       \
    Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
-   __asm__ __volatile__ (                                                  \
-      /* Call PendSV */                                                    \
-      "push {r0,r1}                                          \n\t"         \
-      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                    \n\t"         \
-      "ldr r1,[r0]                                           \n\t"         \
-      "orr r1,1<<28                                          \n\t"         \
-      "str r1,[r0]                                           \n\t"         \
-      "pop {r0,r1}                                           \n\t"         \
-   );                                                                      \
+   /* next action will trigger rtc xxIRQ*/                                 \
+   RT1PS = 0x00;     /*Clear the prescaler output             */           \
+   RT1PS = 0xff;     /*Set the prescaler output in all ones. */            \                                                                    
 }
 
 /** \brief Save context */
@@ -204,7 +235,7 @@ extern TaskType TerminatingTask;
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
  ** is called only ones in StartUp.c function.
  **/
-#define EnableOSInterrupts() __asm volatile("cpsie i")
+#define EnableOSInterrupts() __asm volatile("eint")
 
 /** \brief Enable Interruptions
  **
@@ -221,7 +252,7 @@ extern TaskType TerminatingTask;
  **
  ** Disable OS configured interrupts (ISR1 and ISR2).
  **/
-#define DisableOSInterrupts() __asm volatile("cpsid i")
+#define DisableOSInterrupts() __asm volatile("dint")
 
 /** \brief Disable Interruptions
  **
@@ -287,4 +318,3 @@ void InitStack_Arch(uint8 TaskID);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
-

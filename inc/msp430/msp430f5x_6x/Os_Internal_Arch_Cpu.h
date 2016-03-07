@@ -1,6 +1,4 @@
-/* Copyright 2014, ACSE & CADIEEL
- *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
- *      CADIEEL: http://www.cadieel.org.ar
+/* Copyright 201, Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -37,8 +35,8 @@
 
 /** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
  **
- ** \file cortexM4/lpc4000/Os_Internal_Arch_Cpu.h
- ** \arch cortexM4/lpc4000
+ ** \file cortexM4/msp430f5xx_6xx/Os_Internal_Arch_Cpu.h
+ ** \arch cortexM4/msp430f5xx_6xx
  **/
 
 /** \addtogroup FreeOSEK
@@ -54,6 +52,7 @@
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/
+
 /*****************************************************************************
  * add a new version to this file, add the date, your initials and the main
  * changes, only main changes shall be listed here. A detailed message log

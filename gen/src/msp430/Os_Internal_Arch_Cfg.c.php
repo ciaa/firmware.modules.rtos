@@ -61,7 +61,7 @@
 /* THIS IS A DIRTY WORKAROUND :( ciaa/Firmware#309*/
 #undef FALSE
 #undef TRUE
-//#include "chip.h"
+#include "msp430.h"
 #endif
 
 /*==================[macros and definitions]=================================*/
@@ -89,15 +89,15 @@
 /*==================[internal functions definition]==========================*/
 /* Default exception handlers */
 /*__attribute__ ((section(".after_vectors")))
-void NMI_Handler(void) 
+void NMI_Handler(void)
 {
-    while (1) 
+    while (1)
 {
     }
 }
 
 __attribute__ ((section(".after_vectors")))
-void HardFault_Handler(void) 
+void HardFault_Handler(void)
 {
     while (1) {
     }
@@ -139,7 +139,7 @@ void DebugMon_Handler(void) {
 switch ($definitions["CPU"])
 {
    case "msp430f5529":
-      /* Interrupt sources for msp430f5529. 
+      /* Interrupt sources for msp430f5529.
        */
       $intList = array (
          0 => "DMA0_DMA16",
@@ -404,4 +404,3 @@ foreach ($intnames as $int)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

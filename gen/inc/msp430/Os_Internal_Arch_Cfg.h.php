@@ -91,7 +91,7 @@
 /*==================[typedef]================================================*/
 
 /** \brief Task Context Type */
-typedef uint32 * TaskContextType;
+typedef uint16 * TaskContextType;
 
 /** \brief Task Context Type */
 typedef TaskContextType* TaskContextRefType;
@@ -115,4 +115,3 @@ void Disable_ISR2_Arch(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */
-
