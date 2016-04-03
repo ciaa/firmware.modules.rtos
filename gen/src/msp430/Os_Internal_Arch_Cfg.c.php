@@ -70,240 +70,83 @@
 
 /*==================[internal functions declaration]=========================*/
 
+__attribute__( (__interrupt__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
+OSEK_ISR_UNMI_VECTOR()
+{
+   while (1)
+   {
+   }
+}
+__attribute__( (__interrupt__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
+OSEK_ISR_SYSNMI_VECTOR()
+{
+   while (1)
+   {
+   }
+}
+
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-#if (CPU == msp430f5529)
-   /* Reset_Handler is defined in startup_MK60F15.S_CPP */
-//COMENTADO BUCK   void Reset_Handler( void );
-
-//COMENTADO BUCK   extern uint32_t __StackTop;
-#else
-#error Not supported CPU
-#endif
-
-/** \brief Handlers used by OSEK */
-//extern void SysTick_Handler(void);
-//extern void PendSV_Handler(void);
-
-/*==================[internal functions definition]==========================*/
-/* Default exception handlers */
-/*__attribute__ ((section(".after_vectors")))
-void NMI_Handler(void)
-{
-    while (1)
-{
-    }
-}
-
-__attribute__ ((section(".after_vectors")))
-void HardFault_Handler(void)
-{
-    while (1) {
-    }
-}
-
-__attribute__ ((section(".after_vectors")))
-void MemManage_Handler(void) {
-    while (1) {
-    }
-}
-
-__attribute__ ((section(".after_vectors")))
-void BusFault_Handler(void) {
-    while (1) {
-    }
-}
-
-__attribute__ ((section(".after_vectors")))
-void UsageFault_Handler(void) {
-    while (1) {
-    }
-}
-
-__attribute__ ((section(".after_vectors")))
-void SVC_Handler(void) {
-    while (1) {
-    }
-}
-
-__attribute__ ((section(".after_vectors")))
-void DebugMon_Handler(void) {
-    while (1) {
-    }
-}
-*/
-
-/*==================[external functions definition]==========================*/
 <?php
 switch ($definitions["CPU"])
 {
    case "msp430f5529":
-      /* Interrupt sources for msp430f5529.
+      /* Interrupt sources for msp430f5529
+       * See externals/drivers/msp430/inc/msp430f5529.h.
+       * Names in this array are set without the trailing "_VECTOR" string
        */
       $intList = array (
-         0 => "DMA0_DMA16",
-         1 => "DMA1_DMA17",
-         2 => "DMA2_DMA18",
-         3 => "DMA3_DMA19",
-         4 => "DMA4_DMA20",
-         5 => "DMA5_DMA21",
-         6 => "DMA6_DMA22",
-         7 => "DMA7_DMA23",
-         8 => "DMA8_DMA24",
-         9 => "DMA9_DMA25",
-         10 => "DMA10_DMA26",
-         11 => "DMA11_DMA27",
-         12 => "DMA12_DMA28",
-         13 => "DMA13_DMA29",
-         14 => "DMA14_DMA30",
-         15 => "DMA15_DMA31",
-         16 => "DMA_ERR",
-         17 => "MCM",
-         18 => "FTFE",
-         19 => "Read_Collision",
-         20 => "LVD_LVW",
-         21 => "LLW",
-         22 => "WDG",
-         23 => "RNG",
-         24 => "I2C0",
-         25 => "I2C1",
-         26 => "SPI0",
-         27 => "SPI1",
-         28 => "SPI2",
-         29 => "CAN0_READ",
-         30 => "CAN0_BOFF",
-         31 => "CAN0_ERR",
-         32 => "CAN0_TXW",
-         33 => "CAN0_RXW",
-         34 => "CAN0_WAKEUP",
-         35 => "I2S0_TX",
-         36 => "I2S0_RR",
-         37 => "CAN1_READ",
-         38 => "CAN1_BOFF",
-         39 => "CAN1_EERROR",
-         40 => "CAN1_TXW",
-         41 => "CAN1_RXW",
-         42 => "CAN1_WAKEUP",
-         43 => "RES59",
-         44 => "UART0_LON",
-         45 => "UART0",
-         46 => "UART0_ERR",
-         47 => "UART1",
-         48 => "UART1_ERR",
-         49 => "UART2",
-         50 => "UART2_ERR",
-         51 => "UART3",
-         52 => "UART3_ERR",
-         53 => "UART4",
-         54 => "UART4_ERR",
-         55 => "UART5",
-         56 => "UART5_ERR",
-         57 => "ADC0",
-         58 => "ADC1",
-         59 => "CMP0",
-         60 => "CMP1",
-         61 => "CMP2",
-         62 => "FTM0",
-         63 => "FTM1",
-         64 => "FTM2",
-         65 => "CMT",
-         66 => "RTC",
-         67 => "RTC_SEC",
-         68 => "PIT0",
-         69 => "PIT1",
-         70 => "PIT2",
-         71 => "PIT3",
-         72 => "PDB0",
-         73 => "USB0",
-         74 => "USBDCD",
-         75 => "ENET_1588_Timer",
-         76 => "ENET_TX",
-         77 => "ENET_RX",
-         78 => "ENET_ERR",
-         79 => "RES95",
-         80 => "SDHC",
-         81 => "DAC0",
-         82 => "DAC1",
-         83 => "TSI0",
-         84 => "MCG",
-         85 => "LPTimer",
-         86 => "RES102",
-         87 => "PORTA",
-         88 => "PORTB",
-         89 => "PORTC",
-         90 => "PORTD",
-         91 => "PORTE",
-         92 => "PORTF",
-         93 => "RES109",
-         94 => "SWI",
-         95 => "NFC",
-         96 => "USBHS",
-         97 => "RES113",
-         98 => "CMP3",
-         99 => "RES115",
-         100 => "RES116",
-         101 => "FTM3",
-         102 => "ADC2",
-         103 => "ADC3",
-         104 => "I2S1_TX",
-         105 => "I2S1_RX",
+                  0 => "RTC",
+                  1 => "PORT2",
+                  2 => "TIMER2_A1",
+                  3 => "TIMER2_A0",
+                  4 => "USCI_B1",
+                  5 => "USCI_A1",
+                  6 => "PORT1",
+                  7 => "TIMER1_A1",
+                  8 => "TIMER1_A0",
+                  9 => "DMA",
+                  10 => "USB_UBM",
+                  11 => "TIMER0_A1",
+                  12 => "TIMER0_A0",
+                  13 => "ADC12",
+                  14 => "USCI_B0",
+                  15 => "USCI_A0",
+                  16 => "WDT",
+                  17 => "TIMER0_B1",
+                  18 => "TIMER0_B0",
+                  19 => "COMP_B",
+                  20 => "UNMI",
+                  21 => "SYSNMI",
+                  22 => "RESET",
       );
       break;
 
    default:
-     $this->log->error("the CPU " . $definitions["CPU"] . " is not supported.");
+      error("the CPU " . $definitions["CPU"] . " is not supported.");
       break;
 }
 
 $MAX_INT_COUNT = max(array_keys($intList))+1;
 
-if ($definitions["CPU"] == "msp430f5529") : ?>
-__attribute__ ((section(".isr_vector")))
-void (* const g_pfnVectors[])(void) = {
-   /* System ISRs */
-   &__StackTop,                    /* The initial stack pointer  */
-   Reset_Handler,                  /* The reset handler          */
-   NMI_Handler,                    /* The NMI handler            */
-   HardFault_Handler,              /* The hard fault handler     */
-   MemManage_Handler,              /* The MPU fault handler      */
-   BusFault_Handler,               /* The bus fault handler      */
-   UsageFault_Handler,             /* The usage fault handler    */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   SVC_Handler,                    /* SVCall handler             */
-   DebugMon_Handler,               /* Debug monitor handler      */
-   0,                              /* Reserved                   */
-   PendSV_Handler,                 /* The PendSV handler         */
-   SysTick_Handler,                /* The SysTick handler        */
-<?php elseif ($definitions["CPU"] == "lpc4337") : ?>
-/** \brief LPC4337 Interrupt vector */
-__attribute__ ((section(".isr_vector")))
-void (* const g_pfnVectors[])(void) = {
-   /* System ISRs */
-   &_vStackTop,                    /* The initial stack pointer  */
-   ResetISR,                       /* The reset handler          */
-   NMI_Handler,                    /* The NMI handler            */
-   HardFault_Handler,              /* The hard fault handler     */
-   MemManage_Handler,              /* The MPU fault handler      */
-   BusFault_Handler,               /* The bus fault handler      */
-   UsageFault_Handler,             /* The usage fault handler    */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   SVC_Handler,                    /* SVCall handler             */
-   DebugMon_Handler,               /* Debug monitor handler      */
-   0,                              /* Reserved                   */
-   PendSV_Handler,                 /* The PendSV handler         */
-   SysTick_Handler,                /* The SysTick handler        */
-<?php else :
-     $this->log->error("Not supported CPU: " . $definitions["CPU"]);
-   endif;
+#if (CPU == msp430f5529)
+
+#else
+#error Not supported CPU
+#endif
+
+/** \brief Handlers used by OSEK */
+
+
+/*==================[internal functions definition]==========================*/
+/* Default exception handlers */
 ?>
-   /*** User Interruptions ***/
+
+
+/*==================[external functions definition]==========================*/
+
+   /*** Non Used Interrupt handlers ***/
 <?php
 
 /* get ISRs defined by user application */
@@ -312,34 +155,53 @@ $intnames = getLocalList("/OSEK", "ISR");
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
+
    foreach ($intnames as $int)
    {
+      /*
+      handlers that are present in the system (defined in the oil file)
+      do not add extra code here.
+      */
       $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
       $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
 
       if($intList[$i] == $source)
       {
-         if ($intcat == 2)
-         {
-            print "   OSEK_ISR2_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 2 */\n";
+        if ($intcat == 2)
+        {
             $src_found = 1;
-         } elseif ($intcat == 1)
-         {
-            print "   OSEK_ISR_$int, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." ISR for " . $intList[$i] . " (IRQ $i) Category 1 */\n";
+        } elseif ($intcat == 1)
+        {
             $src_found = 1;
-         } else
-         {
-           $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
-         }
+        }
+        else
+        {
+          $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
+        }
       }
    }
+
+   if( $intList[$i]=="RTC" || $intList[$i]=="RESET" || $intList[$i]=="UNMI" || $intList[$i]=="SYSNMI" )
+   {
+      /*
+      This part forces irq_handlers not to be defined here.
+      RTC: Use for OSEK periodic interrupt
+      RESET: defined by gcc
+      UNMI: defined in this file
+      SYSNMI: defined in this file
+      */
+      $src_found = 1;
+   }
+
    if($src_found == 0)
    {
-      print "   OSEK_ISR_NoHandler, /* 0x".dechex($i+16)." 0x".str_pad(strtoupper(dechex(($i+16)*4)), 8, "0", STR_PAD_LEFT)." - No Handler set for ISR " . $intList[$i] . " (IRQ $i) */\n";
+      print "__attribute__( (__interrupt__($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
+      print "OSEK_ISR_$intList[$i]_VECTOR()\n";
+      print "{\n";
+      print "}\n";
    }
 }
 ?>
-};
 
 /** \brief Interrupt enabling and priority setting function */
 void Enable_User_ISRs(void)
@@ -347,15 +209,15 @@ void Enable_User_ISRs(void)
 <?php
 /* get ISRs defined by user application */
 $intnames = getLocalList("/OSEK", "ISR");
+
 foreach ($intnames as $int)
 {
+   $source  = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $prio    = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $prio = $config->getValue("/OSEK/" . $int,"PRIORITY");
-
+   print " source: $source int: $int";
    print "   /* Enabling IRQ $source with priority $prio */\n";
-   print "   NVIC_EnableIRQ(" . array_search($source, $intList) . ");\n";
-   print "   NVIC_SetPriority(" . array_search($source, $intList) . ", $prio);\n\n";
+   print "   MSP430_EnableIRQ(" . array_search($source, $intList) . ");\n";
 }
 ?>
 }
@@ -374,7 +236,7 @@ foreach ($intnames as $int)
    if($cat == 2)
    {
       print "   /* Enabling IRQ $source */\n";
-      print "   NVIC_EnableIRQ(" . array_search($source, $intList) . ");\n";
+      print "   MSP430_EnableIRQ(" . array_search($source, $intList) . ");\n";
    }
 }
 ?>
@@ -394,7 +256,7 @@ foreach ($intnames as $int)
    if($cat == 2)
    {
       print "   /* Disabling IRQ $source */\n";
-      print "   NVIC_DisableIRQ(" . array_search($source, $intList) . ");\n";
+      print "   MSP430_DisableIRQ(" . array_search($source, $intList) . ");\n";
    }
 }
 ?>

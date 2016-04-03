@@ -85,12 +85,14 @@
  *****************************************************************************/
 
 /*==================[macros]=================================================*/
-/*****************************************************************************
- * use this section to defined any necessary macros for a specific cpu of
- * your family.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+ /** \brief ISR macro definition
+  **
+  ** This macro shall be used to start the definition of all ISR category 1 or 2.
+  **
+  ** \param[in] name name of the ISR category 1 or 2.
+  **/
+ #define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
 
 /*==================[typedef]================================================*/
 /*****************************************************************************
@@ -116,4 +118,3 @@ void StartOs_Arch_Cpu(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_CPU_H_ */
-

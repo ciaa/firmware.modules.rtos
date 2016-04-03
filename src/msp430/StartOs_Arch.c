@@ -68,12 +68,16 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+
+
 void StartOs_Arch_Cpu(void)
 {
-	StartOs_Arch_Tick();
+	StartOs_Arch_SystemTick();
 	Enable_User_ISRs();
 }
 
+/**
+ */
 void StartOs_Arch(void)
 {
 	uint8f loopi;
