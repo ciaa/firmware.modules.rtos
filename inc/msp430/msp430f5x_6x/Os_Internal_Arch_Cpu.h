@@ -35,8 +35,8 @@
 
 /** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
  **
- ** \file cortexM4/msp430f5xx_6xx/Os_Internal_Arch_Cpu.h
- ** \arch cortexM4/msp430f5xx_6xx
+ ** \file msp430/msp430f5xx_6xx/Os_Internal_Arch_Cpu.h
+ ** \arch msp430/msp430f5xx_6xx
  **/
 
 /** \addtogroup FreeOSEK
@@ -68,13 +68,9 @@
  */
 
 /*==================[cpu macros]=============================================*/
-/*****************************************************************************
- * Please define here all cpu macros available for this cputype. arm7 and
- * cpy family lpc2xxx is given as example, please remove all arm7 and lpc2xxx
- * related macros
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+#define WORKING_FREQUENCY_MHZ       14.7456// 7.3728 //                         // en MHZ
+#define REF_FREQUENCY_HZ            32768                                       // en Hz
+#define TIC_PERIOD                  5                                           // EN ms
 
 /*==================[inclusions]=============================================*/
 /*****************************************************************************

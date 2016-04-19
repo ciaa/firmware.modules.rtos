@@ -69,9 +69,9 @@
 
 /*==================[external functions definition]==========================*/
 
-
 void StartOs_Arch_Cpu(void)
 {
+	StartOs_Arch_System();	//TODO: this should be placed in other file. For cortex processors is placed within the reset vector handler.
 	StartOs_Arch_SystemTick();
 	Enable_User_ISRs();
 }

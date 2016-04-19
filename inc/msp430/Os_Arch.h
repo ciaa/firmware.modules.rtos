@@ -98,8 +98,11 @@
 /** \brief Suspend All Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts.
+ ** NOTE: the nop operation after the dint instruction was inserted 
+ **         to workarround the hw bug cpu39 describer in slaz314h.pdf
  **/
-#define SuspendAllInterrupts_Arch() __asm volatile("dint")
+#define SuspendAllInterrupts_Arch() __asm volatile("dint"); \
+												__asm volatile("nop");
 
 /** \brief Resume OS Interrupts Arch
  **

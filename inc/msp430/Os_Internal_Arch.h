@@ -54,6 +54,7 @@
 
 /*==================[inclusions]=============================================*/
 #include "msp430.h"
+#include "driverlib.h"
 
 /*==================[macros]=================================================*/
 
@@ -61,7 +62,6 @@
  **
  ** Enable GIE in SR so that the WDT never stops when we go to user task
  ** Enable SCG0 for 25MHZ CPU execution
-
  **/
 #define DEFAULT_SR ((uint16)0x0048)
 
@@ -86,8 +86,10 @@
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
 
-extern void * Osek_OldTaskPtr_Arch;
-extern void * Osek_NewTaskPtr_Arch;
+
+extern void *Osek_OldTaskPtr_Arch;
+extern void *Osek_NewTaskPtr_Arch;
+
 extern TaskType TerminatingTask;
 
 /** \brief Interrupt Secure Start Macro
@@ -154,6 +156,8 @@ extern TaskType TerminatingTask;
                  "reti    \n\t" \
                );
 
+#define RETURN_FROM_NAKED_ISR()  asm volatile ("reti    \n\t");
+
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
@@ -167,10 +171,10 @@ extern TaskType TerminatingTask;
    */
 #define CallTask(actualtask, nexttask)                                     \
 {                                                                          \
-   Osek_OldTaskPtr_Arch = (void*) TasksConst[(actualtask)].TaskContext;     \
-   Osek_NewTaskPtr_Arch = (void*) TasksConst[(nexttask)].TaskContext;       \
-   RT1PS = 0x00;     /*Clear the prescaler output              */          \
-   RT1PS = 0xff;     /*Set the prescaler output in all ones. */            \
+   Osek_OldTaskPtr_Arch = (void*) *(TasksConst[(actualtask)].TaskContext); \
+   Osek_NewTaskPtr_Arch = (void*) *(TasksConst[(nexttask)].TaskContext);   \
+   /* next action will trigger assigned IRQ for the SWI */                 \
+   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE);    \
 }
 
 /** \brief Jmp to an other Task
@@ -182,18 +186,19 @@ extern TaskType TerminatingTask;
    extern TaskType WaitingTask;                                            \
    if(WaitingTask != INVALID_TASK)                                         \
    {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*)TasksConst[WaitingTask].TaskContext;   \
+      Osek_OldTaskPtr_Arch = (void*) *(TasksConst[WaitingTask].TaskContext);\
       WaitingTask = INVALID_TASK;                                          \
    }                                                                       \
    else                                                                    \
    {                                                                       \
       Osek_OldTaskPtr_Arch = (void*)0;                                     \
    }                                                                       \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
-   /* next action will trigger rtc xxIRQ*/                                 \
-   RT1PS = 0x00;     /*Clear the prescaler output             */           \
-   RT1PS = 0xff;     /*Set the prescaler output in all ones. */            \                                                                    
+   Osek_NewTaskPtr_Arch = (void*) *(TasksConst[(task)].TaskContext);       \
+   /* next action will trigger assigned IRQ for the SWI */                 \
+   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE); \
 }
+
+
 
 /** \brief Save context */
 #define SaveContext(task)                                                  \
@@ -251,8 +256,13 @@ extern TaskType TerminatingTask;
 /** \brief Disable OS Interruptions
  **
  ** Disable OS configured interrupts (ISR1 and ISR2).
+ ** NOTE: the nop operation after the dint instruction was inserted
+ **         to workarround the hw bug cpu39 describer in slaz314h.pdf
  **/
-#define DisableOSInterrupts() __asm volatile("dint")
+#define DisableOSInterrupts() __asm volatile("dint"); \
+										__asm volatile("nop");
+
+
 
 /** \brief Disable Interruptions
  **

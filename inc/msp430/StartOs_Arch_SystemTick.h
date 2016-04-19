@@ -57,6 +57,7 @@
  /*==================[external data declaration]==============================*/
 
  /*==================[external functions declaration]=========================*/
+ void StartOs_Arch_System();
  void StartOs_Arch_SystemTick(void);
 
  /** @} doxygen end group definition */

@@ -58,8 +58,8 @@
 /*==================[internal data declaration]==============================*/
 
 /*==================[internal functions declaration]=========================*/
-void* Osek_NewTaskPtr_Arch;
-void* Osek_OldTaskPtr_Arch;
+void * Osek_NewTaskPtr_Arch;
+void * Osek_OldTaskPtr_Arch;
 
 /*==================[internal data definition]===============================*/
 
@@ -98,74 +98,87 @@ void InitStack_Arch(uint8 TaskID)
 	int taskStackSizeWords = TasksConst[TaskID].StackSize/2;				/* calculation of the size of the stack in words units (16bits) */
 
 	taskStack[taskStackSizeWords-1] = (uint32) TasksConst[TaskID].EntryPoint; 	/*PC*/
-	taskStack[taskStackSizeWords-3] = DEFAULT_SR; 										/*SP*/
+	taskStack[taskStackSizeWords-2] = DEFAULT_SR; 							       	/*SP*/
 
  	/* la ubicacion, reservando 13 registro para el cambio de contexto
 	*/
-	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 15]);
+	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 14]);
 }
 
 
 /**
- EL TICK SE IMPLEMENTA UTILIZANDO EL PRESCALER DEL MODULO RTC_A
- DEL UC.
- LA SALIDA PS0 SE USA COMO FUENTE DE TICK. SE PUEDE CONFIGURAR VALORES DE aprox 1ms (1/1024)
+ OSEK periodic interrupt is implemented using TimerA_2 timer module.
 */
-void RTC_A_Handler(void)
+__attribute__( (__interrupt__(TIMER2_A0_VECTOR),naked))
+void OSEK_ISR_TIMER2_A0_VECTOR(void)
 {
    /*
    It's not necessary to disable global irqs.
    It is done automatically when the SP is cleared.
    */
-	unsigned char iv = RTCIV;
+	/*  This handler service the periodic interrupt.
+	*/
+	/* Clear the IRQ flag*/
+	Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_0);
 
-	if( iv ==  RTC_RT0PSIFG    )
-	{
-		/*  This handler service the periodic interrupt.
-      */
+	/* store the calling context in a variable */
+	ContextType actualContext = GetCallingContext();
 
-		/* store the calling context in a variable */
-		ContextType actualContext = GetCallingContext();
-
-		/* set isr 2 context */
-		SetActualContext(CONTEXT_ISR2);
+	/* set isr 2 context */
+	SetActualContext(CONTEXT_ISR2);
 
 #if (ALARMS_COUNT != 0)
-		/* counter increment */
-		static CounterIncrementType CounterIncrement = 1;
-		(void)CounterIncrement; /* TODO remove me */
+	/* counter increment */
+	static CounterIncrementType CounterIncrement = 1;
+	(void)CounterIncrement; /* TODO remove me */
 
-		/* increment the disable interrupt conter to avoid enable the interrupts */
-		IntSecure_Start();
+	/* increment the disable interrupt conter to avoid enable the interrupts */
+	IntSecure_Start();
 
-		/* call counter interrupt handler */
-		CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
+	/* call counter interrupt handler */
+	CounterIncrement = IncrementCounter(0, TIC_PERIOD );
 
-		/* set the disable interrupt counter back */
-		IntSecure_End();
-
+	/* set the disable interrupt counter back */
+	IntSecure_End();
 #endif /* #if (ALARMS_COUNT != 0) */
 
-		/* reset context */
-		SetActualContext(actualContext);
+	/* reset context */
+	SetActualContext(actualContext);
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
-		/* check if the actual task is preemptive */
-		if ( ( CONTEXT_TASK == actualContext ) &&  ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
-		{
-			/* this shall force a call to the scheduler */
-			PostIsr2_Arch(isr);
-		}
+	/* check if the actual task is preemptive */
+	if ( ( CONTEXT_TASK == actualContext ) &&  ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+	{
+		/* this shall force a call to the scheduler */
+		PostIsr2_Arch(isr);
+	}
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
 
-      return;  /*return from Tick ISR */
-	}
+	RETURN_FROM_NAKED_ISR(); /*return from Tick ISR */
+}
 
-	if( iv ==  RTC_RT1PSIFG  )
+/*
+otros CCIFG (1 2 o 3)
+*/
+__attribute__( (__interrupt__(TIMER2_A1_VECTOR),naked))
+void OSEK_ISR_TIMER2_A1_VECTOR(void)
+{
+	/*
+	It's not necessary to disable global irqs.
+	It is done automatically when the SP is cleared.
+	*/
+
+	//swi handler
+   //ver de hacerla en asm o en c.
+   //basicamente es la funcion del context switch. similar al pendSV
+
+	/* Clear the IRQ flag*/	//VERIFICAR TAIV PORQUE LA IRQ PUEDE HABER SURGIDO DE OTRO CCRX
+	unsigned short local_taiv = TA2IV;
+
+	if( local_taiv & TA2IV_TACCR1)	//
 	{
-		//swi handler
-      //ver de hacerla en asm o en c.
-      //basicamente es la funcion del context switch. pendSV
+		Timer_A_disableCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1 );
+		Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1);
 
 		/* reinicio el stack de la tarea que termino */
 		CheckTerminatingTask_Arch();
@@ -173,19 +186,19 @@ void RTC_A_Handler(void)
 		SAVE_CONTEXT();
 
 		/* exchange stack pointers */
-	if( Osek_OldTaskPtr_Arch != NULL )
-	{
-	//	Osek_OldTaskPtr_Arch = SP;
+		if( Osek_OldTaskPtr_Arch != NULL )
+		{
+			asm volatile ( "mov SP,  Osek_OldTaskPtr_Arch \n\t"  );
+		}
 
-		asm volatile ( "mov SP,  Osek_OldTaskPtr_Arch \n\t"  );
-	}
-asm volatile ( "mov  Osek_NewTaskPtr_Arch, SP \n\t"  );
-//	SP = Osek_NewTaskPtr_Arch ;
+		asm volatile ( "mov Osek_NewTaskPtr_Arch, SP \n\t"  );
 
 		RESTORE_CONTEXT()
-		RT1PS = 0x00;
 	}
+
+	RETURN_FROM_NAKED_ISR();
 }
+
 
 
 /** @} doxygen end group definition */

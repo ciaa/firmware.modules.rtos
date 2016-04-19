@@ -71,14 +71,14 @@
 /*==================[internal functions declaration]=========================*/
 
 __attribute__( (__interrupt__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
-OSEK_ISR_UNMI_VECTOR()
+void OSEK_ISR_UNMI_VECTOR(void)
 {
    while (1)
    {
    }
 }
 __attribute__( (__interrupt__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
-OSEK_ISR_SYSNMI_VECTOR()
+void OSEK_ISR_SYSNMI_VECTOR(void)
 {
    while (1)
    {
@@ -181,14 +181,14 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       }
    }
 
-   if( $intList[$i]=="RTC" || $intList[$i]=="RESET" || $intList[$i]=="UNMI" || $intList[$i]=="SYSNMI" )
+   if( $intList[$i]=="TIMER2_A1" || $intList[$i]=="TIMER2_A0" || $intList[$i]=="RESET" || $intList[$i]=="UNMI" || $intList[$i]=="SYSNMI" )
    {
       /*
       This part forces irq_handlers not to be defined here.
-      RTC: Use for OSEK periodic interrupt
-      RESET: defined by gcc
-      UNMI: defined in this file
-      SYSNMI: defined in this file
+      TIMER2_XX:  Use for OSEK periodic interrupt
+      RESET:      defined by gcc @ compile time. 
+      UNMI:       defined in this file
+      SYSNMI:     defined in this file
       */
       $src_found = 1;
    }
@@ -196,7 +196,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    if($src_found == 0)
    {
       print "__attribute__( (__interrupt__($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
-      print "OSEK_ISR_$intList[$i]_VECTOR()\n";
+      print "void OSEK_ISR_$intList[$i]_VECTOR(void)\n";
       print "{\n";
       print "}\n";
    }
@@ -215,7 +215,6 @@ foreach ($intnames as $int)
    $source  = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $prio    = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
-   print " source: $source int: $int";
    print "   /* Enabling IRQ $source with priority $prio */\n";
    print "   MSP430_EnableIRQ(" . array_search($source, $intList) . ");\n";
 }

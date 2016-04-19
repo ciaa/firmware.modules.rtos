@@ -65,15 +65,17 @@
  **/
 #define TASK(name)   void OSEK_TASK_ ## name (void)
 
-#ifndef ISR
+/*
+#ifndef ISR*/
 /** \brief ISR macro definition
  **
  ** This macro shall be used to start the definition of all ISR category 1 or 2.
  **
  ** \param[in] name name of the ISR category 1 or 2.
  **/
+ /*
 #define ISR(name)   void OSEK_ISR_ ## name (void)
-#endif
+#endif*/
 
 /** \brief ALARMCALLBACK macro definition
  **/
