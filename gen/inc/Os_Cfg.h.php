@@ -84,6 +84,7 @@
 /* Definitions of Tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 $remote_tasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
+$os = $this->config->getList("/OSEK","OS");
 
 $count = 0;
 foreach ($tasks as $task)
