@@ -70,20 +70,6 @@
 
 /*==================[internal functions declaration]=========================*/
 
-__attribute__( (__interrupt__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
-void OSEK_ISR_UNMI_VECTOR(void)
-{
-   while (1)
-   {
-   }
-}
-__attribute__( (__interrupt__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
-void OSEK_ISR_SYSNMI_VECTOR(void)
-{
-   while (1)
-   {
-   }
-}
 
 /*==================[internal data definition]===============================*/
 
@@ -141,10 +127,26 @@ $MAX_INT_COUNT = max(array_keys($intList))+1;
 
 /*==================[internal functions definition]==========================*/
 /* Default exception handlers */
+
 ?>
 
-
 /*==================[external functions definition]==========================*/
+
+__attribute__( (__interrupt__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
+void OSEK_ISR_UNMI_VECTOR(void)
+{
+   while (1)
+   {
+   }
+}
+
+__attribute__( (__interrupt__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
+void OSEK_ISR_SYSNMI_VECTOR(void)
+{
+   while (1)
+   {
+   }
+}
 
    /*** Non Used Interrupt handlers ***/
 <?php
@@ -186,7 +188,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       /*
       This part forces irq_handlers not to be defined here.
       TIMER2_XX:  Use for OSEK periodic interrupt
-      RESET:      defined by gcc @ compile time. 
+      RESET:      defined by gcc @ compile time.
       UNMI:       defined in this file
       SYSNMI:     defined in this file
       */

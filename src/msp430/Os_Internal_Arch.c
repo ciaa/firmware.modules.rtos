@@ -45,9 +45,16 @@
  ** @{ */
 
 /*
+* Initials     Name
+* ---------------------------
+* FBUC         Franco Bucafusco
+*
+*/
+
+/*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20160222 v0.1.0 FB   initial version for msp430 processors
+ * 20160222 v0.1.0 FBUC   initial version for msp430 processors
  */
 
 /*==================[inclusions]=============================================*/
@@ -93,14 +100,14 @@ void CheckTerminatingTask_Arch(void)
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
- 	uint16 * taskStack     = (uint16 *)TasksConst[TaskID].StackPtr;	/* stack bottom */
+	uint16 * taskStack     = (uint16 *)TasksConst[TaskID].StackPtr;	/* stack bottom */
 
 	int taskStackSizeWords = TasksConst[TaskID].StackSize/2;				/* calculation of the size of the stack in words units (16bits) */
 
 	taskStack[taskStackSizeWords-1] = (uint32) TasksConst[TaskID].EntryPoint; 	/*PC*/
 	taskStack[taskStackSizeWords-2] = DEFAULT_SR; 							       	/*SP*/
 
- 	/* la ubicacion, reservando 13 registro para el cambio de contexto
+	/* la ubicacion, reservando 13 registro para el cambio de contexto
 	*/
 	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 14]);
 }
@@ -112,10 +119,10 @@ void InitStack_Arch(uint8 TaskID)
 __attribute__( (__interrupt__(TIMER2_A0_VECTOR),naked))
 void OSEK_ISR_TIMER2_A0_VECTOR(void)
 {
-   /*
-   It's not necessary to disable global irqs.
-   It is done automatically when the SP is cleared.
-   */
+	/*
+	It's not necessary to disable global irqs.
+	It is done automatically when the SP is cleared.
+	*/
 	/*  This handler service the periodic interrupt.
 	*/
 	/* Clear the IRQ flag*/
@@ -157,22 +164,17 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 	RETURN_FROM_NAKED_ISR(); /*return from Tick ISR */
 }
 
-/*
-otros CCIFG (1 2 o 3)
-*/
+/**   OSEK_ISR_TIMER2_A1_VECTOR
+ **   The Pendable Service Call is implementad by using and nonused Timer Channel (1)
+ **   Is is triggered by setting the IE and IFG lines within the same line in CallTask
+ **   and JmpTask.
+ **   Note 1: It's not necessary to disable global irqs.
+ **           It is done automatically when the SP is cleared by HW
+**/
 __attribute__( (__interrupt__(TIMER2_A1_VECTOR),naked))
 void OSEK_ISR_TIMER2_A1_VECTOR(void)
 {
-	/*
-	It's not necessary to disable global irqs.
-	It is done automatically when the SP is cleared.
-	*/
-
-	//swi handler
-   //ver de hacerla en asm o en c.
-   //basicamente es la funcion del context switch. similar al pendSV
-
-	/* Clear the IRQ flag*/	//VERIFICAR TAIV PORQUE LA IRQ PUEDE HABER SURGIDO DE OTRO CCRX
+	/* Clear the IRQ flag*/
 	unsigned short local_taiv = TA2IV;
 
 	if( local_taiv & TA2IV_TACCR1)	//
@@ -183,6 +185,12 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		/* reinicio el stack de la tarea que termino */
 		CheckTerminatingTask_Arch();
 
+		/* Context save r4 to r15
+		   r0 = PC  automatically saved by HW when handler is serviced
+			r1 = SP
+			r3 = SR	automatically saved by HW when handler is serviced
+			r4 = CG  doesn't care
+		*/
 		SAVE_CONTEXT();
 
 		/* exchange stack pointers */
@@ -192,13 +200,15 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		}
 
 		asm volatile ( "mov Osek_NewTaskPtr_Arch, SP \n\t"  );
-
+		/*
+		Context restore r4 to r15
+		It Includes the reti instruction.
+		*/
 		RESTORE_CONTEXT()
 	}
 
-	RETURN_FROM_NAKED_ISR();
+	RETURN_FROM_NAKED_ISR(); /*return from ISR*/
 }
-
 
 
 /** @} doxygen end group definition */

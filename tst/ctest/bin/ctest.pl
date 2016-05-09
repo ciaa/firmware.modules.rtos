@@ -385,6 +385,50 @@ sub halt
    finish();
 }
 
+
+
+#** \brief It replaces extra definitions for IRQ for other files
+#	 TODO: use this function for every replacement passing the @replace variable as parameter
+# 
+#*
+sub Extra_IRQ_Vector_Replace	
+{
+	my $myfile = shift;
+
+	#initialize the variable.
+	@replace = "";
+
+   push @replace, "VN_ISR1:" . $ISR1."_VECTOR";
+   push @replace, "VN_ISR2:" . $ISR2."_VECTOR";
+   push @replace, "VN_ISR3:" . $ISR3."_VECTOR";
+
+   foreach $rep (@replace)
+   {
+      info("Replacing: $rep in $myfile");
+      @rep = split (/:/,$rep);
+      searchandreplace($myfile,@rep[0],@rep[1]);
+   } 
+}
+
+#** \brief Add extra options for the makefile file based on the architecture 
+#
+#
+#*
+sub Extra_MakeFile_AddOns_Arch
+{
+	if ("msp430" eq $ARCH)
+	{
+		if ("msp430f5x_6x" eq $CPUTYPE)
+		{
+			if ("msp430f5529" eq $CPU)
+			{
+				#for msp430 architecture the heap_mem_size can't be as high as for cortex. 
+				print FILE "CFLAGS += -D CIAA_HEAP_MEM_SIZE=200";
+			}
+		}
+	}
+}
+
 #** \brief Creates a Project for a test
 #
 # \param[in] test test to be generated
@@ -397,6 +441,7 @@ sub CreateTestProject
    my $config = shift;
    my $base = "out/rtos/$test/$config";
    info("Creating Test: $test - Config: $config under $base/$test/$config");
+
    # create needed directories
    `mkdir -p $base/etc`;
    `mkdir -p $base/src`;
@@ -404,23 +449,33 @@ sub CreateTestProject
    `mkdir -p $base/inc`;
    `mkdir -p $base/inc/$ARCH`;
    `mkdir -p $base/src/$ARCH`;
+
    # get configuration file for this project
    $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
    $dst = "$base/etc/$test-$config.oil";
    copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
+
    # prepare the configuration for this project
    # removes carry return + line-feed
    $testfn =~ tr/\r\n//d;
+ 
    @replace = GetTestSequencesCon($TESTS, $testfn, $config);
-   # TODO this shall be improved
+
+   # TODO this shall be improved. Definitely. Doing this for another platform was a headache
+	# CT stand for  : ??
+   # VN stands for : "Vector Name" 
    push @replace, "CT_ISR1:" . $ISR1;
-   push @replace, "CT_ISR2:" . $ISR2;
+   push @replace, "CT_ISR2:" . $ISR2;				
+   push @replace, "VN_ISR1:" . $ISR1."_VECTOR";	#replace vector name
+   push @replace, "VN_ISR2:" . $ISR2."_VECTOR";	#replace vector name
+
    foreach $rep (@replace)
    {
       info("Replacing: $rep");
       @rep = split (/:/,$rep);
       searchandreplace($dst,@rep[0],@rep[1]);
    }
+
    # create makefile for this project
    open FILE, "> $base/mak/Makefile" or die "can not open: $!";
    print FILE "PROJECT_NAME = $test-$config\n\n";
@@ -441,13 +496,21 @@ sub CreateTestProject
    print FILE " modules\$(DS)rtos\n\n";
    print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
    print FILE "CFLAGS += -D$test\n";
+
+	#adds extra makefile options based on the architecture
+	Extra_MakeFile_AddOns_Arch(); 
+ 
    close FILE;
+
    #copy needed files
    copy("modules/rtos/tst/ctest/src/$test.c","$base/src/$test.c");
    copy("modules/rtos/tst/ctest/inc/$test.h","$base/inc/$test.h");
    copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
    copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
    copy("modules/rtos/tst/ctest/src/$ARCH/ctest_arch.c","$base/src/$ARCH/ctest_arch.c");
+ 
+	#last replacement for IRQ vector name definitions
+	Extra_IRQ_Vector_Replace("$base/src/$test.c");
 }
 
 sub finish
@@ -520,6 +583,7 @@ if ($#ARGV + 1 < 2)
 
 #Example: 'full-preemptive' or empty
 $subtestcase = $ARGV[3];
+
 #Example: 'ctest_tm_01:Test Sequence 1' or empty
 $onlytc = $ARGV[2];
 
@@ -544,6 +608,20 @@ if ("cortexM0" eq $ARCH)
    $ISR1 = "UART1";
    $ISR2 = "UART0";
 }
+     
+if ("msp430" eq $ARCH)
+{
+	if ("msp430f5x_6x" eq $CPUTYPE)
+	{
+		if ("msp430f5529" eq $CPU)
+		{
+			$ISR1 = "PORT2";
+			$ISR2 = "PORT1";
+			$ISR3 = "PORT3"; #TODO For Interrupt type 3 when enable.
+		}
+	}
+}
+
 
 mkpath(dirname($logfile));
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
@@ -700,6 +778,7 @@ foreach $testfn (@tests)
                info("running \"make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0\"");
                $outmake = `make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
                $outmakestatus = $?;
+
                info("make status: $outmakestatus");
                logffull("make output:\n$outmake");
                if ($debug)
@@ -712,17 +791,24 @@ foreach $testfn (@tests)
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
                   }
+						elsif ( $ARCH eq "msp430")
+						{
+                     $out = $BINDIR . "/" . $test . "-" . $config . ".bin";
+						}
                   else
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".exe";
                   }
+
                   info("debug of $test in $out");
                   $dbgfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
                   info("$GDB $out -x $dbgfile");
+
                   if($debug == 0)
                   {
                      $outdbg = `$GDB $out -x $dbgfile`;
-                     if ($ARCH eq "x86")
+                     
+							if ($ARCH eq "x86")
                      {
                         # if it fails, then capture ASSERT message with the condition, File and Line that failed and print it!
                         my $Test_Asserted = index($outdbg, "ASSERT");

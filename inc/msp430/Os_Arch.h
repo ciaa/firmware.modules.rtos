@@ -50,24 +50,18 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*****************************************************************************
- * add your name to the developers and create for you a nick with
- * 3 or 4 letters. Please do not use any given nick.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
-/*****************************************************************************
- * add a new version to this file, add the date, your initials and the main
- * changes, only main changes shall be listed here. A detailed message log
- * is saved in svn log and on the tracker system since every svn login message
- * shalle indicate the related tracker id.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+ /*
+  * Initials     Name
+  * ---------------------------
+  * FBUC         Franco Bucafusco
+  *
+  */
+
+  
 /*
  * modification history (new versions first)
  * ----------------------------------------------------------
- * 20160222 v0.1.0 FB   initial version 
+ * 20160222 v0.1.0 FBUC initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -98,7 +92,7 @@
 /** \brief Suspend All Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts.
- ** NOTE: the nop operation after the dint instruction was inserted 
+ ** NOTE: the nop operation after the dint instruction was inserted
  **         to workarround the hw bug cpu39 describer in slaz314h.pdf
  **/
 #define SuspendAllInterrupts_Arch() __asm volatile("dint"); \
@@ -153,4 +147,3 @@
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_ARCH_H_ */
-

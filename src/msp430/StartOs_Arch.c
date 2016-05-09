@@ -45,10 +45,18 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+/*
+* Initials     Name
+* ---------------------------
+* FBUC         Franco Bucafusco
+*
+*/
+
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20160222 v0.1.0 FB   initial version
+ * 20160222 v0.1.0 FBUC   initial version
  */
 
 /*==================[inclusions]=============================================*/

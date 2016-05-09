@@ -1,4 +1,5 @@
 /* Copyright 2016, Franco Bucafusco
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,35 +31,24 @@
  *
  */
 
-/** \brief FreeOSEK Os Arch Implementation File
+/** \brief FreeOSEK Os Conformance Test
  **
- ** \file msp430/Os_Arch.c
- ** \arch msp430
+ ** \file FreeOSEK/Os/tst/ctest/inc/posix/ctest_arch.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-
-/*
-* Initials     Name
-* ---------------------------
-* FBUC         Franco Bucafusco
-*
-*/
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20160222 v0.1.0 FBUC   initial version
- */
-
 /*==================[inclusions]=============================================*/
-#include "Os_Internal.h"
+#include "ciaaPlatforms.h"
+#include "ctest_arch.h"
+#if (CPU == msp430f5529)
+#include "msp430.h" 
+#endif
 
 /*==================[macros and definitions]=================================*/
 
@@ -69,6 +59,28 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
+#if (CPUTYPE == msp430f5x_6x)
+ 
+
+/* Use P1.7 as interrupt for tests */
+extern void TriggerISR2_Arch(void)
+{
+	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
+	P1IE 	|= 0x80;
+	P1IFG |= 0x80;
+}
+
+/* Use P2.2 as interrupt for tests */
+extern void TriggerISR1_Arch(void)
+{
+	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
+	P2IE 	|= 0x04;
+	P2IFG |= 0x04;
+}
+ 
+
+
+#endif
 
 /*==================[internal functions definition]==========================*/
 

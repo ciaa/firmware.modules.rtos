@@ -1,4 +1,4 @@
-/* Copyright 201, Franco Bucafusco
+/* Copyright 2016, Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -68,43 +68,30 @@
  */
 
 /*==================[cpu macros]=============================================*/
+
+/* TODO: relocate these definitions */
 #define WORKING_FREQUENCY_MHZ       14.7456// 7.3728 //                         // en MHZ
 #define REF_FREQUENCY_HZ            32768                                       // en Hz
 #define TIC_PERIOD                  5                                           // EN ms
 
 /*==================[inclusions]=============================================*/
-/*****************************************************************************
- * Include the right macros for every cpu. Please remove all arm7 and lpc2xxx
- * related macros.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 
 /*==================[macros]=================================================*/
 
- /** \brief ISR macro definition
-  **
-  ** This macro shall be used to start the definition of all ISR category 1 or 2.
-  **
-  ** \param[in] name name of the ISR category 1 or 2.
-  **/
- #define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
+/** \brief ISR macro definition
+ **
+ ** This macro shall be used to start the definition of all ISR category 1 or 2.
+ **
+ ** \param[in] name name of the ISR category 1 or 2.
+ **/
+#define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
 
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * use this section to defined any necessary types for a specific cpu of
- * your family.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * use this section to declare any necessary variables for a specific cpu of
- * your family.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 
 /*==================[external functions declaration]=========================*/
 void StartOs_Arch_Cpu(void);

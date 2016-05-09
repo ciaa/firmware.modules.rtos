@@ -45,11 +45,18 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
+ 
+ /*
+  * Initials     Name
+  * ---------------------------
+  * FBUC         Franco Bucafusco
+  *
+  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20160222 v0.1.0 FB   initial version
+ * 20160222 v0.1.0 FBUC   initial version
  */
 
 /*==================[inclusions]=============================================*/
@@ -64,7 +71,6 @@
  ** Enable SCG0 for 25MHZ CPU execution
  **/
 #define DEFAULT_SR ((uint16)0x0048)
-
 
 /** \brief Extra size reserved for each stack
  **
@@ -85,7 +91,6 @@
  ** remove the macro and this comment.
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
-
 
 extern void *Osek_OldTaskPtr_Arch;
 extern void *Osek_NewTaskPtr_Arch;
@@ -162,13 +167,6 @@ extern TaskType TerminatingTask;
  **
  ** This function jmps to the indicated task.
  **/
- /*
-   this way of triggering the RTC1PSIFG wroks as follows:
-   1st this portion of the RTC module is unused.
-   2nd The IRQ jumps with a change from 0 to 1
-   3rd As the IE flag is set, changing all the lines from 0 to 1
-       ensures the IFG flag to be set.
-   */
 #define CallTask(actualtask, nexttask)                                     \
 {                                                                          \
    Osek_OldTaskPtr_Arch = (void*) *(TasksConst[(actualtask)].TaskContext); \
@@ -257,12 +255,10 @@ extern TaskType TerminatingTask;
  **
  ** Disable OS configured interrupts (ISR1 and ISR2).
  ** NOTE: the nop operation after the dint instruction was inserted
- **         to workarround the hw bug cpu39 describer in slaz314h.pdf
+ **         to workarround the hw bug cpu39 described in slaz314h.pdf
  **/
 #define DisableOSInterrupts() __asm volatile("dint"); \
 										__asm volatile("nop");
-
-
 
 /** \brief Disable Interruptions
  **
@@ -303,21 +299,8 @@ extern TaskType TerminatingTask;
 #define ShutdownOs_Arch()
 
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be used only internal by
- * the OS and only for this architecture and which will not depend on the
- * configuraiton. Normaly this section shall be empty.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Internal_Arch.c
- * that will be visible only internal to the OS for this architectire.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
 void InitStack_Arch(uint8 TaskID);

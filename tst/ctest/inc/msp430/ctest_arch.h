@@ -1,4 +1,4 @@
-/* Copyright 2016, Franco Bucafusco
+/* Copyright 20016, Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,51 +30,43 @@
  *
  */
 
-/** \brief FreeOSEK Os Arch Implementation File
+#ifndef _CTEST_ARCH_H_
+#define _CTEST_ARCH_H_
+/** \brief FreeOSEK Os Conformance Test
  **
- ** \file msp430/Os_Arch.c
- ** \arch msp430
+ ** \file FreeOSEK/Os/tst/ctest/inc/posix/ctest_arch.h
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
-
-/*
-* Initials     Name
-* ---------------------------
-* FBUC         Franco Bucafusco
-*
-*/
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20160222 v0.1.0 FBUC   initial version
- */
-
 /*==================[inclusions]=============================================*/
-#include "Os_Internal.h"
+#include "ciaaPlatforms.h"
 
-/*==================[macros and definitions]=================================*/
+/*==================[macros]=================================================*/
+#if (CPUTYPE == msp430f5x_6x)
+/* Use P1.7 as interrupt for tests */
+extern void TriggerISR2_Arch(void);
 
-/*==================[internal data declaration]==============================*/
+/* Use P2.2 as interrupt for tests */
+extern void TriggerISR1_Arch(void);
 
-/*==================[internal functions declaration]=========================*/
+#else
+   #error please define CPU variable!
+#endif
 
-/*==================[internal data definition]===============================*/
+/*==================[typedef]================================================*/
 
-/*==================[external data definition]===============================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
+/*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _CTEST_ARCH_H_ */

@@ -387,7 +387,7 @@ void ConfTestEvaluation
    }                                                                                   \
 }
 #endif
-#if ((cortexM4 == ARCH) || (cortexM0 == ARCH))
+#if ((cortexM4 == ARCH) || (cortexM0 == ARCH) || (msp430 == ARCH) )
 #define ASSERT(tc,cond) \
 {                                                                                      \
    if (cond)                                                                           \
@@ -405,6 +405,8 @@ void ConfTestEvaluation
 }
 #endif
 
+
+
 extern void Sequence
 (
    uint32f seq
@@ -420,4 +422,3 @@ extern void ConfTestFinish
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _CTEST_H_ */
-

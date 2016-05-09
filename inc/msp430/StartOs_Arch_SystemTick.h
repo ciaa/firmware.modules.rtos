@@ -31,37 +31,37 @@
  *
  */
 
- #ifndef _STARTOS_ARCH_SYSTICK_H_
- #define _STARTOS_ARCH_SYSTICK_H_
+#ifndef _STARTOS_ARCH_SYSTICK_H_
+#define _STARTOS_ARCH_SYSTICK_H_
 
- /** \brief FreeOSEK Internal Architecture Dependent Header File for System
-  ** Tick timer.
-  **
-  ** \file msp430/Os_Internal_Arch_SysTick.h
-  ** \arch msp430
-  **/
+/** \brief FreeOSEK Internal Architecture Dependent Header File for System
+ ** Tick timer.
+ **
+ ** \file msp430/Os_Internal_Arch_SysTick.h
+ ** \arch msp430
+ **/
 
- /** \addtogroup FreeOSEK
-  ** @{ */
- /** \addtogroup FreeOSEK_Os
-  ** @{ */
- /** \addtogroup FreeOSEK_Os_Internal
-  ** @{ */
+/** \addtogroup FreeOSEK
+ ** @{ */
+/** \addtogroup FreeOSEK_Os
+ ** @{ */
+/** \addtogroup FreeOSEK_Os_Internal
+ ** @{ */
 
- /*==================[inclusions]=============================================*/
+/*==================[inclusions]=============================================*/
 
- /*==================[macros]=================================================*/
+/*==================[macros]=================================================*/
 
- /*==================[typedef]================================================*/
+/*==================[typedef]================================================*/
 
- /*==================[external data declaration]==============================*/
+/*==================[external data declaration]==============================*/
 
- /*==================[external functions declaration]=========================*/
- void StartOs_Arch_System();
- void StartOs_Arch_SystemTick(void);
+/*==================[external functions declaration]=========================*/
+void StartOs_Arch_System();
+void StartOs_Arch_SystemTick(void);
 
- /** @} doxygen end group definition */
- /** @} doxygen end group definition */
- /** @} doxygen end group definition */
- /*==================[end of file]============================================*/
- #endif /* _STARTOS_ARCH_SYSTICK_H_ */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/** @} doxygen end group definition */
+/*==================[end of file]============================================*/
+#endif /* _STARTOS_ARCH_SYSTICK_H_ */

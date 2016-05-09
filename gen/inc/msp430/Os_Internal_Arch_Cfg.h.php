@@ -60,33 +60,21 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*****************************************************************************
- * add your name to the developers and create for you a nick with
- * 3 or 4 letters. Please do not use any given nick.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
-/*****************************************************************************
- * add a new version to this file, add the date, your initials and the main
- * changes, only main changes shall be listed here. A detailed message log
- * is saved in svn log and on the tracker system since every svn login message
- * shalle indicate the related tracker id.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+ /*
+  * Initials     Name
+  * ---------------------------
+  * FBUC         Franco Bucafusco
+  *
+  */
+
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * v0.1.0 20162202 FB   First version for msp430 processors.
+ * v0.1.0 20162202 FBUC First version for msp430 processors.
  */
 
 /*==================[inclusions]=============================================*/
-/*****************************************************************************
- * Please define here all needed macros of your configuration that can
- * be configured or are used in Osek_Internal_Arch_Cfg.c.php
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 
 /*==================[typedef]================================================*/
 
@@ -97,19 +85,15 @@ typedef uint16 * TaskContextType;
 typedef TaskContextType* TaskContextRefType;
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined
- * Osek_Internal_Arch_Cfg.c.php
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 
 /*==================[external functions declaration]=========================*/
-/*
+
 void Enable_User_ISRs(void);
 void Enable_ISR2_Arch(void);
 void Disable_ISR2_Arch(void);
-*/
+
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

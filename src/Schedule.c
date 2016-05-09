@@ -133,8 +133,8 @@ extern StatusType Schedule
       nextTask = GetNextTask();
 
       /* while until one or boths are not more invalid tasks */
-      while ( ( actualTask == INVALID_TASK ) &&
-            ( nextTask == INVALID_TASK) )
+      while ( ( INVALID_TASK == actualTask ) &&
+            ( INVALID_TASK == nextTask ) )
       {
          IntSecure_End();
 
@@ -148,7 +148,7 @@ extern StatusType Schedule
       };
 
       /* if the actual task is invalid */
-      if ( actualTask == INVALID_TASK )
+      if ( INVALID_TASK == actualTask )
       {
          /* set task state to running */
          TasksVar[nextTask].Flags.State = TASK_ST_RUNNING;
@@ -243,4 +243,3 @@ extern StatusType Schedule
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
