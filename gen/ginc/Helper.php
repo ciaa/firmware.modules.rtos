@@ -34,7 +34,7 @@
 
 /** \brief FreeOSEK Generator Helper base class
  **
- ** This file implements is the base class for Helpers that provide auxiliary 
+ ** This file implements is the base class for Helpers that provide auxiliary
  ** functions
  **
  ** \file Helper.php
