@@ -321,6 +321,8 @@ sub EvaluateResults
    return $status;
 }
 
+#TODO remove debug franco
+
 sub readparam
 {
    open CFG, "<@_[0]" or die "Config file @_[0] can not be opened: $!";
@@ -389,9 +391,9 @@ sub halt
 
 #** \brief It replaces extra definitions for IRQ for other files
 #	 TODO: use this function for every replacement passing the @replace variable as parameter
-# 
+#
 #*
-sub Extra_IRQ_Vector_Replace	
+sub Extra_IRQ_Vector_Replace
 {
 	my $myfile = shift;
 
@@ -407,10 +409,10 @@ sub Extra_IRQ_Vector_Replace
       info("Replacing: $rep in $myfile");
       @rep = split (/:/,$rep);
       searchandreplace($myfile,@rep[0],@rep[1]);
-   } 
+   }
 }
 
-#** \brief Add extra options for the makefile file based on the architecture 
+#** \brief Add extra options for the makefile file based on the architecture
 #
 #
 #*
@@ -422,7 +424,7 @@ sub Extra_MakeFile_AddOns_Arch
 		{
 			if ("msp430f5529" eq $CPU)
 			{
-				#for msp430 architecture the heap_mem_size can't be as high as for cortex. 
+				#for msp430 architecture the heap_mem_size can't be as high as for cortex.
 				print FILE "CFLAGS += -D CIAA_HEAP_MEM_SIZE=200";
 			}
 		}
@@ -458,14 +460,14 @@ sub CreateTestProject
    # prepare the configuration for this project
    # removes carry return + line-feed
    $testfn =~ tr/\r\n//d;
- 
+
    @replace = GetTestSequencesCon($TESTS, $testfn, $config);
 
    # TODO this shall be improved. Definitely. Doing this for another platform was a headache
 	# CT stand for  : ??
-   # VN stands for : "Vector Name" 
+   # VN stands for : "Vector Name"
    push @replace, "CT_ISR1:" . $ISR1;
-   push @replace, "CT_ISR2:" . $ISR2;				
+   push @replace, "CT_ISR2:" . $ISR2;
    push @replace, "VN_ISR1:" . $ISR1."_VECTOR";	#replace vector name
    push @replace, "VN_ISR2:" . $ISR2."_VECTOR";	#replace vector name
 
@@ -498,8 +500,8 @@ sub CreateTestProject
    print FILE "CFLAGS += -D$test\n";
 
 	#adds extra makefile options based on the architecture
-	Extra_MakeFile_AddOns_Arch(); 
- 
+	Extra_MakeFile_AddOns_Arch();
+
    close FILE;
 
    #copy needed files
@@ -508,7 +510,7 @@ sub CreateTestProject
    copy("modules/rtos/tst/ctest/inc/ctest.h","$base/inc/ctest.h");
    copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
    copy("modules/rtos/tst/ctest/src/$ARCH/ctest_arch.c","$base/src/$ARCH/ctest_arch.c");
- 
+
 	#last replacement for IRQ vector name definitions
 	Extra_IRQ_Vector_Replace("$base/src/$test.c");
 }
@@ -585,7 +587,7 @@ if ($#ARGV + 1 < 2)
 $subtestcase = $ARGV[3];
 
 #Example: 'ctest_tm_01:Test Sequence 1' or empty
-$onlytc = $ARGV[2];
+$onlytc  = $ARGV[2];
 
 $cfgfile = $ARGV[1];
 
@@ -593,11 +595,14 @@ info("Configuration file: $cfgfile");
 info("Removing old files");
 system("rm -rf out/rtos/*");
 
+
 readparam($cfgfile);
 
 # TODO this has to be improved
+
 $ISR1 = "GPIO1";
 $ISR2 = "GPIO0";
+
 if ("k60_120" eq $CPUTYPE)
 {
    $ISR1 = "PORTB";
@@ -608,7 +613,7 @@ if ("cortexM0" eq $ARCH)
    $ISR1 = "UART1";
    $ISR2 = "UART0";
 }
-     
+
 if ("msp430" eq $ARCH)
 {
 	if ("msp430f5x_6x" eq $CPUTYPE)
@@ -621,7 +626,6 @@ if ("msp430" eq $ARCH)
 		}
 	}
 }
-
 
 mkpath(dirname($logfile));
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";
@@ -685,8 +689,11 @@ if($debug != 0)
    print "Debug Mode: Enabled!\n";
 }
 
+
 foreach $testfn (@tests)
 {
+   print "\n";                    #add a gap in the output
+
    @test = split(/:/,$testfn);
    $test = @test[0];
    info("Testing $test");
@@ -695,7 +702,7 @@ foreach $testfn (@tests)
 
    foreach $config (@configs)
    {
-	  $config =~ tr/\r\n//d;
+	   $config =~ tr/\r\n//d;
       $runthistestcase = 1;
 
       $testcasecount++;
@@ -758,11 +765,14 @@ foreach $testfn (@tests)
                info("WARNING: skipping make generate of $test");
                $outmakegeneratestatus = 0;
             }
+
             logtimestamp(SUMMARYFILE);
+
             if ($outmakegeneratestatus == 0)
             {
                # Make project skipping make dependencies
                info("make of $test");
+
                if($RAM_EXEC != 0)
                {
                   # make Link2RAM rule
@@ -775,16 +785,19 @@ foreach $testfn (@tests)
                   $linker2RAM = "";
                   info("Setting Linker option: Link2FLASH");
                }
+
                info("running \"make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0\"");
                $outmake = `make $linker2RAM PROJECT_PATH=out/rtos/$test/$config MAKE_DEPENDENCIES=0`;
                $outmakestatus = $?;
 
                info("make status: $outmakestatus");
                logffull("make output:\n$outmake");
+
                if ($debug)
                {
                   print "$outmake";
                }
+
                if ($outmakestatus == 0)
                {
                   if (($ARCH eq "cortexM4") || ($ARCH eq "cortexM0"))
@@ -793,7 +806,7 @@ foreach $testfn (@tests)
                   }
 						elsif ( $ARCH eq "msp430")
 						{
-                     $out = $BINDIR . "/" . $test . "-" . $config . ".bin";
+                     $out = $BINDIR . "/" . $test . "-" . $config . ".out";
 						}
                   else
                   {
@@ -806,8 +819,17 @@ foreach $testfn (@tests)
 
                   if($debug == 0)
                   {
+                     #print("probando debug\n");
+                     #before calling gdb, for msp430, I have to run the proxy (mspdebug)
+                    #how is done in cortex with  open ocd? TODO
+
+                    if( $ARCH eq "msp430" ) #degun franco
+                    {
+                       info("Running $MSPDEBUG_BIN $MSPDEBUG_PROTOCOL");
+                    }
+
                      $outdbg = `$GDB $out -x $dbgfile`;
-                     
+
 							if ($ARCH eq "x86")
                      {
                         # if it fails, then capture ASSERT message with the condition, File and Line that failed and print it!
@@ -819,12 +841,14 @@ foreach $testfn (@tests)
                            print("ERROR, $Str_Assert\n");
                         }
                      }
-                   }
+                  }
                   else
                   {
+                     print("probando\n");
                      exec("$GDB $out");
                      $outdbg = "";
                   }
+
                   $outdbgstatus = $?;
                   info("debug status: $outdbgstatus");
                   info("debug output:\n$outdbg");

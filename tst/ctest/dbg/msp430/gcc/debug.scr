@@ -1,6 +1,6 @@
 target remote localhost:2000
 load
-set $pc = __reset_vector
+set $pc = __msp430_resetvec_hook
 break ConfTestFinish
 continue
 dump value out/rtos/TestResults.bin TestResults

@@ -1,3 +1,7 @@
+/********************************************************
+ * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+ ********************************************************/
+
 /* Copyright 2016, Franco Bucafusco
  * All rights reserved.
  *
@@ -31,59 +35,67 @@
  *
  */
 
-/** \brief FreeOSEK Os Conformance Test
+#ifndef _OS_INTERNAL_ARCH_CFG_H_
+#define _OS_INTERNAL_ARCH_CFG_H_
+
+/*****************************************************************************
+ * update the tmparch directory on the \file doxygen comment with your
+ * architecture
+ *
+ * PLEASE REMOVE THIS COMMENT
+ *****************************************************************************/
+/** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
  **
- ** \file FreeOSEK/Os/tst/ctest/inc/posix/ctest_arch.h
+ ** This file content the internal generated architecture dependent
+ ** configuration of FreeOSEK.
+ **
+ ** \file msp430/Os_Internal_Arch_Cfg.h
+ ** \arch msp430
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_CT Conformance Test
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+ /*
+  * Initials     Name
+  * ---------------------------
+  * FBUC         Franco Bucafusco
+  *
+  */
+
+/*
+ * modification history (new versions first)
+ * -----------------------------------------------------------
+ * v0.1.0 20162202 FBUC First version for msp430 processors.
+ */
+
 /*==================[inclusions]=============================================*/
-#include "ciaaPlatforms.h"
-#include "ctest_arch.h"
-#if (CPU == msp430f5529)
-#include "msp430.h"
-#endif
 
-/*==================[macros and definitions]=================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal functions declaration]=========================*/
+/** \brief Task Context Type */
+typedef uint16 * TaskContextType;
 
-/*==================[internal data definition]===============================*/
+/** \brief Task Context Type */
+typedef TaskContextType* TaskContextRefType;
 
-/*==================[external data definition]===============================*/
-#if (CPUTYPE == msp430f5x_6x)
+/*==================[external data declaration]==============================*/
 
-/* Use P1.7 as interrupt for tests */
-extern void TriggerISR2_Arch(void)
-{
-	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
-	P1IE 	|= 0x80;
-	P1IFG |= 0x80;
-}
 
-/* Use P2.2 as interrupt for tests */
-extern void TriggerISR1_Arch(void)
-{
-	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
-	P2IE 	|= 0x04;
-	P2IFG |= 0x04;
-}
+/*==================[external functions declaration]=========================*/
 
-#endif
+void Enable_User_ISRs(void);
+void Enable_ISR2_Arch(void);
+void Disable_ISR2_Arch(void);
 
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */
