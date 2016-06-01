@@ -6,6 +6,7 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016 Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -70,7 +71,17 @@ foreach ($tasks as $task)
    print "#if ( x86 == ARCH )\n";
    print "uint8 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
    print "#else\n";
-   print "uint8 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ."];\n";
+   if( $definitions["ARCH"]== "msp430")
+   {
+      #msp430 requieres bus alligmented memory access. So, if the compiler allocates this array as uint8 it could start at an even address.
+      #we force the compiler to locate this array alligned declaring it as an uint16 (with the size divided by two)
+      print "uint16 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ."/2];\n";
+   }
+   else
+   {
+      print "uint8 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ."];\n";
+   }
+
    print "#endif\n";
 }
 print "\n";
@@ -478,7 +489,12 @@ foreach ($intnames as $int)
    $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if ($intcat == 2)
-   {?>
+   {
+   if($definitions["ARCH"] == "msp430")
+   {
+      print "__attribute__( (__interrupt__($int))) /*Wrapper ISR handler for $int */\n";
+   }
+   ?>
 void OSEK_ISR2_<?php print $int;?>(void)
 {
    /* store the calling context in a variable */
@@ -512,4 +528,3 @@ void OSEK_ISR2_<?php print $int;?>(void)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-
