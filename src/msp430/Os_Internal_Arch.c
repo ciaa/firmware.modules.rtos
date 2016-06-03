@@ -104,7 +104,7 @@ void InitStack_Arch(uint8 TaskID)
 
 	int taskStackSizeWords = TasksConst[TaskID].StackSize/2;				/* calculation of the size of the stack in words units (16bits) */
 
-	taskStack[taskStackSizeWords-1] = (uint32) TasksConst[TaskID].EntryPoint; 	/*PC*/
+	taskStack[taskStackSizeWords-1] = (uint16) TasksConst[TaskID].EntryPoint; 	/*PC*/
 	taskStack[taskStackSizeWords-2] = DEFAULT_SR; 							       	/*SP*/
 
 	/* la ubicacion, reservando 13 registro para el cambio de contexto
@@ -196,13 +196,15 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		/* exchange stack pointers */
 		if( Osek_OldTaskPtr_Arch != NULL )
 		{
-			asm volatile ( "mov SP,  Osek_OldTaskPtr_Arch \n\t"  );
+			asm volatile ( "mov &Osek_OldTaskPtr_Arch,  r6 \n\t"  );
+			asm volatile ( "mov SP,  @r6 \n\t"  );
 		}
+		asm volatile ( "mov &Osek_NewTaskPtr_Arch,  r6 \n\t"  );
+		asm volatile ( "mov @r6, SP \n\t"  );
 
-		asm volatile ( "mov Osek_NewTaskPtr_Arch, SP \n\t"  );
 		/*
 		Context restore r4 to r15
-		It Includes the reti instruction.
+		It does not Include the reti instruction.
 		*/
 		RESTORE_CONTEXT()
 	}

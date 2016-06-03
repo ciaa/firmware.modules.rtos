@@ -45,7 +45,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
- 
+
  /*
   * Initials     Name
   * ---------------------------
@@ -119,9 +119,7 @@ extern TaskType TerminatingTask;
  ** else to execute. The macro may sleep the cpu for a short time to avoid
  ** overheating and full power consumption or may halt the processor always
  ** that all wakeup reasons are right configured. If nothing is running
- ** nothing my activate any task so we will keep sleeping until anything
- ** occurs, like for example an interrupt.
- **
+ ** nothing my activate any task so we
  **/
 #define osekpause() asm volatile("nop")	//TODO revisar los low power modes
 
@@ -130,35 +128,34 @@ extern TaskType TerminatingTask;
  ** This macro is called by the context switch routine.
  **
  **/
-#define SAVE_CONTEXT()           \
-  asm volatile ( "push r4  \n\t" \
-                 "push r5  \n\t" \
-                 "push r6  \n\t" \
-                 "push r7  \n\t" \
-                 "push r8  \n\t" \
-                 "push r9  \n\t" \
-                 "push r10 \n\t" \
-                 "push r11 \n\t" \
-                 "push r12 \n\t" \
-                 "push r13 \n\t" \
-                 "push r14 \n\t" \
-                 "push r15 \n\t" \
+#define SAVE_CONTEXT()        \
+  asm volatile ( "push r4\n\t"\
+                 "push r5\n\t"\
+                 "push r6\n\t"\
+                 "push r7\n\t"\
+                 "push r8\n\t"\
+                 "push r9\n\t"\
+                 "push r10\n\t"\
+                 "push r11\n\t"\
+                 "push r12\n\t"\
+                 "push r13\n\t"\
+                 "push r14\n\t"\
+                 "push r15\n\t"\
                );
 
-#define RESTORE_CONTEXT()       \
-  asm volatile ( "pop r15 \n\t" \
-                 "pop r14 \n\t" \
-                 "pop r13 \n\t" \
-                 "pop r12 \n\t" \
-                 "pop r11 \n\t" \
-                 "pop r10 \n\t" \
-                 "pop r9  \n\t" \
-                 "pop r8  \n\t" \
-                 "pop r7  \n\t" \
-                 "pop r6  \n\t" \
-                 "pop r5  \n\t" \
-                 "pop r4  \n\t" \
-                 "reti    \n\t" \
+#define RESTORE_CONTEXT()     \
+  asm volatile ( "pop r15\n\t"\
+                 "pop r14\n\t"\
+                 "pop r13\n\t"\
+                 "pop r12\n\t"\
+                 "pop r11\n\t"\
+                 "pop r10\n\t"\
+                 "pop r9\n\t"\
+                 "pop r8\n\t"\
+                 "pop r7\n\t"\
+                 "pop r6\n\t"\
+                 "pop r5\n\t"\
+                 "pop r4\n\t"\
                );
 
 #define RETURN_FROM_NAKED_ISR()  asm volatile ("reti    \n\t");
@@ -169,8 +166,8 @@ extern TaskType TerminatingTask;
  **/
 #define CallTask(actualtask, nexttask)                                     \
 {                                                                          \
-   Osek_OldTaskPtr_Arch = (void*) *(TasksConst[(actualtask)].TaskContext); \
-   Osek_NewTaskPtr_Arch = (void*) *(TasksConst[(nexttask)].TaskContext);   \
+   Osek_OldTaskPtr_Arch = (void*) (TasksConst[(actualtask)].TaskContext); \
+   Osek_NewTaskPtr_Arch = (void*) (TasksConst[(nexttask)].TaskContext);   \
    /* next action will trigger assigned IRQ for the SWI */                 \
    HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE);    \
 }
@@ -184,14 +181,14 @@ extern TaskType TerminatingTask;
    extern TaskType WaitingTask;                                            \
    if(WaitingTask != INVALID_TASK)                                         \
    {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*) *(TasksConst[WaitingTask].TaskContext);\
+      Osek_OldTaskPtr_Arch = (void*) (TasksConst[WaitingTask].TaskContext);\
       WaitingTask = INVALID_TASK;                                          \
    }                                                                       \
    else                                                                    \
    {                                                                       \
       Osek_OldTaskPtr_Arch = (void*)0;                                     \
    }                                                                       \
-   Osek_NewTaskPtr_Arch = (void*) *(TasksConst[(task)].TaskContext);       \
+   Osek_NewTaskPtr_Arch = (void*) (TasksConst[(task)].TaskContext);       \
    /* next action will trigger assigned IRQ for the SWI */                 \
    HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE); \
 }
