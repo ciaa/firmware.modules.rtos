@@ -64,10 +64,10 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-   StatusType ActivateTask
+StatusType ActivateTask
 (
  TaskType TaskID
- )
+)
 {
    /* \req OSEK_SYS_3.1 The system service StatusType
     * ActivateTask ( TaskType TaskID ) shall be defined. */
@@ -79,7 +79,7 @@
    /* \req OSEK_SYS_3.1.7-1/3 Possible return values in Standard mode are E_OK or E_OS_LIMIT */
    StatusType ret = E_OK;
 
- IntSecure_Common();
+   IntSecure_Common();
 
 #if (OSEK_MULTICORE == OSEK_ENABLE)
    if ((TaskID - TASKS_COUNT) < REMOTE_TASKS_COUNT)

@@ -113,19 +113,8 @@ void InitStack_Arch(uint8 TaskID)
 }
 
 
-/**
- OSEK periodic interrupt is implemented using TimerA_2 timer module.
-*/
-__attribute__( (__interrupt__(TIMER2_A0_VECTOR),naked))
-void OSEK_ISR_TIMER2_A0_VECTOR(void)
+inline void TickProcess()
 {
-	/*
-	It's not necessary to disable global irqs.
-	It is done automatically when the SP is cleared.
-	*/
-	/*  This handler service the periodic interrupt.
-	*/
-	/* Clear the IRQ flag*/
 	Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_0);
 
 	/* store the calling context in a variable */
@@ -160,6 +149,22 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 		PostIsr2_Arch(isr);
 	}
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+}
+
+/**
+ OSEK periodic interrupt is implemented using TimerA_2 timer module.
+*/
+__attribute__( (__interrupt__(TIMER2_A0_VECTOR) ,naked )) //
+void OSEK_ISR_TIMER2_A0_VECTOR(void)
+{
+	/*
+	It's not necessary to disable global irqs.
+	It is done automatically when the SP is cleared.
+	*/
+	/*  This handler service the periodic interrupt.
+	*/
+	/* Clear the IRQ flag*/
+	TickProcess();
 
 	RETURN_FROM_NAKED_ISR(); /*return from Tick ISR */
 }
@@ -174,11 +179,11 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 __attribute__( (__interrupt__(TIMER2_A1_VECTOR),naked))
 void OSEK_ISR_TIMER2_A1_VECTOR(void)
 {
-	/* Clear the IRQ flag*/
-	unsigned short local_taiv = TA2IV;
+	register unsigned short local_taiv = TA2IV;
 
 	if( local_taiv & TA2IV_TACCR1)	//
 	{
+		/* Clear the IRQ flag*/
 		Timer_A_disableCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1 );
 		Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1);
 
@@ -188,10 +193,10 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		/* Context save r4 to r15
 		   r0 = PC  automatically saved by HW when handler is serviced
 			r1 = SP
-			r3 = SR	automatically saved by HW when handler is serviced
-			r4 = CG  doesn't care
+			r2 = SR	automatically saved by HW when handler is serviced
+			r3 = CG  doesn't care
 		*/
-		SAVE_CONTEXT();
+	 	SAVE_CONTEXT();
 
 		/* exchange stack pointers */
 		if( Osek_OldTaskPtr_Arch != NULL )
@@ -206,7 +211,7 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		Context restore r4 to r15
 		It does not Include the reti instruction.
 		*/
-		RESTORE_CONTEXT()
+	 	RESTORE_CONTEXT()
 	}
 
 	RETURN_FROM_NAKED_ISR(); /*return from ISR*/

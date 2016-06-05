@@ -244,7 +244,7 @@ extern TaskType TerminatingTask;
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
  ** is called only ones in StartUp.c function.
  **/
-#define EnableOSInterrupts() __asm volatile("eint")
+#define EnableOSInterrupts() __asm volatile("eint"); __asm volatile("nop");
 
 /** \brief Enable Interruptions
  **

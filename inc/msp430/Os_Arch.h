@@ -70,7 +70,7 @@
 
 /*==================[macros]=================================================*/
 /*****************************************************************************
- * Please define here all needed macros that will be visible to the OS user
+ * Please define here all needed macros that will be visiblsee to the OS user
  * for this architecutre. This means that anyone including os.h will have
  * access to this definitions if the actual architecutre is used.
  *
@@ -83,13 +83,12 @@
 /** \brief Disable All Interrupts Arch */
 #define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
 
-
-
+ 
 /** \brief  All Interrupts Arch Common Objects
  **
  ** This macro shall define common objects to imlement  Suspend and  Resume
  **/
-#define  CommonAllInterrupts()    unsigned short SR_BACK___;
+#define  CommonAllInterrupts()   volatile unsigned short SR_BACK___;
 
 
 /** \brief Suspend All Interrupts Arch
@@ -99,8 +98,8 @@
  **         to workarround the hw bug cpu39 describer in slaz314h.pdf
  **/
 
-
-#define SuspendAllInterrupts_Arch()  __asm volatile("mov SR, SR_BACK___");\
+//__asm volatile("mov SR, SR_BACK___");
+#define SuspendAllInterrupts_Arch()  SR_BACK___ = _get_SR_register(); \
                                      __asm volatile("dint"); \
                                      __asm volatile("nop");
 
@@ -117,7 +116,11 @@
  #define ResumeAllInterrupts_Arch() __asm volatile("eint")
 */
 
-#define ResumeAllInterrupts_Arch() if( SR_BACK___ & 0x0008 )  __asm volatile("eint");
+#define ResumeAllInterrupts_Arch() if( SR_BACK___ & GIE )      \
+                                   {                           \
+                                      __asm volatile("eint");  \
+                                      __asm volatile("nop");\
+                                   }                           \
 
 
 /** \brief Resume OS Interrupts Arch

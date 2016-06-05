@@ -91,7 +91,7 @@ extern StatusType Schedule
    ContextType actualContext;
 #endif
 
-IntSecure_Common();
+   IntSecure_Common();
 
    IntSecure_Start();
 
