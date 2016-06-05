@@ -65,18 +65,6 @@
 /* get tasks */
 $tasks = getLocalList("/OSEK", "TASK");
 
-/*
-if( $definitions["ARCH"]== "msp430")
-{
-   $stack_element_type  = "uint16";
-}
-else
-{
-   $stack_element_type  = "uint8";
-}
-
-$stack_element_cast_type   = "(". $stack_element_type . "*)"; */ //TODO DELETE
-
 foreach ($tasks as $task)
 {
    print "/** \brief $task stack */\n";
@@ -498,7 +486,13 @@ uint8 ErrorHookRunning;
 
 /*==================[external functions definition]==========================*/
 <?php
+#includes the array where all IRQ array is defined, base on the architecture.
+include ''.$definitions["ARCH"].'/Os_Internal_Defs.php';
+
+#we create an array of ISRs defined in the OIL file.
 $intnames = getLocalList("/OSEK", "ISR");
+
+#for each ISR define in the OIL, we define the IRQ handler.
 foreach ($intnames as $int)
 {
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
@@ -513,8 +507,14 @@ foreach ($intnames as $int)
    ?>
 void OSEK_ISR2_<?php print $int;?>(void)
 {
+   <?php
+   $key = array_search( $inttype , $intList );
+
+   print "PreIsr2_Arch(". $key .");\n"
+?>
    /* store the calling context in a variable */
    ContextType actualContext = GetCallingContext();
+
    /* set isr 2 context */
    SetActualContext(CONTEXT_ISR2);
 
@@ -530,7 +530,9 @@ void OSEK_ISR2_<?php print $int;?>(void)
         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
    {
       /* this shall force a call to the scheduler */
-      PostIsr2_Arch(isr);
+      <?php
+   print "PostIsr2_Arch(". $key .");\n"
+      ?>
    }
 #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
 }
