@@ -74,6 +74,8 @@ StatusType TerminateTask
 
    StatusType ret = E_OK;
 
+   IntSecure_Common();
+
    /* \req OSEK_SYS_3.2.4 If the version with extended status is used, the
     ** service returns in case of error, and provides a status which can be
     ** evaluated in the application. */

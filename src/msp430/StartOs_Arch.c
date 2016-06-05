@@ -81,7 +81,7 @@ void StartOs_Arch_Cpu(void)
 {
 	StartOs_Arch_System();	//TODO: this should be placed in other file. For cortex processors is placed within the reset vector handler.
 	StartOs_Arch_SystemTick();
-	Enable_User_ISRs();
+	//Enable_User_ISRs();	//USER ISRs SHOULD BE ENABLED BY THE USER USING a_MSP430ware Libraries or OS buildin Drivers.
 }
 
 /**

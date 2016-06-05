@@ -223,6 +223,7 @@ foreach ($intnames as $int)
 ?>
 }
 
+
 /** \brief Enable user defined category 2 ISRs */
 void Enable_ISR2_Arch(void)
 {

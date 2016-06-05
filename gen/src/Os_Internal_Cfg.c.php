@@ -65,6 +65,18 @@
 /* get tasks */
 $tasks = getLocalList("/OSEK", "TASK");
 
+/*
+if( $definitions["ARCH"]== "msp430")
+{
+   $stack_element_type  = "uint16";
+}
+else
+{
+   $stack_element_type  = "uint8";
+}
+
+$stack_element_cast_type   = "(". $stack_element_type . "*)"; */ //TODO DELETE
+
 foreach ($tasks as $task)
 {
    print "/** \brief $task stack */\n";
@@ -162,7 +174,11 @@ foreach ($tasks as $count=>$task)
    print "   {\n";
    print "       OSEK_TASK_$task,   /* task entry point */\n";
    print "       &ContextTask" . $task . ", /* pointer to task context */\n";
-   print "       StackTask" . $task . ", /* pointer stack memory */\n";
+
+
+   print "       (StackPtrType) StackTask" . $task . ", /* pointer stack memory */\n";
+
+
    print "       sizeof(StackTask" . $task . "), /* stack size */\n";
    print "       " . $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] . ", /* task priority */\n";
    print "       " . $config->getValue("/OSEK/" . $task, "ACTIVATION"). ", /* task max activations */\n";

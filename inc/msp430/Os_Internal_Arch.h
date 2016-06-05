@@ -97,6 +97,15 @@ extern void *Osek_NewTaskPtr_Arch;
 
 extern TaskType TerminatingTask;
 
+
+/** \brief Define common objects for using IntSecure_Start and IntSecure_End-
+ **
+ ** This macro will be used internaly by the OS in any part of code that
+ ** has to be executed atomic. It should be placed after IntSecure_Start or IntSecure_End is called
+ **/
+#define IntSecure_Common() CommonAllInterrupts()
+
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro will be used internaly by the OS in any part of code that
@@ -276,7 +285,7 @@ extern TaskType TerminatingTask;
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
 
-/** \brief Pre ISR Macro
+/** \brief Pre ISR Macrol
  **
  ** This macro is called every time that an ISR Cat 2 is started
  **/

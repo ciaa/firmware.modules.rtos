@@ -79,6 +79,8 @@ StatusType GetResource
    /* \req OSEK_SYS_3.13.2: Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
 
+  IntSecure_Common();
+
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    if (
 /* only if one or more resources were defined */

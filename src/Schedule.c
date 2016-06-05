@@ -1,5 +1,6 @@
 /* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
+ * Copyright 2016, Franco Bucafusco
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
  *
@@ -81,11 +82,16 @@ extern StatusType Schedule
 
    /* \req OSEK_SYS_3.4.4 Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
+
+
    TaskType nextTask;
    TaskType actualTask;
+
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    ContextType actualContext;
 #endif
+
+IntSecure_Common();
 
    IntSecure_Start();
 

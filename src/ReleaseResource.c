@@ -80,6 +80,8 @@ StatusType ReleaseResource
     * E_OK  */
    StatusType ret = E_OK;
 
+  IntSecure_Common();
+
 #if (RESOURCES_COUNT != 0)
    uint8 loopi;
 #endif /* #if (RESOURCES_COUNT != 0) */

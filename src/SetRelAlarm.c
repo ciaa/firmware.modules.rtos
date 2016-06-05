@@ -79,6 +79,8 @@ StatusType SetRelAlarm
     ** E_OK, E_OS_STATE */
    StatusType ret = E_OK;
 
+   IntSecure_Common();
+
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    /* check if the alarm id is in range */
    if(AlarmID >= ALARMS_COUNT)

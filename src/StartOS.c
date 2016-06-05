@@ -76,6 +76,8 @@ void StartOS
     ** system */
    uint8f loopi;
 
+   IntSecure_Common();
+
    IntSecure_Start();
 
 #if (OSEK_MULTICORE == OSEK_ENABLE)

@@ -140,13 +140,13 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 	(void)CounterIncrement; /* TODO remove me */
 
 	/* increment the disable interrupt conter to avoid enable the interrupts */
-	IntSecure_Start();
+//	IntSecure_Start();	//MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS
 
 	/* call counter interrupt handler */
 	CounterIncrement = IncrementCounter(0, TIC_PERIOD );
 
 	/* set the disable interrupt counter back */
-	IntSecure_End();
+//	IntSecure_End();	//MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS
 #endif /* #if (ALARMS_COUNT != 0) */
 
 	/* reset context */
@@ -212,6 +212,636 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 	RETURN_FROM_NAKED_ISR(); /*return from ISR*/
 }
 
+
+/*
+MSP430 hasn't a way of dissabling "all the vector" at once, without touching the
+individual sub IE flags.
+So, when dissable the IRQ handler the system must backup the current available IRQ flags, from
+all the possible regiters, to be restored later in the EnableIRQ.
+*/
+#if( MSP430_ENABLE_RTC_HANDLER== 1)
+unsigned char rtcctl0_bck 		= 0;
+unsigned char rtcps0ctl_bck		= 0;	//the RTCPS0CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char rtcps1ctl_bck		= 0;  	//the RTCPS1CTL is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_PORT2_HANDLER== 1)
+unsigned char p2ie_bck			= 0;
+#endif
+
+#if( MSP430_ENABLE_PORT1_HANDLER==1 )
+unsigned char p1ie_bck			= 0;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A1_HANDLER== 1)
+unsigned char ta2ctl_bck	 	= 0;	//the TA2CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta2cctl1_bck	 	= 0;	//the TA2CCTL1 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta2cctl2_bck	 	= 0;	//the TA2CCTL2 is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A0_HANDLER==1 )
+unsigned char ta2cctl0_bck		= 0;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A0_HANDLER==1 )
+unsigned char ta1ctl_bck	 	= 0;	//the TA1CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta1cctl0_bck	 	= 0;	//the TA1CCTL0 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta1cctl1_bck	 	= 0;	//the TA1CCTL1 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta1cctl2_bck	 	= 0;	//the TA1CCTL2 is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A1_HANDLER==1 )
+unsigned char ta0ctl_bck   	 	= 0;	//the TA0CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta0cctl1_bck 	 	= 0; 	//the TA0CCTL1 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta0cctl2_bck 	 	= 0; 	//the TA0CCTL2 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta0cctl3_bck 	 	= 0; 	//the TA0CCTL3 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char ta0cctl4_bck 	 	= 0; 	//the TA0CCTL4 is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A0_HANDLER==1 )
+unsigned char ta0cctl0_bck 	 	= 0; 	//the TA0CCTL0 is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B1_HANDLER==1 )
+unsigned char tb0ctl_bck   	 	= 0;    //the TB0CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char tb0cctl1_bck 	 	= 0;    //the TB0CCTL1 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char tb0cctl2_bck 	 	= 0;    //the TB0CCTL2 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char tb0cctl3_bck 	 	= 0;    //the TB0CCTL3 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char tb0cctl4_bck 	 	= 0;    //the TB0CCTL4 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char tb0cctl5_bck 	 	= 0;    //the TB0CCTL5 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char tb0cctl6_bck 	 	= 0;    //the TB0CCTL6 is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B0_HANDLER==1 )
+unsigned char tb0cctl0_bck			= 0;    //the TB0CCTL0 is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_DMA_HANDLER==1 )
+unsigned char dma0ctl_bck			= 0;	//the DMA0CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char dma1ctl_bck			= 0;	//the DMA1CTL is 16bit wide, but the IRQ flags are in the lower byte
+unsigned char dma2ctl_bck			= 0;	//the DMA2CTL is 16bit wide, but the IRQ flags are in the lower byte
+#endif
+
+#if( MSP430_ENABLE_USCI_A0_HANDLER==1 )
+unsigned char uca0ie_bck 		= 0;
+unsigned char uca1ie_bck 		= 0;
+#endif
+
+#if( MSP430_ENABLE_USCI_B0_HANDLER==1 )
+unsigned char ucb0ie_bck 		= 0;
+#endif
+
+#if( MSP430_ENABLE_USCI_B1_HANDLER==1 )
+unsigned char ucb1ie_bck 		= 0;
+#endif
+
+#if( MSP430_ENABLE_ADC12_HANDLER==1 )
+unsigned char  adc12ctl0_bck 	= 0; 	//the ADC12CTL0 is 16bit wide, but the IRQ flags are in the lower byte
+unsigned short adc12ie_bck   	= 0;
+#endif
+
+//TODO: OPTIMIZAR SOLO AGREGANDO LOS CASES BASADOS EN LOS ISR QUE DEFINA EL USUARIO EN EL OIL
+
+/**
+Enable the backed up IRQ signals (done within MSP430_DisableIRQ).
+SEE SLAS590 (TABLE 4)
+*/
+void MSP430_EnableIRQ(unsigned char irQ_number)
+{
+	switch( irQ_number )
+	{
+#if( MSP430_ENABLE_RTC_HANDLER== 1)
+		case 0: // => "RTC",
+			/* RTCRDYIE, RTCTEVIE, RTCAIE, RT0PSIE, RT1PSIE */
+			/**/
+			RTCCTL0   |= ( rtcctl0_bck   & (RTCTEVIE|RTCAIE|RTCRDYIE) );
+			RTCPS0CTL |= ( rtcps0ctl_bck & RT0PSIE );
+			RTCPS1CTL |= ( rtcps1ctl_bck & RT1PSIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_PORT2_HANDLER==1)
+		case 1 : //=> "PORT2",
+			/* P2IE.0 to P2IE.7*/
+			P2IE = p2ie_bck;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A1_HANDLER==1)
+		case 2 : //=> "TIMER2_A1",
+			/* TA2CCR1 CCIE1 to TA2CCR2 CCIE2, TA2IE*/
+			TA2CTL   |= ( ta2ctl_bck & TAIE );
+			TA2CCTL1 |= ( ta2cctl1_bck & CCIE );
+			TA2CCTL2 |= ( ta2cctl2_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A0_HANDLER==1 )
+		case 3 : //=> "TIMER2_A0",
+			/* TA2CCR0 CCIE0 */
+			TA2CCTL0 |= ( ta2cctl0_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_B1_HANDLER==1 )
+		case 4 : //=> "USCI_B1",
+			/* UCB1RXIE, UCB1TXIE */
+			UCB1IE |= ( ucb1ie_bck & (UCRXIE|UCTXIE) );
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_A1_HANDLER==1 )
+		case 5 : //=> "USCI_A1",
+			/* UCA1RXIE, UCA1TXIE */
+			UCA1IE |= ( uca1ie_bck & (UCRXIE|UCTXIE) );
+			break;
+#endif
+
+#if( MSP430_ENABLE_PORT1_HANDLER==1 )
+		case 6 : //=> "PORT1",
+			/* P1IE.0 to P1IE.7  */
+			P1IE = p1ie_bck;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A1_HANDLER==1 )
+		case 7 : //=> "TIMER1_A1",
+			/*  TA1CCR1 CCIE1 to TA1CCR2 CCIE2 TA1IE*/
+			TA1CTL   |= ( ta1ctl_bck & TAIE );
+			TA1CCTL1 |= ( ta1cctl1_bck & CCIE );
+			TA1CCTL2 |= ( ta1cctl2_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A0_HANDLER==1 )
+		case 8 : //=> "TIMER1_A0",
+			/* TA1CCR0 CCIE0 */
+			TA1CCTL0 |= ( ta1cctl0_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_DMA_HANDLER==1 )
+		case 9 : //=> "DMA",
+			/* DMA0IE, DMA1IE, DMA2IE */
+			DMA0CTL |= ( dma0ctl_bck & DMAIE );
+			DMA1CTL |= ( dma1ctl_bck & DMAIE );
+			DMA2CTL |= ( dma2ctl_bck & DMAIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_USB_UBM_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 10: // => "USB_UBM",
+			/* USB interrupts */
+			USBPWRCTL |= VBOFFIE|VBONIE|VUOVLIE;
+			USBPLLIR |= USBOORIE|USBLOSIE|USBOOLIE;
+			USBIEPCNF_0 |=USBIIE;
+			USBOEPCNF_0 |=USBIIE;
+			USBIEPIE = 0XFF;
+			USBOEPIE = 0XFF;
+			USBMAINT |=UTIE;
+			USBIE |= RSTRIE|SUSRIE|RESRIE|SETUPIE|STPOWIE;
+
+			USBIEPCNF_0 |= USBIIE;
+			USBOEPCNF_0 |= USBIIE;
+
+			USBIEPCNF_1 |= USBIIE;
+			USBOEPCNF_1 |= USBIIE;
+			USBIEPCNF_2 |= USBIIE;
+			USBOEPCNF_2 |= USBIIE;
+			USBIEPCNF_3 |= USBIIE;
+			USBOEPCNF_3 |= USBIIE;
+			USBIEPCNF_4 |= USBIIE;
+			USBOEPCNF_4 |= USBIIE;
+			USBIEPCNF_5 |= USBIIE;
+			USBOEPCNF_5 |= USBIIE;
+			USBIEPCNF_6 |= USBIIE;
+			USBOEPCNF_6 |= USBIIE;
+			USBIEPCNF_7 |= USBIIE;
+			USBOEPCNF_7 |= USBIIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A1_HANDLER==1 )
+		case 11: // => "TIMER0_A1",
+			/* TA0CCR1 CCIE1 to TA0CCR4 CCIE4 TA0IE */
+			TA0CTL   |= ( ta0ctl_bck & TAIE );
+			TA0CCTL1 |= ( ta0cctl1_bck & CCIE );
+			TA0CCTL2 |= ( ta0cctl2_bck & CCIE );
+			TA0CCTL3 |= ( ta0cctl3_bck & CCIE );
+			TA0CCTL4 |= ( ta0cctl4_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A0_HANDLER==1 )
+		case 12: // => "TIMER0_A0",
+			/* TA0CCR0 CCIE0 */
+			TA0CCTL0 |= ( ta0cctl0_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_ADC12_HANDLER==1 )
+		case 13: // => "ADC12",
+			/* ADC12IE0 to ADC12IE15 */
+			ADC12CTL0 |= ( adc12ctl0_bck & (ADC12OVIE|ADC12TOVIE) );
+			ADC12IE = adc12ie_bck;
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_B0_HANDLER==1 )
+		case 14: // => "USCI_B0",
+			/* UCB0RXIE, UCB0TXIE  */
+			UCB0IE |= ( ucb0ie_bck & (UCRXIE|UCTXIE) );
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_A0_HANDLER==1 )
+		case 15: // => "USCI_A0",
+			/* UCA0RXIE, UCA0TXIE */
+			UCA0IE |= ( uca0ie_bck & (UCRXIE|UCTXIE) );
+			break;
+#endif
+
+#if( MSP430_ENABLE_WDT_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 16: // => "WDT",
+			/* WDTIE */
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B1_HANDLER==1 )
+		case 17: // => "TIMER0_B1",
+			/*	TB0CCR1 CCIE1 to TB0CCR6 CCIE6 TB0IE */
+			TB0CTL   |= ( tb0ctl_bck & TAIE );
+			TB0CCTL1 |= ( tb0cctl1_bck & CCIE );
+			TB0CCTL2 |= ( tb0cctl2_bck & CCIE );
+			TB0CCTL3 |= ( tb0cctl3_bck & CCIE );
+			TB0CCTL4 |= ( tb0cctl4_bck & CCIE );
+			TB0CCTL5 |= ( tb0cctl5_bck & CCIE );
+			TB0CCTL6 |= ( tb0cctl6_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B0_HANDLER==1 )
+		case 18: // => "TIMER0_B0",
+			/* TB0CCR0 CCIE0 */
+			TB0CCTL0 |= ( tb0cctl0_bck & CCIE );
+			break;
+#endif
+
+#if( MSP430_ENABLE_COMP_B_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 19: // => "COMP_B",
+			/* Comparator B interrupt flags */
+			break;
+#endif
+
+#if( MSP430_ENABLE_UNMI_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 20: // => "UNMI",
+			break;
+#endif
+
+#if( MSP430_ENABLE_SYSNMI_HANDLER==1 )
+#error SHOULD NOT BE IMPLEMENTED
+		case 21: // => "SYSNMI",
+			/* NMIIE, OFIE, ACCVIE, BUSIE SVMLIE, SVMHIE, DLYLIE, DLYHIE, VLRLIE, VLRHIE, VMAIE, JMBNIE, JMBOUTIE */
+			break;
+#endif
+
+#if( MSP430_ENABLE_SYSNMI_HANDLER==1 )
+#error SHOULD NOT BE IMPLEMENTED
+		case 22: // => "RESET"
+			/* WDTIE, KEYV */
+			break;
+#endif
+
+
+	default:
+		break;
+}
+	//TODO: remove system IRQ vectors and OS
+	//TODO: FALTA USB
+}
+
+
+/*
+*/
+void MSP430_DisableIRQ(unsigned char irQ_number)
+{
+	switch(irQ_number)
+	{
+#if( MSP430_ENABLE_RTC_HANDLER== 1)
+		case 0: // => "RTC",
+			/* RTCRDYIE, RTCTEVIE, RTCAIE, RT0PSIE, RT1PSIE */
+
+			//backup the register/s
+			rtcctl0_bck    = RTCCTL0   ;
+			rtcps0ctl_bck  = RTCPS0CTL ;
+			rtcps1ctl_bck  = RTCPS1CTL ;
+
+			//clear all flags
+			RTCCTL0   &=~( RTCTEVIE|RTCAIE|RTCRDYIE);
+			RTCPS0CTL &=~ RT0PSIE;
+			RTCPS1CTL &=~ RT1PSIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_PORT2_HANDLER== 1)
+		case 1 : //=> "PORT2",
+			/* P2IE.0 to P2IE.7*/
+
+			//backup the register/s
+			p2ie_bck = P2IE;
+
+			//clear all flags
+			P2IE = 0x00;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A1_HANDLER== 1)
+		case 2 : //=> "TIMER2_A1",
+			/* TA2CCR1 CCIE1 to TA2CCR2 CCIE2, TA2IE*/
+
+			//backup the register/s
+			ta2ctl_bck	 =   TA2CTL  ;
+			ta2cctl1_bck =   TA2CCTL1;
+			ta2cctl2_bck =   TA2CCTL2;
+
+			//clear all flags
+			TA2CTL   &=~ TAIE;
+			TA2CCTL1 &=~ CCIE;
+			TA2CCTL2 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A0_HANDLER==1 )
+		case 3 : //=> "TIMER2_A0",
+			/* TA2CCR0 CCIE0 */
+
+			//backup the register/s
+			ta2cctl0_bck = TA2CCTL0;
+
+			//clear all flags
+			TA2CCTL0 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_B1_HANDLER==1 )
+		case 4 : //=> "USCI_B1",
+			/* UCB1RXIE, UCB1TXIE */
+
+			//backup the register/s
+			ucb1ie_bck = UCB1IE;
+
+			//clear all flags
+			UCB1IE &=~ (UCRXIE|UCTXIE);
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_A1_HANDLER==1 )
+		case 5 : //=> "USCI_A1",
+			/* UCA1RXIE, UCA1TXIE */
+
+			//backup the register/s
+			uca1ie_bck = UCA1IE;
+
+			//clear all flags
+			UCA1IE &=~ (UCRXIE|UCTXIE);
+			break;
+#endif
+
+#if( MSP430_ENABLE_PORT1_HANDLER== 1)
+		case 6 : //=> "PORT1",
+			/* P1IE.0 to P1IE.7  */
+			//backup the register/s
+			p1ie_bck = P1IE;
+
+			//clear all flags
+			P1IE = 0x00;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A1_HANDLER==1 )
+		case 7 : //=> "TIMER1_A1",
+			/*  TA1CCR1 CCIE1 to TA1CCR2 CCIE2 TA1IE*/
+
+			//backup the register/s
+			ta1ctl_bck   = TA1CTL  ;
+			ta1cctl1_bck = TA1CCTL1;
+			ta1cctl2_bck = TA1CCTL2;
+
+			//clear all flags
+			TA1CTL   &=~ TAIE;
+			TA1CCTL1 &=~ CCIE;
+			TA1CCTL2 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A0_HANDLER==1 )
+		case 8 : //=> "TIMER1_A0",
+			/* TA1CCR0 CCIE0 */
+			//backup the register/s
+			ta1cctl0_bck = TA1CCTL0;
+
+			//clear all flags
+			TA1CCTL0 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_DMA_HANDLER==1 )
+		case 9 : //=> "DMA",
+			/* DMA0IE, DMA1IE, DMA2IE */
+
+			//backup the register/s
+			dma0ctl_bck = DMA0CTL;
+			dma1ctl_bck = DMA1CTL;
+			dma2ctl_bck = DMA2CTL;
+
+			//clear all flags
+			DMA0CTL &=~  DMAIE;
+			DMA1CTL &=~  DMAIE;
+			DMA2CTL &=~  DMAIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_USB_UBM_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 10: // => "USB_UBM",
+			/* USB interrupts */
+			USBPWRCTL   &=~ (VBOFFIE|VBONIE|VUOVLIE);
+			USBPLLIR    &=~ (USBOORIE|USBLOSIE|USBOOLIE);
+			USBIEPCNF_0 &=~ USBIIE;
+			USBOEPCNF_0 &=~ USBIIE;
+			USBIEPIE = 0XFF;
+			USBOEPIE = 0XFF;
+			USBMAINT    &=~ UTIE;
+			USBIE       &=~ (RSTRIE|SUSRIE|RESRIE|SETUPIE|STPOWIE);
+
+			USBIEPCNF_0 &=~ USBIIE;
+			USBOEPCNF_0 &=~ USBIIE;
+
+			USBIEPCNF_1 &=~ USBIIE;
+			USBOEPCNF_1 &=~ USBIIE;
+			USBIEPCNF_2 &=~ USBIIE;
+			USBOEPCNF_2 &=~ USBIIE;
+			USBIEPCNF_3 &=~ USBIIE;
+			USBOEPCNF_3 &=~ USBIIE;
+			USBIEPCNF_4 &=~ USBIIE;
+			USBOEPCNF_4 &=~ USBIIE;
+			USBIEPCNF_5 &=~ USBIIE;
+			USBOEPCNF_5 &=~ USBIIE;
+			USBIEPCNF_6 &=~ USBIIE;
+			USBOEPCNF_6 &=~ USBIIE;
+			USBIEPCNF_7 &=~ USBIIE;
+			USBOEPCNF_7 &=~ USBIIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A1_HANDLER==1 )
+		case 11: // => "TIMER0_A1",
+			/* TA0CCR1 CCIE1 to TA0CCR4 CCIE4 TA0IE */
+
+			//backup the register/s
+			ta0ctl_bck= TA0CTL  ;
+			ta0cctl1_bck= TA0CCTL1;
+			ta0cctl2_bck= TA0CCTL2;
+			ta0cctl3_bck= TA0CCTL3;
+			ta0cctl4_bck= TA0CCTL4;
+
+			//clear all flags
+			TA0CTL   &=~ TAIE;
+			TA0CCTL1 &=~ CCIE;
+			TA0CCTL2 &=~ CCIE;
+			TA0CCTL3 &=~ CCIE;
+			TA0CCTL4 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A0_HANDLER==1 )
+		case 12: // => "TIMER0_A0",
+			/* TA0CCR0 CCIE0 */
+			//backup the register/s
+			ta0cctl0_bck = TA0CCTL0;
+
+			//clear all flags
+			TA0CCTL0 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_ADC12_HANDLER==1 )
+		case 13: // => "ADC12",
+			/* ADC12IE0 to ADC12IE15 */
+
+			//backup the register/s
+			adc12ctl0_bck = ADC12CTL0;
+			adc12ie_bck = ADC12IE;
+
+			//clear all flags
+			ADC12CTL0 &=~ (ADC12OVIE|ADC12TOVIE);
+			ADC12IE = 0x0000;
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_B0_HANDLER==1 )
+		case 14: // => "USCI_B0",
+			/* UCB0RXIE, UCB0TXIE  */
+
+			//backup the register/s
+			ucb0ie_bck = UCB0IEUCB0IE;
+
+			//clear all flags
+			UCB0IE &=~ (UCRXIE|UCTXIE);
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_A0_HANDLER==1 )
+		case 15: // => "USCI_A0",
+			/* UCA0RXIE, UCA0TXIE */
+
+
+			//backup the register/s
+			uca0ie_bck = UCA0IE;
+
+			//clear all flags
+			UCA0IE  &=~ (UCRXIE|UCTXIE);
+			break;
+#endif
+
+#if( MSP430_ENABLE_WDT_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 16: // => "WDT",
+			/* WDTIE */
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B1_HANDLER==1 )
+		case 17: // => "TIMER0_B1",
+			/*	TB0CCR1 CCIE1 to TB0CCR6 CCIE6 TB0IE */
+
+			//backup the register/s
+			tb0ctl_bck = TB0CTL   ;
+			tb0cctl1_bck = TB0CCTL1 ;
+			tb0cctl2_bck = TB0CCTL2 ;
+			tb0cctl3_bck = TB0CCTL3 ;
+			tb0cctl4_bck = TB0CCTL4 ;
+			tb0cctl5_bck = TB0CCTL5 ;
+			tb0cctl6_bck = TB0CCTL6 ;
+
+			//clear all flags
+			TB0CTL   &=~ TAIE;
+			TB0CCTL1 &=~ CCIE;
+			TB0CCTL2 &=~ CCIE;
+			TB0CCTL3 &=~ CCIE;
+			TB0CCTL4 &=~ CCIE;
+			TB0CCTL5 &=~ CCIE;
+			TB0CCTL6 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B0_HANDLER==1 )
+		case 18: // => "TIMER0_B0",
+			/* TB0CCR0 CCIE0 */
+
+			//backup the register/s
+			tb0cctl0_bck = TB0CCTL0;
+
+			//clear all flags
+			TB0CCTL0 &=~ CCIE;
+			break;
+#endif
+
+#if( MSP430_ENABLE_COMP_B_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 19: // => "COMP_B",
+			/* Comparator B interrupt flags */
+			break;
+#endif
+
+#if( MSP430_ENABLE_UNMI_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 20: // => "UNMI",
+			break;
+#endif
+
+#if( MSP430_ENABLE_SYSNMI_HANDLER==1 )
+#error SHOULD NOT BE IMPLEMENTED
+		case 21: // => "SYSNMI",
+			/* NMIIE, OFIE, ACCVIE, BUSIE SVMLIE, SVMHIE, DLYLIE, DLYHIE, VLRLIE, VLRHIE, VMAIE, JMBNIE, JMBOUTIE */
+			break;
+#endif
+
+#if( MSP430_ENABLE_SYSNMI_HANDLER==1 )
+#error SHOULD NOT BE IMPLEMENTED
+		case 22: // => "RESET"
+			/* WDTIE, KEYV */
+			break;
+#endif
+
+		default:
+			break;
+	}
+}
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

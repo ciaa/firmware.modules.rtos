@@ -79,6 +79,8 @@
    /* \req OSEK_SYS_3.1.7-1/3 Possible return values in Standard mode are E_OK or E_OS_LIMIT */
    StatusType ret = E_OK;
 
+ IntSecure_Common();
+
 #if (OSEK_MULTICORE == OSEK_ENABLE)
    if ((TaskID - TASKS_COUNT) < REMOTE_TASKS_COUNT)
    {
@@ -111,7 +113,7 @@
    else
 #endif
    {
-      IntSecure_Start();
+       IntSecure_Start();
 
       /* check if the task is susspended */
       /* \req OSEK_SYS_3.1.1-1/2 The task TaskID shall be transferred from the
@@ -167,7 +169,7 @@
          }
       }
 
-      IntSecure_End();
+       IntSecure_End();
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
       /* check if called from a Task Context */
@@ -214,4 +216,3 @@
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

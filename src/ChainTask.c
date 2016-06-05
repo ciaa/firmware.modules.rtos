@@ -75,6 +75,8 @@ StatusType ChainTask
 
    StatusType ret = E_OK;
 
+  IntSecure_Common();
+
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    if ( taskid >= TASKS_COUNT )
    {
