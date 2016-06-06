@@ -129,13 +129,13 @@ inline void TickProcess()
 	(void)CounterIncrement; /* TODO remove me */
 
 	/* increment the disable interrupt conter to avoid enable the interrupts */
-//	IntSecure_Start();	//MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS
+	//	IntSecure_Start();	//MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS
 
 	/* call counter interrupt handler */
 	CounterIncrement = IncrementCounter(0, TIC_PERIOD );
 
 	/* set the disable interrupt counter back */
-//	IntSecure_End();	//MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS
+	//	IntSecure_End();	//MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS
 #endif /* #if (ALARMS_COUNT != 0) */
 
 	/* reset context */
@@ -196,7 +196,7 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 			r2 = SR	automatically saved by HW when handler is serviced
 			r3 = CG  doesn't care
 		*/
-	 	SAVE_CONTEXT();
+		SAVE_CONTEXT();
 
 		/* exchange stack pointers */
 		if( Osek_OldTaskPtr_Arch != NULL )
@@ -211,7 +211,7 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		Context restore r4 to r15
 		It does not Include the reti instruction.
 		*/
-	 	RESTORE_CONTEXT()
+		RESTORE_CONTEXT()
 	}
 
 	RETURN_FROM_NAKED_ISR(); /*return from ISR*/
@@ -522,15 +522,17 @@ void MSP430_EnableIRQ(unsigned char irQ_number)
 #endif
 
 
-	default:
-		break;
-}
+		default:
+			break;
+	}
 	//TODO: remove system IRQ vectors and OS
 	//TODO: FALTA USB
 }
 
 
 /*
+for a given irq_number it disables all the interrupts related to that irq vector.
+it backups the actual state of the enabled signals for that vector (enabled by the user application)
 */
 void MSP430_DisableIRQ(unsigned char irQ_number)
 {
@@ -848,6 +850,218 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 	}
 }
 
+/*
+for a given irq_number it clear the flag that made the handler to be called.
+*/
+void PreIsr2_Arch(unsigned short irQ_number)
+{
+	volatile unsigned char dummy;
+
+	switch(irQ_number)
+	{
+#if( MSP430_ENABLE_RTC_HANDLER== 1)
+#error TODO: NOT IMPLEMENTED
+		case 0: // => "RTC",
+			break;
+#endif
+
+#if( MSP430_ENABLE_PORT2_HANDLER== 1)
+		case 1 : //=> "PORT2",
+		dummy = P2IV;
+		/* There is no need to clear the flag manually: From MSP430f5529 User manually
+
+		" Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
+another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
+
+		*/
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A1_HANDLER== 1)
+#error TODO: SHOULD NOT BE IMPLEMENTED. THIS IRQ IS RESERVED FOR RTOS FUNCTIONALITY
+		case 2 : //=> "TIMER2_A1",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER2_A0_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 3 : //=> "TIMER2_A0",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_B1_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 4 : //=> "USCI_B1",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_A1_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 5 : //=> "USCI_A1",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_PORT1_HANDLER== 1)
+		case 6 : //=> "PORT1",
+		dummy = P1IV;
+		/* There is no need to clear the flag manually: From MSP430f5529 User manually
+
+		" Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
+another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
+
+		*/
+
+	/*	if( P1IV_P1IFG0==dummy )
+		{
+		//	P1IFG &= ~0x01;
+		}
+		else if( P1IV_P1IFG1==dummy )
+		{
+		//	P1IFG &= ~0x02;
+		}
+		else if( P1IV_P1IFG2==dummy )
+		{
+		//	P1IFG &= ~0x04;
+		}
+		else if( P1IV_P1IFG3==dummy )
+		{
+		//	P1IFG &= ~0x08;
+		}
+		else if( P1IV_P1IFG4==dummy )
+		{
+		//P1IFG &= ~0x10;
+		}
+		else if( P1IV_P1IFG5==dummy )
+		{
+		//P1IFG &= ~0x20;
+		}
+		else if( P1IV_P1IFG6==dummy )
+		{
+		//	P1IFG &= ~0x40;
+		}
+		else if( P1IV_P1IFG7==dummy )
+		{
+		//P1IFG &= ~0x80;
+	}*/
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A1_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 7 : //=> "TIMER1_A1",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER1_A0_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 8 : //=> "TIMER1_A0",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_DMA_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 9 : //=> "DMA",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_USB_UBM_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 10: // => "USB_UBM",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A1_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 11: // => "TIMER0_A1",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_A0_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 12: // => "TIMER0_A0",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_ADC12_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 13: // => "ADC12",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_B0_HANDLER==1 )
+		case 14: // => "USCI_B0",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_USCI_A0_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 15: // => "USCI_A0",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_WDT_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 16: // => "WDT",
+			/* WDTIE */
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B1_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 17: // => "TIMER0_B1",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_TIMER0_B0_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 18: // => "TIMER0_B0",
+
+			break;
+#endif
+
+#if( MSP430_ENABLE_COMP_B_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 19: // => "COMP_B",
+			/* Comparator B interrupt flags */
+			break;
+#endif
+
+#if( MSP430_ENABLE_UNMI_HANDLER==1 )
+#error TODO: NOT IMPLEMENTED
+		case 20: // => "UNMI",
+			break;
+#endif
+
+#if( MSP430_ENABLE_SYSNMI_HANDLER==1 )
+#error SHOULD NOT BE IMPLEMENTED
+		case 21: // => "SYSNMI",
+			/* NMIIE, OFIE, ACCVIE, BUSIE SVMLIE, SVMHIE, DLYLIE, DLYHIE, VLRLIE, VLRHIE, VMAIE, JMBNIE, JMBOUTIE */
+			break;
+#endif
+
+#if( MSP430_ENABLE_SYSNMI_HANDLER==1 )
+#error SHOULD NOT BE IMPLEMENTED
+		case 22: // => "RESET"
+			/* WDTIE, KEYV */
+			break;
+#endif
+	}
+}
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -287,9 +287,9 @@ extern TaskType TerminatingTask;
 
 /** \brief Pre ISR Macrol
  **
- ** This macro is called every time that an ISR Cat 2 is started
+ ** This function is called every time that an ISR Cat 2 is started
  **/
-#define PreIsr2_Arch(isr)
+ void PreIsr2_Arch(unsigned short isr);
 
 /** \brief Post ISR Macro
  **
