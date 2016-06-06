@@ -94,12 +94,9 @@ foreach ($intnames as $int)
    $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
 
- print "#define MSP430_ENABLE_". $source . "_HANDLER  1 \n";
-
+   print "#define MSP430_ENABLE_". $source . "_HANDLER  1 \n";
 }
 ?>
-
-
 
 /*==================[external functions declaration]=========================*/
 

@@ -96,17 +96,16 @@ void OSEK_ISR_SYSNMI_VECTOR(void)
    }
 }
 
-   /*** Non Used Interrupt handlers ***/
+/*** Non Used Interrupt handlers ***/
 <?php
 
-/* get ISRs defined by user application */
+/* get ISRs defined by user application within the OIL file*/
 $intnames = getLocalList("/OSEK", "ISR");
-
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
 
-   foreach ($intnames as $int)
+   foreach($intnames as $int)
    {
       /*
       handlers that are present in the system (defined in the oil file)
@@ -128,6 +127,8 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
         {
           $this->log->error("Interrupt $int type $inttype has an invalid category $intcat");
         }
+
+        break; #the irq was found, break the inner loop
       }
    }
 
@@ -145,10 +146,25 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
 
    if($src_found == 0)
    {
+      #for an undefined ISR witihn the OIL file, we defiene a DUMMY handler.
       print "__attribute__( (__interrupt__($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
       print "void OSEK_ISR_$intList[$i]_VECTOR(void)\n";
       print "{\n";
-      print "}\n";
+      print "   RETURN_FROM_NAKED_ISR(); /*return from ISR*/\n"; #this includes the RETI intruction. Is inserted here becase the naked attribute removes it when compile
+      print "}\n\n";
+   }
+   else
+   {
+      if( $intcat == 1 )
+      {
+         #for an ISR type 1 witihn the OIL file, we defiene a ISR wrapper that calls the ISR defined by the user somewhere.
+         print "__attribute__( (__interrupt__($intList[$i]_VECTOR),naked)) \n";
+         print "void OSEK_ISR_$intList[$i]_VECTOR_WRAPPER(void) /*Wrapper function for ISR $intList[$i]_VECTOR (IRQ $i). User should define ISR($intList[$i]) somewhere */ \n";
+         print "{\n";
+         print "   OSEK_ISR_$intList[$i]_VECTOR();\n";
+         print "   RETURN_FROM_NAKED_ISR();  /*return from ISR*/\n";  #this includes the RETI intruction. Is inserted here becase the naked attribute removes it when compile
+         print "}\n\n";
+      }
    }
 }
 ?>

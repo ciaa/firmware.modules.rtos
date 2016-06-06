@@ -766,7 +766,6 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 		case 15: // => "USCI_A0",
 			/* UCA0RXIE, UCA0TXIE */
 
-
 			//backup the register/s
 			uca0ie_bck = UCA0IE;
 
@@ -787,7 +786,7 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 			/*	TB0CCR1 CCIE1 to TB0CCR6 CCIE6 TB0IE */
 
 			//backup the register/s
-			tb0ctl_bck = TB0CTL   ;
+			tb0ctl_bck 	 = TB0CTL   ;
 			tb0cctl1_bck = TB0CCTL1 ;
 			tb0cctl2_bck = TB0CCTL2 ;
 			tb0cctl3_bck = TB0CCTL3 ;
@@ -867,14 +866,13 @@ void PreIsr2_Arch(unsigned short irQ_number)
 
 #if( MSP430_ENABLE_PORT2_HANDLER== 1)
 		case 1 : //=> "PORT2",
-		dummy = P2IV;
-		/* There is no need to clear the flag manually: From MSP430f5529 User manually
+			dummy = P2IV;
+			/* There is no need to clear the flag manually: From MSP430f5529 User manually
 
-		" Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
-another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
+			" Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
+			another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
 
-		*/
-
+			*/
 			break;
 #endif
 
@@ -908,46 +906,46 @@ another interrupt flag is set, another interrupt is immediately generated after 
 
 #if( MSP430_ENABLE_PORT1_HANDLER== 1)
 		case 6 : //=> "PORT1",
-		dummy = P1IV;
-		/* There is no need to clear the flag manually: From MSP430f5529 User manually
+			dummy = P1IV;
+			/* There is no need to clear the flag manually: From MSP430f5529 User manually
 
-		" Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
-another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
+			" Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
+			another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
 
-		*/
+			*/
 
-	/*	if( P1IV_P1IFG0==dummy )
-		{
-		//	P1IFG &= ~0x01;
-		}
-		else if( P1IV_P1IFG1==dummy )
-		{
-		//	P1IFG &= ~0x02;
-		}
-		else if( P1IV_P1IFG2==dummy )
-		{
-		//	P1IFG &= ~0x04;
-		}
-		else if( P1IV_P1IFG3==dummy )
-		{
-		//	P1IFG &= ~0x08;
-		}
-		else if( P1IV_P1IFG4==dummy )
-		{
-		//P1IFG &= ~0x10;
-		}
-		else if( P1IV_P1IFG5==dummy )
-		{
-		//P1IFG &= ~0x20;
-		}
-		else if( P1IV_P1IFG6==dummy )
-		{
-		//	P1IFG &= ~0x40;
-		}
-		else if( P1IV_P1IFG7==dummy )
-		{
-		//P1IFG &= ~0x80;
-	}*/
+			/*	if( P1IV_P1IFG0==dummy )
+				{
+				//	P1IFG &= ~0x01;
+				}
+				else if( P1IV_P1IFG1==dummy )
+				{
+				//	P1IFG &= ~0x02;
+				}
+				else if( P1IV_P1IFG2==dummy )
+				{
+				//	P1IFG &= ~0x04;
+				}
+				else if( P1IV_P1IFG3==dummy )
+				{
+				//	P1IFG &= ~0x08;
+				}
+				else if( P1IV_P1IFG4==dummy )
+				{
+				//P1IFG &= ~0x10;
+				}
+				else if( P1IV_P1IFG5==dummy )
+				{
+				//P1IFG &= ~0x20;
+				}
+				else if( P1IV_P1IFG6==dummy )
+				{
+				//	P1IFG &= ~0x40;
+				}
+				else if( P1IV_P1IFG7==dummy )
+				{
+				//P1IFG &= ~0x80;
+			}*/
 			break;
 #endif
 

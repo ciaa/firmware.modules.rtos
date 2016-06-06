@@ -84,12 +84,14 @@
  ** This macro shall be used to start the definition of all ISR category 1 or 2.
  **
  ** \param[in] name name of the ISR category 1 or 2.
- **/
+ **//*
  #ifdef CTESTS_MODIFIERS
 #define ISR(name)  void OSEK_ISR_ ## name (void)
  #else
 #define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
-#endif
+#endif*/
+//#define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
+
 /*==================[typedef]================================================*/
 
 
