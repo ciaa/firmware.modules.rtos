@@ -185,6 +185,22 @@
 #define Schedule_WOChecks() Schedule()
 #endif
 
+
+/** \brief AfterIsr2_Schedule
+ **
+ ** This macro conditionally calls the schedule if there is any task with "Full Schedule" attribute.
+ **
+ **/
+#if ( NON_PREEMPTIVE == OSEK_DISABLE )
+#define AfterIsr2_Schedule() if( ( CONTEXT_TASK == actualContext                     ) && \
+                                 ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  ) \
+                             {                                                            \
+                                 Schedule_WOChecks();                                     \
+                             }
+#else
+#define AfterIsr2_Schedule()
+#endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
+
 /*==================[typedef]================================================*/
 /** \brief ContextType
  **
@@ -261,4 +277,3 @@ extern CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncre
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_H_ */
-

@@ -141,14 +141,7 @@ inline void TickProcess()
 	/* reset context */
 	SetActualContext(actualContext);
 
-#if (NON_PREEMPTIVE == OSEK_DISABLE)
-	/* check if the actual task is preemptive */
-	if ( ( CONTEXT_TASK == actualContext ) &&  ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
-	{
-		/* this shall force a call to the scheduler */
-		PostIsr2_Arch(isr);
-	}
-#endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+	AfterIsr2_Schedule();
 }
 
 /**
@@ -165,6 +158,12 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 	*/
 	/* Clear the IRQ flag*/
 	TickProcess();
+
+	/*
+	This handler calls TickProcess because it is defined as naked, and therefore the compiler do not save regiters.
+	The same happens with the RETI instruction that is inserted in the last macro.
+	Calling the function, the compiler saves the neede registers.
+	*/
 
 	RETURN_FROM_NAKED_ISR(); /*return from Tick ISR */
 }
@@ -852,7 +851,7 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 /*
 for a given irq_number it clear the flag that made the handler to be called.
 */
-void PreIsr2_Arch(unsigned short irQ_number)
+void ClearPendingIRQ_Arch(unsigned short irQ_number)
 {
 	volatile unsigned char dummy;
 

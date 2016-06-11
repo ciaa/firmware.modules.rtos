@@ -83,6 +83,7 @@ foreach ($tasks as $task)
    }
 
    print "#endif\n";
+   print "\n";
 }
 print "\n";
 
@@ -90,8 +91,8 @@ foreach ($tasks as $task)
 {
    print "/** \brief $task context */\n";
    print "TaskContextType ContextTask" . $task . ";\n";
+   print "\n";
 }
-print "\n";
 
 /* Ready List */
 foreach ($priority as $prio)
@@ -105,7 +106,8 @@ foreach ($priority as $prio)
          $count += $config->getValue("/OSEK/" . $task, "ACTIVATION");
       }
    }
-   print "TaskType ReadyList" . $prio . "[" . $count . "];\n\n";
+   print "TaskType ReadyList" . $prio . "[" . $count . "];\n";
+   print "\n";
 }
 
 $counters = getLocalList("/OSEK", "COUNTER");
@@ -222,6 +224,7 @@ foreach ($tasks as $count=>$task)
       print "      0 /* core */\n";
    }
    print "   }";
+   print "\n";
 }
 print "\n";
 ?>
@@ -500,18 +503,19 @@ foreach ($intnames as $int)
 
    if ($intcat == 2)
    {
-   if($definitions["ARCH"] == "msp430")
-   {
-      print "__attribute__( (__interrupt__($int))) /*Wrapper ISR handler for $int */\n";
-   }
-   ?>
+      $key = array_search( $inttype , $intList );
+      if($definitions["ARCH"] == "msp430")
+      {
+         print "/* Wrapper ISR handler for $int */\n";
+         print "__attribute__( (__interrupt__($int)))\n";
+      }
+?>
 void OSEK_ISR2_<?php print $int;?>(void)
 {
    <?php
-   $key = array_search( $inttype , $intList );
-
    print "PreIsr2_Arch(". $key .");\n"
 ?>
+
    /* store the calling context in a variable */
    ContextType actualContext = GetCallingContext();
 
@@ -524,22 +528,15 @@ void OSEK_ISR2_<?php print $int;?>(void)
    /* reset context */
    SetActualContext(actualContext);
 
-#if (NON_PREEMPTIVE == OSEK_DISABLE)
-   /* check if the actual task is preemptive */
-   if ( ( CONTEXT_TASK == actualContext ) &&
-        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
-   {
-      /* this shall force a call to the scheduler */
-      <?php
-   print "PostIsr2_Arch(". $key .");\n"
-      ?>
-   }
-#endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
+   <?php
+      print "PostIsr2_Arch(". $key .");\n"
+   ?>
+
+   AfterIsr2_Schedule() ;
 }
 
 <?php }
-
-}
+   }
 ?>
 
 /** @} doxygen end group definition */

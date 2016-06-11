@@ -252,8 +252,7 @@
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) \
-   Schedule_WOChecks();
+#define PostIsr2_Arch(isr) 
 
 #if ( CPUTYPE == ia64 )
 #define SaveOsStack()                                                                      \
@@ -408,4 +407,3 @@ extern void OSEK_ISR_HWTimer1(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
-
