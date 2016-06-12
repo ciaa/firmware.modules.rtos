@@ -1,6 +1,7 @@
 target remote localhost:2000
+monitor erase
 load
-set $pc = __msp430_resetvec_hook
+monitor reset
 break ConfTestFinish
 continue
 dump value out/rtos/TestResults.bin TestResults

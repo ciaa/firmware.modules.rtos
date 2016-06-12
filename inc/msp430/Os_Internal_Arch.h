@@ -295,7 +295,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) ClearPendingIRQ_Arch(isr)  
+#define PostIsr2_Arch(isr) ClearPendingIRQ_Arch(isr)
 
 /** \brief ShutdownOs Arch service
  **
@@ -311,6 +311,8 @@ extern TaskType TerminatingTask;
 /*==================[external functions declaration]=========================*/
 void InitStack_Arch(uint8 TaskID);
 void ClearPendingIRQ_Arch(unsigned short irQ_number);
+void MSP430_EnableIRQ(unsigned char irQ_number);
+void MSP430_DisableIRQ(unsigned char irQ_number);
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

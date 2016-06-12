@@ -113,8 +113,9 @@ void InitStack_Arch(uint8 TaskID)
 }
 
 
-inline void TickProcess()
+void TickProcess()
 {
+	/* TODO this could be improved by accesing directly to the registers. remember that this handlers should be as fast as possible.*/
 	Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_0);
 
 	/* store the calling context in a variable */
@@ -147,7 +148,7 @@ inline void TickProcess()
 /**
  OSEK periodic interrupt is implemented using TimerA_2 timer module.
 */
-__attribute__( (__interrupt__(TIMER2_A0_VECTOR) ,naked )) //
+__attribute__( (__interrupt_vec__(TIMER2_A0_VECTOR) ,naked )) //
 void OSEK_ISR_TIMER2_A0_VECTOR(void)
 {
 	/*
@@ -175,7 +176,7 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
  **   Note 1: It's not necessary to disable global irqs.
  **           It is done automatically when the SP is cleared by HW
 **/
-__attribute__( (__interrupt__(TIMER2_A1_VECTOR),naked))
+__attribute__( (__interrupt_vec__(TIMER2_A1_VECTOR),naked))
 void OSEK_ISR_TIMER2_A1_VECTOR(void)
 {
 	register unsigned short local_taiv = TA2IV;
@@ -183,6 +184,7 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 	if( local_taiv & TA2IV_TACCR1)	//
 	{
 		/* Clear the IRQ flag*/
+		/* TODO this could be improved by accesing directly to the registers. remember that this handlers should be as fast as possible.*/
 		Timer_A_disableCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1 );
 		Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1);
 
@@ -853,7 +855,7 @@ for a given irq_number it clear the flag that made the handler to be called.
 */
 void ClearPendingIRQ_Arch(unsigned short irQ_number)
 {
-	volatile unsigned char dummy;
+	volatile unsigned char dummy;	//ignore compiling warning
 
 	switch(irQ_number)
 	{

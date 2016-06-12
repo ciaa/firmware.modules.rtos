@@ -507,7 +507,7 @@ foreach ($intnames as $int)
       if($definitions["ARCH"] == "msp430")
       {
          print "/* Wrapper ISR handler for $int */\n";
-         print "__attribute__( (__interrupt__($int)))\n";
+         print "__attribute__( (__interrupt_vec__($int)))\n";
       }
 ?>
 void OSEK_ISR2_<?php print $int;?>(void)

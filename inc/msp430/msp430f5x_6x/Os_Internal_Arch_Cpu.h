@@ -88,9 +88,9 @@
  #ifdef CTESTS_MODIFIERS
 #define ISR(name)  void OSEK_ISR_ ## name (void)
  #else
-#define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
+#define ISR(name)   __attribute__( (__interrupt_vec__(name))) void OSEK_ISR_ ## name (void)
 #endif*/
-//#define ISR(name)   __attribute__( (__interrupt__(name))) void OSEK_ISR_ ## name (void)
+//#define ISR(name)   __attribute__( (__interrupt_vec__(name))) void OSEK_ISR_ ## name (void)
 
 /*==================[typedef]================================================*/
 

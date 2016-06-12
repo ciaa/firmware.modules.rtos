@@ -132,7 +132,7 @@ $MAX_INT_COUNT = max(array_keys($intList))+1;
 
 /*==================[external functions definition]==========================*/
 
-__attribute__( (__interrupt__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
+__attribute__( (__interrupt_vec__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
 void OSEK_ISR_UNMI_VECTOR(void)
 {
    while (1)
@@ -140,7 +140,7 @@ void OSEK_ISR_UNMI_VECTOR(void)
    }
 }
 
-__attribute__( (__interrupt__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
+__attribute__( (__interrupt_vec__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
 void OSEK_ISR_SYSNMI_VECTOR(void)
 {
    while (1)
@@ -197,7 +197,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
 
    if($src_found == 0)
    {
-      print "__attribute__( (__interrupt__($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
+      print "__attribute__( (__interrupt_vec__($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
       print "void OSEK_ISR_$intList[$i]_VECTOR(void)\n";
       print "{\n";
       print "}\n";
