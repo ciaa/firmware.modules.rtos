@@ -148,7 +148,8 @@ void TickProcess()
 /**
  OSEK periodic interrupt is implemented using TimerA_2 timer module.
 */
-__attribute__( (__interrupt_vec__(TIMER2_A0_VECTOR) ,naked )) //
+//__attribute__( (interrupt_vec(TIMER2_A0_VECTOR) ,naked )) //
+interrupt_vec(TIMER2_A0_VECTOR) __attribute__((naked))
 void OSEK_ISR_TIMER2_A0_VECTOR(void)
 {
 	/*
@@ -176,7 +177,7 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
  **   Note 1: It's not necessary to disable global irqs.
  **           It is done automatically when the SP is cleared by HW
 **/
-__attribute__( (__interrupt_vec__(TIMER2_A1_VECTOR),naked))
+interrupt_vec(TIMER2_A1_VECTOR) __attribute__((naked))
 void OSEK_ISR_TIMER2_A1_VECTOR(void)
 {
 	register unsigned short local_taiv = TA2IV;

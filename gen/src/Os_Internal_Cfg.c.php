@@ -503,11 +503,13 @@ foreach ($intnames as $int)
 
    if ($intcat == 2)
    {
+      print "/* Wrapper ISR handler for $int */\n";
+
       $key = array_search( $inttype , $intList );
       if($definitions["ARCH"] == "msp430")
-      {
-         print "/* Wrapper ISR handler for $int */\n";
-         print "__attribute__( (__interrupt_vec__($int)))\n";
+      {    
+         #print "__attribute__( (__interrupt_vec($int)))\n";
+         print "interrupt_vec($int) \n";
       }
 ?>
 void OSEK_ISR2_<?php print $int;?>(void)

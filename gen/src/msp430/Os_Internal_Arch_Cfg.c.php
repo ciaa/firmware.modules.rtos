@@ -79,8 +79,8 @@ include 'Os_Internal_Defs.php';
 ?>
 
 /*==================[external functions definition]==========================*/
-
-__attribute__( (__interrupt_vec__(UNMI_VECTOR),naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
+//__attribute__( (__interrupt_vec(UNMI_VECTOR),naked))
+interrupt_vec(UNMI_VECTOR) __attribute__((naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
 void OSEK_ISR_UNMI_VECTOR(void)
 {
    while (1)
@@ -88,7 +88,8 @@ void OSEK_ISR_UNMI_VECTOR(void)
    }
 }
 
-__attribute__( (__interrupt_vec__(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
+//__attribute__( (__interrupt_vec(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
+interrupt_vec(SYSNMI_VECTOR) __attribute__((naked))
 void OSEK_ISR_SYSNMI_VECTOR(void)
 {
    while (1)
@@ -147,8 +148,9 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    if($src_found == 0)
    {
       #for an undefined ISR witihn the OIL file, we defiene a DUMMY handler.
-      print "__attribute__( (__interrupt_vec__($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
-      print "void OSEK_ISR_$intList[$i]_VECTOR(void)\n";
+      #print "__attribute__( (__interrupt_vec($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
+      print "interrupt_vec($intList[$i]_VECTOR) __attribute__((naked)) \n";
+      print "void OSEK_ISR_$intList[$i]_VECTOR(void) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */ \n";
       print "{\n";
       print "   RETURN_FROM_NAKED_ISR(); /*return from ISR*/\n"; #this includes the RETI intruction. Is inserted here becase the naked attribute removes it when compile
       print "}\n\n";
@@ -158,7 +160,8 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       if( $intcat == 1 )
       {
          #for an ISR type 1 witihn the OIL file, we defiene a ISR wrapper that calls the ISR defined by the user somewhere.
-         print "__attribute__( (__interrupt_vec__($intList[$i]_VECTOR),naked)) \n";
+         #print "__attribute__( (__interrupt_vec($intList[$i]_VECTOR),naked)) \n";
+         print "interrupt_vec($intList[$i]_VECTOR) __attribute__((naked))";
          print "void OSEK_ISR_$intList[$i]_VECTOR_WRAPPER(void) /*Wrapper function for ISR $intList[$i]_VECTOR (IRQ $i). User should define ISR($intList[$i]) somewhere */ \n";
          print "{\n";
          print "   OSEK_ISR_$intList[$i]_VECTOR();\n";
