@@ -83,7 +83,7 @@
 /** \brief Disable All Interrupts Arch */
 #define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
 
- 
+
 /** \brief  All Interrupts Arch Common Objects
  **
  ** This macro shall define common objects to imlement  Suspend and  Resume
@@ -96,33 +96,22 @@
  ** This macro shall suspend (disable) all interrupts.
  ** NOTE: the nop operation after the dint instruction was inserted
  **         to workarround the hw bug cpu39 describer in slaz314h.pdf
+ **       Also noted in Slau208, page 59.
  **/
-
-//__asm volatile("mov SR, SR_BACK___");
 #define SuspendAllInterrupts_Arch()  SR_BACK___ = _get_SR_register(); \
-                                     __asm volatile("dint"); \
-                                     __asm volatile("nop");
+                                     _disable_interrupts() ;
 
-/*
-#define SuspendAllInterrupts_Arch() __asm volatile("dint"); \
- 												__asm volatile("nop");
-*/
+
 
 /** \brief Resume All Interrupts Arch
 **
 ** This macro shall resume (enable) all interrupts.
 **/
-/*
- #define ResumeAllInterrupts_Arch() __asm volatile("eint")
-*/
-
 #define ResumeAllInterrupts_Arch() if( SR_BACK___ & GIE )      \
                                    {                           \
-                                      __asm volatile("eint");  \
-                                      __asm volatile("nop");\
+                                      _enable_interrupts() ;  \
                                    }                           \
-
-
+ 
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the

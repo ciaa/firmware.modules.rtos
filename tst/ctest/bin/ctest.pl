@@ -239,7 +239,10 @@ sub searchandreplace
    $s = @_[1];
    $r = @_[2];
 
-   `perl -pi -e 's/$s/$r/' $file`;
+   print "File: $file S: $s R: $r\n";
+
+   #`perl -pi -e 's/$s/$r/g' $file`;
+   `perl -pi -e 's{$s}{$r}g' $file`;
 
    close(OUT);
 }
@@ -346,7 +349,13 @@ sub readparam
          when ("TESTS") { $TESTS = $val; }
          when ("RES") { $RES = $val; }
          when ("TESTCASES") { $TESTCASES = $val; }
-         default { }
+         default
+         {
+            if ("msp430" eq $ARCH)
+            {
+               $PROXY = $val;
+            }
+         }
       }
    }
    close CFG;
@@ -815,20 +824,29 @@ foreach $testfn (@tests)
 
                   info("debug of $test in $out");
                   $dbgfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
-                  info("$GDB $out -x $dbgfile");
+
+                  if ("msp430" eq $ARCH)
+                  {
+                     $newdbgfile = "out/rtos/$test/debug_script.scr";
+                     #for MSP430 the binary file is appended inside the script
+                     copy($dbgfile,$newdbgfile ) or die "Script copy failed: $!";
+                     searchandreplace($newdbgfile ,"filename","$out");
+
+                     $debug_command = "$PROXY -C $newdbgfile exit";
+
+                     info("$debug_command");
+                  }
+                  else
+                  {
+                     $debug_command = "$GDB $out -x $dbgfile";
+
+                     info("$debug_command");
+                  }
 
                   if($debug == 0)
                   {
-                     #print("probando debug\n");
-                     #before calling gdb, for msp430, I have to run the proxy (mspdebug)
-                    #how is done in cortex with  open ocd? TODO
-
-                    if( $ARCH eq "msp430" ) #degun franco
-                    {
-                       info("Running $MSPDEBUG_BIN $MSPDEBUG_PROTOCOL");
-                    }
-
-                     $outdbg = `$GDB $out -x $dbgfile`;
+                     #$outdbg = `$GDB $out -x $dbgfile`;
+                     $outdbg = `$debug_command`;
 
 							if ($ARCH eq "x86")
                      {
@@ -844,7 +862,7 @@ foreach $testfn (@tests)
                   }
                   else
                   {
-                     print("probando\n");
+                     print("=== Modo Debug Del Script de Perl === \n");
                      exec("$GDB $out");
                      $outdbg = "";
                   }
@@ -853,7 +871,9 @@ foreach $testfn (@tests)
                   info("debug status: $outdbgstatus");
                   info("debug output:\n$outdbg");
                   logffull("$GDB output:\n$outgdb");
+
                   $outdbgstatus = 0;
+
                   if ($outdbgstatus == 0)
                   {
                      results("******************************************************");

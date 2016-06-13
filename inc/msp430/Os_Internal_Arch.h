@@ -244,7 +244,10 @@ extern TaskType TerminatingTask;
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
  ** is called only ones in StartUp.c function.
  **/
-#define EnableOSInterrupts() __asm volatile("eint"); __asm volatile("nop");
+#define EnableOSInterrupts() _enable_interrupts();
+
+
+
 
 /** \brief Enable Interruptions
  **
@@ -263,8 +266,10 @@ extern TaskType TerminatingTask;
  ** NOTE: the nop operation after the dint instruction was inserted
  **         to workarround the hw bug cpu39 described in slaz314h.pdf
  **/
-#define DisableOSInterrupts() __asm volatile("dint"); \
-										__asm volatile("nop");
+#define DisableOSInterrupts()  _disable_interrupts();
+
+
+
 
 /** \brief Disable Interruptions
  **

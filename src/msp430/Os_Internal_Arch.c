@@ -208,7 +208,7 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		}
 		asm volatile ( "mov &Osek_NewTaskPtr_Arch,  r6 \n\t"  );
 		asm volatile ( "mov @r6, SP \n\t"  );
-
+		 
 		/*
 		Context restore r4 to r15
 		It does not Include the reti instruction.
