@@ -105,7 +105,8 @@ $intnames = getLocalList("/OSEK", "ISR");
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
-
+   $intcat = 0 ;
+   
    foreach($intnames as $int)
    {
       /*
@@ -142,6 +143,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       UNMI:       defined in this file
       SYSNMI:     defined in this file
       */
+      $intcat = 0 ;
       $src_found = 1;
    }
 

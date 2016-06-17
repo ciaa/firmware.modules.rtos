@@ -71,9 +71,9 @@
 #define OSEK_OS_INTERRUPT_MASK ((InterruptFlagsType)0xFFFFFFFFU)
 
 <?php
-/* Definitions of Tasks */
-$tasks = getLocalList("/OSEK", "TASK");
-$remote_tasks = getRemoteList("/OSEK", "TASK");
+/* Definitions of Tasks : TAREAS QUE SE EJECUTAN EN CORE LOCAL */
+$tasks         = getLocalList("/OSEK", "TASK");
+$remote_tasks  = getRemoteList("/OSEK", "TASK");
 
 $count = 0;
 foreach ($tasks as $task)
@@ -84,6 +84,7 @@ foreach ($tasks as $task)
 }
 print "\n";
 
+/* Definitions of Tasks : TAREAS QUE SE EJECUTAN EN CORE REMOTO */
 if (count($remote_tasks) > 0)
 {
    foreach ($remote_tasks as $task)
@@ -95,6 +96,187 @@ if (count($remote_tasks) > 0)
    print "\n";
 }
 
+/*
+DEFINE EVENTS
+*/
+
+/* the max ammount of events is defined by the bit width of EventTypeMask type*/
+if( $definitions["ARCH"]== "msp430")
+{
+   $max_amount_events = 16;
+}
+else
+{
+   $max_amount_events = 32;
+}
+
+$flags_shared_event = $max_amount_events; /* it stores the number of bit for flags that are shared across tasks */
+
+$matriz    = array( ); /* it stores the events' name for each task */
+$matrix_n  = array();  /* it stores the events' assigned number for each task */
+
+$events = $config->getList("/OSEK","EVENT"); /* obtain all possible events from oil file */
+//$nro_evs= max(array_keys($events))+1;
+$nro_evs= count($events);
+#print("cantidad de eventos: $nro_evs \n");
+
+/* task/events matrix creation, and various validations */
+$task_index = 0;
+foreach( $tasks as $task )
+{
+   $empty_array = array();
+
+   /*for each task we get the defined events*/
+   array_push( $matriz , $config->getList("/OSEK/". $task , "EVENT"  ) );
+   array_push( $matrix_n , $empty_array );
+
+   $nro_ev_task = count($matriz[$task_index]); #max(array_keys($matriz[$task_index]));
+
+   //print("evento $nro_ev_task");
+
+   /* Task Type validation: validates that this task is extended */
+   $extended = $config->getValue("/OSEK/" . $task, "TYPE");
+
+   if ($extended != "EXTENDED" && $nro_ev_task>0 )
+   {
+      throw new Exception("===== OIL ERROR: The task $task could be TYPE: EXTENDED =====\n");
+   }
+   else
+   {
+   //   print("es extended");
+      if ($nro_ev_task == 0 )
+      {
+//print("es extended mal");
+         trigger_error("===== OIL WARNING: The task $task could be TYPE: BASIC =====\n", E_USER_WARNING);
+      }
+   }
+
+   /* Task Event Validation: validates that the defined event within the task is globally defined */
+   foreach( $matriz[$task_index] as $evi )
+   {
+      /* search the task event in the global event array */
+      $key = array_search( $events , $matriz[$task_index] );
+      if($key===0 )
+      {
+         throw new Exception("===== OIL ERROR: The event $evi for task $task is not globally defined =====\n");
+         /* stops execution */
+      }
+      else
+      {
+      }
+   }
+
+   $task_index++;
+}
+
+/* generation of the shared events between tasks */
+print "\n/** \brief Shared events across tasks */\n\n";
+foreach( $events as $ev ) //para cada evento, lo busco en cada
+{
+   //print( "//Procesando evento  $ev \n" );
+   $count = 0; //cuenta la cantidad de ocurrencias
+   $task_index = 0;
+
+   foreach( $tasks as $task )
+   {
+      $events_for_task = $config->getList("/OSEK/". $task , "EVENT"  );
+      $key = array_search( $ev, $matriz[$task_index] ); //busco el evento en el array de eventos de la tarea.
+
+      if($key===0 )
+      {
+         $count++;
+         unset($matriz[$task_index][$key]); //LO SACO DE LA TABLA DE EVENTOS DE LA TAREA
+      }
+      else
+      {
+      }
+      $task_index++;
+   }
+
+   if($count>1)
+   {
+      /* there is more that one task with the current event */
+      $flags_shared_event--;
+
+      if($flags_shared_event<0 )
+      {
+         throw new Exception("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n");
+         /* stops execution */
+      }
+
+      print "/** \brief Definition of the Event: $ev */\n";
+      print "#define " . $ev . " 0x" . sprintf ("%xU", (1<<$flags_shared_event)) . "\n";
+
+      /* this shared's event number is stored in matrix_n */
+      $task_index = 0;
+      foreach( $tasks as $task )
+      {
+         array_push( $matrix_n[$task_index] , $flags_shared_event );
+         $task_index++;
+      }
+   }
+}
+
+print "\n\n/** \brief Exclusive events for each task */\n\n";
+
+$task_index       =0;
+
+
+foreach( $tasks as $task )
+{
+   $flags_exc_event = 0;  /* it stores the number of bit for flags that are exclusively for one task */
+   foreach( $matriz[$task_index] as $ev )
+   {
+      if($flags_exc_event>$max_amount_events )
+      {
+         throw new Exception("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n");
+         /* stops execution */
+      }
+
+      print "/** \brief Definition of the Event: $ev for task: $task*/\n";
+      print "#define " . $ev . " 0x" . sprintf ("%xU", (1<<$flags_exc_event)) . "\n";
+
+      $temp = $flags_exc_event;
+      array_push( $matrix_n[$task_index] , $temp );
+
+      $flags_exc_event++;
+   }
+
+   $task_index++;
+}
+
+/* Last validation: check if events repeats  */
+$task_index       =0;
+foreach ($matrix_n as $array)
+{
+   #print_r($array);
+   $count_values = array_count_values($matrix_n[$task_index]) ;  /* it counts the times that repeats an event number, all of them should be 1*/
+   #print_r($count_values);
+   foreach ($count_values as $key => $value)
+   {
+      #print_r($value);
+      if($value>1)
+      {
+         throw new Exception("===== OIL ERROR: There are more events that the task can handle.  =====\n");
+         /* stops execution */
+      }
+   }
+   $task_index ++;
+}
+
+
+/* Define the Events */
+
+//$events = $config->getList("/OSEK","EVENT");
+
+//foreach ($events as $count=>$event)
+//{
+//   print "/** \brief Definition of the Event $event */\n";
+//   print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count)) . "\n";
+//}
+//print "\n";
+
+
 /* Define the Applications Modes */
 $appmodes = $config->getList("/OSEK","APPMODE");
 
@@ -102,16 +284,6 @@ foreach ($appmodes as $count=>$appmode)
 {
    print "/** \brief Definition of the Application Mode $appmode */\n";
    print "#define " . $appmode . " " . $count . "\n";
-}
-print "\n";
-
-/* Define the Events */
-$events = $config->getList("/OSEK","EVENT");
-
-foreach ($events as $count=>$event)
-{
-   print "/** \brief Definition of the Event $event */\n";
-   print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count)) . "\n";
 }
 print "\n";
 
@@ -355,4 +527,3 @@ extern StatusType Schedule(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_CFG_H_ */
-
