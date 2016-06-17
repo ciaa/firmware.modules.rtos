@@ -236,7 +236,8 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada array de eventos 
       $task_index = 0;
       foreach( $tasks as $task )
       {
-         unset($matriz[$task_index][$ev]); //LO SACO DE LA TABLA DE EVENTOS DE LA TAREA
+            $key = array_search( $ev, $matriz[$task_index] );  //EL EVENTO TIENE QUE EXISTIR SI O SI.
+         unset($matriz[$task_index][$key]); //LO SACO DE LA TABLA DE EVENTOS DE LA TAREA
          array_push( $matrix_n[$task_index] , $flags_shared_event );
          $task_index++;
       }
@@ -244,7 +245,7 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada array de eventos 
 
    $ev_index++;
 }
-
+//print_r($matriz);
 print "\n\n/** \brief Exclusive events for each task */\n\n";
 $task_index = 0;
 foreach( $tasks as $task )
@@ -299,8 +300,6 @@ print "\n";
 //   print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count)) . "\n";
 //}
 //print "\n";
-
-
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");

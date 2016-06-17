@@ -250,7 +250,7 @@ if( $rtasks_count>0 )
 else
 {
    print "\n/* OIL FILE: THERE ARE NO REMOTE TASKS DEFINED IN THE SYSTEM */\n";
-   trigger_error("===== OIL INFO: There are no REMOTE TASKS define in the OIL file =====\n", E_NOTICE);
+   trigger_error("===== OIL INFO: There are no REMOTE TASKS define in the OIL file =====\n", E_USER_NOTICE);
 }
 ?>
 };
@@ -384,7 +384,7 @@ if( $resources_count>0 )
 else
 {
    print "\n/* OIL FILE: THERE ARE NO RESOURCES DEFINED IN THE SYSTEM */\n";
-   trigger_error("===== OIL INFO: There are no RESOURCES define in the OIL file =====\n", E_NOTICE);
+   trigger_error("===== OIL INFO: There are no RESOURCES define in the OIL file =====\n", E_USER_NOTICE);
 }
 
 $alarms = getLocalList("/OSEK", "ALARM");
@@ -481,7 +481,7 @@ if( $alarms_count> 0 )
    }
    else
    {
-      print "\n/* OIL FILE: THERE ARE NO AUTOSTART ALARMS DEFINED IN THE SYSTEM */\n";
+      print "\n/* OIL FILE: THERE ARE NO AUTOSTART ALARMS DEFINED IN THE SYSTEM */\n\n";
    }
 
    $counters = getLocalList("/OSEK", "COUNTER");
@@ -518,7 +518,7 @@ if( $alarms_count> 0 )
 else
 {
    print "\n/* OIL FILE: THERE ARE NO ALARMS DEFINED IN THE SYSTEM */\n";
-   trigger_error("===== OIL INFO: There are no ALARMS define in the OIL file =====\n", E_NOTICE);
+   trigger_error("===== OIL INFO: There are no ALARMS define in the OIL file =====\n", E_USER_NOTICE);
 }
 ?>
 
@@ -534,11 +534,14 @@ uint8 ErrorHookRunning;
 
 /*==================[external functions definition]==========================*/
 <?php
-#includes the array where all IRQ array is defined, base on the architecture.
-include ''.$definitions["ARCH"].'/Os_Internal_Defs.php';
+
 
 #we create an array of ISRs defined in the OIL file.
 $intnames = getLocalList("/OSEK", "ISR");
+if( count($intnames)>0 ) /*it only process averything if there is any ISR define within the OIL */
+{
+   #includes the array where all IRQ array is defined, base on the architecture.
+   include ''.$definitions["ARCH"].'/Os_Internal_Defs.php';
 
 #for each ISR define in the OIL, we define the IRQ handler.
 foreach ($intnames as $int)
@@ -549,19 +552,25 @@ foreach ($intnames as $int)
    if ($intcat == 2)
    {
       print "/* Wrapper ISR handler for $int */\n";
-
-      $key = array_search( $inttype , $intList );
+ 
       if($definitions["ARCH"] == "msp430")
       {
-         #print "__attribute__( (__interrupt_vec($int)))\n";
          print "interrupt_vec($int) \n";
       }
 ?>
 void OSEK_ISR2_<?php print $int;?>(void)
 {
-   <?php
-   print "PreIsr2_Arch(". $key .");\n"
-?>
+      <?php
+      $key = array_search( $inttype , $intList );
+      if( $key !== false )
+      {
+         print("PreIsr2_Arch( $key );\n");
+      }
+      else
+      {
+         trigger_error("===== OIL ERROR: The IRQ name :$inttype is not valid for this processor =====\n", E_USER_ERROR);
+      }
+      ?>
 
    /* store the calling context in a variable */
    ContextType actualContext = GetCallingContext();
@@ -576,14 +585,16 @@ void OSEK_ISR2_<?php print $int;?>(void)
    SetActualContext(actualContext);
 
    <?php
-      print "PostIsr2_Arch(". $key .");\n"
+      print("   PostIsr2_Arch( $key );\n");
    ?>
-
+ 
    AfterIsr2_Schedule() ;
 }
 
-<?php }
-   }
+<?php 
+      } //if ($intcat == 2)
+   } //loop
+} //if count
 ?>
 
 /** @} doxygen end group definition */

@@ -186,7 +186,6 @@ foreach ($intnames as $int)
    $source  = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $prio    = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
-
    $key = array_search($source, $intList);
    if( $key !== false )
    {
@@ -197,7 +196,6 @@ foreach ($intnames as $int)
    {
       trigger_error("===== OIL ERROR: The IRQ name :$source is not valid for this processor =====\n", E_USER_ERROR);
    }
-
 }
 ?>
 }

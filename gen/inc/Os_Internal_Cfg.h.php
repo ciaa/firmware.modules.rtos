@@ -146,15 +146,31 @@ print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
-if(count($resources)>31)
+$resources_count = count($resources);
+if( $resources_count>31 )
 {
    $this->log->error("more than 31 resources were defined");
 }
 else
 {
-   print "/** \brief Count of resources */\n";
-   print "#define RESOURCES_COUNT " . count($resources) . "\n\n";
+   if( $resources_count > 0)
+   {
+      print "/** \brief Count of resources */\n";
+      print "#define RESOURCES_COUNT " . $resources_count . "\n\n";
+   }
 }
+
+$resources = $config->getList("/OSEK","RESOURCE");
+$resources_count = count($resources);
+if( $resources_count > 0)
+{
+   print "/** \brief Resources Priorities */\n";
+   print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
+}
+
+
+
+
 
 $os = $config->getList("/OSEK","OS");
 if (count($os)>1)
@@ -304,7 +320,10 @@ if ($multicore == "TRUE")
    }
 
 <?php
-$alarms = getLocalList("/OSEK", "ALARM");
+/* alarms processing */
+$alarms = getLocalList("/OSEK", "ALARM"); /* we register the all the ALAMRS*/
+$alarms_count = count($alarms);
+
 $count = 0;
 foreach ($alarms as $alarm)
 {
@@ -314,7 +333,7 @@ foreach ($alarms as $alarm)
    }
 }
 ?>
-#define ALARM_COUNT <?php print( count($alarms)."\n" ); ?>
+
 #define ALARM_AUTOSTART_COUNT <?php print( $count ."\n");  ?>
 
 <?php
@@ -325,9 +344,9 @@ foreach ($counters as $count => $counter)
    print "#define OSEK_COUNTER_" . $counter . " " . $count . "\n";
 }
 
-$alarms = getLocalList("/OSEK", "ALARM");
+//$alarms = getLocalList("/OSEK", "ALARM");
 print "/** \brief ALARMS_COUNT define */\n";
-print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
+print "#define ALARMS_COUNT " . $alarms_count . "\n\n";
 
 $preemptive = false;
 foreach($tasks as $task)
@@ -353,11 +372,11 @@ $events = $config->getList("/OSEK","EVENT");
 print "/** \brief NO_EVENTS macro definition */\n";
 if(count($events) == 0)
 {
-   print "#define NO_EVENTS OSEK_ENABLE\n\n";
+   print "#define NO_EVENTS  OSEK_ENABLE\n\n";
 }
 else
 {
-   print "#define NO_EVENTS OSEK_DISABLE\n\n";
+   print "#define NO_EVENTS  OSEK_DISABLE\n\n";
 }
 
 $schedulerpolicy = $config->getValue("/OSEK/" . $os[0],"USERESSCHEDULER");
@@ -375,8 +394,6 @@ switch($schedulerpolicy)
       print "#define NO_RES_SCHEDULER OSEK_ENABLE\n\n";
       break;
 }
-
-
 ?>
 
 /*==================[typedef]================================================*/
@@ -619,8 +636,11 @@ print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";
 /* Resources Priorities */
 $resources = $config->getList("/OSEK","RESOURCE");
 $resources_count = count($resources);
-print "/** \brief Resources Priorities */\n";
-print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
+if( $resources_count > 0)
+{
+   print "/** \brief Resources Priorities */\n";
+   print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
+}
 
 print "/** \brief Ready Const List */\n";
 print "extern const ReadyConstType ReadyConst[" . count($priority) .  "];\n\n";
