@@ -106,7 +106,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
    $intcat = 0 ;
-   
+
    foreach($intnames as $int)
    {
       /*
@@ -186,8 +186,18 @@ foreach ($intnames as $int)
    $source  = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $prio    = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
-   print "   /* Enabling IRQ $source with priority $prio */\n";
-   print "   MSP430_EnableIRQ(" . array_search($source, $intList) . ");\n";
+
+   $key = array_search($source, $intList);
+   if( $key !== false )
+   {
+      print "   /* Enabling IRQ $source with priority $prio */\n";
+      print "   MSP430_EnableIRQ(" . $key. ");\n";
+   }
+   else
+   {
+      trigger_error("===== OIL ERROR: The IRQ name :$source is not valid for this processor =====\n", E_USER_ERROR);
+   }
+
 }
 ?>
 }
@@ -206,8 +216,16 @@ foreach ($intnames as $int)
 
    if($cat == 2)
    {
-      print "   /* Enabling IRQ $source */\n";
-      print "   MSP430_EnableIRQ(" . array_search($source, $intList) . ");\n";
+      $key = array_search($source, $intList);
+      if( $key !== false )
+      {
+         print "   /* Enabling IRQ $source */\n";
+         print "   MSP430_EnableIRQ(" . $key. ");\n";
+      }
+      else
+      {
+         trigger_error("===== OIL ERROR: The IRQ name :$source is not valid for this processor =====\n", E_USER_ERROR);
+      }
    }
 }
 ?>
@@ -226,8 +244,16 @@ foreach ($intnames as $int)
 
    if($cat == 2)
    {
-      print "   /* Disabling IRQ $source */\n";
-      print "   MSP430_DisableIRQ(" . array_search($source, $intList) . ");\n";
+      $key = array_search($source, $intList);
+      if( $key !== false )
+      {
+         print "   /* Disabling IRQ $source */\n";
+         print "   MSP430_DisableIRQ(" .  $key . ");\n";
+      }
+      else
+      {
+         trigger_error("===== OIL ERROR: The IRQ name :$source is not valid for this processor =====\n", E_USER_ERROR);
+      }
    }
 }
 ?>

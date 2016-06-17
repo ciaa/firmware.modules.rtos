@@ -144,9 +144,10 @@ $task_index = 0;
 foreach( $tasks as $task )
 {
    $empty_array = array();
+   $temp_array = $config->getList("/OSEK/". $task , "EVENT"  );
 
    /*for each task we get the defined events*/
-   array_push( $matriz , $config->getList("/OSEK/". $task , "EVENT"  ) );
+   array_push( $matriz , $temp_array );
    array_push( $matrix_n , $empty_array );
 
    $nro_ev_task = count($matriz[$task_index]); #max(array_keys($matriz[$task_index]));
@@ -158,7 +159,7 @@ foreach( $tasks as $task )
 
    if ($extended != "EXTENDED" && $nro_ev_task>0 )
    {
-      throw new Exception("===== OIL ERROR: The task $task could be TYPE: EXTENDED =====\n");
+      trigger_error("===== OIL ERROR: The task $task could be TYPE: EXTENDED =====\n", E_USER_ERROR);
    }
    else
    {
@@ -175,9 +176,9 @@ foreach( $tasks as $task )
    {
       /* search the task event in the global event array */
       $key = array_search( $events , $matriz[$task_index] );
-      if($key===0 )
+      if( $key !== false )
       {
-         throw new Exception("===== OIL ERROR: The event $evi for task $task is not globally defined =====\n");
+         trigger_error("===== OIL ERROR: The event $evi for task $task is not globally defined =====\n", E_USER_ERROR);
          /* stops execution */
       }
       else
@@ -188,29 +189,34 @@ foreach( $tasks as $task )
    $task_index++;
 }
 
+
 /* generation of the shared events between tasks */
 print "\n/** \brief Shared events across tasks */\n\n";
-foreach( $events as $ev ) //para cada evento, lo busco en cada
+$ev_index   = 0;
+
+foreach( $events as $ev ) //para cada evento, lo busco en cada array de eventos para la tarea
 {
    //print( "//Procesando evento  $ev \n" );
-   $count = 0; //cuenta la cantidad de ocurrencias
    $task_index = 0;
+
+   $count=0;                  //almacena la cuenta de cuantas tareas tiene el evento
+   $task_single_event = "";   //almacena la ultima tarea en la cual encontro el evento
 
    foreach( $tasks as $task )
    {
-      $events_for_task = $config->getList("/OSEK/". $task , "EVENT"  );
-      $key = array_search( $ev, $matriz[$task_index] ); //busco el evento en el array de eventos de la tarea.
+      #$events_for_task = $config->getList("/OSEK/". $task , "EVENT"  );
+      $key = array_search( $ev, $matriz[$task_index] );
 
-      if($key===0 )
+      if( $key !== false ) //busco el evento en el array de eventos de la tarea.
       {
+         /* lo encontro */
          $count++;
-         unset($matriz[$task_index][$key]); //LO SACO DE LA TABLA DE EVENTOS DE LA TAREA
       }
-      else
-      {
-      }
+
       $task_index++;
    }
+
+   //print_r("\n$ev $count \n" );
 
    if($count>1)
    {
@@ -219,7 +225,7 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada
 
       if($flags_shared_event<0 )
       {
-         throw new Exception("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n");
+         trigger_error("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n", E_USER_ERROR);
          /* stops execution */
       }
 
@@ -230,20 +236,21 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada
       $task_index = 0;
       foreach( $tasks as $task )
       {
+         unset($matriz[$task_index][$ev]); //LO SACO DE LA TABLA DE EVENTOS DE LA TAREA
          array_push( $matrix_n[$task_index] , $flags_shared_event );
          $task_index++;
       }
    }
+
+   $ev_index++;
 }
 
 print "\n\n/** \brief Exclusive events for each task */\n\n";
-
-$task_index       =0;
-
-
+$task_index = 0;
 foreach( $tasks as $task )
 {
    $flags_exc_event = 0;  /* it stores the number of bit for flags that are exclusively for one task */
+
    foreach( $matriz[$task_index] as $ev )
    {
       if($flags_exc_event>$max_amount_events )
@@ -283,7 +290,7 @@ foreach ($matrix_n as $array)
    $task_index ++;
 }
 print "\n";
- 
+
 //$events = $config->getList("/OSEK","EVENT");
 
 //foreach ($events as $count=>$event)

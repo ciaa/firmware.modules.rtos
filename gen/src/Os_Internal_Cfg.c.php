@@ -231,15 +231,26 @@ print "\n";
 };
 
 /** \brief RemoteTaskCore Array */
-const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {<?php
+const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {
+<?php
 $rtasks = getRemoteList("/OSEK", "TASK");
-for($i=0; $i<count($rtasks); $i++)
+$rtasks_count = count($rtasks);
+
+if( $rtasks_count>0 )
 {
-   print $config->getValue("/OSEK/$rtasks[$i]", "CORE");
-   if ($i < (count($rtasks)-1))
+   for($i=0; $i<$rtasks_count; $i++)
    {
-      print ", ";
+      print $config->getValue("/OSEK/$rtasks[$i]", "CORE");
+      if ($i < (count($rtasks)-1))
+      {
+         print ", ";
+      }
    }
+}
+else
+{
+   print "\n/* OIL FILE: THERE ARE NO REMOTE TASKS DEFINED IN THE SYSTEM */\n";
+   trigger_error("===== OIL INFO: There are no REMOTE TASKS define in the OIL file =====\n", E_NOTICE);
 }
 ?>
 };
@@ -340,141 +351,175 @@ print "ReadyVarType ReadyVar[" . count($priority) . "];\n";
 <?php
 /* Resources Priorities */
 $resources = $config->getList("/OSEK","RESOURCE");
-print "/** \brief Resources Priorities */\n";
-print "const TaskPriorityType ResourcesPriority[" . count($resources) . "]  = {\n";
-$c = 0;
-foreach ($resources as $resource)
+$resources_count = count($resources);
+
+if( $resources_count>0 )
 {
-   $count = 0;
-   foreach ($tasks as $task)
+   print "/** \brief Resources Priorities */\n";
+   print "const TaskPriorityType ResourcesPriority[" . count($resources) . "]  = {\n";
+   $c = 0;
+   foreach ($resources as $resource)
    {
-      $resorucestask = $config->getList("/OSEK/" . $task, "RESOURCE");
-      foreach($resorucestask as $rt)
+      $count = 0;
+      foreach ($tasks as $task)
       {
-         if ($rt == $resource)
+         $resorucestask = $config->getList("/OSEK/" . $task, "RESOURCE");
+         foreach($resorucestask as $rt)
          {
-            if ($priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] > $count)
+            if ($rt == $resource)
             {
-               $count = $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")];
+               if ($priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] > $count)
+               {
+                  $count = $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")];
+               }
             }
          }
       }
-   }
-   if ($c++ != 0) print ",\n";
-   print "   $count";
+      if ($c++ != 0) print ",\n";
+      print "   $count";
 
+   }
+   print "\n};\n";
 }
-print "\n};\n";
+else
+{
+   print "\n/* OIL FILE: THERE ARE NO RESOURCES DEFINED IN THE SYSTEM */\n";
+   trigger_error("===== OIL INFO: There are no RESOURCES define in the OIL file =====\n", E_NOTICE);
+}
 
 $alarms = getLocalList("/OSEK", "ALARM");
-print "/** TODO replace next line with: \n";
-print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
-print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
+$alarms_count = count($alarms);
+$alarms_autostart = 0;
 
-print "const AlarmConstType AlarmsConst[" . count($alarms) . "]  = {\n";
-
-foreach ($alarms as $count=>$alarm)
+if( $alarms_count> 0 )
 {
-   if ($count != 0)
-   {
-      print ",\n";
-   }
-   print "   {\n";
-   print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-   $action = $config->getValue("/OSEK/" . $alarm, "ACTION");
-   print "      " . $action . ", /* Alarm action */\n";
-   print "      {\n";
-   switch ($action)
-   {
-   case "INCREMENT":
-      print "         NULL, /* no callback */\n";
-      print "         0, /* no task id */\n";
-      print "         0, /* no event */\n";
-      print "         OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
-      break;
-   case "ACTIVATETASK":
-      print "         NULL, /* no callback */\n";
-      print "         " . $config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
-      print "         0, /* no event */\n";
-      print "         0 /* no counter */\n";
-      break;
-   case "SETEVENT":
-      print "         NULL, /* no callback */\n";
-      print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
-      print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
-      print "         0 /* no counter */\n";
-      break;
-   case "ALARMCALLBACK":
-      print "         OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
-      print "         0, /* no taskid */\n";
-      print "         0, /* no event */\n";
-      print "         0 /* no counter */\n";
-      break;
-   default:
-     $this->log->error("Alarm $alarm has an invalid action: $action");
-      break;
-   }
-   print "      },\n";
-   print "   }";
+   print "/** TODO replace next line with: \n";
+   print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
+   print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
 
-}
-print "\n};\n\n";
+   print "const AlarmConstType AlarmsConst[" . count($alarms) . "]  = {\n";
 
-print "const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT] = {\n";
-$first = true;
-foreach ($alarms as $count=>$alarm)
-{
-   if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+   foreach ($alarms as $count=>$alarm)
    {
-      if ($first == false)
+      if ($count != 0)
       {
          print ",\n";
-      } else {
-         $first = false;
       }
-      print "  {\n";
+      if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+      {
+         $alarms_autostart++;
+      }
+      print "   {\n";
+      print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+      $action = $config->getValue("/OSEK/" . $alarm, "ACTION");
+      print "      " . $action . ", /* Alarm action */\n";
+      print "      {\n";
+      switch ($action)
+      {
+      case "INCREMENT":
+         print "         NULL, /* no callback */\n";
+         print "         0, /* no task id */\n";
+         print "         0, /* no event */\n";
+         print "         OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
+         break;
+      case "ACTIVATETASK":
+         print "         NULL, /* no callback */\n";
+         print "         " . $config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
+         print "         0, /* no event */\n";
+         print "         0 /* no counter */\n";
+         break;
+      case "SETEVENT":
+         print "         NULL, /* no callback */\n";
+         print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
+         print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
+         print "         0 /* no counter */\n";
+         break;
+      case "ALARMCALLBACK":
+         print "         OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
+         print "         0, /* no taskid */\n";
+         print "         0, /* no event */\n";
+         print "         0 /* no counter */\n";
+         break;
+      default:
+        $this->log->error("Alarm $alarm has an invalid action: $action");
+         break;
+      }
+      print "      },\n";
+      print "   }";
 
-      print "      " . $config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
-      // print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-      print "      $alarm, /* Alarms */\n";
-      print "      " . $config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
-      print "      " . $config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+   }
+   print "\n};\n\n";
+
+   #print("#if( ALARM_AUTOSTART_COUNT>0 )\n");
+   if($alarms_autostart>0)
+   {
+      print "const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT] = {\n";
+      $first = true;
+      foreach ($alarms as $count=>$alarm)
+      {
+         if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+         {
+            if ($first == false)
+            {
+               print ",\n";
+            }
+            else
+            {
+               $first = false;
+            }
+            print "  {\n";
+
+            print "      " . $config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
+            // print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+            print "      $alarm, /* Alarms */\n";
+            print "      " . $config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
+            print "      " . $config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+            print "   }";
+         }
+      }
+      print "\n};\n\n";
+   }
+   else
+   {
+      print "\n/* OIL FILE: THERE ARE NO AUTOSTART ALARMS DEFINED IN THE SYSTEM */\n";
+   }
+
+   $counters = getLocalList("/OSEK", "COUNTER");
+
+   print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
+
+   $alarms = $config->getList("/OSEK","ALARM");
+
+   print "const CounterConstType CountersConst[" . count($counters) . "] = {\n";
+   foreach ($counters as $count=>$counter)
+   {
+      if ($count!=0)
+      {
+         print ",\n";
+      }
+      print "   {\n";
+      $countalarms = 0;
+      foreach ($alarms as $alarm)
+      {
+         if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))
+         {
+            $countalarms++;
+         }
+      }
+      print "      $countalarms, /* quantity of alarms for this counter */\n";
+      print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
+      print "      " . $config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
+      print "      " . $config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
+      print "      " . $config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
       print "   }";
    }
+   print "\n};\n\n";
 }
-print "\n};\n\n";
-
-$counters = getLocalList("/OSEK", "COUNTER");
-
-print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
-
-$alarms = $config->getList("/OSEK","ALARM");
-
-print "const CounterConstType CountersConst[" . count($counters) . "] = {\n";
-foreach ($counters as $count=>$counter)
+else
 {
-   if ($count!=0)
-   {
-      print ",\n";
-   }
-   print "   {\n";
-   $countalarms = 0;
-   foreach ($alarms as $alarm)
-   {
-      if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))
-      {
-         $countalarms++;
-      }
-   }
-   print "      $countalarms, /* quantity of alarms for this counter */\n";
-   print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
-   print "      " . $config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
-   print "      " . $config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
-   print "      " . $config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
-   print "   }";
+   print "\n/* OIL FILE: THERE ARE NO ALARMS DEFINED IN THE SYSTEM */\n";
+   trigger_error("===== OIL INFO: There are no ALARMS define in the OIL file =====\n", E_NOTICE);
 }
-print "\n};\n\n";
-
 ?>
 
 /** TODO replace the next line with
@@ -507,7 +552,7 @@ foreach ($intnames as $int)
 
       $key = array_search( $inttype , $intList );
       if($definitions["ARCH"] == "msp430")
-      {    
+      {
          #print "__attribute__( (__interrupt_vec($int)))\n";
          print "interrupt_vec($int) \n";
       }

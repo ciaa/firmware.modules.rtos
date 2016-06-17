@@ -114,6 +114,7 @@ void StartOS
       ActivateTask(AutoStart[Mode].TasksRef[loopi]);
    }
 
+#if( ALARM_AUTOSTART_COUNT>0 )
    for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
    {
       if (AutoStartAlarm[loopi].Mode == Mode)
@@ -121,6 +122,7 @@ void StartOS
          (void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[loopi].AlarmCycleTime);
       }
    }
+#endif
 
 #if (HOOK_STARTUPHOOK == OSEK_ENABLE)
    StartupHook();
@@ -145,4 +147,3 @@ void StartOS
 /** @} doxygen end group definition */
 /** @} doxygen endVar group definition */
 /*==================[end of file]============================================*/
-

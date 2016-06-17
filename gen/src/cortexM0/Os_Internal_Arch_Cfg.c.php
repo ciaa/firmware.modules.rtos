@@ -294,8 +294,16 @@ foreach ($intnames as $int)
 
    if($cat == 2)
    {
-      print "   /* Disabling IRQ $source */\n";
-      print "   NVIC_DisableIRQ(" . array_search($source, $intList) . ");\n";
+      $key = array_search($source, $intList);
+      if( $key !== false )
+      {
+         print "   /* Disabling IRQ $source */\n";
+         print "   NVIC_DisableIRQ(" . $key . ");\n";
+      }
+      else
+      {
+         trigger_error("===== OIL ERROR: The IRQ name :$source is not valid for this processor =====\n", E_USER_ERROR);
+      }
    }
 }
 ?>

@@ -314,8 +314,8 @@ foreach ($alarms as $alarm)
    }
 }
 ?>
-#define ALARM_AUTOSTART_COUNT <?php echo $count ?>
-
+#define ALARM_COUNT <?php print( count($alarms)."\n" ); ?>
+#define ALARM_AUTOSTART_COUNT <?php print( $count ."\n");  ?>
 
 <?php
 $counters = getLocalList("/OSEK", "COUNTER");
@@ -618,8 +618,9 @@ print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";
 
 /* Resources Priorities */
 $resources = $config->getList("/OSEK","RESOURCE");
+$resources_count = count($resources);
 print "/** \brief Resources Priorities */\n";
-print "extern const TaskPriorityType ResourcesPriority[" . count($resources) . "];\n\n";
+print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
 
 print "/** \brief Ready Const List */\n";
 print "extern const ReadyConstType ReadyConst[" . count($priority) .  "];\n\n";
