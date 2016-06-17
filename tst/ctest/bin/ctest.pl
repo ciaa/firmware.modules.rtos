@@ -239,7 +239,7 @@ sub searchandreplace
    $s = @_[1];
    $r = @_[2];
 
-   print "File: $file S: $s R: $r\n";
+   #print "File: $file S: $s R: $r\n";
 
    #`perl -pi -e 's/$s/$r/g' $file`;
    `perl -pi -e 's{$s}{$r}g' $file`;

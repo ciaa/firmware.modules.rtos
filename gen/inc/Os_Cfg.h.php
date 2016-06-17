@@ -3,6 +3,7 @@
  ********************************************************/
 
 /* Copyright 2008, 2009, 2015 Mariano Cerdeiro
+ * Copyright 2016 Franco Bucafusco
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -62,6 +63,15 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
+/*
+ * modification history (new versions first)
+ * -----------------------------------------------------------
+ * 20150619 v0.1.4 MaCe fix issue #279
+ * 20090719 v0.1.3 MaCe rename file to Os_
+ * 20090424 v0.1.2 MaCe add counters defines
+ * 20090128 v0.1.1 MaCe add MEMMAP off configuration
+ * 20080810 v0.1.0 MaCe initial version
+ */
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
@@ -96,9 +106,18 @@ if (count($remote_tasks) > 0)
    print "\n";
 }
 
-/*
-DEFINE EVENTS
-*/
+/* Define the Applications Modes */
+$appmodes = $config->getList("/OSEK","APPMODE");
+
+foreach ($appmodes as $count=>$appmode)
+{
+   print "/** \brief Definition of the Application Mode $appmode */\n";
+   print "#define " . $appmode . " " . $count . "\n";
+}
+print "\n";
+
+
+/* Define the Events */
 
 /* the max ammount of events is defined by the bit width of EventTypeMask type*/
 if( $definitions["ARCH"]== "msp430")
@@ -263,10 +282,8 @@ foreach ($matrix_n as $array)
    }
    $task_index ++;
 }
-
-
-/* Define the Events */
-
+print "\n";
+ 
 //$events = $config->getList("/OSEK","EVENT");
 
 //foreach ($events as $count=>$event)
@@ -277,15 +294,6 @@ foreach ($matrix_n as $array)
 //print "\n";
 
 
-/* Define the Applications Modes */
-$appmodes = $config->getList("/OSEK","APPMODE");
-
-foreach ($appmodes as $count=>$appmode)
-{
-   print "/** \brief Definition of the Application Mode $appmode */\n";
-   print "#define " . $appmode . " " . $count . "\n";
-}
-print "\n";
 
 /* Define the Resources */
 $resources = $config->getList("/OSEK","RESOURCE");
