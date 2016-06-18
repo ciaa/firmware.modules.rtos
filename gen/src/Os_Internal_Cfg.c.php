@@ -535,7 +535,6 @@ uint8 ErrorHookRunning;
 /*==================[external functions definition]==========================*/
 <?php
 
-
 #we create an array of ISRs defined in the OIL file.
 $intnames = getLocalList("/OSEK", "ISR");
 if( count($intnames)>0 ) /*it only process averything if there is any ISR define within the OIL */
@@ -549,16 +548,16 @@ foreach ($intnames as $int)
    $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
    $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
 
+   print("/* Wrapper ISR handler for $int */\n");
+
    if ($intcat == 2)
    {
-      print "/* Wrapper ISR handler for $int */\n";
- 
       if($definitions["ARCH"] == "msp430")
       {
          print "interrupt_vec($int) \n";
       }
 ?>
-void OSEK_ISR2_<?php print $int;?>(void)
+void OSEK_ISR2_<?php print $int?>(void)
 {
       <?php
       $key = array_search( $inttype , $intList );
@@ -585,13 +584,13 @@ void OSEK_ISR2_<?php print $int;?>(void)
    SetActualContext(actualContext);
 
    <?php
-      print("   PostIsr2_Arch( $key );\n");
+      print("PostIsr2_Arch( $key );\n");
    ?>
- 
+
    AfterIsr2_Schedule() ;
 }
 
-<?php 
+<?php
       } //if ($intcat == 2)
    } //loop
 } //if count

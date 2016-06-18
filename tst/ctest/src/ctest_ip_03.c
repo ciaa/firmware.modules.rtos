@@ -115,7 +115,7 @@ TASK(Task3)
    TerminateTask();
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    StatusType ret;
 
@@ -139,4 +139,3 @@ TASK(Task4)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

@@ -98,20 +98,27 @@
  **         to workarround the hw bug cpu39 describer in slaz314h.pdf
  **       Also noted in Slau208, page 59.
  **/
+
 #define SuspendAllInterrupts_Arch()  SR_BACK___ = _get_SR_register(); \
                                      _disable_interrupts() ;
-
+ 
+//#define SuspendAllInterrupts_Arch()   _disable_interrupts() ;
 
 
 /** \brief Resume All Interrupts Arch
 **
 ** This macro shall resume (enable) all interrupts.
 **/
+
 #define ResumeAllInterrupts_Arch() if( SR_BACK___ & GIE )      \
                                    {                           \
                                       _enable_interrupts() ;  \
                                    }                           \
- 
+
+
+//#define ResumeAllInterrupts_Arch() _enable_interrupts() ;
+
+
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the

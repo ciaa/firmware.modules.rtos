@@ -204,7 +204,7 @@ TASK(Task2)
    TerminateTask();
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    StatusType ret;
 
@@ -232,7 +232,7 @@ ISR(ISR2)
 }
 
 #if ( ISR_CATEGORY_3 == OSEK_ENABLE )
-ISR(ISR3)
+ISR(VN_ISR3)
 {
    StatusType ret;
 
@@ -250,4 +250,3 @@ ISR(ISR3)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

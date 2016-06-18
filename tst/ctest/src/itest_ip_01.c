@@ -103,7 +103,7 @@ TASK(Task1)
    ConfTestFinish();
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    StatusType ret;
 

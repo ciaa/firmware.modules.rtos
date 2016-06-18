@@ -147,7 +147,7 @@ TASK(Task1)
    ConfTestFinish();
 }
 
-ISR(ISR1)
+ISR(VN_ISR1)
 {
    static uint8 ISR1_Trigger_Number = 0;
 
@@ -170,7 +170,7 @@ ISR(ISR1)
    }
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    static uint8 ISR2_Trigger_Number = 0;
 
@@ -205,4 +205,3 @@ TASK(Task2)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

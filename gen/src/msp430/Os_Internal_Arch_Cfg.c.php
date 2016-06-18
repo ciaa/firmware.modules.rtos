@@ -163,7 +163,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       {
          #for an ISR type 1 witihn the OIL file, we defiene a ISR wrapper that calls the ISR defined by the user somewhere.
          #print "__attribute__( (__interrupt_vec($intList[$i]_VECTOR),naked)) \n";
-         print "interrupt_vec($intList[$i]_VECTOR) __attribute__((naked))";
+         print "interrupt_vec($intList[$i]_VECTOR) __attribute__((naked))\n";
          print "void OSEK_ISR_$intList[$i]_VECTOR_WRAPPER(void) /*Wrapper function for ISR $intList[$i]_VECTOR (IRQ $i). User should define ISR($intList[$i]) somewhere */ \n";
          print "{\n";
          print "   OSEK_ISR_$intList[$i]_VECTOR();\n";
