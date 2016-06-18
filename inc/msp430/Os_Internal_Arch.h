@@ -103,7 +103,7 @@ extern TaskType TerminatingTask;
  ** This macro will be used internaly by the OS in any part of code that
  ** has to be executed atomic. It should be placed after IntSecure_Start or IntSecure_End is called
  **/
-#define IntSecure_Common() CommonAllInterrupts()
+#define IntSecure_Common()  volatile unsigned short SR_BACK___;
 
 
 /** \brief Interrupt Secure Start Macro
@@ -111,13 +111,17 @@ extern TaskType TerminatingTask;
  ** This macro will be used internaly by the OS in any part of code that
  ** has to be executed atomic.
  **/
-#define IntSecure_Start() SuspendAllInterrupts()
+#define IntSecure_Start() SR_BACK___ = _get_SR_register(); \
+                                     _disable_interrupts() ;
 
 /** \brief Interrupt Secure End Macro
  **
  ** This macro is the countra part of IntSecure_Start()
  **/
-#define IntSecure_End() ResumeAllInterrupts()
+#define IntSecure_End() if( SR_BACK___ & GIE )      \
+                        {                           \
+                           _enable_interrupts() ;   \
+                        }                           \
 
 /** \brief osekpause
  **

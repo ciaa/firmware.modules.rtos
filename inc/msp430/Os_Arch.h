@@ -78,17 +78,10 @@
  *****************************************************************************/
 
 /** \brief Enable All Interrupts Arch */
-#define EnableAllInterrupts_Arch() ResumeAllInterrupts_Arch()
+#define EnableAllInterrupts_Arch()     ResumeAllInterrupts_Arch()
 
 /** \brief Disable All Interrupts Arch */
-#define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
-
-
-/** \brief  All Interrupts Arch Common Objects
- **
- ** This macro shall define common objects to imlement  Suspend and  Resume
- **/
-#define  CommonAllInterrupts()   volatile unsigned short SR_BACK___;
+#define DisableAllInterrupts_Arch()    SuspendAllInterrupts_Arch()
 
 
 /** \brief Suspend All Interrupts Arch
@@ -99,39 +92,28 @@
  **       Also noted in Slau208, page 59.
  **/
 
-#define SuspendAllInterrupts_Arch()  SR_BACK___ = _get_SR_register(); \
-                                     _disable_interrupts() ;
- 
-//#define SuspendAllInterrupts_Arch()   _disable_interrupts() ;
+#define SuspendAllInterrupts_Arch()   _disable_interrupts() ;
 
 
 /** \brief Resume All Interrupts Arch
 **
 ** This macro shall resume (enable) all interrupts.
 **/
-
-#define ResumeAllInterrupts_Arch() if( SR_BACK___ & GIE )      \
-                                   {                           \
-                                      _enable_interrupts() ;  \
-                                   }                           \
-
-
-//#define ResumeAllInterrupts_Arch() _enable_interrupts() ;
-
+#define ResumeAllInterrupts_Arch()    _enable_interrupts() ;
 
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR2.
  **/
-#define ResumeOSInterrupts_Arch() Enable_ISR2_Arch()
+#define ResumeOSInterrupts_Arch()     Enable_ISR2_Arch()
 
 /** \brief Suspend OS Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR2.
  **/
-#define SuspendOSInterrupts_Arch() Disable_ISR2_Arch()
+#define SuspendOSInterrupts_Arch()    Disable_ISR2_Arch()
 
 /*==================[typedef]================================================*/
 /*****************************************************************************
