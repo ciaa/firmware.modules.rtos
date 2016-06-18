@@ -160,17 +160,6 @@ else
    }
 }
 
-$resources = $config->getList("/OSEK","RESOURCE");
-$resources_count = count($resources);
-if( $resources_count > 0)
-{
-   print "/** \brief Resources Priorities */\n";
-   print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
-}
-
-
-
-
 
 $os = $config->getList("/OSEK","OS");
 if (count($os)>1)
@@ -641,6 +630,8 @@ if( $resources_count > 0)
    print "/** \brief Resources Priorities */\n";
    print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
 }
+
+
 
 print "/** \brief Ready Const List */\n";
 print "extern const ReadyConstType ReadyConst[" . count($priority) .  "];\n\n";
