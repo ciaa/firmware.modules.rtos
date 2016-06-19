@@ -127,6 +127,8 @@ void DebugMon_Handler(void) {
 
 /*==================[external functions definition]==========================*/
 <?php
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
 switch ($this->definitions["CPU"])
 {
    case "mk60fx512vlq15":
