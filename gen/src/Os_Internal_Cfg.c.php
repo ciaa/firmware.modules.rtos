@@ -61,6 +61,9 @@
 
 /*==================[internal data definition]===============================*/
 <?php
+
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
 /* get tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
@@ -81,6 +84,8 @@ foreach ($tasks as $task)
    print "TaskContextType ContextTask" . $task . ";\n";
 }
 print "\n";
+
+$priority = $this->config->priority2osekPriority($tasks);
 
 /* Ready List */
 foreach ($priority as $prio)

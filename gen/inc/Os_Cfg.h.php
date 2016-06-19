@@ -72,18 +72,12 @@
 
 <?php
 
-/* remove soon
- * you can load the helper here with
-   $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
-
- * or when calling generator.php with
-   -H modules/rtos/gen/ginc/Multicore.php
- *
-*/
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
 
 /* Definitions of Tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 $remote_tasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
+$os = $this->config->getList("/OSEK","OS");
 
 $count = 0;
 foreach ($tasks as $task)

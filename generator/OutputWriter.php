@@ -48,28 +48,46 @@ abstract class OutputWriter
 {
    protected $buffering = false;
 
+   private $flushed = false;
+
    protected $log = null;
 
    abstract function close();
 
    abstract function ob_file_callback($buffer);
 
+   abstract function printMsg($msg);
+
+   public function flush()
+   {
+      if (! $this->flushed)
+      {
+         ob_end_flush();
+         $this->flushed = true;
+      }
+   }
+
    public function start()
    {
       ob_start(array($this, 'ob_file_callback'));
       $this->buffering = true;
+      $this->flushed = false;
    }
 
    public function pause()
    {
-      if($this->buffering == true)
-         ob_end_flush();
+      if($this->buffering == true )
+      {
+         $this->flush();
+      }
    }
 
    public function resume()
    {
       if($this->buffering == true)
+      {
          $this->start();
+      }
    }
 
    public function setLog($log)

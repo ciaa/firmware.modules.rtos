@@ -68,7 +68,9 @@ class OilConfig {
       $parser = new OilParser();
       $parser->loadFile($file);
       $parser->parse();
-      $this->config = $parser->getOil();
+      foreach ($parser->getOil() as $item) {
+          $this->config[] = $item;
+      }
    }
 
    function setConfig($config)
@@ -161,6 +163,26 @@ class OilConfig {
       return $ret;
 
    }
+
+   /* convert config priority to real osek priority */
+   function priority2osekPriority($tasks)
+   {
+      $priorities = array();
+      foreach ($tasks as $task)
+      {
+         $priorities[] = $this->getValue("/OSEK/" . $task, "PRIORITY");
+      }
+      $priorities = remove_doubles($priorities);
+
+      $priority = array();
+      foreach ($priorities as $count=>$prio)
+      {
+         $priority[$prio] = $count;
+      }
+      arsort($priority);
+      return $priority;
+   }
+
 
    function dump()
    {

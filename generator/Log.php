@@ -79,7 +79,7 @@ class Log
 
       if ($this->verbose)
       {
-         print "INFO: " . $msg . "\n";
+         $this->writer->printMsg("INFO: " . $msg . "\n");
       }
       $this->writer->resume();
 
@@ -95,8 +95,7 @@ class Log
    function warning($msg)
    {
       $this->writer->pause();
-
-      print "WARNING: " . $msg . "\n";
+      $this->writer->printMsg("WARNING: " . $msg . "\n");
       $this->warnings++;
       $this->writer->resume();
 
@@ -115,25 +114,10 @@ class Log
    function error($msg)
    {
       $this->writer->pause();
-
-      print "ERROR: " . $msg . "\n";
+      $this->writer->printMsg("ERROR: " . $msg . "\n");
       $this->errors++;
       $this->writer->resume();
 
-   }
-
-   /** \brief Abort Generator Function
-   **
-   ** This function shall be used to report an error and abort the generation.
-   ** Don't use this function to report information or warnings.
-   **
-   ** \param[in] msg string containing the error message to be reported.
-   **/
-   function halt($msg)
-   {
-      $this->writer->pause();
-      $this->error($msg);
-      $this->writer->close();
    }
 
    public function getReport()

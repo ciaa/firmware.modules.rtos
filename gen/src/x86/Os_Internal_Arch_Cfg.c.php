@@ -62,6 +62,10 @@
 
 /*==================[external data definition]===============================*/
 <?php
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+$tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
+
 foreach ($tasks as $task)
 {
    print "/** \brief $task context */\n";

@@ -52,6 +52,7 @@
 /*==================[inclusions]=============================================*/
 require_once("OilConfig.php");
 require_once("Log.php");
+require_once("OilGeneratorException.php");
 /*=================[user functions]============================================*/
 
 class OilGenerator
@@ -74,62 +75,57 @@ class OilGenerator
 
    }
 
-   /*=================[end of user functions]=====================================*/
-
-   /*=================[global variables]==========================================*/
-
-
    function printCmdLine()
    {
-      print "INFO: the generator was called as follow:\nINFO: ";
+      $this->writer->printMsg("INFO: the generator was called as follow:\nINFO: ");
       foreach ($_SERVER['argv'] as $arg)
       {
-         print "$arg ";
+         $this->writer->printMsg( "$arg ");
       }
-      print "\n";
+      $this->writer->printMsg( "\n");
    }
 
    function printInfo()
    {
-      print "INFO: ------ LICENSE START ------\n";
-      print "INFO: This file is part of CIAA Firmware.\n";
-      print "INFO: Redistribution and use in source and binary forms, with or without\n";
-      print "INFO: modification, are permitted provided that the following conditions are met:\n";
-      print "INFO: 1. Redistributions of source code must retain the above copyright notice,\n";
-      print "INFO: this list of conditions and the following disclaimer.\n";
-      print "INFO: 2. Redistributions in binary form must reproduce the above copyright notice,\n";
-      print "INFO: this list of conditions and the following disclaimer in the documentation\n";
-      print "INFO: and/or other materials provided with the distribution.\n";
-      print "INFO: 3. Neither the name of the copyright holder nor the names of its\n";
-      print "INFO: contributors may be used to endorse or promote products derived from this\n";
-      print "INFO: software without specific prior written permission.\n";
-      print "INFO: THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n";
-      print "INFO: AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n";
-      print "INFO: IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n";
-      print "INFO: ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE\n";
-      print "INFO: LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\n";
-      print "INFO: CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\n";
-      print "INFO: SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\n";
-      print "INFO: INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\n";
-      print "INFO: CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\n";
-      print "INFO: ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\n";
-      print "INFO: POSSIBILITY OF SUCH DAMAGE.\n";
-      print "INFO: ------- LICENSE END -------\n";
+      $this->writer->printMsg( "INFO: ------ LICENSE START ------\n");
+      $this->writer->printMsg( "INFO: This file is part of CIAA Firmware.\n");
+      $this->writer->printMsg( "INFO: Redistribution and use in source and binary forms, with or without\n");
+      $this->writer->printMsg( "INFO: modification, are permitted provided that the following conditions are met:\n");
+      $this->writer->printMsg( "INFO: 1. Redistributions of source code must retain the above copyright notice,\n");
+      $this->writer->printMsg( "INFO: this list of conditions and the following disclaimer.\n");
+      $this->writer->printMsg( "INFO: 2. Redistributions in binary form must reproduce the above copyright notice,\n");
+      $this->writer->printMsg( "INFO: this list of conditions and the following disclaimer in the documentation\n");
+      $this->writer->printMsg( "INFO: and/or other materials provided with the distribution.\n");
+      $this->writer->printMsg( "INFO: 3. Neither the name of the copyright holder nor the names of its\n");
+      $this->writer->printMsg( "INFO: contributors may be used to endorse or promote products derived from this\n");
+      $this->writer->printMsg( "INFO: software without specific prior written permission.\n");
+      $this->writer->printMsg( "INFO: THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n");
+      $this->writer->printMsg( "INFO: AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n");
+      $this->writer->printMsg( "INFO: IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n");
+      $this->writer->printMsg( "INFO: ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE\n");
+      $this->writer->printMsg( "INFO: LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\n");
+      $this->writer->printMsg( "INFO: CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\n");
+      $this->writer->printMsg( "INFO: SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\n");
+      $this->writer->printMsg( "INFO: INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\n");
+      $this->writer->printMsg( "INFO: CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\n");
+      $this->writer->printMsg( "INFO: ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\n");
+      $this->writer->printMsg( "INFO: POSSIBILITY OF SUCH DAMAGE.\n");
+      $this->writer->printMsg( "INFO: ------- LICENSE END -------\n");
    }
 
    function printHelp()
    {
-      print "php generator.php [-l] [-h] [--cmdline] [-Ddef[=definition]] -c <CONFIG_1> [<CONFIG_N>] -o <OUTPUTDIR> -t <GENFILE_1> [<GENFILE_N>] [ -H <HELPER_1> [HELPER_N]]>\n";
-      print "      -c   indicate the configuration input files\n";
-      print "      -o   output directory\n";
-      print "      -t   indicates the templates to be processed\n";
-      print "      -b   relative base path (default \"/templates/\")\n";
-      print "   optional parameters:\n";
-      print "      -H   load helpers\n";
-      print "      -h   display this help\n";
-      print "      -l   displays a short license overview\n";
-      print "      -D   defines\n";
-      print "      --cmdline print the command line\n";
+      $this->writer->printMsg( "php generator.php [-l] [-h] [--cmdline] [-b PATH ] [-Ddef[=definition]] -c <CONFIG_1> [<CONFIG_N>] -o <OUTPUTDIR> -t <TEMPLATE_1> [<TEMPLATE_N>] [ -H <HELPER_1> [HELPER_N]]>\n");
+      $this->writer->printMsg( "      -c   indicate the configuration input files\n");
+      $this->writer->printMsg( "      -o   output directory\n");
+      $this->writer->printMsg( "      -t   indicates the templates to be processed\n");
+      $this->writer->printMsg( "   optional parameters:\n");
+      $this->writer->printMsg( "      -b   relative base path (default \"/templates/\")\n");
+      $this->writer->printMsg( "      -H   load helpers\n");
+      $this->writer->printMsg( "      -h   display this help\n");
+      $this->writer->printMsg( "      -l   displays a short license overview\n");
+      $this->writer->printMsg( "      -D   defines\n");
+      $this->writer->printMsg( "      --cmdline print the command line\n");
    }
 
    function processArgs($args)
@@ -140,6 +136,7 @@ class OilGenerator
       $templateFiles=array();
       $directorySeparator=array();
       $helperFiles=array();
+      $atLeastOneHelper = false;
 
       foreach ($args as $arg)
       {
@@ -159,11 +156,12 @@ class OilGenerator
          case "-v":
             $this->verbose = true;
             break;
+         case "-H":
+            $atLeastOneHelper = true;
          case "-c":
          case "-o":
          case "-t":
          case "-b":
-         case "-H":
             $oldarg = $arg;
             break;
          default:
@@ -190,7 +188,7 @@ class OilGenerator
                   $baseOutDir[]= $arg;
                   break;
                case "-t":
-                  /* add generated file */
+                  /* add template file */
                   $templateFiles[] = $arg;
                   break;
                case "-b":
@@ -198,8 +196,7 @@ class OilGenerator
                   $directorySeparator[] = $arg;
                   break;
                default:
-                  $this->log->halt("invalid argument: " . $arg);
-                  exit(1);
+                  throw new OilGeneratorException('invalid argument: '. $arg, 1);
                   break;
                }
             }
@@ -207,28 +204,29 @@ class OilGenerator
          }
       }
 
+      if ($atLeastOneHelper && count($helperFiles) == 0)
+      {
+         throw new OilGeneratorException('at least one helper file shall be provided', 8);
+      }
+
       if (count($configFiles)==0)
       {
-         $this->log->halt("at least one config file shall be provided");
-         exit(1);
+         throw new OilGeneratorException('at least one config file shall be provided', 2);
       }
 
       if (count($baseOutDir)!=1)
       {
-         $this->log->halt("exactly one output directory shall be provided");
-         exit(1);
+         throw new OilGeneratorException('exactly one output directory shall be provided', 3);
       }
 
       if (count($templateFiles)==0)
       {
-         $this->log->halt("at least one tempalte file shall be provided");
-         exit(1);
+         throw new OilGeneratorException('at least one template file shall be provided', 4);
       }
 
       if (count($directorySeparator)>1)
       {
-         $this->log->halt("no more than one path delimiter shall be provided");
-         exit(1);
+         throw new OilGeneratorException('no more than one path delimiter shall be provided', 5);
       }
 
       if (count($directorySeparator == 0 ))
@@ -239,7 +237,32 @@ class OilGenerator
       return array($this->verbose, $definitions, $configFiles, $baseOutDir[0], $templateFiles,$directorySeparator[0], $helperFiles);
    }
 
-   public function checkFiles( $configFiles, $baseOutDir, $templateFiles, $helperFiles)
+   public function checkFileNaming($configFiles, $templateFiles, $helperFiles)
+   {
+      foreach($configFiles as $pos=>$file)
+      {
+         if (!  preg_match ( '/.*\.oilx{0,1}$/i' , $file))
+         {
+            $this->log->warning("The config file $file should be .oil or .oilx");
+         }
+      }
+      foreach($templateFiles as $pos=>$file)
+      {
+         if (!  preg_match ( '/.*\.[hc]\.php$/i' , $file))
+         {
+            $this->log->warning("The template file $file should be .h.php or .c.php");
+         }
+      }
+      foreach($helperFiles as $pos=>$file)
+      {
+         if (!  preg_match ( '/.*\.php$/i' , $file))
+         {
+            $this->log->warning("The helper file $file should be .php");
+         }
+      }
+   }
+
+   public function checkFilesOrFail( $configFiles, $baseOutDir, $templateFiles, $helperFiles)
    {
       $ok = true;
       foreach ($configFiles as $file)
@@ -255,7 +278,7 @@ class OilGenerator
       {
          if(!file_exists($file))
          {
-            $this->log->error("Template $file does not exists");
+            $this->log->error("Template $file does not exist");
             $ok = false;
          }
       }
@@ -270,11 +293,14 @@ class OilGenerator
       {
          if(!file_exists($file))
          {
-            $this->log->error("Helper $file does not exists");
+            $this->log->error("Helper $file does not exist");
             $ok = false;
          }
       }
-      return $ok;
+
+      if (! $ok) {
+         throw new OilGeneratorException('Missing files', 6);
+      }
    }
 
    function isMak($outfile, $runagain)
@@ -297,7 +323,6 @@ class OilGenerator
       $this->writer = $writer;
       $this->log = new Log($writer);
       $this->writer->setLog($this->log);
-
    }
 
    public function getNames($file)
@@ -309,40 +334,46 @@ class OilGenerator
 
    public function loadHelper($file)
    {
-
       list($helperName,$helperClassName)=$this->getNames($file);
 
-      $this->log->info("   loading helper    : $file");
+      $this->log->info("   helper file       : $file");
       $this->log->info("   helper name       : $helperName");
       $this->log->info("   helper class name : $helperClassName");
 
-      require_once($file);
+      if ( class_exists($helperClassName))
+      {
+         $this->log->warning("   class '$helperClassName' already exists, not loading again");
+      }
+      else
+      {
+         $this->log->info("   loading...");
 
-      $this->helper->$helperName = new $helperClassName($this->config,$this->definitions,$this->log);
+         if (! @include_once($file) )
+         {
+            throw new OilGeneratorException("Helper '$file' not found", 9);
+         }
+
+         if (! class_exists($helperClassName))
+         {
+            throw new OilGeneratorException("Helper '$file' does not define class '$helperClassName'", 11);
+         }
+
+         if ( ! is_subclass_of($helperClassName, 'Helper'))
+         {
+            throw new OilGeneratorException("Helper '$file'  define a class '$helperClassName' that does not extend class Helper", 122);
+
+         }
+      }
+      if (! isset($this->helper)) {
+         $this->helper = new stdClass();
+      }
+      if (! isset($this->helper->$helperName))
+      {
+         $this->helper->$helperName = new $helperClassName($this->config,$this->definitions,$this->log);
+      }
    }
 
-   public function run($args)
-   {
-
-      $path = dirname(array_shift($args));
-
-      list($verbose, $this->definitions, $configFiles, $baseOutDir, $templateFiles,$directorySeparator, $helperFiles)= $this->processArgs($args);
-
-      $this->log->setVerbose($verbose);
-      if ($verbose)
-      {
-         print "ciaaFirmware RTOS Generator - Copyright 2008, 2009, 2015 Mariano Cerdeiro\n";
-         print "                              Copyright 2014, ACSE & CADIEEL\n";
-         print "         ACSE : http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/\n";
-         print "         CADIEEL: http://www.cadieel.org.ar\n";
-         print "         All rights reserved.\n\n";
-      }
-
-      if ( ! $this->checkFiles($configFiles, $baseOutDir , $templateFiles, $helperFiles) )
-      {
-         $this->log->halt("Missing files");
-         exit(1);
-      }
+   public function showFeedback($configFiles, $baseOutDir, $templateFiles, $helperFiles) {
       if ($this->verbose)
       {
          $this->log->info("list of configuration files:");
@@ -368,48 +399,108 @@ class OilGenerator
 
          $this->log->info("output directory: " . $baseOutDir);
       }
+   }
 
-      $this->config = new OilConfig();
-      $runagain = false;
+   public function showHeader($verbose)
+   {
+      if ($verbose)
+      {
+         $this->writer->printMsg( "ciaaFirmware RTOS Generator - Copyright 2008, 2009, 2015 Mariano Cerdeiro\n");
+         $this->writer->printMsg( "                              Copyright 2014, ACSE & CADIEEL\n");
+         $this->writer->printMsg( "         ACSE : http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/\n");
+         $this->writer->printMsg( "         CADIEEL: http://www.cadieel.org.ar\n");
+         $this->writer->printMsg( "         All rights reserved.\n\n");
+      }
+   }
+
+   public function parseOilFiles($configFiles)
+   {
       foreach ($configFiles as $file)
       {
          $this->log->info("reading " . $file);
          $this->config->parseOilFile($file);
       }
+   }
 
+   public function loadHelpers($helperFiles)
+   {
       foreach ($helperFiles as $file)
       {
          $this->log->info("loading " . $file);
          $this->loadHelper($file);
       }
+   }
 
+   public function renderTemplates($templateFiles, $baseOutDir, $directorySeparator, $runagain)
+   {
       foreach ($templateFiles as $file)
       {
          if(!file_exists($file))
          {
-            $this->log->error("Template $file does not exists");
+            $this->log->error("Template $file does not exist");
          }
          else
          {
-            $outfile = $this->writer->open($file,$baseOutDir,$directorySeparator);
+            $outfile = $this->writer->open($file, $baseOutDir, $directorySeparator);
             $this->writer->start();
-            require_once($file);
+            $clone = clone($this);
+            $clone->isolatedInclude($file);
             $this->writer->close();
             $runagain = $this->isMak($outfile, $runagain);
          }
       }
+      return $runagain;
+   }
 
-      $this->log->info($this->log->getReport());
+   public function run($args)
+   {
+      try {
+         $path = dirname(array_shift($args));
 
-      if ($this->log->getErrors() > 0)
-      {
-         exit(1);
+         list($verbose, $this->definitions, $configFiles, $baseOutDir, $templateFiles,$directorySeparator, $helperFiles)= $this->processArgs($args);
+
+         $this->log->setVerbose($verbose);
+
+         $this->showHeader($verbose);
+
+         $this->checkFileNaming($configFiles, $templateFiles, $helperFiles);
+
+         $this->checkFilesOrFail($configFiles, $baseOutDir , $templateFiles, $helperFiles);
+
+         $this->showFeedback($configFiles, $baseOutDir, $templateFiles, $helperFiles);
+
+         $this->config = new OilConfig();
+
+         $runagain = false;
+
+         $this->parseOilFiles($configFiles);
+
+         $this->loadHelpers($helperFiles);
+
+         //TODO. I (CFP) am sure that it should be $runagain = $runagain || ....
+
+         $runagain = $this->renderTemplates($templateFiles, $baseOutDir, $directorySeparator, $runagain);
+
+         $this->log->info($this->log->getReport());
+
+         if ($this->log->getErrors() > 0)
+         {
+            throw new OilGeneratorException('please report this error', 7);
+         }
+
+         if($runagain == true)
+         {
+            $this->log->info("a makefile was generated, generation process will be executed again");
+            system("make generate");
+         }
+      } catch (OilGeneratorException $e) {
+         $this->log->error($e->getMessage());
+         exit($e->getCode());
       }
-      if($runagain == true)
-      {
-         $this->log->info("a makefile was generated, generation process will be executed again");
-         system("make generate");
-      }
+   }
+
+   public function isolatedInclude($file) {
+      require_once($file);
    }
 }
 

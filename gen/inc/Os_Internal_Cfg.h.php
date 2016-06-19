@@ -97,23 +97,12 @@ function remove_doubles($a)
  *
 */
 
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
 /* get tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
-/* convert config priority to real osek priority */
-$priorities = array();
-foreach ($tasks as $task)
-{
-   $priorities[] = $this->config->getValue("/OSEK/" . $task, "PRIORITY");
-}
-$priorities = remove_doubles($priorities);
-
-$priority = array();
-foreach ($priorities as $count=>$prio)
-{
-   $priority[$prio] = $count;
-}
-arsort($priority);
+$priority = $this->config->priority2osekPriority($tasks);
 
 ?>
 /*==================[inclusions]=============================================*/

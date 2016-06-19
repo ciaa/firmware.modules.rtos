@@ -47,20 +47,15 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
-
+require_once('Helper.php');
 /*=================[user functions]==========================================*/
 
-class Multicore
+class Multicore extends Helper
 {
-   private $config;
-   private $definitions;
-   private $log;
 
    public function __construct($config, $definitions, $log)
    {
-      $this->config = $config;
-      $this->definitions = $definitions;
-      $this->log = $log;
+      parent::__construct($config, $definitions, $log);
    }
 
    /**   \brief Get array of elements defined for the local core
