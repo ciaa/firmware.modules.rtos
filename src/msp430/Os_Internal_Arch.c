@@ -290,9 +290,15 @@ unsigned char dma2ctl_bck			= 0;	//the DMA2CTL is 16bit wide, but the IRQ flags 
 #endif
 
 #if( MSP430_ENABLE_USCI_A0_HANDLER==1 )
-unsigned char uca0ie_bck 		= 0;
+unsigned char uca1ctl1_bck    = 0;
 unsigned char uca1ie_bck 		= 0;
 #endif
+
+#if( MSP430_ENABLE_USCI_A1_HANDLER==1 )
+unsigned char uca0ctl1_bck    = 0;
+unsigned char uca0ie_bck 		= 0;
+#endif
+
 
 #if( MSP430_ENABLE_USCI_B0_HANDLER==1 )
 unsigned char ucb0ie_bck 		= 0;
@@ -360,7 +366,8 @@ void MSP430_EnableIRQ(unsigned char irQ_number)
 #if( MSP430_ENABLE_USCI_A1_HANDLER==1 )
 		case 5 : //=> "USCI_A1",
 			/* UCA1RXIE, UCA1TXIE */
-			UCA1IE |= ( uca1ie_bck & (UCRXIE|UCTXIE) );
+			UCA1IE   |= ( uca1ie_bck & (UCRXIE|UCTXIE) );
+			UCA1CTL1 |= ( uca1ctl1_bck & (UCRXEIE|UCBRKIE) );
 			break;
 #endif
 
@@ -466,6 +473,7 @@ void MSP430_EnableIRQ(unsigned char irQ_number)
 		case 15: // => "USCI_A0",
 			/* UCA0RXIE, UCA0TXIE */
 			UCA0IE |= ( uca0ie_bck & (UCRXIE|UCTXIE) );
+	        UCA0CTL1 |= ( uca0ctl1_bck & (UCRXEIE|UCBRKIE) );
 			break;
 #endif
 
@@ -614,9 +622,11 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 
 			//backup the register/s
 			uca1ie_bck = UCA1IE;
+	  	    uca1ctl1_bck = UCA1CTL1;
 
 			//clear all flags
 			UCA1IE &=~ (UCRXIE|UCTXIE);
+			UCA1CTL1 &=~ (UCRXEIE|UCBRKIE);
 			break;
 #endif
 
@@ -770,9 +780,11 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 
 			//backup the register/s
 			uca0ie_bck = UCA0IE;
+			uca0ctl1_bck = UCA0CTL1;
 
 			//clear all flags
-			UCA0IE  &=~ (UCRXIE|UCTXIE);
+			UCA0IE   &=~ (UCRXIE|UCTXIE);
+			UCA0CTL1 &=~ (UCRXEIE|UCBRKIE);
 			break;
 #endif
 
@@ -900,9 +912,8 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
 #endif
 
 #if( MSP430_ENABLE_USCI_A1_HANDLER==1 )
-#error TODO: NOT IMPLEMENTED
 		case 5 : //=> "USCI_A1",
-
+			dummy = UCA1IV;
 			break;
 #endif
 
@@ -915,39 +926,6 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
 			another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
 
 			*/
-
-			/*	if( P1IV_P1IFG0==dummy )
-				{
-				//	P1IFG &= ~0x01;
-				}
-				else if( P1IV_P1IFG1==dummy )
-				{
-				//	P1IFG &= ~0x02;
-				}
-				else if( P1IV_P1IFG2==dummy )
-				{
-				//	P1IFG &= ~0x04;
-				}
-				else if( P1IV_P1IFG3==dummy )
-				{
-				//	P1IFG &= ~0x08;
-				}
-				else if( P1IV_P1IFG4==dummy )
-				{
-				//P1IFG &= ~0x10;
-				}
-				else if( P1IV_P1IFG5==dummy )
-				{
-				//P1IFG &= ~0x20;
-				}
-				else if( P1IV_P1IFG6==dummy )
-				{
-				//	P1IFG &= ~0x40;
-				}
-				else if( P1IV_P1IFG7==dummy )
-				{
-				//P1IFG &= ~0x80;
-			}*/
 			break;
 #endif
 
@@ -1007,9 +985,8 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
 #endif
 
 #if( MSP430_ENABLE_USCI_A0_HANDLER==1 )
-#error TODO: NOT IMPLEMENTED
 		case 15: // => "USCI_A0",
-
+			dummy = UCA0IV;
 			break;
 #endif
 

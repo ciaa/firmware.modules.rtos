@@ -101,9 +101,9 @@ extern TaskType TerminatingTask;
 /** \brief Define common objects for using IntSecure_Start and IntSecure_End-
  **
  ** This macro will be used internaly by the OS in any part of code that
- ** has to be executed atomic. It should be placed after IntSecure_Start or IntSecure_End is called
+ ** has to be executed atomic. It should be placed before IntSecure_Start or IntSecure_End is called
  **/
-#define IntSecure_Common()  volatile unsigned short SR_BACK___;
+#define IntSecure_Common()    unsigned short SR_BACK___;
 
 
 /** \brief Interrupt Secure Start Macro
@@ -112,7 +112,8 @@ extern TaskType TerminatingTask;
  ** has to be executed atomic.
  **/
 #define IntSecure_Start() SR_BACK___ = _get_SR_register(); \
-                                     _disable_interrupts() ;
+                                     _disable_interrupts() ; \
+                                     __asm__ __volatile__ ("nop");
 
 /** \brief Interrupt Secure End Macro
  **
@@ -270,8 +271,7 @@ extern TaskType TerminatingTask;
  ** NOTE: the nop operation after the dint instruction was inserted
  **         to workarround the hw bug cpu39 described in slaz314h.pdf
  **/
-#define DisableOSInterrupts()  _disable_interrupts();
-
+#define DisableOSInterrupts()  _disable_interrupts(); __asm__ __volatile__ ("nop");
 
 
 

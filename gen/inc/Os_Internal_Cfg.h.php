@@ -618,6 +618,8 @@ foreach ($appmodes as $appmode)
    }
 }
 
+print("\n");
+
 $appmodes = $config->getList("/OSEK","APPMODE");
 print "/** \brief AutoStart Array */\n";
 print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";

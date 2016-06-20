@@ -119,7 +119,7 @@ MCLK = SMCLK = 14.7456Mhz
 */
 void StartOs_Arch_System()
 {
-	WDTCTL = WDTPW | WDTHOLD;		// Stop watchdog timer  //TODO LEER https://sourceware.org/ml/newlib/2015/msg00627.html
+
 
 	UCS_turnOffXT1();
 

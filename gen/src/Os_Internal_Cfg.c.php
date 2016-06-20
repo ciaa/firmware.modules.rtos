@@ -164,11 +164,7 @@ foreach ($tasks as $count=>$task)
    print "   {\n";
    print "       OSEK_TASK_$task,   /* task entry point */\n";
    print "       &ContextTask" . $task . ", /* pointer to task context */\n";
-
-
    print "       (StackPtrType) StackTask" . $task . ", /* pointer stack memory */\n";
-
-
    print "       sizeof(StackTask" . $task . "), /* stack size */\n";
    print "       " . $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] . ", /* task priority */\n";
    print "       " . $config->getValue("/OSEK/" . $task, "ACTIVATION"). ", /* task max activations */\n";

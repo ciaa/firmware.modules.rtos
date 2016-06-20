@@ -92,7 +92,8 @@
  **       Also noted in Slau208, page 59.
  **/
 
-#define SuspendAllInterrupts_Arch()   _disable_interrupts() ;
+#define SuspendAllInterrupts_Arch()   _disable_interrupts() ; __asm__ __volatile__ ("nop");
+ 
 
 
 /** \brief Resume All Interrupts Arch

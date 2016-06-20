@@ -74,6 +74,12 @@
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
+static void __attribute__((naked, section(".crt_0042"), used))
+disable_watchdog (void)
+{
+	//https://sourceware.org/ml/newlib/2015/msg00627.html
+   WDTCTL = WDTPW | WDTHOLD;		// Stop watchdog timer
+}
 
 /*==================[external functions definition]==========================*/
 

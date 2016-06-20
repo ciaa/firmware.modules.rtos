@@ -34,4 +34,4 @@
 #
 
 #for testes we add a precompiler definition to alter some macros
-CFLAGS += -DCTESTS_MODIFIERS
+#CFLAGS += -DCTESTS_MODIFIERS

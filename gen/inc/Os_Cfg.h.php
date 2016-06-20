@@ -72,7 +72,7 @@
  * 20090128 v0.1.1 MaCe add MEMMAP off configuration
  * 20080810 v0.1.0 MaCe initial version
  */
- 
+
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
@@ -160,7 +160,7 @@ foreach( $tasks as $task )
 
    if ($extended != "EXTENDED" && $nro_ev_task>0 )
    {
-      trigger_error("===== OIL ERROR: The task $task could be TYPE: EXTENDED =====\n", E_USER_ERROR);
+      trigger_error("===== OIL ERROR: The task $task should be TYPE: EXTENDED =====\n", E_USER_ERROR);
    }
    else
    {

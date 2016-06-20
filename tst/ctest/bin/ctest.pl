@@ -827,7 +827,7 @@ foreach $testfn (@tests)
 
                   if ("msp430" eq $ARCH)
                   {
-                     $newdbgfile = "out/rtos/$test/debug_script.scr";
+                     $newdbgfile = "out/rtos/$test/$config/debug_script.scr";
                      #for MSP430 the binary file is appended inside the script
                      copy($dbgfile,$newdbgfile ) or die "Script copy failed: $!";
                      searchandreplace($newdbgfile ,"filename","$out");
