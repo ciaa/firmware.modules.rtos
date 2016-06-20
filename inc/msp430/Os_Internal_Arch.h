@@ -294,13 +294,27 @@ extern TaskType TerminatingTask;
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
 
-/** \brief Pre ISR Macrol
+
+/** \brief Pre ISR1 Macro
+ **
+ ** This macro is called every time that an ISR Cat 1 is started
+ **/
+#define PreIsr1_Arch(isr)
+
+
+/** \brief Post ISR1 Macro
+ **
+ ** This macro is called every time that an ISR Cat 1 is finished
+ **/
+#define PostIsr1_Arch(isr) ClearPendingIRQ_Arch(isr)
+
+/** \brief Pre ISR Macro
  **
  ** This macro is called every time that an ISR Cat 2 is started
  **/
 #define PreIsr2_Arch(isr)
 
-/** \brief Post ISR Macro
+/** \brief Post ISR2 Macro
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
