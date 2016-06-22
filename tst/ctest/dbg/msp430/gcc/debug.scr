@@ -1,4 +1,3 @@
-opt fet_block_size 512
 prog filename
 reset
 setbreak ConfTestFinish

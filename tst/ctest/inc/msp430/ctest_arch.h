@@ -55,6 +55,11 @@ extern void TriggerISR2_Arch(void);
 /* Use P2.2 as interrupt for tests */
 extern void TriggerISR1_Arch(void);
 
+
+extern void EnableISR2_Arch(void);
+
+extern void EnableISR1_Arch(void);
+
 #else
    #error please define CPU variable!
 #endif

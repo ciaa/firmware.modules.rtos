@@ -717,10 +717,10 @@ uint32f SequenceCounter;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-   void ConfTestEvaluation
+void ConfTestEvaluation
 (
  void
- )
+)
 {
    uint32f loopi;
    boolean testok = TRUE;
@@ -775,4 +775,3 @@ uint32f SequenceCounter;
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

@@ -61,11 +61,26 @@
 /*==================[external data definition]===============================*/
 #if (CPUTYPE == msp430f5x_6x)
 
+
+/* Use P1.7 as interrupt for tests */
+extern void EnableISR2_Arch(void)
+{
+	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
+	P1IE 	|= 0x80;
+}
+
+/* Use P2.2 as interrupt for tests */
+extern void EnableISR1_Arch(void)
+{
+	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
+	P2IE 	|= 0x04;
+}
+
+
 /* Use P1.7 as interrupt for tests */
 extern void TriggerISR2_Arch(void)
 {
 	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
-	P1IE 	|= 0x80;
 	P1IFG |= 0x80;
 }
 
@@ -73,7 +88,6 @@ extern void TriggerISR2_Arch(void)
 extern void TriggerISR1_Arch(void)
 {
 	/* ACCESS TO THE PORT HW DIRECTLY, WITHOUT DRIVER*/
-	P2IE 	|= 0x04;
 	P2IFG |= 0x04;
 }
 

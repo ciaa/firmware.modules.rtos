@@ -70,6 +70,10 @@ int main
    void
 )
 {
+   EnableISR1();
+   EnableISR2();
+
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 

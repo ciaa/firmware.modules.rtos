@@ -208,7 +208,7 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
 		}
 		asm volatile ( "mov &Osek_NewTaskPtr_Arch,  r6 \n\t"  );
 		asm volatile ( "mov @r6, SP \n\t"  );
-		 
+
 		/*
 		Context restore r4 to r15
 		It does not Include the reti instruction.
@@ -336,7 +336,7 @@ void MSP430_EnableIRQ(unsigned char irQ_number)
 #if( MSP430_ENABLE_PORT2_HANDLER==1)
 		case 1 : //=> "PORT2",
 			/* P2IE.0 to P2IE.7*/
-			P2IE = p2ie_bck;
+			P2IE |= p2ie_bck;
 			break;
 #endif
 
@@ -374,7 +374,7 @@ void MSP430_EnableIRQ(unsigned char irQ_number)
 #if( MSP430_ENABLE_PORT1_HANDLER==1 )
 		case 6 : //=> "PORT1",
 			/* P1IE.0 to P1IE.7  */
-			P1IE = p1ie_bck;
+			P1IE |= p1ie_bck;
 			break;
 #endif
 
