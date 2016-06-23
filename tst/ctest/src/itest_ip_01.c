@@ -1,4 +1,5 @@
 /* Copyright 2014 Mariano Cerdeiro
+ * Copyright 2016, Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -70,6 +71,8 @@ int main
    void
 )
 {
+   EnableISR2();
+   
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 

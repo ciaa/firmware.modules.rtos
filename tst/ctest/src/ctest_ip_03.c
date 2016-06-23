@@ -1,4 +1,5 @@
 /* Copyright 2014, Mariano Cerdeiro
+ * Copyright 2016, Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -143,3 +144,4 @@ TASK(Task4)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+

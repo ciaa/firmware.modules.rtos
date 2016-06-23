@@ -3,10 +3,10 @@
  ********************************************************/
 
 /* Copyright 2008, 2009, 2015 Mariano Cerdeiro
- * Copyright 2016 Franco Bucafusco
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016 Franco Bucafusco
  *
  * This file is part of CIAA Firmware.
  *
@@ -63,16 +63,7 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20150619 v0.1.4 MaCe fix issue #279
- * 20090719 v0.1.3 MaCe rename file to Os_
- * 20090424 v0.1.2 MaCe add counters defines
- * 20090128 v0.1.1 MaCe add MEMMAP off configuration
- * 20080810 v0.1.0 MaCe initial version
- */
-
+ 
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
@@ -82,7 +73,7 @@
 #define OSEK_OS_INTERRUPT_MASK ((InterruptFlagsType)0xFFFFFFFFU)
 
 <?php
-/* Definitions of Tasks : TAREAS QUE SE EJECUTAN EN CORE LOCAL */
+/* Definitions of Tasks : Tasks that will be executed within the local core */
 $tasks         = getLocalList("/OSEK", "TASK");
 $remote_tasks  = getRemoteList("/OSEK", "TASK");
 
@@ -95,7 +86,7 @@ foreach ($tasks as $task)
 }
 print "\n";
 
-/* Definitions of Tasks : TAREAS QUE SE EJECUTAN EN CORE REMOTO */
+/* Definitions of Tasks : Tasks that will be executed within the remote core*/
 if (count($remote_tasks) > 0)
 {
    foreach ($remote_tasks as $task)
