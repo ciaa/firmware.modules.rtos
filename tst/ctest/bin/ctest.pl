@@ -502,7 +502,6 @@ sub CreateTestProject
    print FILE "OIL_FILES += \$(PROJECT_PATH)\$(DS)etc\$(DS)\$(PROJECT_NAME).oil\n\n";
    print FILE "MODS = modules\$(DS)drivers \\\n";
    print FILE " modules\$(DS)libs \\\n";
-   print FILE " modules\$(DS)posix \\\n";
    print FILE " modules\$(DS)ciaak \\\n";
    print FILE " modules\$(DS)rtos\n\n";
    print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";

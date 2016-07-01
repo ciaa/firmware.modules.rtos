@@ -62,14 +62,17 @@
 
 /*==================[internal data definition]===============================*/
 <?php
+
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
 /* get tasks */
-$tasks = getLocalList("/OSEK", "TASK");
+$tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
 foreach ($tasks as $task)
 {
    print "/** \brief $task stack */\n";
    print "#if ( x86 == ARCH )\n";
-   print "uint8 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
+   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
    print "#else\n";
    if( $definitions["ARCH"]== "msp430")
    {
@@ -79,7 +82,7 @@ foreach ($tasks as $task)
    }
    else
    {
-      print "uint8 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ."];\n";
+   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ."];\n";
    }
 
    print "#endif\n";
@@ -93,6 +96,9 @@ foreach ($tasks as $task)
    print "TaskContextType ContextTask" . $task . ";\n";
    print "\n";
 }
+print "\n";
+
+$priority = $this->config->priority2osekPriority($tasks);
 
 /* Ready List */
 foreach ($priority as $prio)
@@ -101,24 +107,24 @@ foreach ($priority as $prio)
    $count = 0;
    foreach ($tasks as $task)
    {
-      if ($priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] == $prio)
+      if ($priority[$this->config->getValue("/OSEK/" . $task, "PRIORITY")] == $prio)
       {
-         $count += $config->getValue("/OSEK/" . $task, "ACTIVATION");
+         $count += $this->config->getValue("/OSEK/" . $task, "ACTIVATION");
       }
    }
    print "TaskType ReadyList" . $prio . "[" . $count . "];\n";
    print "\n";
 }
 
-$counters = getLocalList("/OSEK", "COUNTER");
-$alarms = getLocalList("/OSEK", "ALARM");
+$counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 
 foreach ($counters as $counter)
 {
    $countalarms = 0;
    foreach ($alarms as $alarm)
    {
-      if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))
+      if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
       {
          $countalarms++;
       }
@@ -126,7 +132,7 @@ foreach ($counters as $counter)
    print "const AlarmType OSEK_ALARMLIST_" . $counter . "[" . $countalarms . "] = {\n";
    foreach ($alarms as $alarm)
    {
-      if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))
+      if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
       {
          print "   $alarm, /* this alarm has to be incremented with this counter */\n";
       }
@@ -166,10 +172,10 @@ foreach ($tasks as $count=>$task)
    print "       &ContextTask" . $task . ", /* pointer to task context */\n";
    print "       (StackPtrType) StackTask" . $task . ", /* pointer stack memory */\n";
    print "       sizeof(StackTask" . $task . "), /* stack size */\n";
-   print "       " . $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] . ", /* task priority */\n";
-   print "       " . $config->getValue("/OSEK/" . $task, "ACTIVATION"). ", /* task max activations */\n";
+   print "       " . $priority[$this->config->getValue("/OSEK/" . $task, "PRIORITY")] . ", /* task priority */\n";
+   print "       " . $this->config->getValue("/OSEK/" . $task, "ACTIVATION"). ", /* task max activations */\n";
    print "       {\n";
-   $extended = $config->getValue("/OSEK/" . $task, "TYPE");
+   $extended = $this->config->getValue("/OSEK/" . $task, "TYPE");
    if($extended == "BASIC")
    {
       print "         0, /* basic task */\n";
@@ -182,7 +188,7 @@ foreach ($tasks as $count=>$task)
    {
      $this->log->error("Wrong definition of task type \"" . $extended . "\" for task \"" . $task . "\".");
    }
-   $schedule = $config->getValue("/OSEK/" .$task, "SCHEDULE");
+   $schedule = $this->config->getValue("/OSEK/" .$task, "SCHEDULE");
    if ($schedule == "FULL")
    {
       print "         1, /* preemtive task */\n";
@@ -197,7 +203,7 @@ foreach ($tasks as $count=>$task)
    }
    print "         0\n";
    print "      }, /* task const flags */\n";
-   $events = $config->getList("/OSEK/" . $task, "EVENT");
+   $events = $this->config->getList("/OSEK/" . $task, "EVENT");
    $elist = "0 ";
    foreach ($events as $event)
    {
@@ -205,15 +211,15 @@ foreach ($tasks as $count=>$task)
    }
    print "      $elist, /* events mask */\n";
    $rlist = "0 ";
-   $resources = $config->getList("/OSEK/" . $task, "RESOURCE");
+   $resources = $this->config->getList("/OSEK/" . $task, "RESOURCE");
    foreach($resources as $resource)
    {
       $rlist .= "| ( 1 << $resource ) ";
    }
    print "      $rlist,/* resources mask */\n";
-   if (isset($definitions["MCORE"]))
+   if (isset($this->definitions["MCORE"]))
    {
-      print "      " . $config->getValue("/OSEK/" . $task, "CORE") . " /* core */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $task, "CORE") . " /* core */\n";
    }
    else
    {
@@ -229,14 +235,14 @@ print "\n";
 /** \brief RemoteTaskCore Array */
 const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {
 <?php
-$rtasks = getRemoteList("/OSEK", "TASK");
+$rtasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
 $rtasks_count = count($rtasks);
 
 if( $rtasks_count>0 )
 {
    for($i=0; $i<$rtasks_count; $i++)
    {
-      print $config->getValue("/OSEK/$rtasks[$i]", "CORE");
+   print $this->config->getValue("/OSEK/$rtasks[$i]", "CORE");
       if ($i < (count($rtasks)-1))
       {
          print ", ";
@@ -255,14 +261,14 @@ else
 TaskVariableType TasksVar[TASKS_COUNT];
 
 <?php
-$appmodes = $config->getList("/OSEK", "APPMODE");
+$appmodes = $this->config->getList("/OSEK", "APPMODE");
 
 foreach ($appmodes as $appmode)
 {
    $tasksinmode = array();
    foreach($tasks as $task)
    {
-      $taskappmodes = $config->getList("/OSEK/" . $task, "APPMODE");
+      $taskappmodes = $this->config->getList("/OSEK/" . $task, "APPMODE");
       foreach ($taskappmodes as $taskappmode)
       {
          if ($taskappmode == $appmode)
@@ -295,7 +301,7 @@ foreach ($appmodes as $count=>$appmode)
    $tasksinmode = array();
    foreach($tasks as $task)
    {
-      $taskappmodes = $config->getList("/OSEK/" . $task, "APPMODE");
+      $taskappmodes = $this->config->getList("/OSEK/" . $task, "APPMODE");
       foreach ($taskappmodes as $taskappmode)
       {
          if ($taskappmode == $appmode)
@@ -328,9 +334,9 @@ foreach ($priority as $prio)
    $count = 0;
    foreach ($tasks as $task)
    {
-      if ($priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] == $prio)
+      if ($priority[$this->config->getValue("/OSEK/" . $task, "PRIORITY")] == $prio)
       {
-         $count += $config->getValue("/OSEK/" . $task, "ACTIVATION");
+         $count += $this->config->getValue("/OSEK/" . $task, "ACTIVATION");
       }
    }
    print "      $count, /* Length of this ready list */\n";
@@ -346,7 +352,7 @@ print "ReadyVarType ReadyVar[" . count($priority) . "];\n";
 
 <?php
 /* Resources Priorities */
-$resources = $config->getList("/OSEK","RESOURCE");
+$resources = $this->config->getList("/OSEK","RESOURCE");
 $resources_count = count($resources);
 
 if( $resources_count>0 )
@@ -359,14 +365,14 @@ if( $resources_count>0 )
       $count = 0;
       foreach ($tasks as $task)
       {
-         $resorucestask = $config->getList("/OSEK/" . $task, "RESOURCE");
+      $resorucestask = $this->config->getList("/OSEK/" . $task, "RESOURCE");
          foreach($resorucestask as $rt)
          {
             if ($rt == $resource)
             {
-               if ($priority[$config->getValue("/OSEK/" . $task, "PRIORITY")] > $count)
+            if ($priority[$this->config->getValue("/OSEK/" . $task, "PRIORITY")] > $count)
                {
-                  $count = $priority[$config->getValue("/OSEK/" . $task, "PRIORITY")];
+               $count = $priority[$this->config->getValue("/OSEK/" . $task, "PRIORITY")];
                }
             }
          }
@@ -383,7 +389,7 @@ else
    trigger_error("===== OIL INFO: There are no RESOURCES define in the OIL file =====\n", E_USER_NOTICE);
 }
 
-$alarms = getLocalList("/OSEK", "ALARM");
+$alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 $alarms_count = count($alarms);
 $alarms_autostart = 0;
 
@@ -406,8 +412,8 @@ if( $alarms_count> 0 )
          $alarms_autostart++;
       }
       print "   {\n";
-      print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-      $action = $config->getValue("/OSEK/" . $alarm, "ACTION");
+   print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+   $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
       print "      " . $action . ", /* Alarm action */\n";
       print "      {\n";
       switch ($action)
@@ -416,22 +422,22 @@ if( $alarms_count> 0 )
          print "         NULL, /* no callback */\n";
          print "         0, /* no task id */\n";
          print "         0, /* no event */\n";
-         print "         OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
+      print "         OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
          break;
       case "ACTIVATETASK":
          print "         NULL, /* no callback */\n";
-         print "         " . $config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
+      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
          print "         0, /* no event */\n";
          print "         0 /* no counter */\n";
          break;
       case "SETEVENT":
          print "         NULL, /* no callback */\n";
-         print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
-         print "         " . $config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
+      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
+      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
          print "         0 /* no counter */\n";
          break;
       case "ALARMCALLBACK":
-         print "         OSEK_CALLBACK_" . $config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
+      print "         OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
          print "         0, /* no taskid */\n";
          print "         0, /* no event */\n";
          print "         0 /* no counter */\n";
@@ -453,7 +459,7 @@ if( $alarms_count> 0 )
       $first = true;
       foreach ($alarms as $count=>$alarm)
       {
-         if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+   if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
          {
             if ($first == false)
             {
@@ -465,11 +471,11 @@ if( $alarms_count> 0 )
             }
             print "  {\n";
 
-            print "      " . $config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
-            // print "      OSEK_COUNTER_" . $config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
+      // print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
             print "      $alarm, /* Alarms */\n";
-            print "      " . $config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
-            print "      " . $config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
             print "   }";
          }
       }
@@ -480,11 +486,11 @@ if( $alarms_count> 0 )
       print "\n/* OIL FILE: THERE ARE NO AUTOSTART ALARMS DEFINED IN THE SYSTEM */\n\n";
    }
 
-   $counters = getLocalList("/OSEK", "COUNTER");
+$counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
 
    print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
 
-   $alarms = $config->getList("/OSEK","ALARM");
+$alarms = $this->config->getList("/OSEK","ALARM");
 
    print "const CounterConstType CountersConst[" . count($counters) . "] = {\n";
    foreach ($counters as $count=>$counter)
@@ -497,16 +503,16 @@ if( $alarms_count> 0 )
       $countalarms = 0;
       foreach ($alarms as $alarm)
       {
-         if ($counter == $config->getValue("/OSEK/" . $alarm,"COUNTER"))
+      if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
          {
             $countalarms++;
          }
       }
       print "      $countalarms, /* quantity of alarms for this counter */\n";
       print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
-      print "      " . $config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
-      print "      " . $config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
-      print "      " . $config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
+   print "      " . $this->config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
+   print "      " . $this->config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
+   print "      " . $this->config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
       print "   }";
    }
    print "\n};\n\n";
@@ -524,7 +530,11 @@ uint8 ApplicationMode;
 
 /** TODO replace the next line with
  ** uint8 ErrorHookRunning; */
-uint8 ErrorHookRunning;
+/* This variable needs to be initialized to 0. This is the normal
+ * behaviour in C, but in embedded C sometimes to save startup time
+ * variables which do not have initialization are not initialized.
+ */
+uint8 ErrorHookRunning = 0;
 
 /*==================[internal functions definition]==========================*/
 
@@ -532,7 +542,7 @@ uint8 ErrorHookRunning;
 <?php
 
 #we create an array of ISRs defined in the OIL file.
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 if( count($intnames)>0 ) /*it only process averything if there is any ISR define within the OIL */
 {
    #includes the array where all IRQ array is defined, base on the architecture.
@@ -541,8 +551,8 @@ if( count($intnames)>0 ) /*it only process averything if there is any ISR define
 #for each ISR define in the OIL, we define the IRQ handler.
 foreach ($intnames as $int)
 {
-   $inttype = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $inttype = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    print("/* Wrapper ISR handler for $int */\n");
 

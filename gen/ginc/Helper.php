@@ -1,5 +1,5 @@
 <?php
- /* Copyright 2015, Carlos Pantelides
+ /* Copyright 2016 Carlos Pantelides
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -32,11 +32,12 @@
  *
  */
 
-/** \brief FreeOSEK Generator
+/** \brief FreeOSEK Generator Helper base class
  **
- ** This file implements a Writer utility
+ ** This file implements is the base class for Helpers that provide auxiliary
+ ** functions
  **
- ** \file OutputWriter.php
+ ** \file Helper.php
  **
  **/
 
@@ -44,39 +45,25 @@
  ** @{ */
 /** \addtogroup Generator
  ** @{ */
-abstract class OutputWriter
+
+/*==================[inclusions]=============================================*/
+
+/*=================[user functions]==========================================*/
+
+class Helper
 {
-   protected $buffering = false;
+   protected $config;
+   protected $definitions;
+   protected $log;
 
-   protected $log = null;
-
-   abstract function close();
-
-   abstract function ob_file_callback($buffer);
-
-   public function start()
+   public function __construct($config, $definitions, $log)
    {
-      ob_start(array($this, 'ob_file_callback'));
-      $this->buffering = true;
-   }
-
-   public function pause()
-   {
-      if($this->buffering == true)
-         ob_end_flush();
-   }
-
-   public function resume()
-   {
-      if($this->buffering == true)
-         $this->start();
-   }
-
-   public function setLog($log)
-   {
+      $this->config = $config;
+      $this->definitions = $definitions;
       $this->log = $log;
    }
 }
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+/*==================[end of file]============================================*/
+?>
