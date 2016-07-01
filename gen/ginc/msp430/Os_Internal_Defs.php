@@ -51,7 +51,7 @@
 <?php
 
 /** \brief Handlers used by OSEK */
-switch ($definitions["CPU"])
+switch ($this->definitions["CPU"])
 {
    case "msp430f5529":
       /* Interrupt sources for msp430f5529
@@ -86,10 +86,9 @@ switch ($definitions["CPU"])
       break;
 
    default:
-      error("the CPU " . $definitions["CPU"] . " is not supported.");
+      $this->log->error("the CPU " . $this->definitions["CPU"] . " is not supported.");
       break;
 }
 
 $MAX_INT_COUNT = max(array_keys($intList))+1;
-
 ?>

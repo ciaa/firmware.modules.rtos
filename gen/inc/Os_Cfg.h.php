@@ -63,7 +63,7 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
- 
+
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
@@ -115,7 +115,7 @@ print "\n";
 /* Define the Events */
 
 /* the max ammount of events is defined by the bit width of EventTypeMask type*/
-if( $definitions["ARCH"]== "msp430")
+if( $this->definitions["ARCH"]== "msp430")
 {
    $max_amount_events = 16;
 }
@@ -129,7 +129,7 @@ $flags_shared_event = $max_amount_events; /* it stores the number of bit for fla
 $matriz    = array( ); /* it stores the events' name for each task */
 $matrix_n  = array();  /* it stores the events' assigned number for each task */
 
-$events = $config->getList("/OSEK","EVENT");
+$events = $this->config->getList("/OSEK","EVENT");
 //$nro_evs= max(array_keys($events))+1;
 $nro_evs= count($events);
 #print("cantidad de eventos: $nro_evs \n");
@@ -139,7 +139,7 @@ $task_index = 0;
 foreach( $tasks as $task )
 {
    $empty_array = array();
-   $temp_array = $config->getList("/OSEK/". $task , "EVENT"  );
+   $temp_array = $this->config->getList("/OSEK/". $task , "EVENT"  );
 
    /*for each task we get the defined events*/
    array_push( $matriz , $temp_array );
@@ -150,7 +150,7 @@ foreach( $tasks as $task )
    //print("evento $nro_ev_task");
 
    /* Task Type validation: validates that this task is extended */
-   $extended = $config->getValue("/OSEK/" . $task, "TYPE");
+   $extended = $this->config->getValue("/OSEK/" . $task, "TYPE");
 
    if ($extended != "EXTENDED" && $nro_ev_task>0 )
    {
@@ -199,7 +199,7 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada array de eventos 
 
    foreach( $tasks as $task )
    {
-      #$events_for_task = $config->getList("/OSEK/". $task , "EVENT"  );
+      #$events_for_task = $this->config->getList("/OSEK/". $task , "EVENT"  );
       $key = array_search( $ev, $matriz[$task_index] );
 
       if( $key !== false ) //busco el evento en el array de eventos de la tarea.
@@ -287,7 +287,7 @@ foreach ($matrix_n as $array)
 }
 print "\n";
 
-//$events = $config->getList("/OSEK","EVENT");
+//$events = $this->config->getList("/OSEK","EVENT");
 
 //foreach ($events as $count=>$event)
 //{

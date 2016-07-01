@@ -74,12 +74,11 @@
 /*==================[internal data definition]===============================*/
 
 /*==================[external data definition]===============================*/
-<?php
-include 'Os_Internal_Defs.php';
-?>
 
-/*==================[external functions definition]==========================*/
-//__attribute__( (__interrupt_vec(UNMI_VECTOR),naked))
+
+/*==================[internal functions definition]==========================*/
+
+
 interrupt_vec(UNMI_VECTOR) __attribute__((naked)) /*No Handler set for ISR UNMI_VECTOR (IRQ 20) */
 void OSEK_ISR_UNMI_VECTOR(void)
 {
@@ -88,8 +87,8 @@ void OSEK_ISR_UNMI_VECTOR(void)
    }
 }
 
-//__attribute__( (__interrupt_vec(SYSNMI_VECTOR),naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
-interrupt_vec(SYSNMI_VECTOR) __attribute__((naked))
+
+interrupt_vec(SYSNMI_VECTOR) __attribute__((naked)) /*No Handler set for ISR SYSNMI_VECTOR (IRQ 21) */
 void OSEK_ISR_SYSNMI_VECTOR(void)
 {
    while (1)
@@ -97,11 +96,17 @@ void OSEK_ISR_SYSNMI_VECTOR(void)
    }
 }
 
+/*==================[external functions definition]==========================*/
+<?php 
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
+?>
 /*** Non Used Interrupt handlers ***/
 <?php
 
 /* get ISRs defined by user application within the OIL file*/
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 for($i=0; $i < $MAX_INT_COUNT; $i++)
 {
    $src_found = 0;
@@ -113,8 +118,8 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       handlers that are present in the system (defined in the oil file)
       do not add extra code here.
       */
-      $intcat = $config->getValue("/OSEK/" . $int,"CATEGORY");
-      $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
+      $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
+      $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
 
       if($intList[$i] == $source)
       {
@@ -168,7 +173,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
          print "{\n";
          print "   PreIsr1_Arch($i);\n";
          print "   OSEK_ISR_$intList[$i]_VECTOR();\n";
-         print "   PostIsr1_Arch($i);\n";            
+         print "   PostIsr1_Arch($i);\n";
          print "   RETURN_FROM_NAKED_ISR();  /*return from ISR*/\n";  #this includes the RETI intruction. Is inserted here becase the naked attribute removes it when compile
          print "}\n\n";
       }
@@ -181,12 +186,12 @@ void Enable_User_ISRs(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
 foreach ($intnames as $int)
 {
-   $source  = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $prio    = $config->getValue("/OSEK/" . $int,"PRIORITY");
+   $source  = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $prio    = $this->config->getValue("/OSEK/" . $int,"PRIORITY");
 
    $key = array_search($source, $intList);
    if( $key !== false )
@@ -208,11 +213,11 @@ void Enable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if($cat == 2)
    {
@@ -236,11 +241,11 @@ void Disable_ISR2_Arch(void)
 {
 <?php
 /* get ISRs defined by user application */
-$intnames = getLocalList("/OSEK", "ISR");
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if($cat == 2)
    {

@@ -85,14 +85,20 @@ typedef uint16 * TaskContextType;
 typedef TaskContextType* TaskContextRefType;
 
 /*==================[external data declaration]==============================*/
+
 <?php
 /* Macros for Disable / Enable User ISR for any catergory
    (this optimize the processing of Enabling and Disablen System IRQs)*/
-$intnames = getLocalList("/OSEK", "ISR");
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
+
+$intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
+
 foreach ($intnames as $int)
 {
-   $source = $config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $cat = $config->getValue("/OSEK/" . $int,"CATEGORY");
+   $source = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $cat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    print "#define MSP430_ENABLE_". $source . "_HANDLER  1 \n";
 }

@@ -74,11 +74,11 @@ foreach ($tasks as $task)
    print "#if ( x86 == ARCH )\n";
    print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
    print "#else\n";
-   if( $definitions["ARCH"]== "msp430")
+   if( $this->definitions["ARCH"]== "msp430")
    {
       #msp430 requieres bus alligmented memory access. So, if the compiler allocates this array as uint8 it could start at an even address.
       #we force the compiler to locate this array alligned declaring it as an uint16 (with the size divided by two)
-      print "uint16 StackTask" . $task . "[" . $config->getValue("/OSEK/" . $task, "STACK") ."/2];\n";
+      print "uint16 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ."/2];\n";
    }
    else
    {
@@ -407,7 +407,7 @@ if( $alarms_count> 0 )
       {
          print ",\n";
       }
-      if ($config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+      if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
       {
          $alarms_autostart++;
       }
@@ -546,7 +546,7 @@ $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 if( count($intnames)>0 ) /*it only process averything if there is any ISR define within the OIL */
 {
    #includes the array where all IRQ array is defined, base on the architecture.
-   include ''.$definitions["ARCH"].'/Os_Internal_Defs.php';
+require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
 
 #for each ISR define in the OIL, we define the IRQ handler.
 foreach ($intnames as $int)
@@ -558,7 +558,7 @@ foreach ($intnames as $int)
 
    if ($intcat == 2)
    {
-      if($definitions["ARCH"] == "msp430")
+      if($this->definitions["ARCH"] == "msp430")
       {
          print "interrupt_vec($int) \n";
       }

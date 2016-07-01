@@ -146,11 +146,13 @@ else
 }
 
 
-$os = $config->getList("/OSEK","OS");
+$os = $this->config->getList("/OSEK","OS");
+
 if (count($os)>1)
 {
    $this->log->error("More than one OS defined on the configuration");
 }
+
 $osattr = $this->config->getValue("/OSEK/" . $os[0],"STATUS");
 print "/** \brief Error Checking Type */\n";
 if ( $osattr == "EXTENDED" )
@@ -605,7 +607,7 @@ foreach ($appmodes as $appmode)
 
 print("\n");
 
-$appmodes = $config->getList("/OSEK","APPMODE");
+$appmodes = $this->config->getList("/OSEK","APPMODE");
 print "/** \brief AutoStart Array */\n";
 print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";
 
