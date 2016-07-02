@@ -252,7 +252,7 @@ if( $rtasks_count>0 )
 else
 {
    print "\n/* OIL FILE: THERE ARE NO REMOTE TASKS DEFINED IN THE SYSTEM */\n";
-   trigger_error("===== OIL INFO: There are no REMOTE TASKS define in the OIL file =====\n", E_USER_NOTICE);
+   //trigger_error("===== OIL INFO: There are no REMOTE TASKS define in the OIL file =====\n", E_USER_NOTICE);
 }
 ?>
 };

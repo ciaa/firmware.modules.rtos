@@ -74,6 +74,14 @@ extern void * Osek_OldTaskPtr_Arch;
 extern void * Osek_NewTaskPtr_Arch;
 extern TaskType TerminatingTask;
 
+
+/** \brief Define common objects for using IntSecure_Start and IntSecure_End-
+ **
+ ** This macro will be used internaly by the OS in any part of code that
+ ** has to be executed atomic. It should be placed before IntSecure_Start or IntSecure_End is called
+ **/
+#define IntSecure_Common()    
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro will be used internaly by the OS in any part of code that

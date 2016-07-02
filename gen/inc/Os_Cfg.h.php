@@ -74,8 +74,10 @@
 
 <?php
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+$this->loadHelper("modules/rtos/gen/ginc/Platform.php");
 
 /* Definitions of Tasks : Tasks that will be executed within the local core */
+/* TODO: validate that tasks has different names */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 $remote_tasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
 $os = $this->config->getList("/OSEK","OS");
@@ -111,18 +113,12 @@ foreach ($appmodes as $count=>$appmode)
 }
 print "\n";
 
-
 /* Define the Events */
 
-/* the max ammount of events is defined by the bit width of EventTypeMask type*/
-if( $this->definitions["ARCH"]== "msp430")
-{
-   $max_amount_events = 16;
-}
-else
-{
-   $max_amount_events = 32;
-}
+/* the max ammount of events is defined by the bit width of EventMaskType type */
+$max_amount_events = $this->helper->platform->getIntWidth();
+
+//print("cant eventos max ".$max_amount_events."\n");
 
 $flags_shared_event = $max_amount_events; /* it stores the number of bit for flags that are shared across tasks */
 
@@ -147,7 +143,7 @@ foreach( $tasks as $task )
 
    $nro_ev_task = count($matriz[$task_index]); #max(array_keys($matriz[$task_index]));
 
-   //print("evento $nro_ev_task");
+   // print("tarea $task eventos $nro_ev_task");
 
    /* Task Type validation: validates that this task is extended */
    $extended = $this->config->getValue("/OSEK/" . $task, "TYPE");
@@ -159,7 +155,7 @@ foreach( $tasks as $task )
    else
    {
    //   print("es extended");
-      if ($nro_ev_task == 0 )
+      if ($nro_ev_task == 0 && $extended != "BASIC")
       {
 //print("es extended mal");
          trigger_error("===== OIL WARNING: The task $task could be TYPE: BASIC =====\n", E_USER_WARNING);

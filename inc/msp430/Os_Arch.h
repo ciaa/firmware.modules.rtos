@@ -83,6 +83,12 @@
 /** \brief Disable All Interrupts Arch */
 #define DisableAllInterrupts_Arch()    SuspendAllInterrupts_Arch()
 
+/** \brief Resume All Interrupts Arch
+**
+** This macro shall resume (enable) all interrupts.
+**/
+#define ResumeAllInterrupts_Arch()    _enable_interrupts() ;
+
 
 /** \brief Suspend All Interrupts Arch
  **
@@ -91,17 +97,8 @@
  **         to workarround the hw bug cpu39 describer in slaz314h.pdf
  **       Also noted in Slau208, page 59.
  **/
-
 #define SuspendAllInterrupts_Arch()   _disable_interrupts() ; __asm__ __volatile__ ("nop");
  
-
-
-/** \brief Resume All Interrupts Arch
-**
-** This macro shall resume (enable) all interrupts.
-**/
-#define ResumeAllInterrupts_Arch()    _enable_interrupts() ;
-
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the
@@ -117,34 +114,10 @@
 #define SuspendOSInterrupts_Arch()    Disable_ISR2_Arch()
 
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be visible to the OS user
- * for this architecutre. This means that anyone including os.h will have
- * access to these type definitions if the actual architecutre is used.
- * Normaly no type has to be declared here.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Arch.c that will
- * be visible to the OS user for this architectire. This means that anyone
- * including os.h will have access to these variables, if the actual
- * architecutre is used. Normaly no variables has to be declared here.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
-/*****************************************************************************
- * Please declare here all exported functions defined in Osek_Arch.c that will
- * be visible to the OS user for this architectire. This means that anyone
- * including os.h will have access to these variables, if the actual
- * architecutre is used. Normaly no variables has to be declared here.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -1,3 +1,4 @@
+<?php
 /********************************************************
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
@@ -47,9 +48,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
-
-<?php
-
+ 
 /** \brief Handlers used by OSEK */
 switch ($this->definitions["CPU"])
 {

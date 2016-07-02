@@ -133,8 +133,11 @@ extern TaskType TerminatingTask;
  ** else to execute. The macro may sleep the cpu for a short time to avoid
  ** overheating and full power consumption or may halt the processor always
  ** that all wakeup reasons are right configured. If nothing is running
- ** nothing my activate any task so we
+ ** nothing my activate any task so we will keep sleeping until anything
+ ** occurs, like for example an interrupt.
+ **
  **/
+
 #define osekpause() asm volatile("nop")	//TODO revisar los low power modes
 
 /** \brief SAVE_CONTEXT
@@ -172,39 +175,43 @@ extern TaskType TerminatingTask;
                  "pop r4\n\t"\
                );
 
+/** \brief Call to an other Task
+ **
+ ** This macro sholud be inserted before a naked interrupt handler ends.
+*/
 #define RETURN_FROM_NAKED_ISR()  asm volatile ("reti    \n\t");
 
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(actualtask, nexttask)                                     \
-{                                                                          \
-   Osek_OldTaskPtr_Arch = (void*) (TasksConst[(actualtask)].TaskContext); \
-   Osek_NewTaskPtr_Arch = (void*) (TasksConst[(nexttask)].TaskContext);   \
-   /* next action will trigger assigned IRQ for the SWI */                 \
-   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE);    \
+#define CallTask(actualtask, nexttask)                                          \  
+{                                                                               \
+   Osek_OldTaskPtr_Arch = (void*) (TasksConst[(actualtask)].TaskContext);       \
+   Osek_NewTaskPtr_Arch = (void*) (TasksConst[(nexttask)].TaskContext);         \
+   /* next action will trigger assigned IRQ for the SWI */                      \
+   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE);  \
 }
 
 /** \brief Jmp to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define JmpTask(task)                                                      \
-{                                                                          \
-   extern TaskType WaitingTask;                                            \
-   if(WaitingTask != INVALID_TASK)                                         \
-   {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*) (TasksConst[WaitingTask].TaskContext);\
-      WaitingTask = INVALID_TASK;                                          \
-   }                                                                       \
-   else                                                                    \
-   {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*)0;                                     \
-   }                                                                       \
-   Osek_NewTaskPtr_Arch = (void*) (TasksConst[(task)].TaskContext);       \
-   /* next action will trigger assigned IRQ for the SWI */                 \
-   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE); \
+#define JmpTask(task)                                                           \ 
+{                                                                               \
+   extern TaskType WaitingTask;                                                 \
+   if(WaitingTask != INVALID_TASK)                                              \
+   {                                                                            \
+      Osek_OldTaskPtr_Arch = (void*) (TasksConst[WaitingTask].TaskContext);     \
+      WaitingTask = INVALID_TASK;                                               \
+   }                                                                            \
+   else                                                                         \
+   {                                                                            \
+      Osek_OldTaskPtr_Arch = (void*)0;                                          \
+   }                                                                            \
+   Osek_NewTaskPtr_Arch = (void*) (TasksConst[(task)].TaskContext);             \
+   /* next action will trigger assigned IRQ for the SWI */                      \
+   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE);  \
 }
 
 
@@ -251,9 +258,6 @@ extern TaskType TerminatingTask;
  **/
 #define EnableOSInterrupts() _enable_interrupts();
 
-
-
-
 /** \brief Enable Interruptions
  **
  ** Enable not OS configured interrupts (ISR1 and ISR2). This macro
@@ -272,8 +276,6 @@ extern TaskType TerminatingTask;
  **         to workarround the hw bug cpu39 described in slaz314h.pdf
  **/
 #define DisableOSInterrupts()  _disable_interrupts(); __asm__ __volatile__ ("nop");
-
-
 
 /** \brief Disable Interruptions
  **
