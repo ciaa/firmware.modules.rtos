@@ -47,7 +47,7 @@
 
 /*==================[inclusions]=============================================*/
 require_once('Helper.php');
-require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
+
 
 /*=================[user functions]==========================================*/
 
@@ -64,6 +64,7 @@ class Platform extends Helper
    function getIntWidth()
    {
       /*TODO: should this be based on  CIAAPLATFORM_REGLENGTH definition within ciaaPlatforms.h ? */
+
       if( $this->definitions["ARCH"]== "msp430")
       {
          return 16;
@@ -74,6 +75,13 @@ class Platform extends Helper
       }
    }
 
+   function getInterruptHandlerList()
+   {
+      print("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php\n");
+
+      require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
+      return $intList;
+   }
 }
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

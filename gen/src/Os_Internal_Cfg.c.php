@@ -64,6 +64,10 @@
 <?php
 
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+$this->loadHelper("modules/rtos/gen/ginc/Platform.php");
+
+/* get Interrupt list for platform  */
+$intList = $this->helper->platform->getInterruptHandlerList();
 
 /* get tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
@@ -546,7 +550,7 @@ $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 if( count($intnames)>0 ) /*it only process averything if there is any ISR define within the OIL */
 {
    #includes the array where all IRQ array is defined, base on the architecture.
-require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
+//require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
 
 #for each ISR define in the OIL, we define the IRQ handler.
 foreach ($intnames as $int)

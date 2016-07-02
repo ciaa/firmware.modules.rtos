@@ -143,8 +143,6 @@ foreach( $tasks as $task )
 
    $nro_ev_task = count($matriz[$task_index]); #max(array_keys($matriz[$task_index]));
 
-   // print("tarea $task eventos $nro_ev_task");
-
    /* Task Type validation: validates that this task is extended */
    $extended = $this->config->getValue("/OSEK/" . $task, "TYPE");
 
@@ -154,10 +152,8 @@ foreach( $tasks as $task )
    }
    else
    {
-   //   print("es extended");
       if ($nro_ev_task == 0 && $extended != "BASIC")
       {
-//print("es extended mal");
          trigger_error("===== OIL WARNING: The task $task could be TYPE: BASIC =====\n", E_USER_WARNING);
       }
    }
