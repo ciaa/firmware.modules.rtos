@@ -4,8 +4,7 @@
 
 /* Copyright 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, 2015 Pablo Ridolfi
- * Copyright 2015, Alejandro Permingeat
- * Copyright 2016, Franco Bucafusco
+ * Copyright 2015, Alejandro Permingeat 
  *
  * All rights reserved.
  *
@@ -125,52 +124,10 @@ void DebugMon_Handler(void) {
 
 /*==================[external functions definition]==========================*/
 <?php
-switch ($this->definitions["CPU"])
-{
-   case "lpc4337":
-      /* Interrupt sources for LPC43xx (Cortex-M0 core).
-       * See externals/platforms/cortexM0/lpc43xx/inc/cmsis_43xx_m0app.h.
-       */
-      $intList = array (
-         0 => "RTC",
-         1 => "M4CORE",
-         2 => "DMA",
-         3 => "RES1",
-         4 => "FLASH_EEPROM_ATIMER",
-         5 => "ETH",
-         6 => "SDIO",
-         7 => "LCD",
-         8 => "USB0",
-         9 => "USB1",
-         10 => "SCT",
-         11 => "RIT_WWDT",
-         12 => "TIMER0",
-         13 => "GINT1",
-         14 => "PIN_INT4",
-         15 => "TIMER3",
-         16 => "MCPWM",
-         17 => "ADC0",
-         18 => "I2C0_I2C1",
-         19 => "SGPIO",
-         20 => "SPI_DAC",
-         21 => "ADC1",
-         22 => "SSP0_SSP1",
-         23 => "EVENTROUTER",
-         24 => "UART0",
-         25 => "UART1",
-         26 => "UART2_CCAN1",
-         27 => "UART3",
-         28 => "I2S0_I2S1_QEI",
-         29 => "CCAN_0",
-         30 => "ADCHS",
-         31 => "M0SUB",
-      );
-      break;
+$this->loadHelper("modules/rtos/gen/ginc/Platform.php");
 
-   default:
-      error("the CPU " . $this->definitions["CPU"] . " is not supported.");
-      break;
-}
+/* get Interrupt list for platform  */
+$intList = $this->helper->platform->getInterruptHandlerList();
 
 $MAX_INT_COUNT = max(array_keys($intList))+1;
 
@@ -297,7 +254,7 @@ foreach ($intnames as $int)
    if($cat == 2)
    {
       $key = array_search($source, $intList);
-      
+
       if( $key !== false )
       {
          print "   /* Disabling IRQ $source */\n";

@@ -1,9 +1,9 @@
+<?php
 /********************************************************
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2016, Franco Bucafusco
- * All rights reserved.
+/* Copyright 2014, 2015 Mariano Cerdeiro 
  *
  * This file is part of CIAA Firmware.
  *
@@ -35,22 +35,10 @@
  *
  */
 
-#ifndef _OS_INTERNAL_ARCH_CFG_H_
-#define _OS_INTERNAL_ARCH_CFG_H_
-
-/*****************************************************************************
- * update the tmparch directory on the \file doxygen comment with your
- * architecture
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
-/** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
+/** \brief FreeOSEK Os Support File for x86 Architectures.
  **
- ** This file content the internal generated architecture dependent
- ** configuration of FreeOSEK.
+ ** \file Os_Internal_Defs.php
  **
- ** \file msp430/Os_Internal_Arch_Cfg.h
- ** \arch msp430
  **/
 
 /** \addtogroup FreeOSEK
@@ -59,43 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
-
- /*
-  * Initials     Name
-  * ---------------------------
-  * FBUC         Franco Bucafusco
-  *
-  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.0 20162202 FBUC First version for msp430 processors.
- */
-
-/*==================[inclusions]=============================================*/
+ 
 
 
-/*==================[typedef]================================================*/
-
-/** \brief Task Context Type */
-typedef uint16 * TaskContextType;
-
-/** \brief Task Context Type */
-typedef TaskContextType* TaskContextRefType;
-
-/*==================[external data declaration]==============================*/
-
-
-/*==================[external functions declaration]=========================*/
-
-void Enable_User_ISRs(void);
-void Enable_ISR2_Arch(void);
-void Disable_ISR2_Arch(void);
-
-
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/** @} doxygen end group definition */
-/*==================[end of file]============================================*/
-#endif /* #ifndef _OS_INTERNAL_ARCH_CFG_H_ */
+?>

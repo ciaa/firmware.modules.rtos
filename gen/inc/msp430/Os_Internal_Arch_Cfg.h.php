@@ -90,9 +90,14 @@ typedef TaskContextType* TaskContextRefType;
 /* Macros for Disable / Enable User ISR for any catergory
    (this optimize the processing of Enabling and Disablen System IRQs)*/
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+$this->loadHelper("modules/rtos/gen/ginc/Platform.php");
 
-require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
+/* get Avalible Interrupt list for platform  */
+$intList = $this->helper->platform->getInterruptHandlerList();
 
+$MAX_INT_COUNT = max(array_keys($intList))+1;
+
+/* get Interrupt names from OIL */
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
 foreach ($intnames as $int)

@@ -74,7 +74,7 @@ $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
 foreach ($tasks as $task)
 {
-   print "/** \brief $task stack */\n";
+   print "\n/** \brief $task stack */\n";
    print "#if ( x86 == ARCH )\n";
    print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
    print "#else\n";
@@ -86,28 +86,24 @@ foreach ($tasks as $task)
    }
    else
    {
-   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ."];\n";
+      print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ."];\n";
    }
 
    print "#endif\n";
-   print "\n";
 }
-print "\n";
 
 foreach ($tasks as $task)
 {
-   print "/** \brief $task context */\n";
+   print "\n/** \brief $task context */\n";
    print "TaskContextType ContextTask" . $task . ";\n";
-   print "\n";
 }
-print "\n";
 
 $priority = $this->config->priority2osekPriority($tasks);
 
 /* Ready List */
 foreach ($priority as $prio)
 {
-   print "/** \brief Ready List for Priority $prio */\n";
+   print "\n/** \brief Ready List for Priority $prio */\n";
    $count = 0;
    foreach ($tasks as $task)
    {
@@ -117,7 +113,6 @@ foreach ($priority as $prio)
       }
    }
    print "TaskType ReadyList" . $prio . "[" . $count . "];\n";
-   print "\n";
 }
 
 $counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
@@ -143,7 +138,6 @@ foreach ($counters as $counter)
    }
    print "};\n\n";
 }
-
 ?>
 
 /*==================[external data definition]===============================*/
@@ -236,22 +230,25 @@ print "\n";
 ?>
 };
 
-/** \brief RemoteTaskCore Array */
-const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {
 <?php
 $rtasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
 $rtasks_count = count($rtasks);
 
 if( $rtasks_count>0 )
 {
+   print("\n/** \brief RemoteTaskCore Array */\n");
+   print("const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {\n");
+
    for($i=0; $i<$rtasks_count; $i++)
    {
-   print $this->config->getValue("/OSEK/$rtasks[$i]", "CORE");
+      print $this->config->getValue("/OSEK/$rtasks[$i]", "CORE");
       if ($i < (count($rtasks)-1))
       {
          print ", ";
       }
    }
+
+   print("};\n");
 }
 else
 {
@@ -259,7 +256,7 @@ else
    //trigger_error("===== OIL INFO: There are no REMOTE TASKS define in the OIL file =====\n", E_USER_NOTICE);
 }
 ?>
-};
+
 
 /** \brief TaskVar Array */
 TaskVariableType TasksVar[TASKS_COUNT];
@@ -416,8 +413,8 @@ if( $alarms_count> 0 )
          $alarms_autostart++;
       }
       print "   {\n";
-   print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-   $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
+      print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+      $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
       print "      " . $action . ", /* Alarm action */\n";
       print "      {\n";
       switch ($action)
@@ -426,22 +423,22 @@ if( $alarms_count> 0 )
          print "         NULL, /* no callback */\n";
          print "         0, /* no task id */\n";
          print "         0, /* no event */\n";
-      print "         OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
+         print "         OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
          break;
       case "ACTIVATETASK":
          print "         NULL, /* no callback */\n";
-      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
+         print "         " . $this->config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
          print "         0, /* no event */\n";
          print "         0 /* no counter */\n";
          break;
       case "SETEVENT":
          print "         NULL, /* no callback */\n";
-      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
-      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
+         print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
+         print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
          print "         0 /* no counter */\n";
          break;
       case "ALARMCALLBACK":
-      print "         OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
+         print "         OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
          print "         0, /* no taskid */\n";
          print "         0, /* no event */\n";
          print "         0 /* no counter */\n";
@@ -463,7 +460,7 @@ if( $alarms_count> 0 )
       $first = true;
       foreach ($alarms as $count=>$alarm)
       {
-   if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+         if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
          {
             if ($first == false)
             {
@@ -475,11 +472,11 @@ if( $alarms_count> 0 )
             }
             print "  {\n";
 
-      print "      " . $this->config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
-      // print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+            print "      " . $this->config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
+            // print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
             print "      $alarm, /* Alarms */\n";
-      print "      " . $this->config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
-      print "      " . $this->config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+            print "      " . $this->config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
+            print "      " . $this->config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
             print "   }";
          }
       }
@@ -514,9 +511,9 @@ $alarms = $this->config->getList("/OSEK","ALARM");
       }
       print "      $countalarms, /* quantity of alarms for this counter */\n";
       print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
-   print "      " . $this->config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
-   print "      " . $this->config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
-   print "      " . $this->config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
       print "   }";
    }
    print "\n};\n\n";
@@ -540,18 +537,16 @@ uint8 ApplicationMode;
  */
 uint8 ErrorHookRunning = 0;
 
-/*==================[internal functions definition]==========================*/
-
 /*==================[external functions definition]==========================*/
+
+/*==================[internal functions definition]==========================*/
 <?php
 
-#we create an array of ISRs defined in the OIL file.
+#we get an array of ISRs defined in the OIL file.
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
+
 if( count($intnames)>0 ) /*it only process averything if there is any ISR define within the OIL */
 {
-   #includes the array where all IRQ array is defined, base on the architecture.
-//require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
-
 #for each ISR define in the OIL, we define the IRQ handler.
 foreach ($intnames as $int)
 {
@@ -569,17 +564,18 @@ foreach ($intnames as $int)
 ?>
 void OSEK_ISR2_<?php print $int?>(void)
 {
-      <?php
+<?php
       $key = array_search( $inttype , $intList );
+
       if( $key !== false )
       {
-         print("PreIsr2_Arch( $key );\n");
+         print("   PreIsr2_Arch( $key );\n");
       }
       else
       {
          trigger_error("===== OIL ERROR: The IRQ name :$inttype is not valid for this processor =====\n", E_USER_ERROR);
       }
-      ?>
+?>
 
    /* store the calling context in a variable */
    ContextType actualContext = GetCallingContext();

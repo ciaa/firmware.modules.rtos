@@ -47,12 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.0 20160221 initial version
- */
+ 
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
@@ -97,14 +92,19 @@ void OSEK_ISR_SYSNMI_VECTOR(void)
 }
 
 /*==================[external functions definition]==========================*/
-<?php 
-$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
-
-require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
-?>
-/*** Non Used Interrupt handlers ***/
 <?php
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+$this->loadHelper("modules/rtos/gen/ginc/Platform.php");
 
+/* get Interrupt list for platform  */
+$intList = $this->helper->platform->getInterruptHandlerList();
+
+$MAX_INT_COUNT = max(array_keys($intList))+1;
+?>
+
+/*** Non Used Interrupt handlers ***/
+
+<?php
 /* get ISRs defined by user application within the OIL file*/
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 for($i=0; $i < $MAX_INT_COUNT; $i++)
@@ -191,12 +191,12 @@ $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
    $source  = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
-   $prio    = $this->config->getValue("/OSEK/" . $int,"PRIORITY");
+   //$prio    = $config->getValue("/OSEK/" . $int,"PRIORITY");
 
    $key = array_search($source, $intList);
    if( $key !== false )
    {
-      print "   /* Enabling IRQ $source with priority $prio */\n";
+      print "   /* Enabling IRQ $source */\n";
       print "   MSP430_EnableIRQ(" . $key. ");\n";
    }
    else

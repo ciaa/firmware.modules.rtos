@@ -70,27 +70,16 @@
 /*==================[cpu macros]=============================================*/
 
 /* TODO: relocate these definitions */
-#define WORKING_FREQUENCY_MHZ       14.7456// 7.3728 //                         // en MHZ
-#define REF_FREQUENCY_HZ            32768                                       // en Hz
-#define TIC_PERIOD                  5                                           // EN ms
+#define WORKING_FREQUENCY_MHZ       14.7456// 7.3728 //                         // in MHZ
+#define REF_FREQUENCY_HZ            32768                                       // in Hz
+#define TIC_PERIOD                  5                                           // in ms
 
 /*==================[inclusions]=============================================*/
 
 
 /*==================[macros]=================================================*/
 
-/** \brief ISR macro definition
- **
- ** This macro shall be used to start the definition of all ISR category 1 or 2.
- **
- ** \param[in] name name of the ISR category 1 or 2.
- **//*
- #ifdef CTESTS_MODIFIERS
-#define ISR(name)  void OSEK_ISR_ ## name (void)
- #else
-#define ISR(name)   __attribute__( (interrupt_vec(name))) void OSEK_ISR_ ## name (void)
-#endif*/
-//#define ISR(name)   __attribute__( (interrupt_vec(name))) void OSEK_ISR_ ## name (void)
+
 
 /*==================[typedef]================================================*/
 

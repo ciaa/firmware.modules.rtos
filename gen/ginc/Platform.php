@@ -76,9 +76,7 @@ class Platform extends Helper
    }
 
    function getInterruptHandlerList()
-   {
-      print("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php\n");
-
+   { 
       require("modules/rtos/gen/ginc/".$this->definitions["ARCH"]."/Os_Internal_Defs.php");
       return $intList;
    }

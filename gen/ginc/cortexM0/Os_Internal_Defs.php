@@ -3,8 +3,9 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/*
- * Copyright 2016 Franco Bucafusco
+/* Copyright 2014, 2015 Mariano Cerdeiro
+ * Copyright 2014, 2015 Pablo Ridolfi
+ * Copyright 2015, Alejandro Permingeat 
  *
  * This file is part of CIAA Firmware.
  *
@@ -36,7 +37,7 @@
  *
  */
 
-/** \brief FreeOSEK Os Support File for MSP430 Architectures.
+/** \brief FreeOSEK Os Support File for cortexM0 Architectures.
  **
  ** \file Os_Internal_Defs.php
  **
@@ -50,37 +51,46 @@
  ** @{ */
 
 /** \brief Handlers used by OSEK */
-switch ( $this->definitions["CPU"] )
+
+switch ($this->definitions["CPU"])
 {
-   case "msp430f5529":
-      /* Interrupt sources for msp430f5529
-       * See externals/drivers/msp430/inc/msp430f5529.h.
-       * Names in this array are set without the trailing "_VECTOR" string
+   case "lpc4337":
+      /* Interrupt sources for LPC43xx (Cortex-M0 core).
+       * See externals/platforms/cortexM0/lpc43xx/inc/cmsis_43xx_m0app.h.
        */
       $intList = array (
-                  0 => "RTC",
-                  1 => "PORT2",
-                  2 => "TIMER2_A1",
-                  3 => "TIMER2_A0",
-                  4 => "USCI_B1",
-                  5 => "USCI_A1",
-                  6 => "PORT1",
-                  7 => "TIMER1_A1",
-                  8 => "TIMER1_A0",
-                  9 => "DMA",
-                  10 => "USB_UBM",
-                  11 => "TIMER0_A1",
-                  12 => "TIMER0_A0",
-                  13 => "ADC12",
-                  14 => "USCI_B0",
-                  15 => "USCI_A0",
-                  16 => "WDT",
-                  17 => "TIMER0_B1",
-                  18 => "TIMER0_B0",
-                  19 => "COMP_B",
-                  20 => "UNMI",
-                  21 => "SYSNMI",
-                  22 => "RESET",
+         0 => "RTC",
+         1 => "M4CORE",
+         2 => "DMA",
+         3 => "RES1",
+         4 => "FLASH_EEPROM_ATIMER",
+         5 => "ETH",
+         6 => "SDIO",
+         7 => "LCD",
+         8 => "USB0",
+         9 => "USB1",
+         10 => "SCT",
+         11 => "RIT_WWDT",
+         12 => "TIMER0",
+         13 => "GINT1",
+         14 => "PIN_INT4",
+         15 => "TIMER3",
+         16 => "MCPWM",
+         17 => "ADC0",
+         18 => "I2C0_I2C1",
+         19 => "SGPIO",
+         20 => "SPI_DAC",
+         21 => "ADC1",
+         22 => "SSP0_SSP1",
+         23 => "EVENTROUTER",
+         24 => "UART0",
+         25 => "UART1",
+         26 => "UART2_CCAN1",
+         27 => "UART3",
+         28 => "I2S0_I2S1_QEI",
+         29 => "CCAN_0",
+         30 => "ADCHS",
+         31 => "M0SUB",
       );
       break;
 

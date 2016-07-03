@@ -45,19 +45,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
-
- /*
-  * Initials     Name
-  * ---------------------------
-  * FBUC         Franco Bucafusco
-  *
-  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20160222 v0.1.0 FBUC   initial version
- */
+ 
 
 /*==================[inclusions]=============================================*/
 #include "msp430.h"
@@ -90,7 +78,7 @@
  ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is needed
  ** remove the macro and this comment.
  **/
-#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+#define OSEK_INCLUDE_INTERNAL_ARCH_CPU
 
 extern void *Osek_OldTaskPtr_Arch;
 extern void *Osek_NewTaskPtr_Arch;
