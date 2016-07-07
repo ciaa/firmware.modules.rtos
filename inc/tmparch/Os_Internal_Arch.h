@@ -101,7 +101,7 @@
  ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
  ** remove the macro and this comment.
  **/
-#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+#define OSEK_INCLUDE_INTERNAL_ARCH_CPU
 
 #error update the following macro and remove this comment
 /** \brief Interrupt Secure Start Macro

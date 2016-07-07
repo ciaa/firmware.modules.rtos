@@ -1,4 +1,5 @@
 /* Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -44,19 +45,6 @@
  ** @{ */
 
 
-/*
-* Initials     Name
-* ---------------------------
-* FBUC         Franco Bucafusco
-*
-*/
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20160222 v0.1.0 FBUC   initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 
@@ -73,8 +61,6 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-
-
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

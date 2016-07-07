@@ -38,12 +38,7 @@
 #ifndef _OS_INTERNAL_ARCH_CFG_H_
 #define _OS_INTERNAL_ARCH_CFG_H_
 
-/*****************************************************************************
- * update the tmparch directory on the \file doxygen comment with your
- * architecture
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 /** \brief FreeOSEK Os Generated Internal Architecture Configuration Header File
  **
  ** This file content the internal generated architecture dependent
@@ -60,18 +55,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
- /*
-  * Initials     Name
-  * ---------------------------
-  * FBUC         Franco Bucafusco
-  *
-  */
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * v0.1.0 20162202 FBUC First version for msp430 processors.
- */
 
 /*==================[inclusions]=============================================*/
 

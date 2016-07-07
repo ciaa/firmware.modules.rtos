@@ -2,6 +2,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -181,3 +183,4 @@ StatusType TerminateTask
 /** @} doxygen endVar group definition */
 /** @} doxygen endVar group definition */
 /*==================[end of file]============================================*/
+

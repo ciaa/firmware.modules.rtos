@@ -1,5 +1,7 @@
 /* Copyright 2016, Franco Bucafusco
  *
+ * All Rights Reserved
+ *
  * This file is part of CIAA Firmware.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,32 +52,11 @@
 /** \addtogroup FreeOSEK_Os_Global
  ** @{ */
 
- /*
-  * Initials     Name
-  * ---------------------------
-  * FBUC         Franco Bucafusco
-  *
-  */
-
-
-/*
- * modification history (new versions first)
- * ----------------------------------------------------------
- * 20160222 v0.1.0 FBUC initial version
- */
-
 /*==================[inclusions]=============================================*/
 
 #include "Os_Internal_Arch_Cfg.h"
 
 /*==================[macros]=================================================*/
-/*****************************************************************************
- * Please define here all needed macros that will be visiblsee to the OS user
- * for this architecutre. This means that anyone including os.h will have
- * access to this definitions if the actual architecutre is used.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /** \brief Enable All Interrupts Arch */
 #define EnableAllInterrupts_Arch()     ResumeAllInterrupts_Arch()
@@ -98,7 +79,7 @@
  **       Also noted in Slau208, page 59.
  **/
 #define SuspendAllInterrupts_Arch()   _disable_interrupts() ; __asm__ __volatile__ ("nop");
- 
+
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the

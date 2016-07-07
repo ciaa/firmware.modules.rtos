@@ -3,7 +3,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2014, 2015 Mariano Cerdeiro 
+/* Copyright 2014, 2015 Mariano Cerdeiro
  *
  * This file is part of CIAA Firmware.
  *
@@ -47,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
- 
+
 
 
 ?>

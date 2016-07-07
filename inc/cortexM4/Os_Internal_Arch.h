@@ -68,7 +68,7 @@
  ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
  ** remove the macro and this comment.
  **/
-#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+#define OSEK_INCLUDE_INTERNAL_ARCH_CPU
 
 extern void * Osek_OldTaskPtr_Arch;
 extern void * Osek_NewTaskPtr_Arch;
@@ -80,7 +80,7 @@ extern TaskType TerminatingTask;
  ** This macro will be used internaly by the OS in any part of code that
  ** has to be executed atomic. It should be placed before IntSecure_Start or IntSecure_End is called
  **/
-#define IntSecure_Common()    
+#define IntSecure_Common()
 
 /** \brief Interrupt Secure Start Macro
  **

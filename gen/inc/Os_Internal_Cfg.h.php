@@ -7,6 +7,7 @@
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
  * Copyright 2016 Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -144,7 +145,6 @@ else
       print "#define RESOURCES_COUNT " . $resources_count . "\n\n";
    }
 }
-
 
 $os = $this->config->getList("/OSEK","OS");
 

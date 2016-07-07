@@ -3,6 +3,7 @@
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
  * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -75,7 +76,7 @@ int main
 )
 {
    EnableISR2();
-   
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 
@@ -296,3 +297,4 @@ ISR(VN_ISR3)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+

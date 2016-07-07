@@ -4,6 +4,8 @@
  *      CADIEEL: http://www.cadieel.org.ar
  * Copyright 2016, Franco Bucafusco
  *
+ * All Rights Reserved
+ *
  * This file is part of CIAA Firmware.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -185,7 +187,7 @@
 #elif (ERROR_CHECKING_TYPE == ERROR_CHECKING_STANDARD)
 /* if standard error checking is used, the scheduler does not perform any check
  * and cann be called irectly */
-#define Schedule_WOChecks() Schedule()
+#define Schedule_WOChecks()     Schedule()
 #endif
 
 
@@ -195,11 +197,11 @@
  **
  **/
 #if ( NON_PREEMPTIVE == OSEK_DISABLE )
-#define AfterIsr2_Schedule() if( ( CONTEXT_TASK == actualContext                     ) && \
-                                 ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  ) \
-                             {                                                            \
-                                 Schedule_WOChecks();                                     \
-                             }
+#define AfterIsr2_Schedule()     if( ( CONTEXT_TASK == actualContext                     ) && \
+                                     ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  ) \
+                                 {                                                            \
+                                     Schedule_WOChecks();                                     \
+                                 }
 #else
 #define AfterIsr2_Schedule()
 #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */

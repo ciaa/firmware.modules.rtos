@@ -2,6 +2,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -113,7 +115,7 @@ StatusType ActivateTask
    else
 #endif
    {
-       IntSecure_Start();
+      IntSecure_Start();
 
       /* check if the task is susspended */
       /* \req OSEK_SYS_3.1.1-1/2 The task TaskID shall be transferred from the
@@ -169,7 +171,7 @@ StatusType ActivateTask
          }
       }
 
-       IntSecure_End();
+      IntSecure_End();
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
       /* check if called from a Task Context */

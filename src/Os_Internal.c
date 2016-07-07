@@ -64,9 +64,6 @@ ContextType ActualContext;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-
-/** AddReady
-*/
 void AddReady(TaskType TaskID)
 {
    TaskPriorityType priority;
@@ -108,8 +105,6 @@ void AddReady(TaskType TaskID)
    ReadyVar[priority].ListCount++;
 }
 
-/** RemoveTask
-*/
 void RemoveTask
 (
    TaskType TaskID
@@ -120,7 +115,6 @@ void RemoveTask
 
    /* get task priority */
    priority = TasksConst[TaskID].StaticPriority;
-
    /* convert the priority to the array index */
    /* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
    * the valid entries for this array are between 0 and 3, so the -1 is needed
@@ -145,8 +139,6 @@ void RemoveTask
    ReadyVar[priority].ListCount--;
 }
 
-/** GetNextTask
-*/
 TaskType GetNextTask
 (
    void

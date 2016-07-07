@@ -3,6 +3,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -258,8 +260,6 @@
 #define EnableISR2()    \
       EnableISR2_Arch()
 
-
-
 /** \brief Initialise Alarm Counter Macro
  **
  ** This macro shall implement a mechanismus to initialise the alarm counter
@@ -438,3 +438,4 @@ extern void ConfTestFinish
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _CTEST_H_ */
+

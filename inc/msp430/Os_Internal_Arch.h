@@ -1,5 +1,7 @@
 /* Copyright 2016, Franco Bucafusco
  *
+ * All Rights Reserved
+ *
  * This file is part of CIAA Firmware.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
- 
+
 
 /*==================[inclusions]=============================================*/
 #include "msp430.h"
@@ -173,7 +175,7 @@ extern TaskType TerminatingTask;
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(actualtask, nexttask)                                          \  
+#define CallTask(actualtask, nexttask)                                          \
 {                                                                               \
    Osek_OldTaskPtr_Arch = (void*) (TasksConst[(actualtask)].TaskContext);       \
    Osek_NewTaskPtr_Arch = (void*) (TasksConst[(nexttask)].TaskContext);         \
@@ -185,7 +187,7 @@ extern TaskType TerminatingTask;
  **
  ** This function jmps to the indicated task.
  **/
-#define JmpTask(task)                                                           \ 
+#define JmpTask(task)                                                           \
 {                                                                               \
    extern TaskType WaitingTask;                                                 \
    if(WaitingTask != INVALID_TASK)                                              \

@@ -4,6 +4,8 @@
 # Copyright 2014, ACSE & CADIEEL
 #      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
 #      CADIEEL: http://www.cadieel.org.ar
+# Copyright 2016, Franco Bucafusco
+# All Rights Reserved
 #
 # This file is part of CIAA Firmware.
 #
@@ -473,7 +475,7 @@ sub CreateTestProject
    @replace = GetTestSequencesCon($TESTS, $testfn, $config);
 
    # TODO this shall be improved. Definitely. Doing this for another platform was a headache
-	# CT stand for  : ??
+   # CT stand for  : ??
    # VN stands for : "Vector Name"
    push @replace, "CT_ISR1:" . $ISR1;
    push @replace, "CT_ISR2:" . $ISR2;
@@ -507,8 +509,8 @@ sub CreateTestProject
    print FILE "rtos_GEN_FILES += modules\$(DS)rtos\$(DS)tst\$(DS)ctest\$(DS)gen\$(DS)inc\$(DS)ctest_cfg.h.php\n\n";
    print FILE "CFLAGS += -D$test\n";
 
-	#adds extra makefile options based on the architecture
-	Extra_MakeFile_AddOns_Arch();
+   #adds extra makefile options based on the architecture
+   Extra_MakeFile_AddOns_Arch();
 
    close FILE;
 
@@ -519,8 +521,8 @@ sub CreateTestProject
    copy("modules/rtos/tst/ctest/inc/$ARCH/ctest_arch.h","$base/inc/$ARCH/ctest_arch.h");
    copy("modules/rtos/tst/ctest/src/$ARCH/ctest_arch.c","$base/src/$ARCH/ctest_arch.c");
 
-	#last replacement for IRQ vector name definitions
-	Extra_IRQ_Vector_Replace("$base/src/$test.c");
+   #last replacement for IRQ vector name definitions
+   Extra_IRQ_Vector_Replace("$base/src/$test.c");
 }
 
 sub finish
@@ -595,7 +597,7 @@ if ($#ARGV + 1 < 2)
 $subtestcase = $ARGV[3];
 
 #Example: 'ctest_tm_01:Test Sequence 1' or empty
-$onlytc  = $ARGV[2];
+$onlytc = $ARGV[2];
 
 $cfgfile = $ARGV[1];
 
@@ -624,15 +626,15 @@ if ("cortexM0" eq $ARCH)
 
 if ("msp430" eq $ARCH)
 {
-	if ("msp430f5x_6x" eq $CPUTYPE)
-	{
-		if ("msp430f5529" eq $CPU)
-		{
-			$ISR1 = "PORT2";
-			$ISR2 = "PORT1";
-			$ISR3 = "PORT3"; #TODO For Interrupt type 3 when enable.
-		}
-	}
+   if ("msp430f5x_6x" eq $CPUTYPE)
+   {
+      if ("msp430f5529" eq $CPU)
+      {
+         $ISR1 = "PORT2";
+         $ISR2 = "PORT1";
+         $ISR3 = "PORT3"; #TODO For Interrupt type 3 when enable.
+      }
+   }
 }
 
 mkpath(dirname($logfile));
@@ -812,10 +814,10 @@ foreach $testfn (@tests)
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".axf";
                   }
-						elsif ( $ARCH eq "msp430")
-						{
+                  elsif ( $ARCH eq "msp430")
+                  {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".out";
-						}
+                  }
                   else
                   {
                      $out = $BINDIR . "/" . $test . "-" . $config . ".exe";
@@ -844,10 +846,9 @@ foreach $testfn (@tests)
 
                   if($debug == 0)
                   {
-                     #$outdbg = `$GDB $out -x $dbgfile`;
                      $outdbg = `$debug_command`;
 
-							if ($ARCH eq "x86")
+                     if ($ARCH eq "x86")
                      {
                         # if it fails, then capture ASSERT message with the condition, File and Line that failed and print it!
                         my $Test_Asserted = index($outdbg, "ASSERT");
@@ -867,11 +868,20 @@ foreach $testfn (@tests)
                   }
 
                   $outdbgstatus = $?;
+
                   info("debug status: $outdbgstatus");
                   info("debug output:\n$outdbg");
-                  logffull("$GDB output:\n$outgdb");
 
-                  $outdbgstatus = 0;
+                  if ("msp430" eq $ARCH)
+                  {
+                     logffull("mspdebug output:\n$outgdb");
+                  }
+                  else
+                  {
+                     logffull("$GDB output:\n$outgdb");
+                  }
+
+                   $outdbgstatus = 0;
 
                   if ($outdbgstatus == 0)
                   {

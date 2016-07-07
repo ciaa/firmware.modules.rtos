@@ -75,7 +75,7 @@ int main
 )
 {
    EnableISR2();
-   
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 

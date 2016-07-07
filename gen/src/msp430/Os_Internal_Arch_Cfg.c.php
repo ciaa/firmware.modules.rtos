@@ -47,7 +47,7 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
- 
+
 
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"

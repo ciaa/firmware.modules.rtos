@@ -82,7 +82,7 @@
  ** This macro will be used internaly by the OS in any part of code that
  ** has to be executed atomic. It should be placed before IntSecure_Start or IntSecure_End is called
  **/
-#define IntSecure_Common()    
+#define IntSecure_Common()
 
 
 
@@ -262,7 +262,7 @@
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) 
+#define PostIsr2_Arch(isr)
 
 #if ( CPUTYPE == ia64 )
 #define SaveOsStack()                                                                      \

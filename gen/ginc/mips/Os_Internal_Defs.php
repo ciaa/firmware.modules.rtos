@@ -52,7 +52,7 @@
 
 switch ($this->definitions["CPU"])
 {
-    
+
 
    default:
       $this->log->error("the CPU " . $this->definitions["CPU"] . " is not supported.");

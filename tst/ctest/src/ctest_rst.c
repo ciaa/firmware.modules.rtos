@@ -719,7 +719,7 @@ uint32f SequenceCounter;
 /*==================[external functions definition]==========================*/
 void ConfTestEvaluation
 (
- void
+void
 )
 {
    uint32f loopi;
@@ -744,10 +744,10 @@ void ConfTestEvaluation
 
 }
 
-   void Sequence
+void Sequence
 (
- uint32f seq
- )
+uint32f seq
+)
 {
    if ( (seq) == 0 )
    {
@@ -763,7 +763,7 @@ void ConfTestEvaluation
    }
 }
 
-   void ConfTestFinish
+void ConfTestFinish
 (
  void
  )

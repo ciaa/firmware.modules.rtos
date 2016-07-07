@@ -7,6 +7,7 @@
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
  * Copyright 2016 Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -85,10 +86,10 @@ $os = $this->config->getList("/OSEK","OS");
 foreach ($tasks as $task_idx => $task)
 {
    print "\n/** \brief Task Definition */\n";
-   print "#define $task $task_idx\n"; 
+   print "#define $task $task_idx\n";
 }
 
-$count = count( $tasks ); 
+$count = count( $tasks );
 
 /* Definitions of Tasks : Tasks that will be executed within the remote core*/
 if( count($remote_tasks) > 0)
@@ -114,7 +115,7 @@ foreach ($appmodes as $count=>$appmode)
 
 /* the max ammount of events is defined by the bit width of EventMaskType type */
 $max_amount_events = $this->helper->platform->getIntWidth();
- 
+
 
 $flags_shared_event = $max_amount_events; /* it stores the number of bit for flags that are shared across tasks */
 
@@ -128,7 +129,7 @@ $nro_evs= count($events);
 
 /* task/events matrix creation, and various validations */
 foreach( $tasks as $task_index => $task )
-{ 
+{
    $empty_array = array();
    $temp_array = $this->config->getList("/OSEK/". $task , "EVENT"  );
 
@@ -189,7 +190,7 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada array de eventos 
          $count++;
       }
    }
- 
+
 
    if( $count>1 )
    {
@@ -217,7 +218,6 @@ foreach( $events as $ev ) //para cada evento, lo busco en cada array de eventos 
    $ev_index++;
 }
 
-//print_r($matriz);
 print "\n/** \brief Exclusive events for each task */\n\n";
 foreach( $tasks as $task_index=> $task )
 {
@@ -239,19 +239,16 @@ foreach( $tasks as $task_index=> $task )
 
       $flags_exc_event++;
    }
-
 }
 
 /* Last validation: check if events repeats  */
 $task_index       = 0;
 foreach ($matrix_n as $array)
 {
-   #print_r($array);
    $count_values = array_count_values($matrix_n[$task_index]) ;  /* it counts the times that repeats an event number, all of them should be 1*/
    #print_r($count_values);
    foreach ($count_values as $key => $value)
    {
-      #print_r($value);
       if($value>1)
       {
          throw new Exception("===== OIL ERROR: There are more events that the task can handle.  =====\n");
@@ -260,15 +257,6 @@ foreach ($matrix_n as $array)
    }
    $task_index ++;
 }
-
-//$events = $this->config->getList("/OSEK","EVENT");
-
-//foreach ($events as $count=>$event)
-//{
-//   print "/** \brief Definition of the Event $event */\n";
-//   print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count)) . "\n";
-//}
-//print "\n";
 
 /* Define the Resources */
 $resources = $this->config->getList("/OSEK","RESOURCE");

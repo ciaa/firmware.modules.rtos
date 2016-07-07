@@ -5,7 +5,7 @@
 
 /* Copyright 2014, 2015 Mariano Cerdeiro
  * Copyright 2014, 2015 Pablo Ridolfi
- * Copyright 2015, Alejandro Permingeat 
+ * Copyright 2015, Alejandro Permingeat
  *
  * This file is part of CIAA Firmware.
  *

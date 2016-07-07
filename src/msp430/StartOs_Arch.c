@@ -1,5 +1,7 @@
 /* Copyright 2016, Franco Bucafusco
  *
+ * All Rights Reserved
+ *
  * This file is part of CIAA Firmware.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,20 +47,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-
-/*
-* Initials     Name
-* ---------------------------
-* FBUC         Franco Bucafusco
-*
-*/
-
-/*
- * modification history (new versions first)
- * -----------------------------------------------------------
- * 20160222 v0.1.0 FBUC   initial version
- */
-
 /*==================[inclusions]=============================================*/
 #include "Os_Internal.h"
 #include "StartOs_Arch_SystemTick.h"
@@ -77,33 +65,33 @@
 static void __attribute__((naked, section(".crt_0042"), used))
 disable_watchdog (void)
 {
-	//https://sourceware.org/ml/newlib/2015/msg00627.html
-   WDTCTL = WDTPW | WDTHOLD;		// Stop watchdog timer
+   //https://sourceware.org/ml/newlib/2015/msg00627.html
+   WDTCTL = WDTPW | WDTHOLD;    // Stop watchdog timer
 }
 
 /*==================[external functions definition]==========================*/
 
 void StartOs_Arch_Cpu(void)
 {
-	StartOs_Arch_System();	//TODO: this should be placed in other file. For cortex processors is placed within the reset vector handler.
-	StartOs_Arch_SystemTick();
-	//Enable_User_ISRs();	//USER ISRs SHOULD BE ENABLED BY THE USER USING a_MSP430ware Libraries or OS buildin Drivers.
+   StartOs_Arch_System(); //TODO: this should be placed in other file. For cortex processors is placed within the reset vector handler.
+   StartOs_Arch_SystemTick();
+   //Enable_User_ISRs();  //USER ISRs SHOULD BE ENABLED BY THE USER USING a_MSP430ware Libraries or OS buildin Drivers.
 }
 
 /**
  */
 void StartOs_Arch(void)
 {
-	uint8f loopi;
+   uint8f loopi;
 
-	/* init every task */
-	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-	{
-		InitStack_Arch(loopi);
-	}
+   /* init every task */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
+      InitStack_Arch(loopi);
+   }
 
-	/* CPU dependent initialisation */
-	StartOs_Arch_Cpu();
+   /* CPU dependent initialisation */
+   StartOs_Arch_Cpu();
 }
 
 /** @} doxygen end group definition */
