@@ -112,7 +112,7 @@ universal_trap_handler:
         ! Prepare the value to load in the flag variable
         mov     0x1, %l6
 
-		! Test whether the old value was zero
+        ! Test whether the old value was zero
         tst     %l5
         bne     nested_interrupt_handler
 
@@ -235,18 +235,18 @@ dump_frame_loop:
         std     %i6, [%sp + 56]
 
         !
-		! Rotate the invalid bit mask one bit to the right in order to check
-		! if the next RESTORE would enter the invalid window and therefore
-		! throw the processor into error mode.
-		!
-		! This is probably not the most obvious way to do it (that would
-		! probably be to rotate the mask for the lowest in-use window stored
-		! %g6 one bit to the LEFT) but I do it this way in order to preserve
-		! the value of %g6 for later, when I will need to use that window
-		! mask to reconfigure the WIM register. Remember that I have a very limited
-		! set of registers to work with, so I can't back the value up, and I would
-		! rather not calculate it again.
-		!
+        ! Rotate the invalid bit mask one bit to the right in order to check
+        ! if the next RESTORE would enter the invalid window and therefore
+        ! throw the processor into error mode.
+        !
+        ! This is probably not the most obvious way to do it (that would
+        ! probably be to rotate the mask for the lowest in-use window stored
+        ! %g6 one bit to the LEFT) but I do it this way in order to preserve
+        ! the value of %g6 for later, when I will need to use that window
+        ! mask to reconfigure the WIM register. Remember that I have a very limited
+        ! set of registers to work with, so I can't back the value up, and I would
+        ! rather not calculate it again.
+        !
         srl     %g5, 0x1, %g4
         sll     %g5, %g7, %g5 ! the WIM bit mask is also NWINDOWS - 1
         or      %g4, %g5, %g5
@@ -294,12 +294,12 @@ exit_dump_frame_loop:
         !
 
         ! Notice that the usage of STD below requires %sp to be double word aligned, but since
-		! that is a requirement of the SPARC architecture, the compiler always complies with that alignment
-		! restriction. That is also the reason why I save 80 bytes for the thread's context, instead
-		! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
+        ! that is a requirement of the SPARC architecture, the compiler always complies with that alignment
+        ! restriction. That is also the reason why I save 80 bytes for the thread's context, instead
+        ! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
         ! in the SPARC V8 Architecture Manual).
 
-		! Make some room on the stack for the thread context, keeping %sp double word aligned.
+        ! Make some room on the stack for the thread context, keeping %sp double word aligned.
         sub     %fp, SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE, %sp
 
         ! Save the PSR register
@@ -480,9 +480,9 @@ exit_dump_frame_loop:
         ! on the stack for context storage should be incremented accordingly
         !
 
-		! The thread's stack pointer was recovered along with the
-		! rest of the input registers, no need to derive it from
-		! %fp.
+        ! The thread's stack pointer was recovered along with the
+        ! rest of the input registers, no need to derive it from
+        ! %fp.
 
         ! ****************************************************
         !
@@ -530,11 +530,11 @@ solve_overflow_condition:
         ! we are already in a window overflow situation. We need to vacate
         ! the least recently used register window and move the invalid
         ! marker to that window.
-		!
-		! The least recently used window is the one inmediately below
-		! the invalid window (modulo NWINDOWS). Rotate the WIM value one
-		! bit to the right in order to get the new value for the WIM register.
-		srl     %l5, 0x1, %l4
+        !
+        ! The least recently used window is the one inmediately below
+        ! the invalid window (modulo NWINDOWS). Rotate the WIM value one
+        ! bit to the right in order to get the new value for the WIM register.
+        srl     %l5, 0x1, %l4
         sll     %l5, %l7, %l5 ! the WIM bit mask is also NWINDOWS - 1
         or      %l4, %l5, %l5
         and     %l5, %l7, %l5 ! erase any extra bits
@@ -589,12 +589,12 @@ no_overflow_yet:
         !
 
         ! Notice that the usage of STD below requires %sp to be double word aligned, but since
-		! that is a requirement of the SPARC architecture, the compiler always complies with that alignment
-		! restriction. That is also the reason why I save 80 bytes for the thread's context, instead
-		! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
+        ! that is a requirement of the SPARC architecture, the compiler always complies with that alignment
+        ! restriction. That is also the reason why I save 80 bytes for the thread's context, instead
+        ! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
         ! in the SPARC V8 Architecture Manual).
 
-		! Make some room on the stack for the thread context, keeping %sp double word aligned.
+        ! Make some room on the stack for the thread context, keeping %sp double word aligned.
         sub     %fp, SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE, %sp
 
         ! Save the PSR register
@@ -707,8 +707,8 @@ no_overflow_yet:
         ld      [%sp + 72], %l2
 
         ! The interrupted trap's stack pointer was recovered along with the
-		! rest of the input registers, no need to derive it from
-		! %fp.
+        ! rest of the input registers, no need to derive it from
+        ! %fp.
 
         ! ****************************************************
         !

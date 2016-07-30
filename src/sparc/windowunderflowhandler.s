@@ -111,9 +111,9 @@ window_underflow_handler:
         ! synchronous trap (a nested undeflow trap) while the ET (enable traps) bit is disabled.
         mov     %l5, %wim
 
-		! The behavior of instructions that read or write the WIM register during the
-		! first three cycles after a write operation has been performed on it is
-		! undefined (implementation dependent) so we play safe and burn those cycles away...
+        ! The behavior of instructions that read or write the WIM register during the
+        ! first three cycles after a write operation has been performed on it is
+        ! undefined (implementation dependent) so we play safe and burn those cycles away...
         nop
         nop
         nop

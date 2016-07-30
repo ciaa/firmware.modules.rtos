@@ -146,9 +146,9 @@ window_overflow_handler:
         ! Update the WIM
         mov     %g1, %wim
 
-		! The behavior of instructions that read or write the WIM register during the
-		! first three cycles after a write operation has been performed on it is
-		! undefined (implementation dependent) so we play safe and burn those cycles away...
+        ! The behavior of instructions that read or write the WIM register during the
+        ! first three cycles after a write operation has been performed on it is
+        ! undefined (implementation dependent) so we play safe and burn those cycles away...
         nop
         nop
         nop
