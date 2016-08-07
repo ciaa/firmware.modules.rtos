@@ -386,9 +386,9 @@ exit_dump_frame_loop:
         ! here using NOPs between the writes, but it is needed after the second.
 
         mov     %l0, %l4
-        or      %l4, SPARC_PSR_PIL_MASK  ! Set the PIL field to 15
+        or      %l4, SPARC_PSR_PIL_MASK, %l4  ! Set the PIL field to 15
         mov     %l4, %psr
-        or      %l4, SPARC_PSR_ET_MASK   ! Set ET
+        or      %l4, SPARC_PSR_ET_MASK, %l4   ! Set ET
         mov     %l4, %psr
         ! delay cycles
         nop
