@@ -92,7 +92,7 @@ assembler_case_selector:
         ba,a     disable_traps                    ! SYSCALL ID 0x00 = Disable trap
         ba,a     mask_interrupts_service          ! SYSCALL ID 0x01 = Mask all asynchronous interrupts
         ba,a     unmask_interrupts_service        ! SYSCALL ID 0x02 = Unmask all asynchronous interrupts
-        ba,a     invalid_service_id               ! SYSCALL ID 0x03 = Still undefined service id.
+        ba,a     reboot_system_service            ! SYSCALL ID 0x03 = Ssytem reboot service id.
         ba,a     invalid_service_id               ! SYSCALL ID 0x04 = Still undefined service id.
         ba,a     invalid_service_id               ! SYSCALL ID 0x05 = Still undefined service id.
         ba,a     invalid_service_id               ! SYSCALL ID 0x06 = Still undefined service id.
@@ -205,7 +205,7 @@ unmask_interrupts_service:
         !
         ! "REBOOT SYSTEM" SERVICE CODE
         !
-unmask_interrupts_service:
+reboot_system_service:
 
         !
         ! According to the SPARC v8 Manual,
@@ -252,3 +252,4 @@ exit_syscall:
         ! to re-execute the trapping instruction.
         jmp     %l2
         rett    %l2 + 0x4
+
