@@ -63,6 +63,7 @@
 #define SPARC_PSR_CWP_MASK 0x001f
 
 
+
 /** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
  *
  * For alignments reasons this number must be a multiple of 8 (double word).
@@ -74,6 +75,28 @@
  * For alignments reasons this number must be a multiple of 8 (double word).
  **/
 #define SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE 80
+
+
+/** \brief Software trap number for syscall services.
+ **/
+#define SPARC_SYSCALL_SERVICE_TRAP_NUMBER 0x00
+
+
+/** \brief Syscall service ID - Disable traps.
+ **/
+#define SPARC_SYSCALL_ID_DISABLE_TRAPS 0x00
+
+/** \brief Syscall service ID - Mask interrupts
+ **/
+#define SPARC_SYSCALL_ID_MASK_INTR     0x01
+
+/** \brief Syscall service ID - Unmask interrupts
+ **/
+#define SPARC_SYSCALL_ID_UNMASK_INTR   0x02
+
+/** \brief Syscall service ID - Reboot system
+ **/
+#define SPARC_SYSCALL_ID_REBOOT_SYSTEM 0x03
 
 
 
@@ -95,6 +118,20 @@
  *****************************************************************************/
 
 /*==================[external functions declaration]=========================*/
+
+/*
+ * Syscall service functions, defined in syscallservices.s
+ * */
+
+void sparcSystemServiceEnableTraps();
+
+void sparcSystemServiceDisableTraps();
+
+void sparcSystemServiceMaskInterrupts();
+
+void sparcSystemServiceUnMaskInterrupts();
+
+void sparcSystemServiceRebootSystem();
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
