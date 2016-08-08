@@ -365,12 +365,12 @@ exit_dump_frame_loop:
         !
 
         ! The trap type indexes the trap service routine table
-        sll     %l3, 2, %l3
+        sll     %l3, 2, %l5
 
-        ! Access the table and store the service routine start address in %l3
+        ! Access the table and store the service routine start address in %l5
         sethi   %hi(trap_service_routine_table), %l4
-        add     %l4, %l3, %l4
-        ld      [%lo(active_thread_context_stack_pointer) + %l4], %l3
+        add     %l4, %l5, %l4
+        ld      [%lo(active_thread_context_stack_pointer) + %l4], %l5
 
         ! ****************************************************
         !
@@ -400,7 +400,7 @@ exit_dump_frame_loop:
         ! Call the trap service routine.
         !
 
-        jmpl    %l3, %o7
+        jmpl    %l5, %o7
 
         ! ****************************************************
         !
@@ -626,12 +626,12 @@ no_overflow_yet:
         !
 
         ! The trap type indexes the trap service routine table
-        sll     %l3, 2, %l3
+        sll     %l3, 2, %l5
 
-        ! Access the table and store the service routine start address in %l3
+        ! Access the table and store the service routine start address in %l5
         sethi   %hi(trap_service_routine_table), %l4
-        add     %l4, %l3, %l4
-        ld      [%lo(active_thread_context_stack_pointer) + %l4], %l3
+        add     %l4, %l5, %l4
+        ld      [%lo(active_thread_context_stack_pointer) + %l4], %l5
 
         ! ****************************************************
         !
@@ -661,7 +661,7 @@ no_overflow_yet:
         ! Call the trap service routine.
         !
 
-        jmpl    %l3, %o7
+        jmpl    %l5, %o7
 
         ! ****************************************************
         !
@@ -714,5 +714,26 @@ no_overflow_yet:
         !
         ! Return to the interrupted trap
         !
+
+        !
+        ! Software traps need to return to the instruction after
+        ! the one causing the trap. Interrupting traps, on the other hand,
+        ! must reexecute the instruction where the trap was invoked.
+
+        cmp     %l3, 0x80
+        bl      return_from_an_interrupting_trap
+        nop
+
+ return_from_a_software_trap:
+
+        !
+        ! Go back to the instruction after the instruction that trapped.
+        jmp     %l2
+        rett    %l2 + 0x04
+
+ return_from_an_interrupting_trap:
+
+        !
+        ! Repeat the instruction where the trap was invoked
         jmp     %l1
         rett    %l2
