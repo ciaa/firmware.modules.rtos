@@ -133,6 +133,9 @@ void sparcSystemServiceUnMaskInterrupts();
 
 void sparcSystemServiceRebootSystem();
 
+void sparcSystemServiceCallDebugger();
+
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
