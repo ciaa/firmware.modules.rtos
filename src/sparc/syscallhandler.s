@@ -59,10 +59,10 @@
         !  %l2 = nPC
         !  %l3 = trap type, or trap service table index
         !
-        .global syscall_handler
-        .type   syscall_handler, #function
+        .global syscall_trap_handler
+        .type   syscall_trap_handler, #function
 
-syscall_chandler:
+syscall_trap_handler:
 
         !
         ! We have local registers %l4 to %l7 available for use.
