@@ -161,3 +161,23 @@ sparcSystemServiceRebootSystem:
         retl
         nop
 
+
+        ! **************************************************
+        !
+        ! void sparcSystemServiceCallDebugger();
+        !
+        ! ***
+
+        .global sparcSystemServiceCallDebugger
+        .type   sparcSystemServiceCallDebugger, #function
+
+sparcSystemServiceCallDebugger:
+
+        !
+        ! Invoke the software trap that is used by GDB/GRMON to indicate the
+        ! presence of a breakpoint.
+        ta      0x01
+
+        retl
+        nop
+
