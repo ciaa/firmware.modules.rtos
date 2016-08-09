@@ -712,28 +712,30 @@ no_overflow_yet:
 
         ! ****************************************************
         !
-        ! Return to the interrupted trap
+        ! Return from the trap
         !
+        ! This universal handler may be used for both interrupting and precise traps.
+        ! Interrupting traps must reexecute the instruction where the trap was invoked.
+        ! All other trap types are assumed to be precise traps
 
-        !
-        ! Software traps need to return to the instruction after
-        ! the one causing the trap. Interrupting traps, on the other hand,
-        ! must reexecute the instruction where the trap was invoked.
-
-        cmp     %l3, 0x80
-        bl      return_from_an_interrupting_trap
+        cmp     %l3, 0x11
+        bl      return_from_a_precise_trap
         nop
 
- return_from_a_software_trap:
-
-        !
-        ! Go back to the instruction after the instruction that trapped.
-        jmp     %l2
-        rett    %l2 + 0x04
+        cmp     %l3, 0x1f
+        bg      return_from_a_precise_trap
+        nop
 
  return_from_an_interrupting_trap:
 
         !
-        ! Repeat the instruction where the trap was invoked
+        ! Reexecute the instruction where the trap was invoked
         jmp     %l1
         rett    %l2
+
+ return_from_a_precise_trap:
+
+        !
+        ! Go back to the instruction located right after the instruction that trapped.
+        jmp     %l2
+        rett    %l2 + 0x04
