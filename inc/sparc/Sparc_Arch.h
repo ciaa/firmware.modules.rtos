@@ -63,6 +63,12 @@
 #define SPARC_PSR_CWP_MASK 0x001f
 
 
+/** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
+ *
+ * For alignments reasons this number must be a multiple of 8 (double word).
+ **/
+#define SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE 92
+
 
 /** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
  *
@@ -74,12 +80,20 @@
  *
  * For alignments reasons this number must be a multiple of 8 (double word).
  **/
-#define SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE 80
+#define SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE 0
 
 
 /** \brief Software trap number for syscall services.
  **/
 #define SPARC_SYSCALL_SERVICE_TRAP_NUMBER 0x00
+
+/** \brief Software trap number for the CallTask service.
+ **/
+#define SPARC_CALLTASK_SERVICE_TRAP_NUMBER 0x02
+
+/** \brief Software trap number for the JmpTask service.
+ **/
+#define SPARC_CALLTASK_SERVICE_TRAP_NUMBER 0x03
 
 
 /** \brief Syscall service ID - Disable traps.
@@ -135,6 +149,9 @@ void sparcSystemServiceRebootSystem();
 
 void sparcSystemServiceCallDebugger();
 
+void sparcSystemServiceTriggerCallTask();
+
+void sparcSystemServiceTriggerJmpTask();
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

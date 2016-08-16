@@ -1,5 +1,5 @@
 /* Copyright 2016, Gerardo Puga (UNLP)
- * Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+ *
  *
  * This file is part of CIAA Firmware.
  *
@@ -36,8 +36,8 @@
 
 /** \brief FreeOSEK Internal Architecture Dependent Header File
  **
- ** \file cortexM4/Os_Internal_Arch.h
- ** \arch cortexM4
+ ** \file sparc/Os_Internal_Arch.h
+ ** \arch sparc
  **/
 
 /** \addtogroup FreeOSEK
@@ -48,151 +48,58 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
-//#include "lpc43xx_cgu.h"
+
+
+#include "os.h"
 
 /*==================[macros]=================================================*/
+
 /** \brief Extra size reserved for each stack
  **
  ** This macro shall be set to the amount of extra stack needed for each task
  ** in the simulation of the rtos in systems like windows/linux. In real
  ** embedded hw this macro shall be set to 0.
  **
- ** TASK_STAC_ADDITIONAL_STACK bytes of extra stack are reserver for each task
+ ** TASK_STACK_ADDITIONAL_STACK bytes of extra stack are reserved for each task
  ** running on the system.
  **/
 #define TASK_STACK_ADDITIONAL_SIZE      0
+
 
 /** \brief Osek_Internal_Arch_Cpu.h inclusion needed macro
  **
  ** This define makes the Osek_Internal.h file to include the
  ** Osek_Internal_Arch_Cpu file which is not standard for all architectures.
- ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
+ ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is needed
  ** remove the macro and this comment.
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
 
-extern void * Osek_OldTaskPtr_Arch;
-extern void * Osek_NewTaskPtr_Arch;
-extern TaskType TerminatingTask;
 
 /** \brief Interrupt Secure Start Macro
  **
- ** This macro will be used internaly by the OS in any part of code that
- ** has to be executed atomic.
+ ** This macro will be used internally by the OS whenever it
+ ** needs to get into a critical region and execute code
+ ** atomically.
  **/
 #define IntSecure_Start() SuspendAllInterrupts()
 
+
 /** \brief Interrupt Secure End Macro
  **
- ** This macro is the countra part of IntSecure_Start()
+ ** This macro complements of IntSecure_Start(). It re-enables
+ ** interrupts, signaling the end of the critical region.
  **/
 #define IntSecure_End() ResumeAllInterrupts()
 
-/** \brief osekpause
- **
- ** This macro is called by the scheduler when not task has to be executed.
- ** If a background task is configured by the user (a full preemptive task
- ** with lower priority and which never ends) this macro will never be called.
- ** In other case the macro will be called any time that the OS has nothing
- ** else to execute. The macro may sleep the cpu for a short time to avoid
- ** overheating and full power consumption or may halt the processor always
- ** that all wakeup reasons are right configured. If nothing is running
- ** nothing my activate any task so we will keep sleeping until anything
- ** occurs, like for example an interrupt.
- **
- **/
-#define osekpause() __asm volatile("wfi")
-
-/** \brief Call to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-#define CallTask(actualtask, nexttask)                                    \
-{                                                                         \
-   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;    \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;      \
-   __asm__ __volatile__ (                                                 \
-      /* Call PendSV */                                                   \
-      "push {r0,r1}                                               \n\t"   \
-      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                         \n\t"   \
-      "ldr r1,[r0]                                                \n\t"   \
-      "orr r1,1<<28                                               \n\t"   \
-      "str r1,[r0]                                                \n\t"   \
-      "pop {r0,r1}                                                \n\t"   \
-   );                                                                     \
-}
-
-/** \brief Jmp to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-#define JmpTask(task)                                                      \
-{                                                                          \
-   extern TaskType WaitingTask;                                            \
-   if(WaitingTask != INVALID_TASK)                                         \
-   {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*)TasksConst[WaitingTask].TaskContext;   \
-      WaitingTask = INVALID_TASK;                                          \
-   }                                                                       \
-   else                                                                    \
-   {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*)0;                                     \
-   }                                                                       \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
-   __asm__ __volatile__ (                                                  \
-      /* Call PendSV */                                                    \
-      "push {r0,r1}                                          \n\t"         \
-      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                    \n\t"         \
-      "ldr r1,[r0]                                           \n\t"         \
-      "orr r1,1<<28                                          \n\t"         \
-      "str r1,[r0]                                           \n\t"         \
-      "pop {r0,r1}                                           \n\t"         \
-   );                                                                      \
-}
-
-/** \brief Save context */
-#define SaveContext(task)                                                  \
-{                                                                          \
-   extern TaskType WaitingTask;                                            \
-   if(TasksVar[GetRunningTask()].Flags.State == TASK_ST_WAITING)           \
-   {                                                                       \
-      WaitingTask = GetRunningTask();                                      \
-   }                                                                       \
-   flag = 0;                                                               \
-   /* remove of the Ready List */                                          \
-   RemoveTask(GetRunningTask());                                           \
-   /* set system context */                                                \
-   SetActualContext(CONTEXT_SYS);                                          \
-   /* set running task to invalid */                                       \
-   SetRunningTask(INVALID_TASK);                                           \
-   /* finish cirtical code */                                              \
-   IntSecure_End();                                                        \
-   /* call scheduler */                                                    \
-   Schedule();                                                             \
-   /* add this call in order to maintain counter balance when returning */ \
-   IntSecure_Start();                                                      \
-}
-
-/** \brief */
-#define ResetStack(task)       \
-{                              \
-   TerminatingTask = (task);   \
-}
-
-/** \brief Set the entry point for a task */
-#define SetEntryPoint(task)    \
-{                              \
-   TerminatingTask = (task);   \
-}
 
 /** \brief Enable OS Interruptions
  **
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
- ** is called only ones in StartUp.c function.
+ ** is called only at the end of the StartOS() function.
  **/
-#define EnableOSInterrupts() __asm volatile("cpsie i")
+#define EnableOSInterrupts() { sparcSystemServiceUnMaskInterrupts(); }
+
 
 /** \brief Enable Interruptions
  **
@@ -209,7 +116,8 @@ extern TaskType TerminatingTask;
  **
  ** Disable OS configured interrupts (ISR1 and ISR2).
  **/
-#define DisableOSInterrupts() __asm volatile("cpsid i")
+#define DisableOSInterrupts()  { sparcSystemServiceMaskInterrupts(); }
+
 
 /** \brief Disable Interruptions
  **
@@ -221,14 +129,16 @@ extern TaskType TerminatingTask;
  **/
 #define DisableInterrupts() DisableOSInterrupts()
 
+
 /** \brief Get Counter Actual Value
  **
  ** This macro returns the actual value of the a counter
  **
- ** \param[in] CounterID id of the counter to be readed
+ ** \param[in] CounterID id of the counter to be read
  ** \return Actual value of the counter
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
+
 
 /** \brief Pre ISR Macro
  **
@@ -236,11 +146,13 @@ extern TaskType TerminatingTask;
  **/
 #define PreIsr2_Arch(isr)
 
+
 /** \brief Post ISR Macro
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
 #define PostIsr2_Arch(isr) Schedule_WOChecks()
+
 
 /** \brief ShutdownOs Arch service
  **
@@ -249,25 +161,52 @@ extern TaskType TerminatingTask;
  **/
 #define ShutdownOs_Arch()
 
+
+/** \brief osekpause
+ **
+ ** This macro is called by the scheduler when there are no tasks available
+ ** for execution. If a background task is configured by the user (a full
+ ** preemptive task with lower priority and which never ends) this macro will
+ ** never be called. Otherwise this macro will be called any time that the
+ ** OS has nothing else to execute. The macro may sleep the cpu for a short time
+ ** to avoid over heating and full power consumption, or may halt the processor
+ ** until an event wakes it up again (for example, an external interrupt).
+ **
+ **/
+#define osekpause() { __asm volatile("nop"); }
+
+
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be used only internal by
- * the OS and only for this architecture and which will not depend on the
- * configuraiton. Normaly this section shall be empty.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Internal_Arch.c
- * that will be visible only internal to the OS for this architectire.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
+extern TaskType TerminatingTask;
+
 
 /*==================[external functions declaration]=========================*/
-void InitStack_Arch(uint8 TaskID);
+
+
+/** \brief Save context of task that has just gone into Waiting state.
+ *
+ * This is only used in WaitEvent when the task needs to sleep to wait for the event.
+ **/
+void SaveContext(TaskType task);
+
+
+/** \brief Replace the currently running task context for a new one.
+ **/
+void CallTask(TaskType actualtask, TaskType nexttask);
+
+
+/** \brief Set the currently active task context
+ **/
+void JmpTask(TaskType task);
+
+
+/** \brief Set the entry point for a task
+ **/
+void SetEntryPoint(TaskType task);
 
 
 /** @} doxygen end group definition */

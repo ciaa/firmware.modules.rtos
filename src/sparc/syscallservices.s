@@ -55,6 +55,41 @@
         ! these functions take no input arguments and return no return values.
         !
 
+
+        ! **************************************************
+        !
+        ! void sparcSystemServiceTriggerCallTask();
+        !
+        ! ***
+
+        .global sparcSystemServiceTriggerCallTask
+        .type   sparcSystemServiceTriggerCallTask, #function
+
+sparcSystemServiceTriggerCallTask:
+
+        ta      SPARC_CALLTASK_SERVICE_TRAP_NUMBER
+
+        retl
+        nop
+
+
+        ! **************************************************
+        !
+        ! void sparcSystemServiceTriggerCallTask();
+        !
+        ! ***
+
+        .global sparcSystemServiceTriggerJmpTask
+        .type   sparcSystemServiceTriggerJmpTask, #function
+
+sparcSystemServiceTriggerJmpTask:
+
+        ta      SPARC_JMPTASK_SERVICE_TRAP_NUMBER
+
+        retl
+        nop
+
+
         ! **************************************************
         !
         ! void sparcSystemServiceEnableTraps();

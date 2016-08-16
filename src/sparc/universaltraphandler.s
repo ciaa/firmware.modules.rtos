@@ -386,8 +386,12 @@ exit_dump_frame_loop:
         ! here using NOPs between the writes, but it is needed after the second.
 
         mov     %l0, %l4
-        or      %l4, SPARC_PSR_PIL_MASK, %l4  ! Set the PIL field to 15
-        mov     %l4, %psr
+        !
+        ! TODO: The ISR code in Osek seems to assume that interrupts are enabled when you start executing
+        ! the high level service routine, so avoid disabling them here...
+        ! or      %l4, SPARC_PSR_PIL_MASK  ! Set the PIL field to 15
+        ! mov     %l4, %psr
+        !
         or      %l4, SPARC_PSR_ET_MASK, %l4   ! Set ET
         mov     %l4, %psr
         ! delay cycles
@@ -411,7 +415,7 @@ exit_dump_frame_loop:
         !
         ! *** INSERT MISSING CODE HERE ***
         !
-        ! ISSUE03
+        ! ISSUE03 TODO
         ! Code should call the system service that atomically
         ! unsets the ET bit in PSR. Here this will be translated to
         ! to simply causing a software trap (e.g. "ta SERVICE_TRAP_DISABLE").
@@ -647,8 +651,12 @@ no_overflow_yet:
         ! between the writes, but it does after the second.
 
         mov     %l0, %l4
-        or      %l4, SPARC_PSR_PIL_MASK  ! Set the PIL field to 15
-        mov     %l4, %psr
+        !
+        ! TODO: The ISR code in Osek seems to assume that interrupts are enabled when you start executing
+        ! the high level service routine, so avoid disabling them here...
+        ! or      %l4, SPARC_PSR_PIL_MASK  ! Set the PIL field to 15
+        ! mov     %l4, %psr
+        !
         or      %l4, SPARC_PSR_ET_MASK   ! Set ET
         mov     %l4, %psr
         ! delay cycles
@@ -672,7 +680,7 @@ no_overflow_yet:
         !
         ! *** INSERT MISSING CODE HERE ***
         !
-        ! ISSUE03
+        ! ISSUE03 TODO
         ! Code should call the system service that atomically
         ! unsets the ET bit in PSR. Here this will be translated to
         ! to simply causing a software trap (e.g. "ta SERVICE_TRAP_DISABLE").

@@ -63,26 +63,20 @@
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+
+
 void StartOs_Arch_Cpu(void)
 {
-   StartOs_Arch_SysTick();
    Enable_User_ISRs();
 }
 
+
 void StartOs_Arch(void)
 {
-   uint8f loopi;
-
-   /* init every task */
-   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-   {
-      InitStack_Arch(loopi);
-   }
-
    /* CPU dependent initialisation */
    StartOs_Arch_Cpu();
-
 }
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
