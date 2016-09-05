@@ -49,17 +49,43 @@
 
 /*==================[cpu macros]=============================================*/
 
+
 /*==================[inclusions]=============================================*/
+
 
 /*==================[macros]=================================================*/
 
+
 /*==================[typedef]================================================*/
+
+
+typedef uint32 sparcIrqNumber;
+
+typedef void *sparcIrqHandlerRef();
+
 
 /*==================[external data declaration]==============================*/
 
+
 /*==================[external functions declaration]=========================*/
 
+
+void sparcRegisterISR1Handler(sparcIrqHandlerRef handler, sparcIrqNumber irq);
+
+void sparcRegisterISR2Handler(sparcIrqHandlerRef handler, sparcIrqNumber irq);
+
+void sparcEnableAllInterrupts(void);
+
+void sparcDisableAllInterrupts(void);
+
+void sparcEnableISR2Interrupts(void);
+
+void sparcDisableISR2Interrupts(void);
+
 void StartOs_Arch_Cpu(void);
+
+void sparcOsekPause();
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

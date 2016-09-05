@@ -31,9 +31,9 @@
  *
  */
 
-/** \brief FreeOSEK Os Arch Implementation File
+/** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file sparc/Os_Arch.c
+ ** \file sparc/grlib.c
  ** \arch sparc
  **/
 
@@ -41,13 +41,13 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*==================[inclusions]=============================================*/
 
 
-#include "Os_Internal.h"
+#include "grlib.h"
 
 
 /*==================[macros and definitions]=================================*/
@@ -69,6 +69,25 @@
 
 
 /*==================[external functions definition]==========================*/
+
+
+void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceRegisterValue newValue)
+{
+    grDeviceRegisterValue *registerPtr;
+
+   registerPtr = (grDeviceRegisterValue *)(baseAddr + offset);
+
+   *registerPtr = newValue;
+}
+
+grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset)
+{
+    grDeviceRegisterValue *registerPtr;
+
+   registerPtr = (grDeviceRegisterValue *)(baseAddr + offset);
+
+   return (grDeviceRegisterValue)(*registerPtr);
+}
 
 
 /** @} doxygen end group definition */

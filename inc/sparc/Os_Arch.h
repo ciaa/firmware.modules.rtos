@@ -37,7 +37,7 @@
 /** \brief FreeOSEK Os Architecture Dependent Header File
  **
  ** This file is included form os.h and defines macros
- ** and types which depends on the architecture.
+ ** and types which depend on the architecture.
  **
  ** \file sparc/Os_Arch.h
  ** \arch sparc
@@ -53,49 +53,88 @@
 
 /*==================[inclusions]=============================================*/
 
-#include "Os_Internal_Arch_Cfg.h"
 
 /*==================[macros]=================================================*/
 
+
 /** \brief Enable All Interrupts Arch
  **/
-#define EnableAllInterrupts_Arch() { sparcSystemServiceUnMaskInterrupts(); }
+#define EnableAllInterrupts_Arch() { sparcEnableAllInterrupts(); }
+
 
 /** \brief Disable All Interrupts Arch
  **/
-#define DisableAllInterrupts_Arch() { sparcSystemServiceMaskInterrupts(); }
+#define DisableAllInterrupts_Arch() { sparcDisableAllInterrupts(); }
+
 
 /** \brief Resume All Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts.
  **/
-#define ResumeAllInterrupts_Arch() { sparcSystemServiceUnMaskInterrupts(); }
+#define ResumeAllInterrupts_Arch() { sparcEnableAllInterrupts(); }
+
 
 /** \brief Suspend All Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts.
  **/
-#define SuspendAllInterrupts_Arch() { sparcSystemServiceMaskInterrupts(); }
+#define SuspendAllInterrupts_Arch() { sparcDisableAllInterrupts(); }
+
 
 /** \brief Resume OS Interrupts Arch
  **
  ** This macro shall resume (enable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR2.
  **/
-#define ResumeOSInterrupts_Arch() Enable_ISR2_Arch()
+#define ResumeOSInterrupts_Arch() { sparcEnableISR2Interrupts(); }
+
 
 /** \brief Suspend OS Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts configured on the
  ** FreeOSEK OIL configuration file as ISR2.
  **/
-#define SuspendOSInterrupts_Arch() Disable_ISR2_Arch()
+#define SuspendOSInterrupts_Arch() { sparcDisableISR2Interrupts(); }
+
 
 /*==================[typedef]================================================*/
 
+
 /*==================[external data declaration]==============================*/
 
+
 /*==================[external functions declaration]=========================*/
+
+
+/** \brief TBD
+ **/
+void sparcRegisterISR1Handler();
+
+
+/** \brief TBD
+ **/
+void sparcRegisterISR2Handler();
+
+
+/** \brief TBD
+ **/
+void sparcEnableAllInterrupts();
+
+
+/** \brief TBD
+ **/
+void sparcDisableAllInterrupts();
+
+
+/** \brief TBD
+ **/
+void sparcEnableISR2Interrupts();
+
+
+/** \brief TBD
+ **/
+void sparcDisableISR2Interrupts();
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

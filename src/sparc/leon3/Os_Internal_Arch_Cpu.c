@@ -31,9 +31,9 @@
  *
  */
 
-/** \brief FreeOSEK Os Arch Implementation File
+/** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file sparc/Os_Arch.c
+ ** \file sparc/Os_Internal_Arch.c
  ** \arch sparc
  **/
 
@@ -41,14 +41,13 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
 /*==================[inclusions]=============================================*/
 
-
-#include "Os_Internal.h"
-
+#include "Os_Internal_Arch_Cpu.h"
+#include "grlib.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -62,6 +61,21 @@
 /*==================[internal data definition]===============================*/
 
 
+grDeviceAddress grIRQMBaseAddress;
+
+uint32 sparcISR1HandlersMask = 0x00;
+
+uint32 sparcISR2HandlersMask = 0x00;
+
+uint32 sparcCurrentInterruptMask = 0x0;
+
+sparcIrqHandlerRef sparcIRQHandlersTable[15] = {
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00
+};
+
 /*==================[external data definition]===============================*/
 
 
@@ -69,6 +83,81 @@
 
 
 /*==================[external functions definition]==========================*/
+
+
+void sparcOsekPause()
+{
+
+   /* According to aeroflex Gaisler LEON 3 documentation, the LEON 3
+    * implementation of the SPARC Architecture will enter into a power
+    * down mode by executing a WRASR instruction to the %asr19 register.
+    * In this power-down mode, the processor halts the pipeline, freezing
+    * code execution and cache changes until the next interrupt comes along.
+    * */
+   asm("wrasr %g0, %asr19");
+
+}
+
+
+void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
+{
+    uint32 newInterruptMask;
+
+    newInterruptMask = (1 << irq);
+
+    grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
+
+   sparcISR1HandlersMask |= newInterruptMask;
+
+   sparcIRQHandlersTable[irq - 1] = newHandler;
+}
+
+
+void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
+{
+   uint32 newInterruptMask;
+
+   newInterruptMask = (1 << irq);
+
+   grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
+
+   sparcISR2HandlersMask |= newInterruptMask;
+
+   sparcIRQHandlersTable[irq - 1] = newHandler;
+}
+
+
+void sparcEnableAllInterrupts(void)
+{
+
+    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR1HandlersMask | sparcISR2HandlersMask);
+
+    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+}
+
+
+void sparcDisableAllInterrupts(void)
+{
+    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR1HandlersMask | sparcISR2HandlersMask));
+
+    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+}
+
+
+void sparcEnableISR2Interrupts(void)
+{
+    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR2HandlersMask);
+
+    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+}
+
+
+void sparcDisableISR2Interrupts(void)
+{
+    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR2HandlersMask));
+
+    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+}
 
 
 /** @} doxygen end group definition */

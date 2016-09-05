@@ -46,10 +46,13 @@
 
 /*==================[inclusions]=============================================*/
 
+
 #include "Os_Internal.h"
 #include "Sparc_Arch.h"
 
+
 /*==================[macros and definitions]=================================*/
+
 
 /*==================[internal data declaration]==============================*/
 
@@ -70,6 +73,7 @@ TaskType WaitingTask = INVALID_TASK;
 
 
 /*==================[external data definition]===============================*/
+
 
 /*==================[internal functions definition]==========================*/
 
@@ -284,4 +288,3 @@ void SetEntryPoint(TaskType TaskID)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

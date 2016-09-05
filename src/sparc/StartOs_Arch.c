@@ -31,7 +31,7 @@
  *
  */
 
-/** \brief FreeOSEK Os StartOs Architecture Dependece Implementation File
+/** \brief FreeOSEK Os StartOs Architecture Dependence Implementation File
  **
  ** This file implements the StartOs Arch API
  **
@@ -73,7 +73,7 @@ void StartOs_Arch_Cpu(void)
 
 void StartOs_Arch(void)
 {
-   /* CPU dependent initialisation */
+   /* CPU dependent initialization */
    StartOs_Arch_Cpu();
 }
 

@@ -1,5 +1,5 @@
 /* Copyright 2016, Gerardo Puga (UNLP)
- * Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+ *
  *
  * This file is part of CIAA Firmware.
  *
@@ -31,48 +31,63 @@
  *
  */
 
-/** \brief FreeOSEK Os Arch Implementation File
+#ifndef _GAISLER_GRLIB_H_
+#define _GAISLER_GRLIB_H_
+
+/** \brief FreeOSEK Internal Architecture CPU Auxiliar Header File
  **
- ** \file sparc/Os_Arch.c
- ** \arch sparc
+ ** \file sparc/leon3/grlib.h
+ ** \arch sparc/leon3
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
+
+/*==================[cpu macros]=============================================*/
+
 
 /*==================[inclusions]=============================================*/
 
 
-#include "Os_Internal.h"
+/*==================[macros]=================================================*/
 
 
-/*==================[macros and definitions]=================================*/
+#define IRQMP_INTERRUPT_LEVEL_REGISTER                       (0x00)
+#define IRQMP_INTERRUPT_PENDING_REGISTER                     (0x04)
+#define IRQMP_INTERRUPT_FORCE_REGISTER                       (0x08)
+#define IRQMP_INTERRUPT_CLEAR_REGISTER                       (0x0c)
+#define IRQMP_MULTIPROCESSOR_STATUS_REGISTER                 (0x10)
+#define IRQMP_INTERRUPT_BROADCAST_REGISTER                   (0x14)
+#define IRQMP_MP_INTERRUPT_MASK_REGISTER(cpu)                (0x40 + 0x04 * (cpu))
+#define IRQMP_MP_INTERRUPT_FORCE_REGISTER(cpu)               (0x80 + 0x04 * (cpu))
+#define IRQMP_MP_EXTENDED_INTERRUPT_ACKNOLEDGE_REGISTER(cpu) (0xc4 + 0x04 * (cpu))
 
 
-/*==================[internal data declaration]==============================*/
+/*==================[typedef]================================================*/
 
 
-/*==================[internal functions declaration]=========================*/
+typedef uint32 grDeviceAddress;
+
+typedef uint32 grDeviceRegisterValue;
+
+/*==================[external data declaration]==============================*/
 
 
-/*==================[internal data definition]===============================*/
+/*==================[external functions declaration]=========================*/
 
 
-/*==================[external data definition]===============================*/
+void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceRegisterValue newValue);
 
-
-/*==================[internal functions definition]==========================*/
-
-
-/*==================[external functions definition]==========================*/
+grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset);
 
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _GAISLER_GRLIB_H_ */
 

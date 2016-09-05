@@ -51,8 +51,11 @@
 
 
 #include "os.h"
+#include "Os_Arch.h"
+
 
 /*==================[macros]=================================================*/
+
 
 /** \brief Extra size reserved for each stack
  **
@@ -82,7 +85,7 @@
  ** needs to get into a critical region and execute code
  ** atomically.
  **/
-#define IntSecure_Start() SuspendAllInterrupts()
+#define IntSecure_Start() { SuspendAllInterrupts(); }
 
 
 /** \brief Interrupt Secure End Macro
@@ -90,7 +93,7 @@
  ** This macro complements of IntSecure_Start(). It re-enables
  ** interrupts, signaling the end of the critical region.
  **/
-#define IntSecure_End() ResumeAllInterrupts()
+#define IntSecure_End() { ResumeAllInterrupts(); }
 
 
 /** \brief Enable OS Interruptions
@@ -98,36 +101,38 @@
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
  ** is called only at the end of the StartOS() function.
  **/
-#define EnableOSInterrupts() { sparcSystemServiceUnMaskInterrupts(); }
+#define EnableOSInterrupts() { sparcEnableAllInterrupts(); }
 
 
 /** \brief Enable Interruptions
  **
  ** Enable not OS configured interrupts (ISR1 and ISR2). This macro
- ** is called only ones in StartUp.c function.
+ ** is called only from StartUp.c
  **
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use EnableOSInterrupts.
  **/
-#define EnableInterrupts() EnableOSInterrupts()
+#define EnableInterrupts()
 
 
 /** \brief Disable OS Interruptions
  **
- ** Disable OS configured interrupts (ISR1 and ISR2).
+ ** Disable OS configured interrupts (ISR1 and ISR2). This macro is currently never
+ ** called from anyhwere in the code.
+ **
  **/
-#define DisableOSInterrupts()  { sparcSystemServiceMaskInterrupts(); }
+#define DisableOSInterrupts()  { sparcEnableAllInterrupts(); }
 
 
 /** \brief Disable Interruptions
  **
- ** Disable not OS configured interrupts (ISR1 and ISR2). This macro
- ** is called only ones in StartUp.c function.
+ ** Disable not OS configured interrupts (ISR1 and ISR2). This macro is currently never
+ ** called from anyhwere in the code.
  **
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use DisableOSInterrupts.
  **/
-#define DisableInterrupts() DisableOSInterrupts()
+#define DisableInterrupts()
 
 
 /** \brief Get Counter Actual Value
@@ -173,10 +178,11 @@
  ** until an event wakes it up again (for example, an external interrupt).
  **
  **/
-#define osekpause() { __asm volatile("nop"); }
+#define osekpause() { SparcOsekPause(); }
 
 
 /*==================[typedef]================================================*/
+
 
 /*==================[external data declaration]==============================*/
 
