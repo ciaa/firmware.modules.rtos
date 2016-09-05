@@ -47,6 +47,7 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Os_Internal_Arch_Cfg.h"
 #include "Os_Internal.h"
 #include "Sparc_Arch.h"
 
@@ -63,16 +64,22 @@
 /*==================[internal data definition]===============================*/
 
 
-void *active_thread_context_stack_pointer;
-
-
 TaskType TerminatingTask = INVALID_TASK;
 
 
 TaskType WaitingTask = INVALID_TASK;
 
 
+TaskContextType *sparcNewContextPtr;
+
+
+TaskContextType *sparcOldContextPtr;
+
+
 /*==================[external data definition]===============================*/
+
+
+uint32 *active_thread_context_stack_pointer;
 
 
 /*==================[internal functions definition]==========================*/
@@ -90,6 +97,34 @@ void taskReturnSafetyNet(void)
 }
 
 
+void sparcSetTaskContextSWTrapHandler()
+{
+   /* This routine implements the software trap handler that performs the JmpTask()
+    * system call function.
+    *
+    * This replaces the current context stack pointer with a new one without
+    * saving the previous one, which is supposed to be disposable (because there
+    * is not a currently active running task, or because the currently running
+    * task has been terminated).
+    *
+    * */
+   active_thread_context_stack_pointer = sparcNewContextPtr->stackBottomPtr;
+}
+
+
+void sparcReplaceTaskContextSWTrapHandler()
+{
+   /* This routine implements the software trap handler that performs the CallTask()
+    * system call function.
+    *
+    * Basically this replaces the current context stack pointer with a new one, after
+    * having saved the previously active task's context information for future retrieval.     *
+    * */
+   sparcOldContextPtr->stackBottomPtr = active_thread_context_stack_pointer;
+   active_thread_context_stack_pointer = sparcNewContextPtr->stackBottomPtr;
+}
+
+
 /*==================[external functions definition]==========================*/
 
 
@@ -102,33 +137,29 @@ void SaveContext(TaskType runningTask)
 }
 
 
-void CallTask(TaskType actualtask, TaskType nexttask)
+void CallTask(TaskType currentTask, TaskType newTask)
 {
-   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;
+   sparcOldContextPtr = &TasksConst[(currentTask)].TaskContext;
+   sparcNewContextPtr = &TasksConst[(newTask)].TaskContext;
 
-   sparcSystemServiceTriggerCallTask();
+   sparcSystemServiceTriggerReplaceTaskContext();
 }
 
 
-void JmpTask(TaskType task)
+void JmpTask(TaskType newTask)
 {
-   extern TaskType WaitingTask;
-
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;
+   sparcNewContextPtr = &TasksConst[(newTask)].TaskContext;
 
    if(WaitingTask != INVALID_TASK)
    {
-      Osek_OldTaskPtr_Arch = (void*)TasksConst[WaitingTask].TaskContext;
+      sparcOldContextPtr = &TasksConst[(WaitingTask)].TaskContext;
       WaitingTask = INVALID_TASK;
 
-      sparcSystemServiceTriggerCallTask();
+      sparcSystemServiceTriggerReplaceTaskContext();
    }
    else
    {
-      Osek_OldTaskPtr_Arch = (void*)0;
-
-      sparcSystemServiceTriggerJmpTask();
+      sparcSystemServiceTriggerSetTaskContext();
    }
 }
 

@@ -51,7 +51,7 @@
         !  %l0 = psr
         !  %l1 = PC
         !  %l2 = nPC
-        !  %l3 = trap type, or trap service table index
+        !  %l3 = hardware/software trap handler table index. The sixth bit is 0 for interrupts and 1 for sofware traps.
         !
         ! And performs the following actions:
         ! * Checks whether this interrupt/software trap is the outermost one, or whether it is executing as a
@@ -364,13 +364,17 @@ exit_dump_frame_loop:
         ! Fetch the actual trap service routine start address from the ISR table.
         !
 
-        ! The trap type indexes the trap service routine table
-        sll     %l3, 2, %l5
+        ! The trap type indexes the trap service routine table, must be masked out
+        ! first, because that bit is a flag that indicate if the handler is a
+        ! software trap handler or an external interrupt handler. That piece of data
+        ! will be relevant on the way out of the trap. See below.
+        and     %l3, 0x1f, %l5
+        sll     %l5, 2, %l5
 
         ! Access the table and store the service routine start address in %l5
-        sethi   %hi(trap_service_routine_table), %l4
+        sethi   %hi(sparcUniversalTrapHandlersTable), %l4
         add     %l4, %l5, %l4
-        ld      [%lo(active_thread_context_stack_pointer) + %l4], %l5
+        ld      [%lo(sparcUniversalTrapHandlersTable) + %l4], %l5
 
         ! ****************************************************
         !
@@ -492,8 +496,9 @@ exit_dump_frame_loop:
         !
         ! Return to the interrupted thread
         !
-        jmp     %l1
-        rett    %l2
+
+        ba return_from_trap
+        nop
 
         ! ****************************************************
         ! ****************************************************
@@ -629,13 +634,17 @@ no_overflow_yet:
         ! Fetch the actual trap service routine start address from the ISR table.
         !
 
-        ! The trap type indexes the trap service routine table
-        sll     %l3, 2, %l5
+        ! The trap type indexes the trap service routine table, must be masked out
+        ! first, because that bit is a flag that indicate if the handler is a
+        ! software trap handler or an external interrupt handler. That piece of data
+        ! will be relevant on the way out of the trap. See below.
+        and     %l3, 0x1f, %l5
+        sll     %l5, 2, %l5
 
         ! Access the table and store the service routine start address in %l5
-        sethi   %hi(trap_service_routine_table), %l4
+        sethi   %hi(sparcUniversalTrapHandlersTable), %l4
         add     %l4, %l5, %l4
-        ld      [%lo(active_thread_context_stack_pointer) + %l4], %l5
+        ld      [%lo(sparcUniversalTrapHandlersTable) + %l4], %l5
 
         ! ****************************************************
         !
@@ -718,6 +727,8 @@ no_overflow_yet:
         ! rest of the input registers, no need to derive it from
         ! %fp.
 
+return_from_trap:
+
         ! ****************************************************
         !
         ! Return from the trap
@@ -725,23 +736,22 @@ no_overflow_yet:
         ! This universal handler may be used for both interrupting and precise traps.
         ! Interrupting traps must reexecute the instruction where the trap was invoked.
         ! All other trap types are assumed to be precise traps
+        !
+        ! The sixth bit of the %l3 register is set if this code is handling
+        ! a software trap handler request (precise trap).
 
-        cmp     %l3, 0x11
-        bl      return_from_a_precise_trap
+        andc    %l3, 0x20
+        bnz     return_from_a_precise_trap
         nop
 
-        cmp     %l3, 0x1f
-        bg      return_from_a_precise_trap
-        nop
-
- return_from_an_interrupting_trap:
+return_from_an_interrupting_trap:
 
         !
         ! Reexecute the instruction where the trap was invoked
         jmp     %l1
         rett    %l2
 
- return_from_a_precise_trap:
+return_from_a_precise_trap:
 
         !
         ! Go back to the instruction located right after the instruction that trapped.

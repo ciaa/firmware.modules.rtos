@@ -215,6 +215,12 @@ void JmpTask(TaskType task);
 void SetEntryPoint(TaskType task);
 
 
+void sparcSetTaskContextSWTrapHandler();
+
+
+void sparcReplaceTaskContextSWTrapHandler();
+
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

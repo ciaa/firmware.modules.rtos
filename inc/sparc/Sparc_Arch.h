@@ -87,13 +87,14 @@
  **/
 #define SPARC_SYSCALL_SERVICE_TRAP_NUMBER 0x00
 
-/** \brief Software trap number for the CallTask service.
- **/
-#define SPARC_CALLTASK_SERVICE_TRAP_NUMBER 0x02
-
 /** \brief Software trap number for the JmpTask service.
  **/
-#define SPARC_CALLTASK_SERVICE_TRAP_NUMBER 0x03
+#define SPARC_SET_TASK_CONTEXT_SERVICE_TRAP_NUMBER 0x02
+
+/** \brief Software trap number for the CallTask service.
+ **/
+#define SPARC_REPLACE_TASK_CONTEXT_SERVICE_TRAP_NUMBER 0x03
+
 
 
 /** \brief Syscall service ID - Disable traps.
@@ -149,9 +150,9 @@ void sparcSystemServiceRebootSystem();
 
 void sparcSystemServiceCallDebugger();
 
-void sparcSystemServiceTriggerCallTask();
+void sparcSystemServiceTriggerReplaceTaskContext();
 
-void sparcSystemServiceTriggerJmpTask();
+void sparcSystemServiceTriggerSetTaskContext();
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

@@ -46,6 +46,7 @@
 
 /*==================[inclusions]=============================================*/
 
+#include "Os_Internal_Arch.h"
 #include "Os_Internal_Arch_Cpu.h"
 #include "grlib.h"
 
@@ -69,12 +70,32 @@ uint32 sparcISR2HandlersMask = 0x00;
 
 uint32 sparcCurrentInterruptMask = 0x0;
 
-sparcIrqHandlerRef sparcIRQHandlersTable[15] = {
-        0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00
+sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
+        /*
+         * External Interrupt handlers
+         * */
+        0x00, /* Index 00, IRQ 1 */
+        0x00, /* Index 01, IRQ 2 */
+        0x00, /* Index 02, IRQ 3 */
+        0x00, /* Index 03, IRQ 4 */
+        0x00, /* Index 05, IRQ 5 */
+        0x00, /* Index 06, IRQ 6 */
+        0x00, /* Index 07, IRQ 7 */
+        0x00, /* Index 08, IRQ 8 */
+        0x00, /* Index 09, IRQ 9 */
+        0x00, /* Index 10, IRQ 10 */
+        0x00, /* Index 11, IRQ 11 */
+        0x00, /* Index 12, IRQ 12 */
+        0x00, /* Index 13, IRQ 13 */
+        0x00, /* Index 14, IRQ 14 */
+        0x00, /* Index 15, IRQ 15 */
+        /*
+         * Software trap handlers
+         * */
+        sparcSetTaskContextSWTrapHandler, /* Index 16, set task context handler */
+        sparcReplaceTaskContextSWTrapHandler /* Index 17, Replace task context handler */
 };
+
 
 /*==================[external data definition]===============================*/
 

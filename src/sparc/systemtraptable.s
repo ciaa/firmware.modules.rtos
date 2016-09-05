@@ -59,6 +59,8 @@
         .global sparc_system_trap_table
         .type   sparc_system_trap_table, #object
 
+        .extern default_trap_handler, window_underflow_trap_handler, window_overflow_trap_handler, universal_trap_handler, sparcSetContextSWTrapHandler, sparcReplaceContextSWTrapHandler
+
         !
         ! The system trap table must be aligned to a multiple of 4096 bytes (lower 12 bits of the
         ! address must be 0).
@@ -297,7 +299,7 @@ trap_type_11:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x11, %l3    ! trap type number stored in %l3
+        mov     0x00, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -310,7 +312,7 @@ trap_type_12:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x12, %l3    ! trap type number stored in %l3
+        mov     0x01, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -323,7 +325,7 @@ trap_type_13:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x13, %l3    ! trap type number stored in %l3
+        mov     0x02, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -336,7 +338,7 @@ trap_type_14:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x14, %l3    ! trap type number stored in %l3
+        mov     0x03, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -349,7 +351,7 @@ trap_type_15:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x15, %l3    ! trap type number stored in %l3
+        mov     0x04, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -362,7 +364,7 @@ trap_type_16:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x16, %l3    ! trap type number stored in %l3
+        mov     0x05, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -375,7 +377,7 @@ trap_type_17:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x17, %l3    ! trap type number stored in %l3
+        mov     0x06, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -388,7 +390,7 @@ trap_type_18:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x18, %l3    ! trap type number stored in %l3
+        mov     0x07, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -401,7 +403,7 @@ trap_type_19:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x19, %l3    ! trap type number stored in %l3
+        mov     0x08, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -414,7 +416,7 @@ trap_type_1a:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x1a, %l3    ! trap type number stored in %l3
+        mov     0x09, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -427,7 +429,7 @@ trap_type_1b:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x1b, %l3    ! trap type number stored in %l3
+        mov     0x0a, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -440,7 +442,7 @@ trap_type_1c:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x1c, %l3    ! trap type number stored in %l3
+        mov     0x0b, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -453,7 +455,7 @@ trap_type_1d:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x1d, %l3    ! trap type number stored in %l3
+        mov     0x0c, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -466,7 +468,7 @@ trap_type_1e:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x1e, %l3    ! trap type number stored in %l3
+        mov     0x0d, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -479,7 +481,7 @@ trap_type_1f:
         mov     %psr, %l0
         sethi   %hi(universal_trap_handler), %l3
         jmpl    [%l3 + %lo(universal_trap_handler)], %g0
-        mov     0x1f, %l3    ! trap type number stored in %l3
+        mov     0x0e, %l3    ! Universal trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -1760,26 +1762,26 @@ trap_type_81:
         ! [ TRAP TYPE 0x82 ]
         !
         ! Priority    : 16
-        ! Description : "Userland divide by zero"
+        ! Description : "Set task context system service."
         !
 trap_type_82:
         mov     %psr, %l0
-        sethi   %hi(default_trap_handler), %l3
-        jmpl    [%l3 + %lo(default_trap_handler)], %g0
-        mov     0x82, %l3    ! trap type number stored in %l3
+        sethi   %hi(universal_trap_handler), %l3
+        jmpl    [%l3 + %lo(universal_trap_handler)], %g0
+        mov     0x000000f, %l3    ! Universal trap handlers table index, with bit 5 set to 1 to indicate this is a software trap handler.
 
 
         !
         ! [ TRAP TYPE 0x83 ]
         !
         ! Priority    : 16
-        ! Description : "Flush windows"
+        ! Description : "Replace task context system service."
         !
 trap_type_83:
         mov     %psr, %l0
-        sethi   %hi(default_trap_handler), %l3
-        jmpl    [%l3 + %lo(default_trap_handler)], %g0
-        mov     0x83, %l3    ! trap type number stored in %l3
+        sethi   %hi(universal_trap_handler), %l3
+        jmpl    [%l3 + %lo(universal_trap_handler)], %g0
+        mov     0x00000010, %l3    ! Universal trap handlers table index, with bit 5 set to 1 to indicate this is a software trap handler.
 
 
         !

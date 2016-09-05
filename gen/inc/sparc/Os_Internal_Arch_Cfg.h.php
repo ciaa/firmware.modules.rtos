@@ -63,7 +63,7 @@
 /** \brief Task Context Type */
 typedef struct {
    
-   uint32 * stackTopPtr;
+   uint32 * stackBottomPtr;
    
 } TaskContextType;
 

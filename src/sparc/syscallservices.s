@@ -62,12 +62,12 @@
         !
         ! ***
 
-        .global sparcSystemServiceTriggerCallTask
-        .type   sparcSystemServiceTriggerCallTask, #function
+        .global sparcSystemServiceTriggerReplaceTaskContext
+        .type   sparcSystemServiceTriggerReplaceTaskContext, #function
 
-sparcSystemServiceTriggerCallTask:
+sparcSystemServiceTriggerReplaceTaskContext:
 
-        ta      SPARC_CALLTASK_SERVICE_TRAP_NUMBER
+        ta      SPARC_REPLACE_TASK_CONTEXT_SERVICE_TRAP_NUMBER
 
         retl
         nop
@@ -79,12 +79,12 @@ sparcSystemServiceTriggerCallTask:
         !
         ! ***
 
-        .global sparcSystemServiceTriggerJmpTask
-        .type   sparcSystemServiceTriggerJmpTask, #function
+        .global sparcSystemServiceTriggerSetTaskContext
+        .type   sparcSystemServiceTriggerSetTaskContext, #function
 
-sparcSystemServiceTriggerJmpTask:
+sparcSystemServiceTriggerSetTaskContext:
 
-        ta      SPARC_JMPTASK_SERVICE_TRAP_NUMBER
+        ta      SPARC_SET_TASK_CONTEXT_SERVICE_TRAP_NUMBER
 
         retl
         nop
