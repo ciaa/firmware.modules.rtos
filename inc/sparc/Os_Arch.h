@@ -54,6 +54,9 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Os_Internal_Arch.h"
+
+
 /*==================[macros]=================================================*/
 
 
@@ -104,36 +107,6 @@
 
 
 /*==================[external functions declaration]=========================*/
-
-
-/** \brief TBD
- **/
-void sparcRegisterISR1Handler();
-
-
-/** \brief TBD
- **/
-void sparcRegisterISR2Handler();
-
-
-/** \brief TBD
- **/
-void sparcEnableAllInterrupts();
-
-
-/** \brief TBD
- **/
-void sparcDisableAllInterrupts();
-
-
-/** \brief TBD
- **/
-void sparcEnableISR2Interrupts();
-
-
-/** \brief TBD
- **/
-void sparcDisableISR2Interrupts();
 
 
 /** @} doxygen end group definition */
