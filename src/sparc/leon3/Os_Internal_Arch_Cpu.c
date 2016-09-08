@@ -181,6 +181,12 @@ void sparcDisableISR2Interrupts(void)
 }
 
 
+void StartOs_Arch_Cpu(void)
+{
+   Enable_User_ISRs();
+}
+
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

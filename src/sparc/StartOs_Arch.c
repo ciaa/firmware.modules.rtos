@@ -65,12 +65,6 @@
 /*==================[external functions definition]==========================*/
 
 
-void StartOs_Arch_Cpu(void)
-{
-   Enable_User_ISRs();
-}
-
-
 void StartOs_Arch(void)
 {
    /* CPU dependent initialization */
