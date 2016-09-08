@@ -61,7 +61,7 @@
 
 typedef uint32 sparcIrqNumber;
 
-typedef void *sparcIrqHandlerRef();
+typedef void (*sparcIrqHandlerRef)();
 
 
 /*==================[external data declaration]==============================*/

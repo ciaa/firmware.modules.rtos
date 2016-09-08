@@ -52,6 +52,7 @@
 
 #include "os.h"
 #include "Os_Arch.h"
+#include "Os_Internal_Arch_Cpu.h"
 
 
 /*==================[macros]=================================================*/
