@@ -161,6 +161,27 @@ for($i = 1; $i < $MAX_INT_COUNT; $i++)
 };
 
 
+void sparcSetupSystemISRs(void)
+{
+<?php
+$counters_list = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
+
+foreach ($counters_list as $counter_name)
+{
+   $counter_type = $this->config->getValue("/OSEK/" . $counter_name, "TYPE");
+   $counter_id = $this->config->getValue("/OSEK/" . $counter_name, "COUNTER");
+   
+   if ($counter_type == "HARDWARE")
+   {
+   	  print "   \n";
+      print "   sparcRegisterHardwareCounterHandler(OSEK_COUNTER_$counter_name, $counter_id);\n";
+      print "   \n";
+   }
+}
+?>
+}
+
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

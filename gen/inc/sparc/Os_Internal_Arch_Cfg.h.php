@@ -57,8 +57,8 @@
 /*==================[inclusions]=============================================*/
 
 
-
 /*==================[typedef]================================================*/
+
 
 /** \brief Task Context Type */
 typedef struct {
@@ -67,16 +67,21 @@ typedef struct {
    
 } TaskContextType;
 
+
 /** \brief Task Context Type */
 typedef TaskContextType* TaskContextRefType;
+
 
 /*==================[external data declaration]==============================*/
 
 
-
 /*==================[external functions declaration]=========================*/
 
+
 void sparcSetupUserISRs(void);
+
+void sparcSetupSystemISRs(void);
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

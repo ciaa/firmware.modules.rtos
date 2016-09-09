@@ -48,111 +48,115 @@
 
 /*==================[inclusions]=============================================*/
 
+
 /*==================[macros]=================================================*/
 
-/** \brief Bit mask for the PIL field in the PSR register
- **/
+/** \brief Bit mask for the PIL field in the PSR register */
 #define SPARC_PSR_PIL_MASK 0x0f00
 
-/** \brief Bit mask for the ET bit in the PSR register
- **/
+
+/** \brief Bit mask for the ET bit in the PSR register */
 #define SPARC_PSR_ET_MASK  0x0020
 
-/** \brief Bit mask for the CWP field in the PSR register
- **/
+
+/** \brief Bit mask for the CWP field in the PSR register */
 #define SPARC_PSR_CWP_MASK 0x001f
 
 
 /** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
  *
  * For alignments reasons this number must be a multiple of 8 (double word).
- **/
+ */
 #define SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE 92
 
 
 /** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
  *
  * For alignments reasons this number must be a multiple of 8 (double word).
- **/
+ */
 #define SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE 80
+
 
 /** \brief Amount of bytes to reserve on a thread's stack in order to store its floating point context information.
  *
  * For alignments reasons this number must be a multiple of 8 (double word).
- **/
+ * */
 #define SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE 0
 
 
-/** \brief Software trap number for syscall services.
- **/
+/** \brief Software trap number for syscall services. */
 #define SPARC_SYSCALL_SERVICE_TRAP_NUMBER 0x00
 
-/** \brief Software trap number for the JmpTask service.
- **/
+
+/** \brief Software trap number for the JmpTask service. */
 #define SPARC_SET_TASK_CONTEXT_SERVICE_TRAP_NUMBER 0x02
+
 
 /** \brief Software trap number for the CallTask service.
  **/
 #define SPARC_REPLACE_TASK_CONTEXT_SERVICE_TRAP_NUMBER 0x03
 
 
-
 /** \brief Syscall service ID - Disable traps.
  **/
 #define SPARC_SYSCALL_ID_DISABLE_TRAPS 0x00
+
 
 /** \brief Syscall service ID - Mask interrupts
  **/
 #define SPARC_SYSCALL_ID_MASK_INTR     0x01
 
+
 /** \brief Syscall service ID - Unmask interrupts
  **/
 #define SPARC_SYSCALL_ID_UNMASK_INTR   0x02
+
 
 /** \brief Syscall service ID - Reboot system
  **/
 #define SPARC_SYSCALL_ID_REBOOT_SYSTEM 0x03
 
 
-
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be used only internal by
- * the OS and only for this architecture and which will not depend on the
- * configuration. Normally this section should be empty.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Internal_Arch.c
- * that will be visible only internal to the OS for this architecture.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
+extern uint32 sparc_system_trap_table;
+
 
 /*==================[external functions declaration]=========================*/
+
 
 /*
  * Syscall service functions, defined in syscallservices.s
  * */
 
+
 void sparcSystemServiceEnableTraps();
+
 
 void sparcSystemServiceDisableTraps();
 
+
 void sparcSystemServiceMaskInterrupts();
+
 
 void sparcSystemServiceUnMaskInterrupts();
 
+
 void sparcSystemServiceRebootSystem();
+
 
 void sparcSystemServiceCallDebugger();
 
+
 void sparcSystemServiceTriggerReplaceTaskContext();
 
+
 void sparcSystemServiceTriggerSetTaskContext();
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

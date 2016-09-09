@@ -47,28 +47,68 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
+
+
 #include "Os_Internal.h"
-#include "StartOs_Arch_SysTick.h"
+#include "Sparc_Arch.h"
+
 
 /*==================[macros and definitions]=================================*/
 
+
 /*==================[internal data declaration]==============================*/
+
 
 /*==================[internal functions declaration]=========================*/
 
+
 /*==================[internal data definition]===============================*/
+
 
 /*==================[external data definition]===============================*/
 
+
 /*==================[internal functions definition]==========================*/
+
+
+sparcReplaceTrapTable()
+{
+   /* Replace the current trap base register value with the address of our new
+    * system trap table. Disable trap while you are at it. Notice that calling
+    * functions with traps disabled is usually a very bad idea, but in this case
+    * both functions are leaf functions and therefore they can't cause any window
+    * overflow or underflow traps. */
+
+   sparcSystemServiceEnableTraps();
+
+   __asm__ ("sethi %%hi(sparc_system_trap_table), %%l1\n\t"
+            "or    %%l1, %%lo(sparc_system_trap_table), %%l1\n\t"
+            "mov r %%l1, %%tbr\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            "nop\n\t"
+            : /* no output registers */
+            : /* no input registers */
+            : "%l1" /* clobbered registers */
+           );
+
+   sparcSystemServiceDisableTraps();
+}
+
 
 /*==================[external functions definition]==========================*/
 
 
 void StartOs_Arch(void)
 {
-   /* CPU dependent initialization */
+   /* Perform any kind of CPU dependent initialization */
    StartOs_Arch_Cpu();
+
+   /* Replace the system trap table with our own */
+   sparcReplaceTrapTable();
+
+   /* Enable all the interrupts in the system. */
+   sparcEnableAllInterrupts();
 }
 
 
