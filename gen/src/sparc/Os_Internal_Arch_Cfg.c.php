@@ -102,7 +102,76 @@ $interrupt_names_list = array (
    15 => "IRQ15",
    );
 
-$MAX_INT_COUNT = max(array_keys($interrupt_names_list))+1;
+$INTERRUPT_NAMES_LIST_LENGTH = max(array_keys($interrupt_names_list))+1;
+
+/*
+ * Synchronous trap sources for SPARC processors.
+ * */
+$hardware_counters_names_list = array (
+	0 => "HWCOUNTER0",
+	1 => "HWCOUNTER1",
+	2 => "HWCOUNTER2",
+	3 => "HWCOUNTER3",
+	4 => "HWCOUNTER4",
+	5 => "HWCOUNTER5",
+	6 => "HWCOUNTER6",
+	7 => "HWCOUNTER7",
+);
+
+$HARDWARE_COUNTERS_NAMES_LIST_LENGTH = max(array_keys($hardware_counters_names_list));
+
+?>
+<?php
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
+$counters_list = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
+
+foreach ($counters_list as $counter_name)
+{
+   $counter_type = $this->config->getValue("/OSEK/" . $counter_name, "TYPE");
+   $counter_id = $this->config->getValue("/OSEK/" . $counter_name, "COUNTER");
+
+   if ($counter_type == "HARDWARE")
+   {
+      $counter_index = 99;
+      for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i++)
+      {
+         if($hardware_counters_names_list[$i] == $counter_id)
+         {
+            $counter_index = $i;
+         }
+      }
+?>
+void OSEK_COUNTER_<?php print $counter_name;?>(void)
+{
+   /* Store the calling context so that we can
+      restore it later */
+   ContextType actualContext = GetCallingContext();
+
+   /* Change the execution context to ISR2 */
+   SetActualContext(CONTEXT_ISR2);
+
+   /* Call OSEK to update <?php print $counter_id;?> */
+   IntSecure_Start();
+   CounterIncrement = IncrementCounter(<?php print $counter_index;?>, 1);
+   IntSecure_End();
+
+   /* Restore the previous execution context */
+   SetActualContext(actualContext);
+
+#if (NON_PREEMPTIVE == OSEK_DISABLE)
+   /* check if the actual task is preemptive */
+   if ( ( CONTEXT_TASK == actualContext ) &&
+        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+   {
+      /* this shall force a call to the scheduler */
+      PostIsr2_Arch(isr);
+   }
+#endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
+}
+
+<?php }
+}
 
 ?>
 
@@ -111,12 +180,10 @@ void sparcSetupUserISRs(void)
 {
    
 <?php
-$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
-
 /* get ISRs defined by user application */
 $interrupt_handlers_list = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
-for($i = 1; $i < $MAX_INT_COUNT; $i++)
+for($i = 1; $i < $INTERRUPT_NAMES_LIST_LENGTH; $i++)
 {
    $interrupt_source_found = 0;
    
@@ -173,8 +240,17 @@ foreach ($counters_list as $counter_name)
    
    if ($counter_type == "HARDWARE")
    {
-   	  print "   \n";
-      print "   sparcRegisterHardwareCounterHandler(OSEK_COUNTER_$counter_name, $counter_id);\n";
+      $counter_index = 99;
+      for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i++)
+      {
+         if($hardware_counters_names_list[$i] == $counter_id)
+         {
+            $counter_index = $i;
+         }
+      }
+      print "   \n";
+      print "   /* Register the system interrupt handler for $counter_name */\n";
+      print "   sparcRegisterHardwareCounterHandler(OSEK_COUNTER_$counter_name, $counter_index);\n";
       print "   \n";
    }
 }

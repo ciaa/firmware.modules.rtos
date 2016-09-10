@@ -514,47 +514,6 @@ void OSEK_ISR2_<?php print $int;?>(void)
 }
 ?>
 
-<?php
-$counters_list = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
-foreach ($counters_list as $counter_name)
-{
-   $counter_type = $this->config->getValue("/OSEK/" . $counter_name, "TYPE");
-   $counter_id = $this->config->getValue("/OSEK/" . $counter_name, "COUNTER");
-   
-   if ($counter_type == "HARDWARE")
-   {
-?>
-void OSEK_COUNTER_<?php print $counter_name;?>(void)
-{
-   /* store the calling context in a variable */
-   ContextType actualContext = GetCallingContext();
-   
-   /* set ISR2 context */
-   SetActualContext(CONTEXT_ISR2);
-
-   /* Update the counter */
-   IntSecure_Start();
-   CounterIncrement = IncrementCounter(<?php print $counter_id ?>, 1);
-   IntSecure_End();
-
-   /* reset context */
-   SetActualContext(actualContext);
-
-#if (NON_PREEMPTIVE == OSEK_DISABLE)
-   /* check if the actual task is preemptive */
-   if ( ( CONTEXT_TASK == actualContext ) &&
-        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
-   {
-      /* this shall force a call to the scheduler */
-      PostIsr2_Arch(isr);
-   }
-#endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
-}
-
-<?php }
-}
-?>
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
