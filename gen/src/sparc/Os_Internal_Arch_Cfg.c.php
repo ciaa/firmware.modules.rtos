@@ -51,6 +51,7 @@
 /*==================[inclusions]=============================================*/
 
 #include "Os_Internal.h"
+#include "Sparc_Arch.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -225,11 +226,13 @@ for($i = 1; $i < $INTERRUPT_NAMES_LIST_LENGTH; $i++)
    }
 }
 ?>
-};
+}
 
 
 void sparcSetupSystemISRs(void)
 {
+   grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
+
 <?php
 $counters_list = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
 
@@ -248,9 +251,24 @@ foreach ($counters_list as $counter_name)
             $counter_index = $i;
          }
       }
+      print "   /*\n";
+      print "    * Configurate the hardware timer and set the ISR for $counter_name\n";
+      print "    * */\n";
       print "   \n";
-      print "   /* Register the system interrupt handler for $counter_name */\n";
-      print "   sparcRegisterHardwareCounterHandler(OSEK_COUNTER_$counter_name, $counter_index);\n";
+      print "   /* Detect the hardware address and irq information of the timer module */\n";
+      print "   retCode = grWalkPlugAndPlayAHBDeviceTable(\n";
+      print "        GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,\n";
+      print "        GRLIB_PNP_DEVICE_ID_GPTIMER,\n";
+      print "        &apbDeviceInfo,\n";
+      print "        $counter_index); /* $counter_id */\n";
+      print "   \n";
+      print "   sparcAssert(retCode >= 0, \"Failed to detect hardware $counter_id!\");\n";
+      print "   \n";
+      print "   /* Configure the timer module */\n";
+      print "   sparcSetTimerConfiguration(apbDeviceInfo->address);\n";
+      print "   \n";
+      print "   /* Register the interrupt service routine */\n";
+      print "   sparcRegisterISR2Handler(OSEK_COUNTER_$counter_name, apbDeviceInfo->irq);\n";
       print "   \n";
    }
 }

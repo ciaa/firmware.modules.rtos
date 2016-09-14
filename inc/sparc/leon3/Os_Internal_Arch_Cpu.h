@@ -67,6 +67,9 @@ typedef void (*sparcIrqHandlerRef)();
 /*==================[external data declaration]==============================*/
 
 
+uint32 detected_sparc_register_windows;
+
+
 /*==================[external functions declaration]=========================*/
 
 

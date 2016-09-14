@@ -116,6 +116,10 @@
  **/
 #define SPARC_SYSCALL_ID_REBOOT_SYSTEM 0x03
 
+#define SPARC_CALL_DEBUGGER { asm("   flush\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n ta 1\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n" ); }
+
+#define sparcAssert(assertion, errorString) { if(!(assertion)) { SPARC_CALL_DEBUGGER; } }
+
 
 /*==================[typedef]================================================*/
 

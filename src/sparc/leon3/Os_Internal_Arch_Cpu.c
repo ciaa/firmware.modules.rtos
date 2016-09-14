@@ -50,6 +50,7 @@
 #include "Os_Internal_Arch_Cpu.h"
 #include "Os_Internal_Arch_Cfg.h"
 #include "grlib.h"
+#include "Sparc_Arch.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -72,36 +73,121 @@ uint32 sparcISR2HandlersMask = 0x00;
 uint32 sparcCurrentInterruptMask = 0x0;
 
 sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
-        /*
-         * External Interrupt handlers
-         * */
-        0x00, /* Index 00, IRQ 1 */
-        0x00, /* Index 01, IRQ 2 */
-        0x00, /* Index 02, IRQ 3 */
-        0x00, /* Index 03, IRQ 4 */
-        0x00, /* Index 05, IRQ 5 */
-        0x00, /* Index 06, IRQ 6 */
-        0x00, /* Index 07, IRQ 7 */
-        0x00, /* Index 08, IRQ 8 */
-        0x00, /* Index 09, IRQ 9 */
-        0x00, /* Index 10, IRQ 10 */
-        0x00, /* Index 11, IRQ 11 */
-        0x00, /* Index 12, IRQ 12 */
-        0x00, /* Index 13, IRQ 13 */
-        0x00, /* Index 14, IRQ 14 */
-        0x00, /* Index 15, IRQ 15 */
-        /*
-         * Software trap handlers
-         * */
-        sparcSetTaskContextSWTrapHandler, /* Index 16, set task context handler */
-        sparcReplaceTaskContextSWTrapHandler /* Index 17, Replace task context handler */
+      /*
+       * External Interrupt handlers
+       * */
+      0x00, /* Index 00, IRQ 1 */
+      0x00, /* Index 01, IRQ 2 */
+      0x00, /* Index 02, IRQ 3 */
+      0x00, /* Index 03, IRQ 4 */
+      0x00, /* Index 05, IRQ 5 */
+      0x00, /* Index 06, IRQ 6 */
+      0x00, /* Index 07, IRQ 7 */
+      0x00, /* Index 08, IRQ 8 */
+      0x00, /* Index 09, IRQ 9 */
+      0x00, /* Index 10, IRQ 10 */
+      0x00, /* Index 11, IRQ 11 */
+      0x00, /* Index 12, IRQ 12 */
+      0x00, /* Index 13, IRQ 13 */
+      0x00, /* Index 14, IRQ 14 */
+      0x00, /* Index 15, IRQ 15 */
+      /*
+       * Software trap handlers
+       * */
+      sparcSetTaskContextSWTrapHandler, /* Index 16, set task context handler */
+      sparcReplaceTaskContextSWTrapHandler /* Index 17, Replace task context handler */
 };
 
 
 /*==================[external data definition]===============================*/
 
 
+uint32 detected_sparc_register_windows;
+
+
 /*==================[internal functions definition]==========================*/
+
+
+void sparcAutodetectSystemClockFrequency()
+{
+   grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
+   sint32 retCode;
+
+   /* Both MKPROM and GRMON automatically configure the first system timer's
+    * prescaler so that it generates 100 ticks every seconds. This is
+    * used here to detect the system clock frequency. */
+
+   /* Detect the hardware address and irq information of the timer module */
+   retCode = grWalkPlugAndPlayAHBDeviceTable(
+         GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
+         GRLIB_PNP_DEVICE_ID_GPTIMER,
+         &apbDeviceInfo,
+         1);
+}
+
+
+void sparcAutodetectRegisterWindowsSetSize()
+{
+   grCpuConfigType cpuConfig;
+
+   /*
+    * Detect the CPU configuration */
+   grGetCPUConfig(&cpuConfig);
+
+   detected_sparc_register_windows = cpuConfig->registersWindows;
+}
+
+
+void sparcAutodetectInterruptControllerAddress()
+{
+   grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
+   sint32 retCode;
+
+   /*
+    * Detect the address of the interrupt controller
+    * */
+   retCode = grWalkPlugAndPlayAPBDeviceTable(
+         GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
+         GRLIB_PNP_DEVICE_ID_IRQMP,
+         &apbDeviceInfo,
+         1);
+
+   sparcAssert(retCode >= 0, "Could not find the interrupt controller!");
+
+   grIRQMBaseAddress = apbDeviceInfo->address;
+}
+
+
+void sparcAutodetectMemoryHierachyConfiguration()
+{
+   grCacheConfigType instructionCacheConfig;
+   grCacheConfigType dataCacheConfig;
+
+   /*
+    * Data and instruction caches information (currently not used) */
+   grGetDCacheConfig(&dataCacheConfig);
+   grGetICacheConfig(&instructionCacheConfig);
+}
+
+
+void sparcAutodetectHardware()
+{
+   /*
+    * Detect system clock frequency */
+   sparcAutodetectSystemClockFrequency();
+
+   /*
+    * Find out the number for register windows */
+   sparcAutodetectRegisterWindowsSetSize();
+
+   /*
+    * Determine the base address of the interrupt controller */
+   sparcAutodetectInterruptControllerAddress();
+
+   /*
+    * Read information about the memory subsystem */
+   sparcAutodetectMemoryHierachyConfiguration();
+}
 
 
 /*==================[external functions definition]==========================*/
@@ -116,18 +202,19 @@ void sparcOsekPause()
     * In this power-down mode, the processor halts the pipeline, freezing
     * code execution and cache changes until the next interrupt comes along.
     * */
-   asm("wrasr %g0, %asr19");
-
+   asm("   wrasr %g0, %asr19");
 }
 
 
 void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 {
-    uint32 newInterruptMask;
+   uint32 newInterruptMask;
 
-    newInterruptMask = (1 << irq);
+   newInterruptMask = (1 << irq);
 
-    grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
+   sparcAssert((newInterruptMask & sparcISR1HandlersMask) == 0, "Duplicated IRQ registration");
+
+   grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
 
    sparcISR1HandlersMask |= newInterruptMask;
 
@@ -141,6 +228,8 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    newInterruptMask = (1 << irq);
 
+   sparcAssert((newInterruptMask & sparcISR2HandlersMask) == 0, "Duplicated IRQ registration");
+
    grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
 
    sparcISR2HandlersMask |= newInterruptMask;
@@ -152,33 +241,33 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 void sparcEnableAllInterrupts(void)
 {
 
-    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR1HandlersMask | sparcISR2HandlersMask);
+   sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR1HandlersMask | sparcISR2HandlersMask);
 
-    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
 void sparcDisableAllInterrupts(void)
 {
-    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR1HandlersMask | sparcISR2HandlersMask));
+   sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR1HandlersMask | sparcISR2HandlersMask));
 
-    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
 void sparcEnableISR2Interrupts(void)
 {
-    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR2HandlersMask);
+   sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR2HandlersMask);
 
-    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
 void sparcDisableISR2Interrupts(void)
 {
-    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR2HandlersMask));
+   sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR2HandlersMask));
 
-    grRegisterWrite(grDeviceAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
@@ -188,8 +277,13 @@ void StartOs_Arch_Cpu(void)
     *
     * After reset, the caches are disabled and a flush
     * operation must be performed to initialize the tags and valid bits
-    * in them bits. */
+    * in them. Mkprom probably enabled them by now, but better safe
+    * than sorry... */
    grEnableProcessorCaches();
+
+   /*
+    * Read hardware configuration */
+   sparcAutodetectHardware();
 
    /*
     * Setup application interrupts. This routine is automatically generated by the OSEK
