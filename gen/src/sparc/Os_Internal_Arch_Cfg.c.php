@@ -50,8 +50,11 @@
 
 /*==================[inclusions]=============================================*/
 
+
 #include "Os_Internal.h"
+#include "Os_Internal_Arch_Cpu.h"
 #include "Sparc_Arch.h"
+
 
 /*==================[macros and definitions]=================================*/
 
@@ -81,69 +84,50 @@
 
 
 <?php
-
-/* 
- * Synchronous trap sources for SPARC processors. 
- * */
-$interrupt_names_list = array (
-   1 => "IRQ1",
-   2 => "IRQ2",
-   3 => "IRQ3",
-   4 => "IRQ4",
-   5 => "IRQ5",
-   6 => "IRQ6",
-   7 => "IRQ7",
-   8 => "IRQ8",
-   9 => "IRQ9",
-   10 => "IRQ10",
-   11 => "IRQ11",
-   12 => "IRQ12",
-   13 => "IRQ13",
-   14 => "IRQ14",
-   15 => "IRQ15",
-   );
-
-$INTERRUPT_NAMES_LIST_LENGTH = max(array_keys($interrupt_names_list))+1;
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
 
 /*
  * Synchronous trap sources for SPARC processors.
- * */
-$hardware_counters_names_list = array (
-	0 => "HWCOUNTER0",
-	1 => "HWCOUNTER1",
-	2 => "HWCOUNTER2",
-	3 => "HWCOUNTER3",
-	4 => "HWCOUNTER4",
-	5 => "HWCOUNTER5",
-	6 => "HWCOUNTER6",
-	7 => "HWCOUNTER7",
+ */
+$interrupt_names_list = array (
+		1 => "IRQ1",
+		2 => "IRQ2",
+		3 => "IRQ3",
+		4 => "IRQ4",
+		5 => "IRQ5",
+		6 => "IRQ6",
+		7 => "IRQ7",
+		8 => "IRQ8",
+		9 => "IRQ9",
+		10 => "IRQ10",
+		11 => "IRQ11",
+		12 => "IRQ12",
+		13 => "IRQ13",
+		14 => "IRQ14",
+		15 => "IRQ15" 
 );
 
-$HARDWARE_COUNTERS_NAMES_LIST_LENGTH = max(array_keys($hardware_counters_names_list));
+$INTERRUPT_NAMES_LIST_LENGTH = max ( array_keys ( $interrupt_names_list ) ) + 1;
+
+/*
+ * Synchronous trap sources for SPARC processors.
+ */
+$hardware_counters_names_list = array (
+		0 => "HWCOUNTER0",
+		1 => "HWCOUNTER1",
+		2 => "HWCOUNTER2",
+		3 => "HWCOUNTER3",
+		4 => "HWCOUNTER4",
+		5 => "HWCOUNTER5",
+		6 => "HWCOUNTER6",
+		7 => "HWCOUNTER7" 
+);
+
+$HARDWARE_COUNTERS_NAMES_LIST_LENGTH = max ( array_keys ( $hardware_counters_names_list ) );
 
 ?>
-<?php
-$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
 
-$counters_list = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
-
-foreach ($counters_list as $counter_name)
-{
-   $counter_type = $this->config->getValue("/OSEK/" . $counter_name, "TYPE");
-   $counter_id = $this->config->getValue("/OSEK/" . $counter_name, "COUNTER");
-
-   if ($counter_type == "HARDWARE")
-   {
-      $counter_index = 99;
-      for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i++)
-      {
-         if($hardware_counters_names_list[$i] == $counter_id)
-         {
-            $counter_index = $i;
-         }
-      }
-?>
-void OSEK_COUNTER_<?php print $counter_name;?>(void)
+void OSEK_COUNTER_GPTIMER0_IRQHandler(void)
 {
    /* Store the calling context so that we can
       restore it later */
@@ -152,11 +136,12 @@ void OSEK_COUNTER_<?php print $counter_name;?>(void)
    /* Change the execution context to ISR2 */
    SetActualContext(CONTEXT_ISR2);
 
-   /* Call OSEK to update <?php print $counter_id;?> */
-   IntSecure_Start();
-   CounterIncrement = IncrementCounter(<?php print $counter_index;?>, 1);
-   IntSecure_End();
+   /* Check the pending interrupt bit of $counter_id */
+   sparcCheckPendingTimerInterrupts();
 
+   /* Clear the interrupt pending bit in the IRQMP controller */
+   sparcClearInterrupt(asdfadsa);
+   
    /* Restore the previous execution context */
    SetActualContext(actualContext);
 
@@ -171,108 +156,79 @@ void OSEK_COUNTER_<?php print $counter_name;?>(void)
 #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
 }
 
-<?php }
-}
-
-?>
 
 /** \brief Interrupt enabling and priority setting function */
 void sparcSetupUserISRs(void)
 {
-   
+
 <?php
 /* get ISRs defined by user application */
-$interrupt_handlers_list = $this->helper->multicore->getLocalList("/OSEK", "ISR");
+$interrupt_handlers_list = $this->helper->multicore->getLocalList ( "/OSEK", "ISR" );
 
-for($i = 1; $i < $INTERRUPT_NAMES_LIST_LENGTH; $i++)
-{
-   $interrupt_source_found = 0;
-   
-   foreach ($interrupt_handlers_list as $interrupt_handler)
-   {
-      $interrupt_category = $this->config->getValue("/OSEK/" . $interrupt_handler,"CATEGORY");
-      $irq_source = $this->config->getValue("/OSEK/" . $interrupt_handler,"INTERRUPT");
-      
-      if($interrupt_names_list[$i] == $irq_source)
-      {
-         if ($interrupt_category == 2)
-         {
-            
-            print "   /* ISR for IRQ source " . $interrupt_names_list[$i] . " Category 2 */\n";
-            print "   sparcRegisterISR2Handler(OSEK_ISR2_$interrupt_handler, $i);\n";
-            print "   \n";
-            
-            $interrupt_source_found = 1;
-            
-         } elseif ($interrupt_category == 1) {
-            
-         	print "   /* ISR for IRQ source " . $interrupt_names_list[$i] . " Category 1 */\n";
-            print "   sparcRegisterISR1Handler(OSEK_ISR_$interrupt_handler, $i);\n";
-            print "   \n";
-            
-            $interrupt_source_found = 1;
-            
-         } else {
-            
-            $this->log->error("Interrupt $interrupt_handler type $inttype has an invalid category $interrupt_category");
-            
-         }
-      }
-   }
-   if($interrupt_source_found == 0)
-   {
-      print "   /* No handler declared for source " . $interrupt_names_list[$i] . " */\n";
-      print "   \n";
-   }
+for($i = 1; $i < $INTERRUPT_NAMES_LIST_LENGTH; $i ++) {
+	$interrupt_source_found = 0;
+	
+	foreach ( $interrupt_handlers_list as $interrupt_handler ) {
+		$interrupt_category = $this->config->getValue ( "/OSEK/" . $interrupt_handler, "CATEGORY" );
+		$irq_source = $this->config->getValue ( "/OSEK/" . $interrupt_handler, "INTERRUPT" );
+		
+		if ($interrupt_names_list [$i] == $irq_source) {
+			if ($interrupt_category == 2) {
+				
+				print "   /* ISR for IRQ source " . $interrupt_names_list [$i] . " Category 2 */\n";
+				print "   sparcRegisterISR2Handler(OSEK_ISR2_$interrupt_handler, $i);\n";
+				print "\n";
+				
+				$interrupt_source_found = 1;
+			} elseif ($interrupt_category == 1) {
+				
+				print "   /* ISR for IRQ source " . $interrupt_names_list [$i] . " Category 1 */\n";
+				print "   sparcRegisterISR1Handler(OSEK_ISR_$interrupt_handler, $i);\n";
+				print "\n";
+				
+				$interrupt_source_found = 1;
+			} else {
+				
+				$this->log->error ( "Interrupt $interrupt_handler type $inttype has an invalid category $interrupt_category" );
+			}
+		}
+	}
+	if ($interrupt_source_found == 0) {
+		print "   /* No handler declared for source " . $interrupt_names_list [$i] . " */\n";
+		print "\n";
+	}
 }
 ?>
 }
 
 
-void sparcSetupSystemISRs(void)
+uint32 sparcGetTimersInUseMask(void)
 {
-   grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
-
+   uint32 timersInUseMask;
+   
+   enabledTimersMask = 0;
 <?php
-$counters_list = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
+$counters_list = $this->helper->multicore->getLocalList ( "/OSEK", "COUNTER" );
 
-foreach ($counters_list as $counter_name)
-{
-   $counter_type = $this->config->getValue("/OSEK/" . $counter_name, "TYPE");
-   $counter_id = $this->config->getValue("/OSEK/" . $counter_name, "COUNTER");
-   
-   if ($counter_type == "HARDWARE")
-   {
-      $counter_index = 99;
-      for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i++)
-      {
-         if($hardware_counters_names_list[$i] == $counter_id)
-         {
-            $counter_index = $i;
-         }
-      }
-      print "   /*\n";
-      print "    * Configurate the hardware timer and set the ISR for $counter_name\n";
-      print "    * */\n";
-      print "   \n";
-      print "   /* Detect the hardware address and irq information of the timer module */\n";
-      print "   retCode = grWalkPlugAndPlayAHBDeviceTable(\n";
-      print "        GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,\n";
-      print "        GRLIB_PNP_DEVICE_ID_GPTIMER,\n";
-      print "        &apbDeviceInfo,\n";
-      print "        $counter_index); /* $counter_id */\n";
-      print "   \n";
-      print "   sparcAssert(retCode >= 0, \"Failed to detect hardware $counter_id!\");\n";
-      print "   \n";
-      print "   /* Configure the timer module */\n";
-      print "   sparcSetTimerConfiguration(apbDeviceInfo->address);\n";
-      print "   \n";
-      print "   /* Register the interrupt service routine */\n";
-      print "   sparcRegisterISR2Handler(OSEK_COUNTER_$counter_name, apbDeviceInfo->irq);\n";
-      print "   \n";
-   }
+for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i ++) {
+	
+	foreach ( $counters_list as $counter_name ) {
+		$counter_type = $this->config->getValue ( "/OSEK/" . $counter_name, "TYPE" );
+		$counter_id = $this->config->getValue ( "/OSEK/" . $counter_name, "COUNTER" );
+		
+		if ($counter_type == "HARDWARE") {
+			if ($hardware_counters_names_list [$i] == $counter_id) {
+				$counter_index = $i;
+				print "\n";
+				print "   /* Enable $counter_id */\n";
+				print "   timersInUse |= (1 << $i);\n";
+			}
+		}
+	}
 }
 ?>
+
+   return timersInUseMask;
 }
 
 

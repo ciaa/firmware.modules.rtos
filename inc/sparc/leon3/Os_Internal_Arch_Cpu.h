@@ -77,6 +77,8 @@ void sparcRegisterISR1Handler(sparcIrqHandlerRef handler, sparcIrqNumber irq);
 
 void sparcRegisterISR2Handler(sparcIrqHandlerRef handler, sparcIrqNumber irq);
 
+void sparcClearInterrupt(sparcIrqNumber irq);
+
 void sparcEnableAllInterrupts(void);
 
 void sparcDisableAllInterrupts(void);
@@ -88,6 +90,8 @@ void sparcDisableISR2Interrupts(void);
 void StartOs_Arch_Cpu(void);
 
 void sparcOsekPause();
+
+void sparcCheckPendingTimerInterrupts();
 
 
 /** @} doxygen end group definition */

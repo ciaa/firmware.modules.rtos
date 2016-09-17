@@ -67,6 +67,17 @@
 #define IRQMP_MP_INTERRUPT_FORCE_REGISTER(cpu)               (0x80 + 0x04 * (cpu))
 #define IRQMP_MP_EXTENDED_INTERRUPT_ACKNOLEDGE_REGISTER(cpu) (0xc4 + 0x04 * (cpu))
 
+
+#define GRLIB_GPTIMER_SCALER_VALUE                       (0x00)
+#define GRLIB_GPTIMER_SCALER_RELOAD_VALUE                (0x00)
+#define GRLIB_GPTIMER_CONFIGURATION_REGISTER             (0x00)
+#define GRLIB_GPTIMER_LATCH_CONFIGURATION_REGISTER       (0x00)
+#define GRLIB_GPTIMER_COUNTER_VALUE_REGISTER(timerIndex) (0x10 * (timerIndex + 1) + 0x00)
+#define GRLIB_GPTIMER_RELOAD_VALUE_REGISTER(timerIndex)  (0x10 * (timerIndex + 1) + 0x04)
+#define GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex)       (0x10 * (timerIndex + 1) + 0x08)
+#define GRLIB_GPTIMER_LATCH_REGISTER(timerIndex)         (0x10 * (timerIndex + 1) + 0x0c)
+
+
 #define GRLIB_PNP_VENDOR_ID_ANY                      0x00
 #define GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH         0x01
 #define GRLIB_PNP_VENDOR_ID_PENDER_ELECTRONIC_DESIGN 0x02

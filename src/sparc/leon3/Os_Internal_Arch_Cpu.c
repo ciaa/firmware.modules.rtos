@@ -64,7 +64,13 @@
 /*==================[internal data definition]===============================*/
 
 
-grDeviceAddress grIRQMBaseAddress;
+grDeviceAddress sparcIRQMPBaseAddress = 0; /* initialized to 0 in order to be able to detect whether or not this value has already been initialized */
+
+uint32 sparcSystemFrequencyHz;
+
+grDeviceAddress sparcGPTIMER0BaseAddress;
+
+uint32 sparcGPTIMER0IRQNumber;
 
 uint32 sparcISR1HandlersMask = 0x00;
 
@@ -108,10 +114,117 @@ uint32 detected_sparc_register_windows;
 /*==================[internal functions definition]==========================*/
 
 
+sparcSetModularTimerConfiguration()
+{
+   uint32 timersInUseMask;
+   uint32 configurationRegisterValue;
+   uint32 timerNReloadRegister;
+   uint32 timerNControlRegister;
+   uint32 numberOfImplementedTimers;
+   uint32 timerIndex;
+
+   /* At this point we can assume that MKPROM/GRMON have already configured the scaler of the
+    * first GPTIMER instance on the bus so that the scaler output ticks at 1MHz. We can build
+    * on that, leaving the scaler unchanged.
+    * */
+
+   /* Find out which of the timers are actually being used
+    * in the system */
+   timersInUseMask = sparcGetTimersInUseMask();
+
+   /* Determine the number of implemented timers within the GPTIMER core */
+   configurationRegisterValue = grRegisterRead(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONFIGURATION_REGISTER);
+
+   numberOfImplementedTimers = configurationRegisterValue & 0x03;
+
+   /* Make sure that the system configuration is not using more timers than those that
+    * are present in GPTIMER0 */
+   sparcAssert((timersInUseMask & (~((1 << numberOfImplementedTimers) - 1))) == 0, "Cannot configure a timer that was not implmented in hardware!");
+
+   /* Enable all of the implemented timer control registers so that we can configure them
+    * next. */
+   configurationRegisterValue = 0x00
+         | 0x00 << 23  /* Reserved bits. Write 0x00. */
+         | ((1 << numberOfImplementedTimers) - 1) << 16  /* Enable bits for each timer's control register. */
+         | 0x00 << 14  /* Reserved bits. Write 0x00. */
+         | 0x00 << 13  /* External Events bit */
+         | 0x00 << 12  /* Enable Set bit */
+         | 0x00 << 11  /* Enable latching */
+         | 0x00 << 10  /* Enable external clock source */
+         | 0x00 <<  9  /* Disable timer freeze bit */
+         | 0x00 <<  8  /* Serarate interrupts bit. Read only, write 0x00. */
+         | 0x00 <<  3  /* APB interrupt. Read only, write 0x00. */
+         | 0X00 <<  0; /* Number of implemented timers. Read only, write 0x00. */
+
+   grRegisterWrite(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONFIGURATION_REGISTER, configurationRegisterValue);
+
+   /* Configure each individual timer. */
+   for (timerIndex = 0; timerIndex < numberOfImplementedTimers; timerIndex++)
+   {
+      timerNReloadRegister = 0;
+
+      /* Set the reload value first, so that we can force a reload next.
+       * The period of each of the timers depends on timer's index number.
+       * */
+      switch (timerIndex) {
+      case 0 : timerNReloadRegister =    1000 - 1; break; /*    1 ms */
+      case 1 : timerNReloadRegister =    5000 - 1; break; /*    5 ms */
+      case 2 : timerNReloadRegister =   10000 - 1; break; /*   10 ms */
+      case 3 : timerNReloadRegister =   50000 - 1; break; /*   50 ms */
+      case 4 : timerNReloadRegister =  100000 - 1; break; /*  100 ms */
+      case 5 : timerNReloadRegister =  500000 - 1; break; /*  500 ms */
+      case 6 : timerNReloadRegister = 1000000 - 1; break; /* 1000 ms */
+      default: timerNReloadRegister = 5000000 - 1; break; /* 5000 ms */
+      }
+
+      grRegisterWrite(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_RELOAD_VALUE_REGISTER(timerIndex), timerNReloadRegister);
+
+      /* Check whether this particular timer is in use by the current system
+       * configuration */
+      if ((timersInUseMask & (1 << timerIndex)) != 0)
+      {
+         /* The timer is in use, configure and enable it. While at it, force a reload and
+          * clean any pending interrupt to make sure that we start clean. */
+         timerNControlRegister = 0x00
+               | 0x00 << 16  /* Reload value for the watchdog window counter. */
+               | 0x00 <<  9  /* Reserved. Write 0x00. */
+               | 0x01 <<  8  /* Disable watchdog output bit.*/
+               | 0x00 <<  7  /* Enable watchdog NMI bit. */
+               | 0x00 <<  6  /* Debug Halt bit. Read only, write 0x00. */
+               | 0x00 <<  5  /* Chain bit. */
+               | 0x01 <<  4  /* Interrupt Pending bit. Write 0x01 to clear any pending interrupt. */
+               | 0x01 <<  3  /* Interrupt Enable Bit. */
+               | 0x01 <<  2  /* Load value from the reload register. */
+               | 0x01 <<  1  /* Restart bit. */
+               | 0x01 <<  0; /* Enable bit. */
+
+      } else {
+         /* The timer is NOT in use, so leave it disabled. force a reload and
+          * clean any pending interrupt to make sure there are no surprises. */
+         timerNControlRegister = 0x00
+               | 0x00 << 16  /* Reload value for the watchdog window counter. */
+               | 0x00 <<  9  /* Reserved. Write 0x00. */
+               | 0x01 <<  8  /* Disable watchdog output bit.*/
+               | 0x00 <<  7  /* Enable watchdog NMI bit. */
+               | 0x00 <<  6  /* Debug Halt bit. Read only, write 0x00. */
+               | 0x00 <<  5  /* Chain bit. */
+               | 0x01 <<  4  /* Interrupt Pending bit. Write 0x01 to clear any pending interrupt. */
+               | 0x00 <<  3  /* Interrupt Enable Bit. */
+               | 0x01 <<  2  /* Load value from the reload register. */
+               | 0x01 <<  1  /* Restart bit. */
+               | 0x00 <<  0; /* Enable bit. */
+      }
+
+      grRegisterWrite(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex), timerNControlRegister);
+   }
+}
+
+
 void sparcAutodetectSystemClockFrequency()
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
    sint32 retCode;
+   uint32 scalerRegisterValue;
 
    /* Both MKPROM and GRMON automatically configure the first system timer's
     * prescaler so that it generates 100 ticks every seconds. This is
@@ -122,7 +235,14 @@ void sparcAutodetectSystemClockFrequency()
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_GPTIMER,
          &apbDeviceInfo,
-         1);
+         0);
+
+   /* At least one GPTIMER is required for this to work. */
+   sparcAssert(retCode >= 0, "Failed to detect hardware GPTIMER0!");
+
+   scalerRegisterValue = grRegisterRead(apbDeviceInfo->address, GRLIB_GPTIMER_SCALER_RELOAD_VALUE);
+
+   sparcSystemFrequencyHz = (scalerRegisterValue + 1) * 1000 * 1000;
 }
 
 
@@ -154,7 +274,7 @@ void sparcAutodetectInterruptControllerAddress()
 
    sparcAssert(retCode >= 0, "Could not find the interrupt controller!");
 
-   grIRQMBaseAddress = apbDeviceInfo->address;
+   sparcIRQMPBaseAddress = apbDeviceInfo->address;
 }
 
 
@@ -189,6 +309,34 @@ void sparcAutodetectHardware()
    sparcAutodetectMemoryHierachyConfiguration();
 }
 
+void sparcSetupSystemTimer(void)
+{
+   grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
+   sint32 retCode;
+
+   /*
+    * Configurate the hardware timer and set the ISR for HardwareCounter
+    * */
+
+   /* Detect the hardware address and irq information of the timer module */
+   retCode = grWalkPlugAndPlayAHBDeviceTable(
+         GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
+         GRLIB_PNP_DEVICE_ID_GPTIMER,
+         &apbDeviceInfo,
+         0);
+
+   sparcAssert(retCode >= 0, "Failed to detect hardware GPTIMER0!");
+
+   sparcGPTIMER0BaseAddress = apbDeviceInfo->address;
+   sparcGPTIMER0IRQNumber   = apbDeviceInfo->irq;
+
+   /* Register the interrupt service routine */
+   sparcRegisterISR2Handler(OSEK_COUNTER_GPTIMER0_IRQHandler, apbDeviceInfo->irq);
+
+   /* Configure the timer module */
+   sparcSetModularTimerConfiguration();
+}
+
 
 /*==================[external functions definition]==========================*/
 
@@ -214,7 +362,7 @@ void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    sparcAssert((newInterruptMask & sparcISR1HandlersMask) == 0, "Duplicated IRQ registration");
 
-   grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
 
    sparcISR1HandlersMask |= newInterruptMask;
 
@@ -230,44 +378,68 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    sparcAssert((newInterruptMask & sparcISR2HandlersMask) == 0, "Duplicated IRQ registration");
 
-   grRegisterWrite(grIRQMBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, newInterruptMask);
 
    sparcISR2HandlersMask |= newInterruptMask;
 
    sparcIRQHandlersTable[irq - 1] = newHandler;
 }
 
+void sparcClearInterrupt(sparcIrqNumber irq)
+{
+   uint32 interruptBitMask;
+
+   interruptBitMask = (1 << irq);
+
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, interruptBitMask);
+}
+
 
 void sparcEnableAllInterrupts(void)
 {
+   sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
 
    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR1HandlersMask | sparcISR2HandlersMask);
 
-   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
 void sparcDisableAllInterrupts(void)
 {
+   if (sparcIRQMPBaseAddress == 0)
+   {
+      /* the base address of the IRQMP controller has not yet been initialized. This happens during when
+       * the interrupts are disabled in StartOs() because the cpu initialization routine have not yet
+       * been called and therefore hardware autodetection has not been performed yet. */
+      sparcAutodetectInterruptControllerAddress();
+   }
+
+   sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
+
    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR1HandlersMask | sparcISR2HandlersMask));
 
-   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
 void sparcEnableISR2Interrupts(void)
 {
+   sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
+
    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR2HandlersMask);
 
-   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
 void sparcDisableISR2Interrupts(void)
 {
+   sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
+
    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR2HandlersMask));
 
-   grRegisterWrite(grIRQMBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
 }
 
 
@@ -284,16 +456,56 @@ void StartOs_Arch_Cpu(void)
    /*
     * Read hardware configuration */
    sparcAutodetectHardware();
+}
 
-   /*
-    * Setup application interrupts. This routine is automatically generated by the OSEK
-    * OS generator. */
-   sparcSetupUserISRs();
 
-   /*
-    * Setup the timer interrupt
-    * */
-   sparcSetupSystemISRs();
+void sparcCheckPendingTimerInterrupts()
+{
+   uint32 timersInUseMask;
+   uint32 timerNControlRegister;
+   uint32 timerIndex;
+
+   timersInUseMask = sparcGetTimersInUseMask();
+
+   /* Configure each individual timer. */
+   for (timerIndex = 0; timerIndex < 8; timerIndex++)
+   {
+      /* Check whether this particular timer is in use by the current system
+       * configuration */
+      if ((timersInUseMask & (1 << timerIndex)) != 0)
+      {
+         timerNControlRegister = grRegisterRead(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex));
+
+         /* Is there an interrupt pending from this timer? */
+         if ((timerNControlRegister & 0x00000010) != 0)
+         {
+            /* Clear the timer'sinterrupt pending flag and call the OSEK's counter administration
+             * routines */
+
+            timerNControlRegister = 0x00
+                  | 0x00 << 16  /* Reload value for the watchdog window counter. */
+                  | 0x00 <<  9  /* Reserved. Write 0x00. */
+                  | 0x01 <<  8  /* Disable watchdog output bit.*/
+                  | 0x00 <<  7  /* Enable watchdog NMI bit. */
+                  | 0x00 <<  6  /* Debug Halt bit. Read only, write 0x00. */
+                  | 0x00 <<  5  /* Chain bit. */
+                  | 0x01 <<  4  /* Interrupt Pending bit. Write 0x01 to clear any pending interrupt. */
+                  | 0x01 <<  3  /* Interrupt Enable Bit. */
+                  | 0x00 <<  2  /* Load value from the reload register. */
+                  | 0x01 <<  1  /* Restart bit. */
+                  | 0x01 <<  0; /* Enable bit. */
+
+            grRegisterWrite(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex), timerNControlRegister);
+
+            IntSecure_Start();
+            IncrementCounter(timerIndex, 1 /* this argument is in doubt, see Cortex port... FIXME */ );
+            IntSecure_End();
+         }
+      }
+   }
+
+   /* Clear the interrupt pending bit in the IRQMP */
+   sparcClearInterrupt(sparcGPTIMER0IRQNumber);
 }
 
 

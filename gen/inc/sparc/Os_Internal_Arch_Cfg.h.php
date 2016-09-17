@@ -78,9 +78,11 @@ typedef TaskContextType* TaskContextRefType;
 /*==================[external functions declaration]=========================*/
 
 
+void OSEK_COUNTER_GPTIMER0_IRQHandler(void);
+
 void sparcSetupUserISRs(void);
 
-void sparcSetupSystemISRs(void);
+uint32 sparcGetTimersInUseMask(void);
 
 
 /** @} doxygen end group definition */
