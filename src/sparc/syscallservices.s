@@ -43,176 +43,176 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-        !
-        ! This file provides a number of functions that provide access to a set of system
-        ! services.
-        !
-        ! Some of this services are provded locally (e.g. enable traps) while some others are
-        ! actually provided by the syscall system software trap.
-        !
+   !
+   ! This file provides a number of functions that provide access to a set of system
+   ! services.
+   !
+   ! Some of this services are provded locally (e.g. enable traps) while some others are
+   ! actually provided by the syscall system software trap.
+   !
 
-        ! Entry assumptions: none. This functions are called using the usual function calling scheme. Unless explicitely stated
-        ! these functions take no input arguments and return no return values.
-        !
+   ! Entry assumptions: none. This functions are called using the usual function calling scheme. Unless explicitely stated
+   ! these functions take no input arguments and return no return values.
+   !
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceTriggerCallTask();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceTriggerCallTask();
+   !
+   ! ***
 
-        .global sparcSystemServiceTriggerReplaceTaskContext
-        .type   sparcSystemServiceTriggerReplaceTaskContext, #function
+   .global sparcSystemServiceTriggerReplaceTaskContext
+   .type   sparcSystemServiceTriggerReplaceTaskContext, #function
 
 sparcSystemServiceTriggerReplaceTaskContext:
 
-        ta      SPARC_REPLACE_TASK_CONTEXT_SERVICE_TRAP_NUMBER
+   ta      SPARC_REPLACE_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceTriggerCallTask();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceTriggerCallTask();
+   !
+   ! ***
 
-        .global sparcSystemServiceTriggerSetTaskContext
-        .type   sparcSystemServiceTriggerSetTaskContext, #function
+   .global sparcSystemServiceTriggerSetTaskContext
+   .type   sparcSystemServiceTriggerSetTaskContext, #function
 
 sparcSystemServiceTriggerSetTaskContext:
 
-        ta      SPARC_SET_TASK_CONTEXT_SERVICE_TRAP_NUMBER
+   ta      SPARC_SET_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceEnableTraps();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceEnableTraps();
+   !
+   ! ***
 
-        .global sparcSystemServiceEnableTraps
-        .type   sparcSystemServiceEnableTraps, #function
+   .global sparcSystemServiceEnableTraps
+   .type   sparcSystemServiceEnableTraps, #function
 
 sparcSystemServiceEnableTraps:
 
-        !
-        ! Get the value of the PSR register
-        mov     %psr, %g1
+   !
+   ! Get the value of the PSR register
+   mov     %psr, %g1
 
-        !
-        ! check wheter the ET bit is already set
-        andcc   %g1, SPARC_PSR_ET_MASK, %g0
-        bz      traps_are_already_enabled
+   !
+   ! check wheter the ET bit is already set
+   andcc   %g1, SPARC_PSR_ET_MASK, %g0
+   bnz     traps_are_already_enabled
 
-        !
-        ! enable traps
-        or     %g1, SPARC_PSR_ET_MASK, %g1
-        mov    %g1, %psr
-        ! three delay cycles needed after writing on the PSR register
-        nop
-        nop
-        nop
+   !
+   ! enable traps
+   or     %g1, SPARC_PSR_ET_MASK, %g1
+   mov    %g1, %psr
+   ! three delay cycles needed after writing on the PSR register
+   nop
+   nop
+   nop
 
 traps_are_already_enabled:
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceDisableTraps();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceDisableTraps();
+   !
+   ! ***
 
-        .global sparcSystemServiceDisableTraps
-        .type   sparcSystemServiceDisableTraps, #function
+   .global sparcSystemServiceDisableTraps
+   .type   sparcSystemServiceDisableTraps, #function
 
 sparcSystemServiceDisableTraps:
 
-        mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
-        ta      SPARC_SYSCALL_SERVICE_TRAP_NUMBER
+   mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceMaskInterrupts();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceMaskInterrupts();
+   !
+   ! ***
 
-        .global sparcSystemServiceMaskInterrupts
-        .type   sparcSystemServiceMaskInterrupts, #function
+   .global sparcSystemServiceMaskInterrupts
+   .type   sparcSystemServiceMaskInterrupts, #function
 
 sparcSystemServiceMaskInterrupts:
 
-        mov     SPARC_SYSCALL_ID_MASK_INTERRUPTS, %g1
-        ta      SPARC_SYSCALL_SERVICE_TRAP_NUMBER
+   mov     SPARC_SYSCALL_ID_MASK_INTERRUPTS, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceUnMaskInterrupts();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceUnMaskInterrupts();
+   !
+   ! ***
 
-        .global sparcSystemServiceUnMaskInterrupts
-        .type   sparcSystemServiceUnMaskInterrupts, #function
+   .global sparcSystemServiceUnMaskInterrupts
+   .type   sparcSystemServiceUnMaskInterrupts, #function
 
 sparcSystemServiceUnMaskInterrupts:
 
-        mov     SPARC_SYSCALL_ID_UNMASK_INTERRUPTS, %g1
-        ta      SPARC_SYSCALL_SERVICE_TRAP_NUMBER
+   mov     SPARC_SYSCALL_ID_UNMASK_INTERRUPTS, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceRebootSystem();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceRebootSystem();
+   !
+   ! ***
 
-        .global sparcSystemServiceRebootSystem
-        .type   sparcSystemServiceRebootSystem, #function
+   .global sparcSystemServiceRebootSystem
+   .type   sparcSystemServiceRebootSystem, #function
 
 sparcSystemServiceRebootSystem:
 
-        mov     SPARC_SYSCALL_ID_REBOOT_SYSTEM, %g1
-        ta      SPARC_SYSCALL_SERVICE_TRAP_NUMBER
+   mov     SPARC_SYSCALL_ID_REBOOT_SYSTEM, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 
 
-        ! **************************************************
-        !
-        ! void sparcSystemServiceCallDebugger();
-        !
-        ! ***
+   ! **************************************************
+   !
+   ! void sparcSystemServiceCallDebugger();
+   !
+   ! ***
 
-        .global sparcSystemServiceCallDebugger
-        .type   sparcSystemServiceCallDebugger, #function
+   .global sparcSystemServiceCallDebugger
+   .type   sparcSystemServiceCallDebugger, #function
 
 sparcSystemServiceCallDebugger:
 
-        !
-        ! Invoke the software trap that is used by GDB/GRMON to indicate the
-        ! presence of a breakpoint.
-        ta      0x01
+   !
+   ! Invoke the software trap that is used by GDB/GRMON to indicate the
+   ! presence of a breakpoint.
+   ta      SPARC_CALL_DEBUGGER_SW_TRAP_NUMBER
 
-        retl
-        nop
+   retl
+   nop
 

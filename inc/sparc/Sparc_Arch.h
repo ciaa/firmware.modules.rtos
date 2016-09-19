@@ -86,37 +86,14 @@
  * */
 #define SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE 0
 
+#define SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER              0x00
+#define SPARC_CALL_DEBUGGER_SW_TRAP_NUMBER                0x01
+#define SPARC_SET_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER     0x02
+#define SPARC_REPLACE_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER 0x03
 
-/** \brief Software trap number for syscall services. */
-#define SPARC_SYSCALL_SERVICE_TRAP_NUMBER 0x00
-
-
-/** \brief Software trap number for the JmpTask service. */
-#define SPARC_SET_TASK_CONTEXT_SERVICE_TRAP_NUMBER 0x02
-
-
-/** \brief Software trap number for the CallTask service.
- **/
-#define SPARC_REPLACE_TASK_CONTEXT_SERVICE_TRAP_NUMBER 0x03
-
-
-/** \brief Syscall service ID - Disable traps.
- **/
 #define SPARC_SYSCALL_ID_DISABLE_TRAPS 0x00
-
-
-/** \brief Syscall service ID - Mask interrupts
- **/
 #define SPARC_SYSCALL_ID_MASK_INTR     0x01
-
-
-/** \brief Syscall service ID - Unmask interrupts
- **/
 #define SPARC_SYSCALL_ID_UNMASK_INTR   0x02
-
-
-/** \brief Syscall service ID - Reboot system
- **/
 #define SPARC_SYSCALL_ID_REBOOT_SYSTEM 0x03
 
 #define SPARC_CALL_DEBUGGER { asm("   flush\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n ta 1\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n" ); }
@@ -137,27 +114,19 @@
  * Syscall service functions, defined in syscallservices.s
  * */
 
-
 void sparcSystemServiceEnableTraps();
-
 
 void sparcSystemServiceDisableTraps();
 
-
 void sparcSystemServiceMaskInterrupts();
-
 
 void sparcSystemServiceUnMaskInterrupts();
 
-
 void sparcSystemServiceRebootSystem();
-
 
 void sparcSystemServiceCallDebugger();
 
-
 void sparcSystemServiceTriggerReplaceTaskContext();
-
 
 void sparcSystemServiceTriggerSetTaskContext();
 

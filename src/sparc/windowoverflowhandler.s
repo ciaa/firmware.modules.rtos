@@ -43,125 +43,125 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-        !
-        ! ***
-        !
-        ! This routine is based on the SPARC window management examples that can be found on the text
-        ! "SPARC traps under SunOS" by Jim Moore (SunSoft, Sun Microsystems Inc.), with minor code
-        ! modifications and heavily commented for the sake of clarity.
-        !
-        ! ***
-        !
+   !
+   ! ***
+   !
+   ! This routine is based on the SPARC window management examples that can be found on the text
+   ! "SPARC traps under SunOS" by Jim Moore (SunSoft, Sun Microsystems Inc.), with minor code
+   ! modifications and heavily commented for the sake of clarity.
+   !
+   ! ***
+   !
 
-        !
-        ! Entry assumptions:
-        !
-        ! %l1 = trapped %pc (save)
-        ! %l2 = trapped %npc
-        !
-        .global window_overflow_trap_handler
-        .type   window_overflow_trap_handler, #function
+   !
+   ! Entry assumptions:
+   !
+   ! %l1 = trapped %pc (save)
+   ! %l2 = trapped %npc
+   !
+   .global window_overflow_trap_handler
+   .type   window_overflow_trap_handler, #function
 
 window_overflow_trap_handler:
 
-        !
-        ! Read the current WIM value and store it locally
-        mov     %wim, %l0
+   !
+   ! Read the current WIM value and store it locally
+   mov     %wim, %l0
 
-        !
-        ! Determine the WIN field bit mask from the number of register windows
-        sethi   %hi(detected_sparc_register_windows), %l4
-        ld      [%lo(detected_sparc_register_windows) + %l4], %l4
-        ! The number of implemented register windows is always a power of 2, therefore the following
-        ! sentence determines the implemented windows bit mask.
-        sub     %l4, 1, %l4
+   !
+   ! Determine the WIN field bit mask from the number of register windows
+   sethi   %hi(detected_sparc_register_windows), %l4
+   ld      [%lo(detected_sparc_register_windows) + %l4], %l4
+   ! The number of implemented register windows is always a power of 2, therefore the following
+   ! sentence determines the implemented windows bit mask.
+   sub     %l4, 1, %l4
 
-        !
-        ! The CWP field is currently pointing at the only invalid window within the register windows set. Since
-        ! we will change the validity status of this window in the near future, for the sake of clarity from now
-        ! on we will call this window the "trap window", since all of its local registers are available for use by
-        ! trap handler exclusively.
-        !
-        ! From now on we need to do two things:
-        ! * Mark the trap window as valid (rewriting the WIM register). No additional work required
-        !   here, since the trap window was previously marked as invalid and therefore nothing of any value is stored
-        !   there.
-        ! * Mark the window below the trap window as invalid (again, rewriting WIM does the trick). Since that window
-        !   is currently in use, before invalidating it we must dump its contents to the stack.
-        !
+   !
+   ! The CWP field is currently pointing at the only invalid window within the register windows set. Since
+   ! we will change the validity status of this window in the near future, for the sake of clarity from now
+   ! on we will call this window the "trap window", since all of its local registers are available for use by
+   ! trap handler exclusively.
+   !
+   ! From now on we need to do two things:
+   ! * Mark the trap window as valid (rewriting the WIM register). No additional work required
+   !   here, since the trap window was previously marked as invalid and therefore nothing of any value is stored
+   !   there.
+   ! * Mark the window below the trap window as invalid (again, rewriting WIM does the trick). Since that window
+   !   is currently in use, before invalidating it we must dump its contents to the stack.
+   !
 
-        ! Rotate the current WIM value one bit to the right (modulo the number of
-        ! windows), in order to generate the updated WIM value (one that will both
-        ! mark the trap window as VALID and the one below that as INVALID).
+   ! Rotate the current WIM value one bit to the right (modulo the number of
+   ! windows), in order to generate the updated WIM value (one that will both
+   ! mark the trap window as VALID and the one below that as INVALID).
 
-        ! Since we will be moving the CWP one window below the trap window before actually
-        ! updating the WIM (for reasons that will be explained below) we will need to take
-        ! the new WIM value with us using a global register.
-        !
-        ! Global registers might be in use by the code that was interrupted by the
-        ! window overflow trap, so we must back up the contents of any global that is modified
-        ! and restore its value before returning from the trap.
+   ! Since we will be moving the CWP one window below the trap window before actually
+   ! updating the WIM (for reasons that will be explained below) we will need to take
+   ! the new WIM value with us using a global register.
+   !
+   ! Global registers might be in use by the code that was interrupted by the
+   ! window overflow trap, so we must back up the contents of any global that is modified
+   ! and restore its value before returning from the trap.
 
-        !
-        ! Back up the value of %g1 to %l6
-        mov     %g1, %l6
+   !
+   ! Back up the value of %g1 to %l6
+   mov     %g1, %l6
 
-        !
-        ! Rotate the old value of WIM (in %lo) one bit to the right, sending the
-        ! rightmost bit to the leftmost position...
-        srl     %l0, 1, %l5
-        sll     %l0, %l4, %l0   ! Notice here that the mask stored in %l4 is also NWINDOWS-1... beautiful.
-        or      %l0, %l5, %g1
-        ! This final masking of the bits was not in the original code example, and is probably not really
-        ! needed since the definition of the register in the architecture requires any implementation to
-        ! ignore 1's written in the positions of unimplemented windows, but for the sake of clarity and
-        ! correctness...
-        and     %g1, %l4, %g1
+   !
+   ! Rotate the old value of WIM (in %lo) one bit to the right, sending the
+   ! rightmost bit to the leftmost position...
+   srl     %l0, 1, %l5
+   sll     %l0, %l4, %l0   ! Notice here that the mask stored in %l4 is also NWINDOWS-1... beautiful.
+   or      %l0, %l5, %g1
+   ! This final masking of the bits was not in the original code example, and is probably not really
+   ! needed since the definition of the register in the architecture requires any implementation to
+   ! ignore 1's written in the positions of unimplemented windows, but for the sake of clarity and
+   ! correctness...
+   and     %g1, %l4, %g1
 
-        !
-        ! Now the new WIM value is stored in %g1, but we can't update the WIM register yet. We
-        ! still need to dump the contents of the recently invalidated window to the stack, and that
-        ! will require us to execute a SAVE instruction. If we had updated the WIM register now,
-        ! when the SAVE instruction was executed it would detect that after execution the CWP would
-        ! point to an invalid window and therefore a new WINDOW_OVERFLOW trap would be generated, which is
-        ! not only bogus but also dangerous: this code is executing with traps disabled so that any
-        ! synchronous trap would throw the processor into error mode.
-        !
-        ! For similar reasons we need to update the WIM register BEFORE moving back to the trap window.
+   !
+   ! Now the new WIM value is stored in %g1, but we can't update the WIM register yet. We
+   ! still need to dump the contents of the recently invalidated window to the stack, and that
+   ! will require us to execute a SAVE instruction. If we had updated the WIM register now,
+   ! when the SAVE instruction was executed it would detect that after execution the CWP would
+   ! point to an invalid window and therefore a new WINDOW_OVERFLOW trap would be generated, which is
+   ! not only bogus but also dangerous: this code is executing with traps disabled so that any
+   ! synchronous trap would throw the processor into error mode.
+   !
+   ! For similar reasons we need to update the WIM register BEFORE moving back to the trap window.
 
-        ! Move one window below
-        save
+   ! Move one window below
+   save
 
-        ! Store in's and local's to the stack. For the sake of performance, we store registers two at
-        ! a time using STD.
-        std     %l0, [%sp]              ! %sp is double word aligned
-        std     %l2, [%sp + 8]
-        std     %l4, [%sp + 16]
-        std     %l6, [%sp + 24]
-        std     %i0, [%sp + 32]
-        std     %i2, [%sp + 40]
-        std     %i4, [%sp + 48]
-        std     %i6, [%sp + 56]
+   ! Store in's and local's to the stack. For the sake of performance, we store registers two at
+   ! a time using STD.
+   std     %l0, [%sp]         ! %sp is double word aligned
+   std     %l2, [%sp + 8]
+   std     %l4, [%sp + 16]
+   std     %l6, [%sp + 24]
+   std     %i0, [%sp + 32]
+   std     %i2, [%sp + 40]
+   std     %i4, [%sp + 48]
+   std     %i6, [%sp + 56]
 
-        ! Update the WIM
-        mov     %g1, %wim
+   ! Update the WIM
+   mov     %g1, %wim
 
-        ! The behavior of instructions that read or write the WIM register during the
-        ! first three cycles after a write operation has been performed on it is
-        ! undefined (implementation dependent) so we play safe and burn those cycles away...
-        nop
-        nop
-        nop
+   ! The behavior of instructions that read or write the WIM register during the
+   ! first three cycles after a write operation has been performed on it is
+   ! undefined (implementation dependent) so we play safe and burn those cycles away...
+   nop
+   nop
+   nop
 
-        ! Return to the trap window
-        restore
+   ! Return to the trap window
+   restore
 
-        !
-        ! Restore the value of the global register that we modified
-        mov     %l6, %g1
+   !
+   ! Restore the value of the global register that we modified
+   mov     %l6, %g1
 
-        !
-        ! All done.  Return from the trap, making sure that the instruction that caused the trap is
-        ! executed again.
-        jmp     %l1
-        rett    %l2
+   !
+   ! All done.  Return from the trap, making sure that the instruction that caused the trap is
+   ! executed again.
+   jmp     %l1
+   rett    %l2
