@@ -139,9 +139,6 @@ void OSEK_COUNTER_GPTIMER0_IRQHandler(void)
    /* Check the pending interrupt bit of $counter_id */
    sparcCheckPendingTimerInterrupts();
 
-   /* Clear the interrupt pending bit in the IRQMP controller */
-   sparcClearInterrupt(asdfadsa);
-   
    /* Restore the previous execution context */
    SetActualContext(actualContext);
 
@@ -205,8 +202,8 @@ for($i = 1; $i < $INTERRUPT_NAMES_LIST_LENGTH; $i ++) {
 uint32 sparcGetTimersInUseMask(void)
 {
    uint32 timersInUseMask;
-   
-   enabledTimersMask = 0;
+
+   timersInUseMask = 0;
 <?php
 $counters_list = $this->helper->multicore->getLocalList ( "/OSEK", "COUNTER" );
 
@@ -221,7 +218,7 @@ for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i ++) {
 				$counter_index = $i;
 				print "\n";
 				print "   /* Enable $counter_id */\n";
-				print "   timersInUse |= (1 << $i);\n";
+				print "   timersInUseMask |= (1 << $i);\n";
 			}
 		}
 	}

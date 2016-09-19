@@ -47,6 +47,7 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Sparc_Arch.h"
 #include "grlib.h"
 
 
@@ -74,9 +75,9 @@
 /*==================[external functions definition]==========================*/
 
 
-sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, sint32 ahbDeviceIndex)
+sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, sint32 ahbDeviceIndex)
 {
-   uint32 *deviceTableptr;
+   uint32 *deviceTablePtr;
 
    uint32 deviceTableIndex;
    uint32 barEntryIndex;
@@ -98,7 +99,7 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
    returnValue = -1;
 
    /* starting address of the PnP AHB device table */
-   deviceTableptr = (uint32 *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS;
+   deviceTablePtr = (uint32 *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS;
 
    deviceTableIndex = 0;
    deviceFound = 0;
@@ -108,8 +109,8 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
     * provided as arguments to the function. */
    for (deviceTableIndex = 0; deviceTableIndex < 63; deviceTableIndex++)
    {
-      idRegisterValue = *(deviceTableptr + 0);
-      barTablePtr = deviceTableptr + 4;
+      idRegisterValue = *(deviceTablePtr + 0);
+      barTablePtr = deviceTablePtr + 4;
 
       /* extract the id register fields */
       idRegisterFieldVendorId = (idRegisterValue >> 24) & 0x000000ff;
@@ -118,14 +119,14 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
       idRegisterFieldVersion  = (idRegisterValue >>  0) & 0x0000001f;
 
       /* Have we found the end of the table? */
-      if (vendorId == 0x00)
+      if (idRegisterFieldVendorId == 0x00)
       {
          break;
       }
 
       /* Does it match the filter we were given? */
-      if (((vendorId == GRLIB_PNP_VENDOR_ID_ANY) || (vendorId == idRegisterFieldVendorId))
-            && ((deviceId == GRLIB_PNP_DEVICE_ID_ANY) || (deviceId == idRegisterFieldDeviceId)))
+      if (((requestedVendorId == GRLIB_PNP_VENDOR_ID_ANY) || (requestedVendorId == idRegisterFieldVendorId))
+            && ((requestedDeviceId == GRLIB_PNP_DEVICE_ID_ANY) || (requestedDeviceId == idRegisterFieldDeviceId)))
       {
          /* Is this the n-th match of the filter? */
          ahbDeviceIndex--;
@@ -138,7 +139,7 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
       }
 
       /* move the pointer to the next entry on the table */
-      deviceTableptr = deviceTableptr + 8;
+      deviceTablePtr = deviceTablePtr + 8;
    }
 
    if (deviceFound != 0)
@@ -173,6 +174,7 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
             break;
          case GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE :
             /* this type of entry should not appear on the AHB table... */
+            sparcAssert(0, "Impossible BAR table entry type!");
             break;
          }
       }
@@ -183,11 +185,11 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
    return returnValue;
 }
 
-sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex)
+sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex)
 {
-   grPlugAndPlayAHBDeviceTableEntryType busBridgeDevice;
+   grPlugAndPlayAHBDeviceTableEntryType apbCtrlDeviceConfiguration;
 
-   uint32 *apbDeviceTableptr;
+   uint32 *apbDeviceTablePtr;
 
    uint32 ahbBridgeIndex;
    uint32 barTableIndex;
@@ -221,8 +223,8 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
    while(grWalkPlugAndPlayAHBDeviceTable(
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_APBCTRL,
-         &busBridgeDevice,
-         ahbBridgeIndex) != 0)
+         &apbCtrlDeviceConfiguration,
+         ahbBridgeIndex) >= 0)
    {
       ahbBridgeIndex++;
 
@@ -232,27 +234,27 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
       for (barTableIndex = 0; barTableIndex < 4; barTableIndex++)
       {
          /* if this entry is not valid or if it is not a memory space entry, skip it */
-         if ((busBridgeDevice.bankAddressRegisters[barTableIndex].validEntry == 0) ||
-               (busBridgeDevice.bankAddressRegisters[barTableIndex].type != GRLIB_PNP_BAR_ENTRY_TYPE_AHBMEMORYSPACE))
+         if ((apbCtrlDeviceConfiguration.bankAddressRegisters[barTableIndex].validEntry == 0) ||
+               (apbCtrlDeviceConfiguration.bankAddressRegisters[barTableIndex].type != GRLIB_PNP_BAR_ENTRY_TYPE_AHBMEMORYSPACE))
          {
             continue;
          }
 
          /* Save these. We'll need them if we eventually find the APB device that was asked for */
-         ahbRangeAddress = busBridgeDevice.bankAddressRegisters[barTableIndex].address;
-         ahbRangeMask = busBridgeDevice.bankAddressRegisters[barTableIndex].mask;
+         ahbRangeAddress = apbCtrlDeviceConfiguration.bankAddressRegisters[barTableIndex].address;
+         ahbRangeMask = apbCtrlDeviceConfiguration.bankAddressRegisters[barTableIndex].mask;
 
          /* construct the address of the APB PnP table located at the end of the
           * memory range */
-         apbDeviceTableptr = ahbRangeAddress | 0x000ff000;
+         apbDeviceTablePtr = ahbRangeAddress | 0x000ff000;
 
-         /* for each entry on the PNP AHB device table, decode the id register
+         /* for each entry on the AHB PnP device table, decode the id register
           * and check whether the vendor/device pair matches the filter values
           * provided as arguments to the function. */
          for (deviceTableIndex = 0; deviceTableIndex < 512; deviceTableIndex++)
          {
-            idRegisterValue  = *apbDeviceTableptr;
-            barRegisterValue = *(apbDeviceTableptr+1);
+            idRegisterValue  = *apbDeviceTablePtr;
+            barRegisterValue = *(apbDeviceTablePtr+1);
 
             /* extract the id register fields */
             idRegisterFieldVendorId = (idRegisterValue >> 24) & 0x000000ff;
@@ -262,14 +264,14 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
             idRegisterFieldVersion  = (idRegisterValue >>  0) & 0x0000001f;
 
             /* Have we found the end of the table? */
-            if (vendorId == 0x00)
+            if (idRegisterFieldVendorId == 0x00)
             {
                break;
             }
 
             /* Does it match the filter we were given? */
-            if (((vendorId == GRLIB_PNP_VENDOR_ID_ANY) || (vendorId == idRegisterFieldVendorId))
-                  && ((deviceId == GRLIB_PNP_DEVICE_ID_ANY) || (deviceId == idRegisterFieldDeviceId)))
+            if (((requestedVendorId == GRLIB_PNP_VENDOR_ID_ANY) || (requestedVendorId == idRegisterFieldVendorId))
+                  && ((requesteDeviceId == GRLIB_PNP_DEVICE_ID_ANY) || (requesteDeviceId == idRegisterFieldDeviceId)))
             {
                /* Is this the n-th match of the filter? */
                apbDeviceIndex--;
@@ -282,10 +284,10 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
             }
 
             /* move the pointer to the next entry on the table */
-            apbDeviceTableptr = apbDeviceTableptr + 2;
+            apbDeviceTablePtr = apbDeviceTablePtr + 2;
          }
 
-         /* If we exited the inner loop having found the n-th APB wanted
+         /* If we exited the inner loop having found the requested APB
           * device, then get out of this loop too */
          if (deviceFound != 0)
          {
@@ -293,7 +295,7 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
          }
       }
 
-      /* If we exited the inner loop having found the n-th APB wanted
+      /* If we exited the inner loop having found the requested APB
        * device, then get out of this loop too */
       if (deviceFound != 0)
       {
@@ -317,9 +319,11 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugA
       switch (apbDeviceInfo->type ) {
       case GRLIB_PNP_BAR_ENTRY_TYPE_AHBMEMORYSPACE :
          /* this type of entry should not appear on the APB table... */
+         sparcAssert(0, "Impossible APB device type!");
          break;
       case GRLIB_PNP_BAR_ENTRY_TYPE_AHBIOSPACE :
          /* this type of entry should not appear on the APB table... */
+         sparcAssert(0, "Impossible APB device type!");
          break;
       case GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE :
          apbDeviceInfo->address = ahbRangeAddress | (apbDeviceInfo->address << 10);
@@ -338,14 +342,19 @@ void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceR
 {
    grDeviceRegisterValue *registerPtr;
 
+   sparcAssert(((baseAddr + offset) & 0x03) == 0x00, "Register address not word aligned!");
+
    registerPtr = (grDeviceRegisterValue *)(baseAddr + offset);
 
    *registerPtr = newValue;
 }
 
+
 grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset)
 {
    grDeviceRegisterValue *registerPtr;
+
+   sparcAssert(((baseAddr + offset) & 0x03) == 0x00, "Register address not word aligned!");
 
    registerPtr = (grDeviceRegisterValue *)(baseAddr + offset);
 
@@ -355,14 +364,11 @@ grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress o
 
 void grEnableProcessorCaches()
 {
-   __asm__ ("flush\n\t"
-         "set 0x81000f, %g1\n\t"
-         "sta %g1, [%g0] 2\n\t"
-         :
-         :
-         : /* no output registers */
-         : /* no input registers */
-           : "%g1" /* clobbered registers */ );
+   __asm__ (
+         "flush\n\t"
+         "set 0x81000f, %%g1\n\t"
+         "sta %%g1, [%%g0] 2\n\t"
+         : /* no output registers */ : /* no input registers */ : "%g1" /* clobbered registers */ );
 }
 
 
@@ -370,7 +376,8 @@ void grGetCPUConfig(grCpuConfigType *config)
 {
    uint32 cpuConfig;
 
-   __asm__("rd %%asr17,%0\n "
+   __asm__(
+         "rd %%asr17,%0\n "
          : "=r" (cpuConfig) );
 
    config->clockSwitchingEnabled   = (cpuConfig >> 17) & 0x0001;
@@ -390,11 +397,10 @@ void grGetICacheConfig(grCacheConfigType *config)
 {
    uint32 instructionCacheConfig;
 
-   __asm__(" mov 0x08,%%g1 \n "
-         " lda [%%g1]2,%0\n "
-         : "=r" (instructionCacheConfig)
-           :
-           :"g1");
+   __asm__(
+         "mov 0x08,%%g1\n\t"
+         "lda [%%g1]2,%0\n\t"
+         : "=r" (instructionCacheConfig) : /* no input registers */ :"g1");
 
    config->lockingImplemented   = (instructionCacheConfig >> 31) & 0x0001;
    config->replacementPolicy    = (instructionCacheConfig >> 28) & 0x0003;
@@ -424,11 +430,10 @@ void grGetDCacheConfig(grCacheConfigType *config)
 {
    uint32 dataCacheConfig;
 
-   __asm__(" mov 0x0c,%%g1 \n "
-         " lda [%%g1]2,%0\n "
-         : "=r" (dataCacheConfig)
-           :
-           : "g1");
+   __asm__(
+         "mov 0x0c,%%g1\n\t"
+         "lda [%%g1]2,%0\n\t"
+         : "=r" (dataCacheConfig) : /* no input registers */ : "g1");
 
    config->lockingImplemented   = (dataCacheConfig >> 31) & 0x0001;
    config->replacementPolicy    = (dataCacheConfig >> 28) & 0x0003;

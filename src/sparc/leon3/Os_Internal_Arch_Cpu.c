@@ -46,11 +46,13 @@
 
 /*==================[inclusions]=============================================*/
 
+
 #include "Os_Internal_Arch.h"
 #include "Os_Internal_Arch_Cpu.h"
 #include "Os_Internal_Arch_Cfg.h"
 #include "grlib.h"
 #include "Sparc_Arch.h"
+
 
 /*==================[macros and definitions]=================================*/
 
@@ -76,7 +78,7 @@ uint32 sparcISR1HandlersMask = 0x00;
 
 uint32 sparcISR2HandlersMask = 0x00;
 
-uint32 sparcCurrentInterruptMask = 0x0;
+uint32 sparcCurrentInterruptMask = 0x00;
 
 sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
       /*
@@ -123,7 +125,7 @@ sparcSetModularTimerConfiguration()
    uint32 numberOfImplementedTimers;
    uint32 timerIndex;
 
-   /* At this point we can assume that MKPROM/GRMON have already configured the scaler of the
+   /* At this point we can assume that MKPROM/GRMON has already configured the scaler of the
     * first GPTIMER instance on the bus so that the scaler output ticks at 1MHz. We can build
     * on that, leaving the scaler unchanged.
     * */
@@ -139,10 +141,9 @@ sparcSetModularTimerConfiguration()
 
    /* Make sure that the system configuration is not using more timers than those that
     * are present in GPTIMER0 */
-   sparcAssert((timersInUseMask & (~((1 << numberOfImplementedTimers) - 1))) == 0, "Cannot configure a timer that was not implmented in hardware!");
+   sparcAssert((timersInUseMask & (~((1 << numberOfImplementedTimers) - 1))) == 0, "Attempted to configure more timers than those that are actually present in the hardware.");
 
-   /* Enable all of the implemented timer control registers so that we can configure them
-    * next. */
+   /* Enable all the implemented timer control registers so that we can configure them next. */
    configurationRegisterValue = 0x00
          | 0x00 << 23  /* Reserved bits. Write 0x00. */
          | ((1 << numberOfImplementedTimers) - 1) << 16  /* Enable bits for each timer's control register. */
@@ -184,7 +185,7 @@ sparcSetModularTimerConfiguration()
       if ((timersInUseMask & (1 << timerIndex)) != 0)
       {
          /* The timer is in use, configure and enable it. While at it, force a reload and
-          * clean any pending interrupt to make sure that we start clean. */
+          * clean any pending interrupt to make sure that we get a clean start. */
          timerNControlRegister = 0x00
                | 0x00 << 16  /* Reload value for the watchdog window counter. */
                | 0x00 <<  9  /* Reserved. Write 0x00. */
@@ -230,7 +231,7 @@ void sparcAutodetectSystemClockFrequency()
     * prescaler so that it generates 100 ticks every seconds. This is
     * used here to detect the system clock frequency. */
 
-   /* Detect the hardware address and irq information of the timer module */
+   /* Detect the hardware address and irq information of the GPTIMER core */
    retCode = grWalkPlugAndPlayAHBDeviceTable(
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_GPTIMER,
@@ -242,16 +243,19 @@ void sparcAutodetectSystemClockFrequency()
 
    scalerRegisterValue = grRegisterRead(apbDeviceInfo->address, GRLIB_GPTIMER_SCALER_RELOAD_VALUE);
 
+   /* GRMON/MKPROM seem to preconfigure the first GPTIMER module so that it generates a 1Mhz tick signal
+    * at the output of the scaler. I haven't been able to find where this is documented, but
+    * the implementation of the RTEMS port for LEON 3 processors rely on this too, and that port was
+    * mostly coded by Gaisler Research. */
    sparcSystemFrequencyHz = (scalerRegisterValue + 1) * 1000 * 1000;
 }
 
 
-void sparcAutodetectRegisterWindowsSetSize()
+void sparcAutodetectProcesorRegisterWindowsSetSize()
 {
    grCpuConfigType cpuConfig;
 
-   /*
-    * Detect the CPU configuration */
+   /* Read the CPU configuration */
    grGetCPUConfig(&cpuConfig);
 
    detected_sparc_register_windows = cpuConfig->registersWindows;
@@ -263,14 +267,13 @@ void sparcAutodetectInterruptControllerAddress()
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
    sint32 retCode;
 
-   /*
-    * Detect the address of the interrupt controller
-    * */
+   /* Read the address of the interrupt controller from the APB PnP device
+    * configuration tables */
    retCode = grWalkPlugAndPlayAPBDeviceTable(
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_IRQMP,
          &apbDeviceInfo,
-         1);
+         0);
 
    sparcAssert(retCode >= 0, "Could not find the interrupt controller!");
 
@@ -283,31 +286,17 @@ void sparcAutodetectMemoryHierachyConfiguration()
    grCacheConfigType instructionCacheConfig;
    grCacheConfigType dataCacheConfig;
 
-   /*
-    * Data and instruction caches information (currently not used) */
+   /* Data and instruction caches information (currently not used) */
    grGetDCacheConfig(&dataCacheConfig);
    grGetICacheConfig(&instructionCacheConfig);
+
+   /*
+    *
+    * Currently there is no use for this data
+    *
+    * */
 }
 
-
-void sparcAutodetectHardware()
-{
-   /*
-    * Detect system clock frequency */
-   sparcAutodetectSystemClockFrequency();
-
-   /*
-    * Find out the number for register windows */
-   sparcAutodetectRegisterWindowsSetSize();
-
-   /*
-    * Determine the base address of the interrupt controller */
-   sparcAutodetectInterruptControllerAddress();
-
-   /*
-    * Read information about the memory subsystem */
-   sparcAutodetectMemoryHierachyConfiguration();
-}
 
 void sparcSetupSystemTimer(void)
 {
@@ -350,7 +339,7 @@ void sparcOsekPause()
     * In this power-down mode, the processor halts the pipeline, freezing
     * code execution and cache changes until the next interrupt comes along.
     * */
-   asm("   wrasr %g0, %asr19");
+   asm("wrasr %g0, %asr19");
 }
 
 
@@ -366,7 +355,7 @@ void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    sparcISR1HandlersMask |= newInterruptMask;
 
-   sparcIRQHandlersTable[irq - 1] = newHandler;
+   sparcUniversalTrapHandlersTable[irq - 1] = newHandler;
 }
 
 
@@ -382,7 +371,7 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    sparcISR2HandlersMask |= newInterruptMask;
 
-   sparcIRQHandlersTable[irq - 1] = newHandler;
+   sparcUniversalTrapHandlersTable[irq - 1] = newHandler;
 }
 
 void sparcClearInterrupt(sparcIrqNumber irq)
@@ -409,7 +398,7 @@ void sparcDisableAllInterrupts(void)
 {
    if (sparcIRQMPBaseAddress == 0)
    {
-      /* the base address of the IRQMP controller has not yet been initialized. This happens during when
+      /* the base address of the IRQMP controller has not yet been initialized. This happens when
        * the interrupts are disabled in StartOs() because the cpu initialization routine have not yet
        * been called and therefore hardware autodetection has not been performed yet. */
       sparcAutodetectInterruptControllerAddress();
@@ -449,13 +438,21 @@ void StartOs_Arch_Cpu(void)
     *
     * After reset, the caches are disabled and a flush
     * operation must be performed to initialize the tags and valid bits
-    * in them. Mkprom probably enabled them by now, but better safe
-    * than sorry... */
+    * in them. Mkprom probably has probably already enabled them by now,
+    * but better safe than sorry... */
    grEnableProcessorCaches();
 
-   /*
-    * Read hardware configuration */
-   sparcAutodetectHardware();
+   /* Detect system clock frequency */
+   sparcAutodetectSystemClockFrequency();
+
+   /* Find out the number for register windows */
+   sparcAutodetectProcesorRegisterWindowsSetSize();
+
+   /* Read information about the memory subsystem */
+   sparcAutodetectMemoryHierachyConfiguration();
+
+   /* Determine the base address of the interrupt controller */
+   sparcAutodetectInterruptControllerAddress();
 }
 
 

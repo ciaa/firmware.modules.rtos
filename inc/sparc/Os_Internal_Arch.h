@@ -67,7 +67,7 @@
  ** TASK_STACK_ADDITIONAL_STACK bytes of extra stack are reserved for each task
  ** running on the system.
  **/
-#define TASK_STACK_ADDITIONAL_SIZE      0
+#define TASK_STACK_ADDITIONAL_SIZE 0
 
 
 /** \brief Osek_Internal_Arch_Cpu.h inclusion needed macro
@@ -122,7 +122,7 @@
  ** called from anyhwere in the code.
  **
  **/
-#define DisableOSInterrupts()  { sparcEnableAllInterrupts(); }
+#define DisableOSInterrupts() { sparcEnableAllInterrupts(); }
 
 
 /** \brief Disable Interruptions
@@ -179,7 +179,7 @@
  ** until an event wakes it up again (for example, an external interrupt).
  **
  **/
-#define osekpause() { SparcOsekPause(); }
+#define osekpause() { sparcOsekPause(); }
 
 
 /*==================[typedef]================================================*/

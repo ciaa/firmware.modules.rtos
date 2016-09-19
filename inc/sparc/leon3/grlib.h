@@ -54,6 +54,9 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Types_Arch.h"
+
+
 /*==================[macros]=================================================*/
 
 
@@ -69,9 +72,9 @@
 
 
 #define GRLIB_GPTIMER_SCALER_VALUE                       (0x00)
-#define GRLIB_GPTIMER_SCALER_RELOAD_VALUE                (0x00)
-#define GRLIB_GPTIMER_CONFIGURATION_REGISTER             (0x00)
-#define GRLIB_GPTIMER_LATCH_CONFIGURATION_REGISTER       (0x00)
+#define GRLIB_GPTIMER_SCALER_RELOAD_VALUE                (0x04)
+#define GRLIB_GPTIMER_CONFIGURATION_REGISTER             (0x08)
+#define GRLIB_GPTIMER_LATCH_CONFIGURATION_REGISTER       (0x0c)
 #define GRLIB_GPTIMER_COUNTER_VALUE_REGISTER(timerIndex) (0x10 * (timerIndex + 1) + 0x00)
 #define GRLIB_GPTIMER_RELOAD_VALUE_REGISTER(timerIndex)  (0x10 * (timerIndex + 1) + 0x04)
 #define GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex)       (0x10 * (timerIndex + 1) + 0x08)
@@ -108,14 +111,14 @@ typedef uint32 grDeviceRegisterValue;
 
 
 typedef struct {
-    uint32 clockSwitchingEnabled;    /**< Clock switching enabled (CDS). If set, switching between AHB and CPU frequency is available. */
-    uint32 cpuClockFrequency;        /**< CPU clock frequency (CF). CPU core runs at (CF+1) times AHB frequency. */
-    uint32 loadDelay;                /**< Load delay. If set, the pipeline uses a 2-cycle load delay. Otherwise, a 1-cycle
-                                          load delay is used. generated from the lddel generic parameter in the VHDL model. */
-    uint32 fpuOption;                /**< FPU option. "00" = no FPU; "01" = GRFPU;  "10" = Meiko FPU, "11" = GRFPU-Lite. */
-    uint32 macInstructionAvailable;  /**< If set, the optional mutiply-accumulate (MAC) instruction is available. */
-    uint32 sparcV8MulDivAvailable;   /**< If set, the SPARC V8 multiply and divide instructions are available. */
-    uint32 registersWindows;         /**< Number of implemented register windows corresonds to NWIN+1. */
+   uint32 clockSwitchingEnabled;    /**< Clock switching enabled (CDS). If set, switching between AHB and CPU frequency is available. */
+   uint32 cpuClockFrequency;        /**< CPU clock frequency (CF). CPU core runs at (CF+1) times AHB frequency. */
+   uint32 loadDelay;                /**< Load delay. If set, the pipeline uses a 2-cycle load delay. Otherwise, a 1-cycle
+                                         load delay is used. generated from the lddel generic parameter in the VHDL model. */
+   uint32 fpuOption;                /**< FPU option. "00" = no FPU; "01" = GRFPU;  "10" = Meiko FPU, "11" = GRFPU-Lite. */
+   uint32 macInstructionAvailable;  /**< If set, the optional mutiply-accumulate (MAC) instruction is available. */
+   uint32 sparcV8MulDivAvailable;   /**< If set, the SPARC V8 multiply and divide instructions are available. */
+   uint32 registersWindows;         /**< Number of implemented register windows corresonds to NWIN+1. */
 } grCpuConfigType;
 
 
@@ -183,8 +186,8 @@ void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceR
 grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset);
 
 
-sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, sint32 ahbDeviceIndex);
-sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 vendorId, uint32 deviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex);
+sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, sint32 ahbDeviceIndex);
+sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex);
 
 
 void grEnableProcessorCaches();

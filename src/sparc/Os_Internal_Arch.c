@@ -47,8 +47,9 @@
 /*==================[inclusions]=============================================*/
 
 
-#include "Os_Internal_Arch_Cfg.h"
 #include "Os_Internal.h"
+#include "Os_Internal_Arch.h"
+#include "Os_Internal_Arch_Cfg.h"
 #include "Sparc_Arch.h"
 
 
@@ -66,12 +67,10 @@
 
 TaskType TerminatingTask = INVALID_TASK;
 
-
 TaskType WaitingTask = INVALID_TASK;
 
 
 TaskContextType *sparcNewContextPtr;
-
 
 TaskContextType *sparcOldContextPtr;
 
@@ -166,13 +165,31 @@ void JmpTask(TaskType newTask)
 
 void SetEntryPoint(TaskType TaskID)
 {
-   uint32 *taskStack;
-   int stackPointerInWords;
-   int framePointerInWords;
+   uint32 *stackStartPointer;
+   uint32 *stackPointer;
+   uint32 *framePointer;
+   uint32 effectiveStackTop;
 
-   taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
+   stackStartPointer = (uint32 *)TasksConst[TaskID].StackPtr;
 
-   framePointerInWords = TasksConst[TaskID].StackSize / 4;
+   /* the ABI requires that all stack frames start at double word
+    * aligned addresses.
+    *
+    * While this can be enforced by (a) using compiler
+    * directives to force the compiler to create stack memory
+    * spaces that always start on double word aligned addresses
+    * and (b) using always stack sizes that are multiples of 8,
+    * I can't enforce either of those restrictions because
+    * the stack memory spaces are created on generated code that
+    * is outside of the scope of the SPARC port (in Os_Internal_Cfg.c.php)
+    * and because stack sizes are configured by the user for each task in the
+    * OIL file without any kind of restriction on their value.
+    *
+    * So, instead of trying to address both those issues, I prefer to select
+    * the "effective" top of the stack to be the highest double word aligned
+    * address that lies within the stack memory space reserved for the task.
+    */
+   effectiveStackTop = (((uint32)stackStartPointer) + TasksConst[TaskID].StackSize) & 0xfffffff8;
 
    /*
     * STACK-TOP INITIALIZATION STACK FRAME
@@ -205,40 +222,40 @@ void SetEntryPoint(TaskType TaskID)
     * [sp - 00] to [sp - 03] %l0 register
     */
 
-   stackPointerInWords = framePointerInWords - SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE / 4;
+   framePointer = (uint32 *)effectiveStackTop;
+   stackPointer = framePointer - SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE / 4;
 
    /*
     * other fields required in the ABI */
-   taskStack[stackPointerInWords + 22] = 0x00; /* incoming argument 5 */
-   taskStack[stackPointerInWords + 21] = 0x00; /* incoming argument 4 */
-   taskStack[stackPointerInWords + 20] = 0x00; /* incoming argument 3 */
-   taskStack[stackPointerInWords + 19] = 0x00; /* incoming argument 2 */
-   taskStack[stackPointerInWords + 18] = 0x00; /* incoming argument 1 */
-   taskStack[stackPointerInWords + 17] = 0x00; /* incoming argument 0 */
-   taskStack[stackPointerInWords + 16] = 0x00; /* struct/union return pointer */
+   *(stackPointer + 22) = 0x00; /* incoming argument 5 */
+   *(stackPointer + 21) = 0x00; /* incoming argument 4 */
+   *(stackPointer + 20) = 0x00; /* incoming argument 3 */
+   *(stackPointer + 19) = 0x00; /* incoming argument 2 */
+   *(stackPointer + 18) = 0x00; /* incoming argument 1 */
+   *(stackPointer + 17) = 0x00; /* incoming argument 0 */
+   *(stackPointer + 16) = 0x00; /* struct/union return pointer */
 
    /*
     * initial value of the task's function input registers */
-   taskStack[stackPointerInWords + 15] = 0x00000000; /* %i7 register = return address */
-   taskStack[stackPointerInWords + 14] = &(taskStack[framePointerInWords]); /* i6 register = frame pointer */
-   taskStack[stackPointerInWords + 13] = 0x00; /* %i5 register */
-   taskStack[stackPointerInWords + 12] = 0x00; /* %i4 register */
-   taskStack[stackPointerInWords + 11] = 0x00; /* %i3 register */
-   taskStack[stackPointerInWords + 10] = 0x00; /* %i2 register */
-   taskStack[stackPointerInWords +  9] = 0x00; /* %i1 register */
-   taskStack[stackPointerInWords +  8] = 0x00; /* %i0 register */
+   *(stackPointer + 15) = 0x00000000; /* %i7 register = return address */
+   *(stackPointer + 14) = (uint32) framePointer; /* i6 register = frame pointer */
+   *(stackPointer + 13) = 0x00; /* %i5 register */
+   *(stackPointer + 12) = 0x00; /* %i4 register */
+   *(stackPointer + 11) = 0x00; /* %i3 register */
+   *(stackPointer + 10) = 0x00; /* %i2 register */
+   *(stackPointer +  9) = 0x00; /* %i1 register */
+   *(stackPointer +  8) = 0x00; /* %i0 register */
 
    /*
     * initial value of the task's function local registers */
-   taskStack[stackPointerInWords +  7] = 0x00; /* %l7 register */
-   taskStack[stackPointerInWords +  6] = 0x00; /* %l6 register */
-   taskStack[stackPointerInWords +  5] = 0x00; /* %l5 register */
-   taskStack[stackPointerInWords +  4] = 0x00; /* %l4 register */
-   taskStack[stackPointerInWords +  3] = 0x00; /* %l3 register */
-   taskStack[stackPointerInWords +  2] = 0x00; /* %l2 register */
-   taskStack[stackPointerInWords +  1] = 0x00; /* %l1 register */
-   taskStack[stackPointerInWords +  0] = 0x00; /* %l0 register */
-
+   *(stackPointer +  7) = 0x00; /* %l7 register */
+   *(stackPointer +  6) = 0x00; /* %l6 register */
+   *(stackPointer +  5) = 0x00; /* %l5 register */
+   *(stackPointer +  4) = 0x00; /* %l4 register */
+   *(stackPointer +  3) = 0x00; /* %l3 register */
+   *(stackPointer +  2) = 0x00; /* %l2 register */
+   *(stackPointer +  1) = 0x00; /* %l1 register */
+   *(stackPointer +  0) = 0x00; /* %l0 register */
 
    /*
     * INITIAL TASK CONTEXT DATA
@@ -266,52 +283,50 @@ void SetEntryPoint(TaskType TaskID)
     * [sp - 00] to [sp - 03] %psr register
     */
 
-
-   framePointerInWords = stackPointerInWords;
-   stackPointerInWords = framePointerInWords - SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE / 4;
+   framePointer = stackPointer;
+   stackPointer = framePointer - SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE / 4;
 
    /*
     * padding required to ensure that the stack pointer is always a multiples of size of a double-word */
-   taskStack[stackPointerInWords + 19] = 0x00; /* Padding */
+   *(stackPointer + 19) = 0x00; /* Padding */
 
    /*
     * Start address of the task function */
-   taskStack[stackPointerInWords + 18] = (uint32) TasksConst[TaskID].EntryPoint + 0x04; /* nPC, task function second instruction */
-   taskStack[stackPointerInWords + 17] = (uint32) TasksConst[TaskID].EntryPoint + 0x00; /* PC, task function first instruction */
+   *(stackPointer + 18) = (uint32) TasksConst[TaskID].EntryPoint + 0x04; /* nPC, task function second instruction */
+   *(stackPointer + 17) = (uint32) TasksConst[TaskID].EntryPoint + 0x00; /* PC, task function first instruction */
 
    /*
     * Y register */
-   taskStack[stackPointerInWords + 16] = 0x00; /* %y register */
+   *(stackPointer + 16) = 0x00; /* %y register */
 
    /*
     * trap input registers = initial value of the task's function output registers */
-   taskStack[stackPointerInWords + 15] = (uint32) taskReturnSafetyNet; /* %i7 register, return address of the task function */
-   taskStack[stackPointerInWords + 14] = (uint32) &(taskStack[framePointerInWords]); /* %i6 register, trap frame pointer */
-   taskStack[stackPointerInWords + 13] = 0x00; /* %i5 register */
-   taskStack[stackPointerInWords + 12] = 0x00; /* %i4 register */
-   taskStack[stackPointerInWords + 11] = 0x00; /* %i3 register */
-   taskStack[stackPointerInWords + 10] = 0x00; /* %i2 register */
-   taskStack[stackPointerInWords +  9] = 0x00; /* %i1 register */
-   taskStack[stackPointerInWords +  8] = 0x00; /* %i0 register */
+   *(stackPointer + 15) = (uint32) taskReturnSafetyNet; /* %i7 register, return address of the task function */
+   *(stackPointer + 14) = (uint32) framePointer; /* %i6 register, trap frame pointer */
+   *(stackPointer + 13) = 0x00; /* %i5 register */
+   *(stackPointer + 12) = 0x00; /* %i4 register */
+   *(stackPointer + 11) = 0x00; /* %i3 register */
+   *(stackPointer + 10) = 0x00; /* %i2 register */
+   *(stackPointer +  9) = 0x00; /* %i1 register */
+   *(stackPointer +  8) = 0x00; /* %i0 register */
 
    /*
     * initial value of the task's global registers*/
-   taskStack[stackPointerInWords +  7] = 0x00; /* %g7 register */
-   taskStack[stackPointerInWords +  6] = 0x00; /* %g6 register */
-   taskStack[stackPointerInWords +  5] = 0x00; /* %g5 register */
-   taskStack[stackPointerInWords +  4] = 0x00; /* %g4 register */
-   taskStack[stackPointerInWords +  3] = 0x00; /* %g3 register */
-   taskStack[stackPointerInWords +  2] = 0x00; /* %g2 register */
-   taskStack[stackPointerInWords +  1] = 0x00; /* %g1 register */
+   *(stackPointer +  7) = 0x00; /* %g7 register */
+   *(stackPointer +  6) = 0x00; /* %g6 register */
+   *(stackPointer +  5) = 0x00; /* %g5 register */
+   *(stackPointer +  4) = 0x00; /* %g4 register */
+   *(stackPointer +  3) = 0x00; /* %g3 register */
+   *(stackPointer +  2) = 0x00; /* %g2 register */
+   *(stackPointer +  1) = 0x00; /* %g1 register */
 
    /*
     * initial value of the task's Processor Status Register */
-   taskStack[stackPointerInWords +  0] = 0x00; /* %psr register */
-
+   *(stackPointer +  0) = 0x00; /* %psr register */
 
    /*
     * Save the initial task context pointer */
-   *(TasksConst[TaskID].TaskContext) = &(taskStack[stackPointerInWords]);
+   TasksConst[TaskID].TaskContext->stackBottomPtr = stackPointer;
 }
 
 

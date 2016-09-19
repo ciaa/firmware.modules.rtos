@@ -35,7 +35,7 @@
 
 /** \brief SPARC Architecture Support Header File
  **
- ** \file sparc/Os_Internal_Arch.h
+ ** \file sparc/Sparc_Arch.h
  ** \arch sparc
  **/
 
@@ -47,6 +47,9 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
+
+
+#include "Types_Arch.h"
 
 
 /*==================[macros]=================================================*/
@@ -125,9 +128,6 @@
 
 
 /*==================[external data declaration]==============================*/
-
-
-extern uint32 sparc_system_trap_table;
 
 
 /*==================[external functions declaration]=========================*/

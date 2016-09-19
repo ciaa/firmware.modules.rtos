@@ -47,6 +47,7 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Os_Arch.h"
 #include "Os_Internal.h"
 
 
