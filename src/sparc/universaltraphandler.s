@@ -96,10 +96,10 @@
    !   * [FOR THREADS ONLY] Floating point state data, if enabled: FSR register and %f0 to %f31.
    !
 
-   .global universal_trap_handler
-   .type   universal_trap_handler, #function
+   .global sparcTaskContextAwareTrapHandler
+   .type   sparcTaskContextAwareTrapHandler, #function
 
-universal_trap_handler:
+sparcTaskContextAwareTrapHandler:
 
    !
    ! Check whether we are already in interrupt/trap context (i.e. in a nested trap) or whether
