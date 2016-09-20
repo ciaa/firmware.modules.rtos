@@ -80,6 +80,8 @@ TaskContextType *sparcOldContextPtr;
 
 uint32 *active_thread_context_stack_pointer;
 
+uint32 system_in_interrupt_context;
+
 
 /*==================[internal functions definition]==========================*/
 

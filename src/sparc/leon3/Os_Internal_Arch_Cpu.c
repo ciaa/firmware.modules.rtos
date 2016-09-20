@@ -1,4 +1,4 @@
-/* Copyright 2016, Gerardo Puga (UNLP)
+|/* Copyright 2016, Gerardo Puga (UNLP)
  * Copyright 2014, Pablo Ridolfi (UTN-FRBA)
  *
  * This file is part of CIAA Firmware.

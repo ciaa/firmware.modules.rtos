@@ -99,6 +99,11 @@
    .global sparcTaskContextAwareTrapHandler
    .type   sparcTaskContextAwareTrapHandler, #function
 
+   .extern system_in_interrupt_context
+   .extern detected_sparc_register_windows
+   .extern active_thread_context_stack_pointer
+   .extern sparcUniversalTrapHandlersTable
+
 sparcTaskContextAwareTrapHandler:
 
    !

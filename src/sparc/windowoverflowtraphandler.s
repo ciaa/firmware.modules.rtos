@@ -62,6 +62,8 @@
    .global sparcWindowOverflowTrapHandler
    .type   sparcWindowOverflowTrapHandler, #function
 
+   .extern detected_sparc_register_windows
+
 sparcWindowOverflowTrapHandler:
 
    !

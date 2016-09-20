@@ -62,6 +62,8 @@
    .global sparcWindowUnderflowTrapHandler
    .type   sparcWindowUnderflowTrapHandler, #function
 
+   .extern detected_sparc_register_windows
+
 sparcWindowUnderflowTrapHandler:
 
    !
