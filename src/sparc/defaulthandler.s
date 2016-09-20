@@ -44,11 +44,14 @@
  ** @{ */
 
         !
-        ! Default trap handler, used to be assigned to any trap table entry that does not have a specially customized trap handler. This
-        ! may be because the trap is not actually implemented in a given SPARC v8 implementation, or because it is not expected that
+        ! Default trap handler.
+        ! This handler is used to for any trap table entry that does
+        ! not have its own customized trap handler, which may happen
+        ! if the trap is not actually implemented in a given SPARC v8
+        ! implementation, or because it is not expected that
         ! the trap will be generated under normal circumstances.
         !
-        ! The code assumes the following register arrangement on entry:
+        ! The code assumes the following register values on entry:
         !  %l0 = psr
         !  %l1 = PC
         !  %l2 = nPC
@@ -57,8 +60,6 @@
         .global default_trap_handler
         .type   default_trap_handler, #function
 
-        .extern sparcSystemServiceEnableTraps
-
 default_trap_handler:
 
         !
@@ -66,45 +67,30 @@ default_trap_handler:
         !
 
         !
-        ! Since the debugger is called using a software trap, traps must be reenabled.
+        ! Since the debugger is called using a software trap,
+        ! traps must be reenabled.
         or     %l0, SPARC_PSR_ET_MASK, %l0
         mov    %l0, %psr
-        ! three delay cycles needed after writing on the PSR register
+        ! After each write to the PSR register we must avoid 
+        ! operations that can read/write its value for at least
+        ! the next three cycles.
         nop
         nop
         nop
 
         !
-        ! Invoke the software trap that is used by GDB/GRMON to indicate the
-        ! presence of a breakpoint.
-        ta      0x01
+        ! Invoke the software trap that is used by GDB/GRMON
+        ! to indicate the presence of a breakpoint.
+        ta      SPARC_CALL_DEBUGGER_SW_TRAP_NUMBER
 
         !
         ! Return to the interrupted trap
-
-        ! This universal handler may be used for both interrupting and precise traps.
-        ! Interrupting traps must reexecute the instruction where the trap was invoked.
-        ! All other trap types are assumed to be precise traps
-
-        cmp     %l3, 0x11
-        bl      return_from_a_precise_trap
-        nop
-
-        cmp     %l3, 0x1f
-        bg      return_from_a_precise_trap
-        nop
-
- return_from_an_interrupting_trap:
-
         !
-        ! Reexecute the instruction where the trap was invoked
-        jmp     %l1
-        rett    %l2
+        ! This is probably not going to get executed, since we called the 
+        ! debugger, but just for completeness...
 
- return_from_a_precise_trap:
-
-        !
-        ! Go back to the instruction located right after the instruction that trapped.
+        ! Precise trap. Go back to the instruction located right after
+        ! the instruction that trapped.
         jmp     %l2
         rett    %l2 + 0x04
 
