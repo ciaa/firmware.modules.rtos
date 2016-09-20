@@ -57,10 +57,10 @@
         !  %l2 = nPC
         !  %l3 = trap type, or trap service table index
         !
-        .global default_trap_handler
-        .type   default_trap_handler, #function
+        .global sparcDefaultTrapHandler
+        .type   sparcDefaultTrapHandler, #function
 
-default_trap_handler:
+sparcDefaultTrapHandler:
 
         !
         ! Default action: Call the debugger.
