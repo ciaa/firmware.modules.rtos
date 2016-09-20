@@ -59,10 +59,10 @@
    ! %l1 = trapped %pc (save)
    ! %l2 = trapped %npc
    !
-   .global window_overflow_trap_handler
-   .type   window_overflow_trap_handler, #function
+   .global sparcWindowOverflowTrapHandler
+   .type   sparcWindowOverflowTrapHandler, #function
 
-window_overflow_trap_handler:
+sparcWindowOverflowTrapHandler:
 
    !
    ! Read the current WIM value and store it locally
