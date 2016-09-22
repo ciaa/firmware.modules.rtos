@@ -54,10 +54,9 @@
    !
 
    !
-   ! Entry assumptions:
-   !
-   ! %l1 = trapped %pc (save)
-   ! %l2 = trapped %npc
+   ! The code assumes the following register arrangement on entry:
+   !  %l1 = PC
+   !  %l2 = nPC
    !
    .global sparcWindowOverflowTrapHandler
    .type   sparcWindowOverflowTrapHandler, #function
@@ -71,7 +70,7 @@ sparcWindowOverflowTrapHandler:
    mov     %wim, %l0
 
    !
-   ! Determine the WIN field bit mask from the number of register windows
+   ! Determine the WIM field bit mask from the number of register windows
    sethi   %hi(detected_sparc_register_windows), %l4
    ld      [%lo(detected_sparc_register_windows) + %l4], %l4
    ! The number of implemented register windows is always a power of 2, therefore the following
@@ -167,3 +166,4 @@ sparcWindowOverflowTrapHandler:
    ! executed again.
    jmp     %l1
    rett    %l2
+

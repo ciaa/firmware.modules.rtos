@@ -54,10 +54,9 @@
    !
 
    !
-   ! Entry assumptions:
-   !
-   ! %l1 = trapped %pc (save)
-   ! %l2 = trapped %npc
+   ! The code assumes the following register arrangement on entry:
+   !  %l1 = PC
+   !  %l2 = nPC
    !
    .global sparcWindowUnderflowTrapHandler
    .type   sparcWindowUnderflowTrapHandler, #function
