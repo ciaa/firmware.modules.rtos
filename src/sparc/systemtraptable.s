@@ -1768,7 +1768,7 @@ trap_type_82:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    [%l3 + %lo(sparcTaskContextAwareTrapHandler)], %g0
-        mov     0x000000f, %l3    ! Task context aware trap handlers table index, with bit 5 set to 1 to indicate this is a software trap handler.
+        mov     0x000002f, %l3    ! Task context aware trap handlers table index, with bit 5 set to 1 to indicate this is a software trap handler.
 
 
         !
@@ -1781,7 +1781,7 @@ trap_type_83:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    [%l3 + %lo(sparcTaskContextAwareTrapHandler)], %g0
-        mov     0x00000010, %l3    ! Task context aware trap handlers table index, with bit 5 set to 1 to indicate this is a software trap handler.
+        mov     0x00000030, %l3    ! Task context aware trap handlers table index, with bit 5 set to 1 to indicate this is a software trap handler.
 
 
         !

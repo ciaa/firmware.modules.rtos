@@ -82,6 +82,8 @@ uint32 *active_thread_context_stack_pointer;
 
 uint32 system_in_interrupt_context = 0;
 
+uint32 detected_sparc_register_windows = SPARC_DEFAULT_REGISTER_WINDOW_COUNT;
+
 
 /*==================[internal functions definition]==========================*/
 

@@ -54,6 +54,10 @@
 
 /*==================[macros]=================================================*/
 
+
+/** \brief Typical register window count for SPARC processors. */
+#define SPARC_DEFAULT_REGISTER_WINDOW_COUNT 8
+
 /** \brief Bit mask for the PIL field in the PSR register */
 #define SPARC_PSR_PIL_MASK 0x0f00
 

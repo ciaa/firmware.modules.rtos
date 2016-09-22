@@ -30,7 +30,7 @@
  *
  */
 
-/** \brief SPARC V8 Universal Trap Service Routine Handler
+/** \brief SPARC V8 Context Aware Trap Service Routine Handler
  **
  ** \file sparc/trapwindowoveflowhandler.s
  ** \arch sparc
@@ -45,7 +45,7 @@
 
    !
    ! This is the code that sets the everything up before actually executing the user's trap
-   ! service routines.
+   ! service routines, including task context management.
    !
    ! The code assumes the following register arrangement on entry:
    !  %l0 = psr
@@ -57,36 +57,36 @@
    ! * Checks whether this interrupt/software trap is the outermost one, or whether it is executing as a
    !   nested interrupt/software trap:
    !
-   ! > If it is the outermost:
+   ! > If it is the outermost, it:
    !   * Sets the interrupt context global variable to 1.
    !   * Dumps all of the thread's in-use register windows (not the trap window) to the stack.
    !   * Saves the interrupted thread's context to the thread's stack too.
    !   * Saves the final stack pointer to the current_task_context global variable.
    !   * Optional: replace the application stack for a dedicated interrupt stack.
    !   * Fetch the actual trap service routine start address from the ISR table.
-   !   * Disables any further interrupts by setting the PIL to 15.
+   !   * CHECK: [Disables any further interrupts by setting the PIL to 15]
    !   * Enable traps.
    !   * Call the trap service routine.
    !   * Disable traps.
-   !   * Set the PIL to 0 again.
+   !   * CHECK: [Set the PIL to 0 again]
    !   * Set the interrupt context flag to 0.
    !   * Recover current_task_context and uses it to setup the thread stack pointer.
    !   * Recover the interrupted thread's context from the stack.
    !   * Return from trap.
    !
-   ! > If nested:
+   ! > If nested, it:
    !   * Makes sure that there's at least one register window available for further traps.
    !   * Saves the interrupted trap's context data to the stack.
    !   * Fetch the actual trap service routine start address from the ISR table.
-   !   * Disables any further interrupts by setting the PIL to 15.
+   !   * CHECK: [Disables any further interrupts by setting the PIL to 15]
    !   * Enable traps.
    !   * Call the trap service routine.
    !   * Disable traps.
-   !   * Set the PIL to 0 again.
+   !   * CHECK: [Set the PIL to 0 again]
    !   * Recover the interrupted trap's context from the stack.
    !   * Return from trap.
    !
-   ! Whenever thread/trap context is mentioned, the following itemps are considered relevant
+   ! Whenever thread/trap context is mentioned, the following items are considered relevant
    ! context data:
    !   * global registers (%g1 to %g7)
    !   * in registers (%i0 to %i7)
@@ -119,7 +119,7 @@ sparcTaskContextAwareTrapHandler:
 
    ! Test whether the old value was zero
    tst     %l5
-   bne     nested_interrupt_handler
+   bnz     nested_interrupt_handler
 
    ! Update the value of the flag in memory (this happens in the delay slot of the branch,
    ! whatever the result of the test turns out to be)
@@ -179,7 +179,7 @@ outermost_trap_handler:
    sethi   %hi(detected_sparc_register_windows), %g7
    ld      [%lo(detected_sparc_register_windows) + %g7], %g7
    ! The number of implemented register windows is always a power of 2, therefore the following
-   ! sentence determines the bit mask.
+   ! sentence calculates the bit mask.
    sub     %g7, 0x1, %g7
 
    !
@@ -313,8 +313,8 @@ exit_dump_frame_loop:
    ! Save the Global registers %g1 to %g7
    st      %g1, [%sp + 4]
    std     %g2, [%sp + 8]
-   std     %l4, [%sp + 16] ! %g4 and %g5 were relocated to %l4 and %l5
-   std     %l6, [%sp + 24] ! %g6 and %g7 were relocated to %l6 and %l7
+   std     %l4, [%sp + 16] ! ATTENTION HERE: %g4 and %g5 were relocated to %l4 and %l5
+   std     %l6, [%sp + 24] ! ATTENTION HERE: %g6 and %g7 were relocated to %l6 and %l7
 
    ! Save the In registers %i0 to %i7
    std     %i0, [%sp + 32]
@@ -330,16 +330,20 @@ exit_dump_frame_loop:
    st      %l1, [%sp + 68]
    st      %l2, [%sp + 72]
 
-   ! Floating point registers
-
+   ! ****************************************************
    !
-   ! *** INSERT MISSING CODE HERE ***
+   ! FPU TASK CONTEXT SAVE
    !
-   ! ISSUE02
-   ! Code should save in the stack all of the FP registers,
-   ! including the FSR register. The number of bytes reserved
-   ! on the stack for context storage should be incremented accordingly
+   ! If support for FPU instructions is added to the port, this is the place where
+   ! the FPU context needs to be saved.
    !
+   ! The outline would be:
+   ! 1) Make some room in the stack for the FPU registers. Make sure you keep everything
+   !    double word aligned.
+   ! 2) Store the FPU registers to the stack.
+   ! 3) Save the FSR register too.
+   !
+   ! ****************************************************
 
    ! ****************************************************
    !
@@ -353,26 +357,23 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   !  Optional: replace the application stack for a dedicated interrupt stack.
+   ! DEDICATED INTERRUPT STACK
    !
-
+   ! If we wanted to use a dedicated interrupt stack,
+   ! this is the place where we should replace the stack
+   ! pointer so that it points to it.
    !
-   ! *** INSERT MISSING CODE HERE ***
-   !
-   ! ISSUE01
-   ! Code should replace %sp with the address of the last word in a dedicated
-   ! to create an interrupt stack.
-   !
+   ! ****************************************************
 
    ! ****************************************************
    !
    ! Fetch the actual trap service routine start address from the ISR table.
    !
 
-   ! The trap type indexes the trap service routine table, must be masked out
-   ! first, because that bit is a flag that indicate if the handler is a
-   ! software trap handler or an external interrupt handler. That piece of data
-   ! will be relevant on the way out of the trap. See below.
+   ! The interrupt trap table entry index is stored on the first
+   ! 5 bits of %l3. The sixth bit is a flag that indicates whether
+   ! this code is being executed to handle an external interrupt (IRQ)
+   ! or a software trap (the set/change context system services).
    and     %l3, 0x1f, %l5
    sll     %l5, 2, %l5
 
@@ -383,25 +384,11 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Disable any further interrupt by setting the PIL to 15
-   ! and enable traps.
+   ! Re-enable traps
    !
-   !
-
-   ! The behavior of writes/reads on the PSR during the first three cycles after a
-   ! write on the same register is undefined, unless the SAME kind of operation is
-   ! performed (wrpsr followed by wrpsr), in which case the operations proceed as
-   ! intended. That's the reason why it is not necesary to insert three delay cycles
-   ! here using NOPs between the writes, but it is needed after the second.
 
    mov     %l0, %l4
-   !
-   ! TODO: The ISR code in Osek seems to assume that interrupts are enabled when you start executing
-   ! the high level service routine, so avoid disabling them here...
-   ! or      %l4, SPARC_PSR_PIL_MASK  ! Set the PIL field to 15
-   ! mov     %l4, %psr
-   !
-   or      %l4, SPARC_PSR_ET_MASK, %l4   ! Set ET
+   or      %l4, SPARC_PSR_ET_MASK, %l4 ! Set the ET bit
    mov     %l4, %psr
    ! delay cycles
    nop
@@ -417,21 +404,11 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Disable traps and set the PIL field to its initial
-   ! value again.
+   ! Disable traps
    !
 
-   !
-   ! *** INSERT MISSING CODE HERE ***
-   !
-   ! ISSUE03 TODO
-   ! Code should call the system service that atomically
-   ! unsets the ET bit in PSR. Here this will be translated to
-   ! to simply causing a software trap (e.g. "ta SERVICE_TRAP_DISABLE").
-   !
-
-   ! Once ET = 0, we can rewrite PIL to its original value
-   mov     %l0, %psr
+   mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    ! ****************************************************
    !
@@ -459,6 +436,20 @@ exit_dump_frame_loop:
    ! Recovers the interrupted thread's context from the stack.
    !
 
+   ! ****************************************************
+   !
+   ! FPU TASK CONTEXT RESTORE
+   !
+   ! If support for FPU instructions is added to the port, this is the place where
+   ! the FPU context needs to be restored
+   !
+   ! The outline would be:
+   ! 1) Restore the FSR register.
+   ! 2) Restore the FPU registers.
+   ! 3) Release stack space, keeping everygthing double word aligned.
+   !
+   ! ****************************************************
+
    ! Load the PSR register
    ld      [%sp], %l0
 
@@ -481,17 +472,6 @@ exit_dump_frame_loop:
    ! Restore the values of the PC and nPC
    ld      [%sp + 68], %l1
    ld      [%sp + 72], %l2
-
-   ! Floating point registers
-
-   !
-   ! *** INSERT MISSING CODE HERE ***
-   !
-   ! ISSUE02
-   ! Code should save in the stack all of the FP registers,
-   ! including the FSR register. The number of bytes reserved
-   ! on the stack for context storage should be incremented accordingly
-   !
 
    ! The thread's stack pointer was recovered along with the
    ! rest of the input registers, no need to derive it from
@@ -634,15 +614,21 @@ no_overflow_yet:
    st      %l1, [%sp + 68]
    st      %l2, [%sp + 72]
 
+   !
+   ! Notice that there are no provisions for storing the floating point
+   ! context here. That is because I assume that under no circunstances a
+   ! trap (external or internal) should perform floating point operations.
+   !
+
    ! ****************************************************
    !
    ! Fetch the actual trap service routine start address from the ISR table.
    !
 
-   ! The trap type indexes the trap service routine table, must be masked out
-   ! first, because that bit is a flag that indicate if the handler is a
-   ! software trap handler or an external interrupt handler. That piece of data
-   ! will be relevant on the way out of the trap. See below.
+   ! The interrupt trap table entry index is stored on the first
+   ! 5 bits of %l3. The sixth bit is a flag that indicates whether
+   ! this code is being executed to handle an external interrupt (IRQ)
+   ! or a software trap (the set/change context system services).
    and     %l3, 0x1f, %l5
    sll     %l5, 2, %l5
 
@@ -653,25 +639,11 @@ no_overflow_yet:
 
    ! ****************************************************
    !
-   ! Disable any further interrupt by setting the PIL to 15
-   ! and enable traps.
+   ! Re-enable traps.
    !
-   !
-
-   ! The behavior of writes/reads on the PSR during the first three cycles after a
-   ! write on the same register is undefined, unless the SAME kind of operation is
-   ! performed (e.g. wrpsr followed by wrpsr), in which case the operations proceed as
-   ! intended. That's the reason why it is not necesary to insert three delay cycles
-   ! between the writes, but it does after the second.
 
    mov     %l0, %l4
-   !
-   ! TODO: The ISR code in Osek seems to assume that interrupts are enabled when you start executing
-   ! the high level service routine, so avoid disabling them here...
-   ! or      %l4, SPARC_PSR_PIL_MASK  ! Set the PIL field to 15
-   ! mov     %l4, %psr
-   !
-   or      %l4, SPARC_PSR_ET_MASK   ! Set ET
+   or      %l4, SPARC_PSR_ET_MASK, %l4 ! Set the ET bit
    mov     %l4, %psr
    ! delay cycles
    nop
@@ -687,18 +659,11 @@ no_overflow_yet:
 
    ! ****************************************************
    !
-   ! Disable traps and set the PIL field to its initial
-   ! value again.
+   ! Disable traps
    !
 
-   !
-   ! *** INSERT MISSING CODE HERE ***
-   !
-   ! ISSUE03 TODO
-   ! Code should call the system service that atomically
-   ! unsets the ET bit in PSR. Here this will be translated to
-   ! to simply causing a software trap (e.g. "ta SERVICE_TRAP_DISABLE").
-   !
+   mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    ! ****************************************************
    !
@@ -745,7 +710,7 @@ return_from_trap:
    ! The sixth bit of the %l3 register is set if this code is handling
    ! a software trap handler request (precise trap).
 
-   andc    %l3, 0x20
+   andcc   %l3, 0x20, %g0
    bnz     return_from_a_precise_trap
    nop
 

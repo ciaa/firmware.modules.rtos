@@ -190,6 +190,8 @@
 
 extern TaskType TerminatingTask;
 
+extern uint32 detected_sparc_register_windows;
+
 
 /*==================[external functions declaration]=========================*/
 

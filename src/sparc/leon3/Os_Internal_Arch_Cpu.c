@@ -110,9 +110,6 @@ sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
 /*==================[external data definition]===============================*/
 
 
-uint32 detected_sparc_register_windows;
-
-
 /*==================[internal functions definition]==========================*/
 
 
