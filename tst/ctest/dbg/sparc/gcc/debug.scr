@@ -1,0 +1,11 @@
+target remote localhost:2222
+load
+break ConfTestFinish
+continue
+dump value out/rtos/TestResults.bin TestResults
+dump value out/rtos/TestResultsOk.bin TestResultsOk
+dump value out/rtos/SequenceCounter.bin SequenceCounter
+dump value out/rtos/SequenceCounterOk.bin SequenceCounterOk
+dump value out/rtos/ConfTestResult.bin ConfTestResult
+kill
+quit
