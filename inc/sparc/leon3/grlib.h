@@ -90,6 +90,7 @@
 #define GRLIB_PNP_DEVICE_ID_ANY                          0x00
 #define GRLIB_PNP_DEVICE_ID_APBCTRL                      0x06
 #define GRLIB_PNP_DEVICE_ID_IRQMP                        0x0d
+#define GRLIB_PNP_DEVICE_ID_APBUART                      0x0c
 #define GRLIB_PNP_DEVICE_ID_GPTIMER                      0x11
 
 #define GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE              0x01
