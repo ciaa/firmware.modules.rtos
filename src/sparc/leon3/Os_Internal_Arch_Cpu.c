@@ -88,22 +88,22 @@ sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
       0x00, /* Index 01, IRQ 2 */
       0x00, /* Index 02, IRQ 3 */
       0x00, /* Index 03, IRQ 4 */
-      0x00, /* Index 05, IRQ 5 */
-      0x00, /* Index 06, IRQ 6 */
-      0x00, /* Index 07, IRQ 7 */
-      0x00, /* Index 08, IRQ 8 */
-      0x00, /* Index 09, IRQ 9 */
-      0x00, /* Index 10, IRQ 10 */
-      0x00, /* Index 11, IRQ 11 */
-      0x00, /* Index 12, IRQ 12 */
-      0x00, /* Index 13, IRQ 13 */
-      0x00, /* Index 14, IRQ 14 */
-      0x00, /* Index 15, IRQ 15 */
+      0x00, /* Index 04, IRQ 5 */
+      0x00, /* Index 05, IRQ 6 */
+      0x00, /* Index 06, IRQ 7 */
+      0x00, /* Index 07, IRQ 8 */
+      0x00, /* Index 08, IRQ 9 */
+      0x00, /* Index 09, IRQ 10 */
+      0x00, /* Index 10, IRQ 11 */
+      0x00, /* Index 11, IRQ 12 */
+      0x00, /* Index 12, IRQ 13 */
+      0x00, /* Index 13, IRQ 14 */
+      0x00, /* Index 14, IRQ 15 */
       /*
        * Software trap handlers
        * */
-      sparcSetTaskContextSWTrapHandler, /* Index 16, set task context handler */
-      sparcReplaceTaskContextSWTrapHandler /* Index 17, Replace task context handler */
+      sparcSetTaskContextSWTrapHandler, /* Index 15, set task context handler */
+      sparcReplaceTaskContextSWTrapHandler /* Index 16, Replace task context handler */
 };
 
 
