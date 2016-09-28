@@ -269,6 +269,10 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requeste
 sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex);
 
 
+sint32 grGetSystemClockFrequencyValue();
+void grSetSystemClockFrequencyValue(sint32 systemFrequencyInHz);
+
+
 void grEnableProcessorCaches();
 void grGetCPUConfig(grCpuConfigType *config);
 void grGetICacheConfig(grCacheConfigType *config);

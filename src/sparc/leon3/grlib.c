@@ -66,6 +66,9 @@
 /*==================[internal data definition]===============================*/
 
 
+sint32 grSystemFrequencyValueInHz = -1;
+
+
 /*==================[external data definition]===============================*/
 
 
@@ -359,6 +362,18 @@ grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress o
    registerPtr = (grDeviceRegisterValue *)(baseAddr + offset);
 
    return (grDeviceRegisterValue)(*registerPtr);
+}
+
+
+sint32 grGetSystemClockFrequencyValue()
+{
+   return grSystemFrequencyValueInHz;
+}
+
+
+void grSetSystemClockFrequencyValue(sint32 systemFrequencyInHz)
+{
+   grSystemFrequencyValueInHz = systemFrequencyInHz;
 }
 
 

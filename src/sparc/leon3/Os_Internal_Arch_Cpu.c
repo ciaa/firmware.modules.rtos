@@ -245,6 +245,9 @@ void sparcAutodetectSystemClockFrequency()
     * the implementation of the RTEMS port for LEON 3 processors rely on this too, and that port was
     * mostly coded by Gaisler Research. */
    sparcSystemFrequencyHz = (scalerRegisterValue + 1) * 1000 * 1000;
+
+   /* Set the value of the system frequency on the Gaisler module; drivers will look for it there later */
+   grSetSystemClockFrequencyValue(sparcSystemFrequencyHz);
 }
 
 
