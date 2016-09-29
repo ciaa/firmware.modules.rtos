@@ -79,6 +79,8 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef handler, sparcIrqNumber irq);
 
 void sparcClearInterrupt(sparcIrqNumber irq);
 
+void sparcForceInterrupt(sparcIrqNumber irq);
+
 void sparcEnableAllInterrupts(void);
 
 void sparcDisableAllInterrupts(void);

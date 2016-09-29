@@ -1,4 +1,4 @@
-|/* Copyright 2016, Gerardo Puga (UNLP)
+/* Copyright 2016, Gerardo Puga (UNLP)
  * Copyright 2014, Pablo Ridolfi (UTN-FRBA)
  *
  * This file is part of CIAA Firmware.
@@ -381,6 +381,16 @@ void sparcClearInterrupt(sparcIrqNumber irq)
    interruptBitMask = (1 << irq);
 
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, interruptBitMask);
+}
+
+
+void sparcForceInterrupt(sparcIrqNumber irq)
+{
+   uint32 interruptBitMask;
+
+   interruptBitMask = (1 << irq);
+
+   grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_FORCE_REGISTER, interruptBitMask);
 }
 
 
