@@ -35,7 +35,7 @@
 
 /** \brief SPARC Architecture Support Header File
  **
- ** \file sparc/Sparc_Arch.h
+ ** \file sparc/sparcsyscalls.h
  ** \arch sparc
  **/
 

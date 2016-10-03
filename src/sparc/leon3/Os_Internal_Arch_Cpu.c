@@ -51,7 +51,7 @@
 #include "Os_Internal_Arch_Cpu.h"
 #include "Os_Internal_Arch_Cfg.h"
 #include "grlib.h"
-#include "Sparc_Arch.h"
+#include "sparcsyscalls.h"
 
 
 /*==================[macros and definitions]=================================*/

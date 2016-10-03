@@ -47,7 +47,7 @@
 /*==================[inclusions]=============================================*/
 
 
-#include "Sparc_Arch.h"
+#include "sparcsyscalls.h"
 #include "grlib.h"
 
 

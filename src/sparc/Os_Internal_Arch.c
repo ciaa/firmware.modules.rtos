@@ -50,7 +50,7 @@
 #include "Os_Internal.h"
 #include "Os_Internal_Arch.h"
 #include "Os_Internal_Arch_Cfg.h"
-#include "Sparc_Arch.h"
+#include "sparcsyscalls.h"
 
 
 /*==================[macros and definitions]=================================*/
