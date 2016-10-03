@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef _SPARC_SYSCALLS_H_
-#define _SPARC_SYSCALLS_H_
+#ifndef _SPARC_SPARCASMCONSTANTS_H_
+#define _SPARC_SPARCASMCONSTANTS_H_
 
 /** \brief SPARC Architecture Support Header File
  **
@@ -49,16 +49,53 @@
 /*==================[inclusions]=============================================*/
 
 
-#include "Types_Arch.h"
-#include "sparcassembly.h"
-
-
 /*==================[macros]=================================================*/
 
 
-#define SPARC_CALL_DEBUGGER { asm("   flush\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n ta 1\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n\t nop\n" ); }
+/** \brief Typical register window count for SPARC processors. */
+#define SPARC_DEFAULT_REGISTER_WINDOW_COUNT 8
 
-#define sparcAssert(assertion, errorString) { if(!(assertion)) { SPARC_CALL_DEBUGGER; } }
+/** \brief Bit mask for the PIL field in the PSR register */
+#define SPARC_PSR_PIL_MASK 0x0f00
+
+
+/** \brief Bit mask for the ET bit in the PSR register */
+#define SPARC_PSR_ET_MASK  0x0020
+
+
+/** \brief Bit mask for the CWP field in the PSR register */
+#define SPARC_PSR_CWP_MASK 0x001f
+
+
+/** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
+ *
+ * For alignments reasons this number must be a multiple of 8 (double word).
+ */
+#define SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE 92
+
+
+/** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
+ *
+ * For alignments reasons this number must be a multiple of 8 (double word).
+ */
+#define SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE 80
+
+
+/** \brief Amount of bytes to reserve on a thread's stack in order to store its floating point context information.
+ *
+ * For alignments reasons this number must be a multiple of 8 (double word).
+ * */
+#define SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE 0
+
+#define SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER              0x00
+#define SPARC_CALL_DEBUGGER_SW_TRAP_NUMBER                0x01
+#define SPARC_SET_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER     0x02
+#define SPARC_REPLACE_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER 0x03
+
+#define SPARC_SYSCALL_ID_DISABLE_TRAPS 0x00
+#define SPARC_SYSCALL_ID_MASK_INTR     0x01
+#define SPARC_SYSCALL_ID_UNMASK_INTR   0x02
+#define SPARC_SYSCALL_ID_REBOOT_SYSTEM 0x03
 
 
 /*==================[typedef]================================================*/
@@ -70,30 +107,8 @@
 /*==================[external functions declaration]=========================*/
 
 
-/*
- * Syscall service functions, defined in syscallservices.s
- * */
-
-void sparcSystemServiceEnableTraps();
-
-void sparcSystemServiceDisableTraps();
-
-void sparcSystemServiceMaskInterrupts();
-
-void sparcSystemServiceUnMaskInterrupts();
-
-void sparcSystemServiceRebootSystem();
-
-void sparcSystemServiceCallDebugger();
-
-void sparcSystemServiceTriggerReplaceTaskContext();
-
-void sparcSystemServiceTriggerSetTaskContext();
-
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _SPARC_SYSCALLS_H_ */
-
+#endif /* _SPARC_SPARCASMCONSTANTS_H_ */
