@@ -43,6 +43,10 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+#include "sparcassembly.h"
+
+
    !
    ! ***
    !

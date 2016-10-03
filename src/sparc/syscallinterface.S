@@ -43,6 +43,10 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+#include "sparcassembly.h"
+
+
    !
    ! This file provides a number of functions that provide access to a set of system
    ! services.

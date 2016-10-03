@@ -36,6 +36,10 @@
  ** \arch sparc
  **/
 
+
+#include "sparcassembly.h"
+
+
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os

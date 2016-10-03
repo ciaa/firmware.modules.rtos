@@ -43,6 +43,10 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+#include "sparcassembly.h"
+
+
    !
    ! Default trap handler.
    ! This handler is used to for any trap table entry that does

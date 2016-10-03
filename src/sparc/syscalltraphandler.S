@@ -43,6 +43,10 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+#include "sparcassembly.h"
+
+
    !
    ! This SysCall handler serves a software interrupt that the system may use to ask
    ! a series of services, like enabling or disabling traps, rebooting the system, etc.

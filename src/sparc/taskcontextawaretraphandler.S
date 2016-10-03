@@ -43,6 +43,10 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+#include "sparcassembly.h"
+
+
    !
    ! This is the code that sets the everything up before actually executing the user's trap
    ! service routines, including task context management.
