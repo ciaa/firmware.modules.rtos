@@ -80,10 +80,10 @@ uint32 sparcISR2HandlersMask = 0x00;
 
 uint32 sparcCurrentInterruptMask = 0x00;
 
-sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
-      /*
-       * External Interrupt handlers
-       * */
+/*
+ * External Interrupt handlers
+ * */
+sparcIrqHandlerRef sparcIRQHandlersTable[15] = {
       0x00, /* Index 00, IRQ 1 */
       0x00, /* Index 01, IRQ 2 */
       0x00, /* Index 02, IRQ 3 */
@@ -98,10 +98,14 @@ sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
       0x00, /* Index 11, IRQ 12 */
       0x00, /* Index 12, IRQ 13 */
       0x00, /* Index 13, IRQ 14 */
-      0x00, /* Index 14, IRQ 15 */
-      /*
-       * Software trap handlers
-       * */
+      0x00  /* Index 14, IRQ 15 */
+};
+
+
+/*
+ * Task context replacement services handler function
+ * */
+const sparcIrqHandlerRef sparcTaskContextReplacementServiceHandlers[2] = {
       sparcSetTaskContextSWTrapHandler, /* Index 15, set task context handler */
       sparcReplaceTaskContextSWTrapHandler /* Index 16, Replace task context handler */
 };
@@ -113,7 +117,44 @@ sparcIrqHandlerRef sparcUniversalTrapHandlersTable[15] = {
 /*==================[internal functions definition]==========================*/
 
 
-sparcSetModularTimerConfiguration()
+void sparcInterruptHandlerCaller(uint32_t irqNumber)
+{
+   sparcIrqHandlerRef irqHandler;
+
+   sparcAssert(irqNumber > 0,   "Invalid IRQ number");
+   sparcAssert(irqNumber <= 15, "Invalid IRQ number");
+
+   /* Call every interrupt handler associated to this IRQ number
+    *
+    * Clearly, if you wanted to implement IRQ multiplexing, this is
+    * the place to do it... just saying... *wink* *wink*  ;)
+    * */
+
+   irqHandler = sparcIRQHandlersTable[irqNumber - 1];
+
+   (*irqHandler)();
+
+   /* Clear the interrupt flag on the IRQMP
+    * controller */
+   sparcClearInterrupt(irqNumber);
+}
+
+
+void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
+{
+   sparcIrqHandlerRef serviceHandler;
+
+   sparcAssert(serviceId >= 0, "Invalid index");
+   sparcAssert(serviceId <= 1, "Invalid index");
+
+   /* Call the actual service provider function */
+   serviceHandler = sparcTaskContextReplacementServiceHandlers[serviceId];
+
+   (*serviceHandler)();
+}
+
+
+void sparcSetModularTimerConfiguration()
 {
    uint32 timersInUseMask;
    uint32 configurationRegisterValue;
@@ -150,7 +191,7 @@ sparcSetModularTimerConfiguration()
          | 0x00 << 11  /* Enable latching */
          | 0x00 << 10  /* Enable external clock source */
          | 0x00 <<  9  /* Disable timer freeze bit */
-         | 0x00 <<  8  /* Serarate interrupts bit. Read only, write 0x00. */
+         | 0x00 <<  8  /* Separate interrupts bit. Read only, write 0x00. */
          | 0x00 <<  3  /* APB interrupt. Read only, write 0x00. */
          | 0X00 <<  0; /* Number of implemented timers. Read only, write 0x00. */
 
@@ -355,7 +396,7 @@ void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    sparcISR1HandlersMask |= newInterruptMask;
 
-   sparcUniversalTrapHandlersTable[irq - 1] = newHandler;
+   sparcIRQHandlersTable[irq - 1] = newHandler;
 }
 
 
@@ -371,7 +412,7 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
    sparcISR2HandlersMask |= newInterruptMask;
 
-   sparcUniversalTrapHandlersTable[irq - 1] = newHandler;
+   sparcIRQHandlersTable[irq - 1] = newHandler;
 }
 
 void sparcClearInterrupt(sparcIrqNumber irq)

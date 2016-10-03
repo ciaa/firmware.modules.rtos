@@ -102,7 +102,9 @@
    .extern system_in_interrupt_context
    .extern detected_sparc_register_windows
    .extern active_thread_context_stack_pointer
-   .extern sparcUniversalTrapHandlersTable
+
+   .extern sparcInterruptHandlerCaller
+   .extern sparcTaskContextReplacementHandlerCaller
 
 sparcTaskContextAwareTrapHandler:
 
@@ -367,23 +369,6 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Fetch the actual trap service routine start address from the ISR table.
-   !
-
-   ! The interrupt trap table entry index is stored on the first
-   ! 5 bits of %l3. The sixth bit is a flag that indicates whether
-   ! this code is being executed to handle an external interrupt (IRQ)
-   ! or a software trap (the set/change context system services).
-   and     %l3, 0x1f, %l5
-   sll     %l5, 2, %l5
-
-   ! Access the table and store the service routine start address in %l5
-   sethi   %hi(sparcUniversalTrapHandlersTable), %l4
-   add     %l4, %l5, %l4
-   ld      [%lo(sparcUniversalTrapHandlersTable) + %l4], %l5
-
-   ! ****************************************************
-   !
    ! Re-enable traps
    !
 
@@ -397,10 +382,47 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Call the trap service routine.
+   ! Call the IRQ handler caller function, or
+   ! the task context replacement function caller function.
    !
 
-   jmpl    %l5, %o7
+   ! The prototype of these functions is
+   !
+   !   void callerFunction(uint32_t arg);
+   !
+   ! They require a single integer argument, that depending on the case is the IRQ number
+   ! whose interrupt handler must be executed, or the taskContextReplacement service
+   ! that must be called. According to the Sparc ABI, this argument mus be stored in %o0.
+
+   ! The value of that argument is stored on the first
+   ! 5 bits of %l3. The sixth bit is a flag that indicates whether
+   ! this code is being executed to handle an external interrupt (IRQ)
+   ! or a software trap (the set/change context system services).
+
+   ! Test whether we must call a interrupt handler or task context
+   ! replacement handler function (check bit 6).
+   andcc    %l3, 0x20, %g0
+   bnz      outermost_set_task_context_replacement_handler_address
+   ! There is no need to put something in this delay slot
+
+outermost_set_interrupt_handler_caller_address:
+
+   sethi   %hi(sparcInterruptHandlerCaller), %l4
+   jmpl    [%lo(sparcInterruptHandlerCaller) + %l4], %o7
+   ! Use the delay slot to store the only argument
+   and     %l3, 0x1f, %o0
+
+   ba outermost_jump_to_caller
+   nop
+
+outermost_set_task_context_replacement_handler_address:
+
+   sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
+   jmpl    [%lo(sparcTaskContextReplacementHandlerCaller) + %l4], %o7
+   ! Use the delay slot to store the only argument
+   and     %l3, 0x1f, %o0
+
+outermost_jump_to_caller:
 
    ! ****************************************************
    !
@@ -622,23 +644,6 @@ no_overflow_yet:
 
    ! ****************************************************
    !
-   ! Fetch the actual trap service routine start address from the ISR table.
-   !
-
-   ! The interrupt trap table entry index is stored on the first
-   ! 5 bits of %l3. The sixth bit is a flag that indicates whether
-   ! this code is being executed to handle an external interrupt (IRQ)
-   ! or a software trap (the set/change context system services).
-   and     %l3, 0x1f, %l5
-   sll     %l5, 2, %l5
-
-   ! Access the table and store the service routine start address in %l5
-   sethi   %hi(sparcUniversalTrapHandlersTable), %l4
-   add     %l4, %l5, %l4
-   ld      [%lo(sparcUniversalTrapHandlersTable) + %l4], %l5
-
-   ! ****************************************************
-   !
    ! Re-enable traps.
    !
 
@@ -652,10 +657,47 @@ no_overflow_yet:
 
    ! ****************************************************
    !
-   ! Call the trap service routine.
+   ! Call the IRQ handler caller function, or
+   ! the task context replacement function caller function.
    !
 
-   jmpl    %l5, %o7
+   ! The prototype of these functions is
+   !
+   !   void callerFunction(uint32_t arg);
+   !
+   ! They require a single integer argument, that depending on the case is the IRQ number
+   ! whose interrupt handler must be executed, or the taskContextReplacement service
+   ! that must be called. According to the Sparc ABI, this argument mus be stored in %o0.
+
+   ! The value of that argument is stored on the first
+   ! 5 bits of %l3. The sixth bit is a flag that indicates whether
+   ! this code is being executed to handle an external interrupt (IRQ)
+   ! or a software trap (the set/change context system services).
+
+   ! Test whether we must call a interrupt handler or task context
+   ! replacement handler function (check bit 6).
+   andcc    %l3, 0x20, %g0
+   bnz      nested_set_task_context_replacement_handler_address
+   ! There is no need to put something in this delay slot
+
+nested_set_interrupt_handler_caller_address:
+
+   sethi   %hi(sparcInterruptHandlerCaller), %l4
+   jmpl    [%lo(sparcInterruptHandlerCaller) + %l4], %o7
+   ! Use the delay slot to store the only argument
+   and     %l3, 0x1f, %o0
+
+   ba nested_jump_to_caller
+   nop
+
+nested_set_task_context_replacement_handler_address:
+
+   sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
+   jmpl    [%lo(sparcTaskContextReplacementHandlerCaller) + %l4], %o7
+   ! Use the delay slot to store the only argument
+   and     %l3, 0x1f, %o0
+
+nested_jump_to_caller:
 
    ! ****************************************************
    !
