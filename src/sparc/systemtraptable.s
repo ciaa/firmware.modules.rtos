@@ -64,7 +64,7 @@
         !
         ! The system trap table must be aligned to a multiple of 4096 bytes (lower 12 bits of the
         ! address must be 0).
-        .align 4096, 0x00
+        .align 4096
 
 sparc_system_trap_table:
 
