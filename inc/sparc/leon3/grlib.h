@@ -54,7 +54,7 @@
 /*==================[inclusions]=============================================*/
 
 
-#include "Types_Arch.h"
+#include "stdint.h"
 
 
 /*==================[macros]=================================================*/
@@ -183,59 +183,59 @@
 /*==================[typedef]================================================*/
 
 
-typedef uint32 grDeviceAddress;
+typedef uint32_t grDeviceAddress;
 
 
-typedef uint32 grDeviceRegisterValue;
+typedef uint32_t grDeviceRegisterValue;
 
 
 typedef struct {
-   uint32 clockSwitchingEnabled;    /**< Clock switching enabled (CDS). If set, switching between AHB and CPU frequency is available. */
-   uint32 cpuClockFrequency;        /**< CPU clock frequency (CF). CPU core runs at (CF+1) times AHB frequency. */
-   uint32 loadDelay;                /**< Load delay. If set, the pipeline uses a 2-cycle load delay. Otherwise, a 1-cycle
+   uint32_t clockSwitchingEnabled;    /**< Clock switching enabled (CDS). If set, switching between AHB and CPU frequency is available. */
+   uint32_t cpuClockFrequency;        /**< CPU clock frequency (CF). CPU core runs at (CF+1) times AHB frequency. */
+   uint32_t loadDelay;                /**< Load delay. If set, the pipeline uses a 2-cycle load delay. Otherwise, a 1-cycle
                                          load delay is used. generated from the lddel generic parameter in the VHDL model. */
-   uint32 fpuOption;                /**< FPU option. "00" = no FPU; "01" = GRFPU;  "10" = Meiko FPU, "11" = GRFPU-Lite. */
-   uint32 macInstructionAvailable;  /**< If set, the optional mutiply-accumulate (MAC) instruction is available. */
-   uint32 sparcV8MulDivAvailable;   /**< If set, the SPARC V8 multiply and divide instructions are available. */
-   uint32 registersWindows;         /**< Number of implemented register windows corresonds to NWIN+1. */
+   uint32_t fpuOption;                /**< FPU option. "00" = no FPU; "01" = GRFPU;  "10" = Meiko FPU, "11" = GRFPU-Lite. */
+   uint32_t macInstructionAvailable;  /**< If set, the optional mutiply-accumulate (MAC) instruction is available. */
+   uint32_t sparcV8MulDivAvailable;   /**< If set, the SPARC V8 multiply and divide instructions are available. */
+   uint32_t registersWindows;         /**< Number of implemented register windows corresonds to NWIN+1. */
 } grCpuConfigType;
 
 
 typedef struct {
-   uint32 lockingImplemented;       /**< Cache locking (CL). Set if cache locking is implemented. */
-   uint32 replacementPolicy;        /**< Cache replacement policy (REPL). 00 - no replacement policy (direct-mapped cache), 01 - least
+   uint32_t lockingImplemented;       /**< Cache locking (CL). Set if cache locking is implemented. */
+   uint32_t replacementPolicy;        /**< Cache replacement policy (REPL). 00 - no replacement policy (direct-mapped cache), 01 - least
                                          recently used (LRU), 10- least recently replaced (LRR), 11 - random. */
-   uint32 snoopingImplemented;      /**< Cache snooping (SN). Set if snooping is implemented. */
-   uint32 associativity;            /**< Cache associativity (SETS). Number of sets in the cache: 000 - direct mapping, 001 - 2-way associative,
+   uint32_t snoopingImplemented;      /**< Cache snooping (SN). Set if snooping is implemented. */
+   uint32_t associativity;            /**< Cache associativity (SETS). Number of sets in the cache: 000 - direct mapping, 001 - 2-way associative,
                                          010 - 3-way associative, 011 - 4-way associative. */
-   uint32 setSize;                  /**< Indicates the size (Kbytes) of each cache set. Size = 2^SIZE. */
-   uint32 localRamImplemented;      /**< Set if local scratch pad ram is implemented. */
-   uint32 lineSize;                 /**< Indicates the size (words) of each cache line. Line size = 2^LSZ. */
-   uint32 localRamsize;             /**< LRSZ (Local Ram Size). Indicates de size (Kbytes) of the implemented
+   uint32_t setSize;                  /**< Indicates the size (Kbytes) of each cache set. Size = 2^SIZE. */
+   uint32_t localRamImplemented;      /**< Set if local scratch pad ram is implemented. */
+   uint32_t lineSize;                 /**< Indicates the size (words) of each cache line. Line size = 2^LSZ. */
+   uint32_t localRamsize;             /**< LRSZ (Local Ram Size). Indicates de size (Kbytes) of the implemented
                                          local scratch pad ram. Local ram size = 2^LRSZ. */
-   uint32 localRamStartAddress;     /**< Indicate the 8 most significant bits of the local ram start address. */
-   uint32 mmuPresent;               /**< this bit is set to '1' if an MMU is present. */
+   uint32_t localRamStartAddress;     /**< Indicate the 8 most significant bits of the local ram start address. */
+   uint32_t mmuPresent;               /**< this bit is set to '1' if an MMU is present. */
 } grCacheConfigType;
 
 
 typedef struct {
 
-   uint32 validEntry;
+   uint32_t validEntry;
 
-   uint32 address;
-   uint32 mask;
-   uint32 type;
-   uint32 prefetchableFlag;
-   uint32 cacheableFlag;
+   uint32_t address;
+   uint32_t mask;
+   uint32_t type;
+   uint32_t prefetchableFlag;
+   uint32_t cacheableFlag;
 
 } grPlugAndPlayAHBBankAddressRegisterEntryType;
 
 typedef struct {
 
-   uint32 vendorId;
-   uint32 deviceId;
-   uint32 version;
-   uint32 irq;
+   uint32_t vendorId;
+   uint32_t deviceId;
+   uint32_t version;
+   uint32_t irq;
 
    grPlugAndPlayAHBBankAddressRegisterEntryType bankAddressRegisters[4];
 
@@ -243,14 +243,14 @@ typedef struct {
 
 typedef struct {
 
-   uint32 vendorId;
-   uint32 deviceId;
-   uint32 ctFlag;
-   uint32 version;
-   uint32 irq;
-   uint32 address;
-   uint32 mask;
-   uint32 type;
+   uint32_t vendorId;
+   uint32_t deviceId;
+   uint32_t ctFlag;
+   uint32_t version;
+   uint32_t irq;
+   uint32_t address;
+   uint32_t mask;
+   uint32_t type;
 
 } grPlugAndPlayAPBDeviceTableEntryType;
 
@@ -265,12 +265,12 @@ void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceR
 grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset);
 
 
-sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, sint32 ahbDeviceIndex);
-sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex);
+int32_t grWalkPlugAndPlayAHBDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t ahbDeviceIndex);
+int32_t grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, int32_t apbDeviceIndex);
 
 
-sint32 grGetSystemClockFrequencyValue();
-void grSetSystemClockFrequencyValue(sint32 systemFrequencyInHz);
+int32_t grGetSystemClockFrequencyValue();
+void grSetSystemClockFrequencyValue(int32_t systemFrequencyInHz);
 
 
 void grEnableProcessorCaches();

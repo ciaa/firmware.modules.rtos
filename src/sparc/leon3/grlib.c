@@ -66,7 +66,7 @@
 /*==================[internal data definition]===============================*/
 
 
-sint32 grSystemFrequencyValueInHz = -1;
+int32_t  grSystemFrequencyValueInHz = -1;
 
 
 /*==================[external data definition]===============================*/
@@ -78,31 +78,31 @@ sint32 grSystemFrequencyValueInHz = -1;
 /*==================[external functions definition]==========================*/
 
 
-sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, sint32 ahbDeviceIndex)
+int32_t  grWalkPlugAndPlayAHBDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t  ahbDeviceIndex)
 {
-   uint32 *deviceTablePtr;
+   uint32_t *deviceTablePtr;
 
-   uint32 deviceTableIndex;
-   uint32 barEntryIndex;
+   uint32_t deviceTableIndex;
+   uint32_t barEntryIndex;
 
-   uint32 *barTablePtr;
+   uint32_t *barTablePtr;
 
-   uint32 idRegisterValue;
-   uint32 barEntryValue;
+   uint32_t idRegisterValue;
+   uint32_t barEntryValue;
 
-   uint32 idRegisterFieldVendorId;
-   uint32 idRegisterFieldDeviceId;
-   uint32 idRegisterFieldVersion;
-   uint32 idRegisterFieldIrq;
+   uint32_t idRegisterFieldVendorId;
+   uint32_t idRegisterFieldDeviceId;
+   uint32_t idRegisterFieldVersion;
+   uint32_t idRegisterFieldIrq;
 
-   uint32 deviceFound;
-   sint32 returnValue;
+   uint32_t deviceFound;
+   int32_t  returnValue;
 
    /* default to "device not found" */
    returnValue = -1;
 
    /* starting address of the PnP AHB device table */
-   deviceTablePtr = (uint32 *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS;
+   deviceTablePtr = (uint32_t *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS;
 
    deviceTableIndex = 0;
    deviceFound = 0;
@@ -119,7 +119,7 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requeste
       idRegisterFieldVendorId = (idRegisterValue >> 24) & 0x000000ff;
       idRegisterFieldDeviceId = (idRegisterValue >> 12) & 0x00000fff;
       idRegisterFieldVersion  = (idRegisterValue >>  5) & 0x0000001f;
-      idRegisterFieldVersion  = (idRegisterValue >>  0) & 0x0000001f;
+      idRegisterFieldIrq      = (idRegisterValue >>  0) & 0x0000001f;
 
       /* Have we found the end of the table? */
       if (idRegisterFieldVendorId == 0x00)
@@ -188,32 +188,30 @@ sint32 grWalkPlugAndPlayAHBDeviceTable(uint32 requestedVendorId, uint32 requeste
    return returnValue;
 }
 
-sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, sint32 apbDeviceIndex)
+int32_t  grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, int32_t  apbDeviceIndex)
 {
    grPlugAndPlayAHBDeviceTableEntryType apbCtrlDeviceConfiguration;
 
-   uint32 *apbDeviceTablePtr;
+   uint32_t *apbDeviceTablePtr;
 
-   uint32 ahbBridgeIndex;
-   uint32 barTableIndex;
-   uint32 deviceTableIndex;
-   uint32 barEntryIndex;
+   uint32_t ahbBridgeIndex;
+   uint32_t barTableIndex;
+   uint32_t deviceTableIndex;
 
-   uint32 idRegisterValue;
-   uint32 barRegisterValue;
-   uint32 barEntryValue;
+   uint32_t idRegisterValue;
+   uint32_t barRegisterValue;
 
-   uint32 ahbRangeAddress;
-   uint32 ahbRangeMask;
+   uint32_t ahbRangeAddress;
+   uint32_t ahbRangeMask;
 
-   uint32 idRegisterFieldVendorId;
-   uint32 idRegisterFieldDeviceId;
-   uint32 idRegisterFieldCtFlag;
-   uint32 idRegisterFieldVersion;
-   uint32 idRegisterFieldIrq;
+   uint32_t idRegisterFieldVendorId;
+   uint32_t idRegisterFieldDeviceId;
+   uint32_t idRegisterFieldCtFlag;
+   uint32_t idRegisterFieldVersion;
+   uint32_t idRegisterFieldIrq;
 
-   uint32 deviceFound;
-   sint32 returnValue;
+   uint32_t deviceFound;
+   int32_t  returnValue;
 
    /* default to "device not found" */
    returnValue = -1;
@@ -249,7 +247,7 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requeste
 
          /* construct the address of the APB PnP table located at the end of the
           * memory range */
-         apbDeviceTablePtr = ahbRangeAddress | 0x000ff000;
+         apbDeviceTablePtr = (uint32_t *)(ahbRangeAddress | 0x000ff000);
 
          /* for each entry on the AHB PnP device table, decode the id register
           * and check whether the vendor/device pair matches the filter values
@@ -264,7 +262,7 @@ sint32 grWalkPlugAndPlayAPBDeviceTable(uint32 requestedVendorId, uint32 requeste
             idRegisterFieldDeviceId = (idRegisterValue >> 12) & 0x00000fff;
             idRegisterFieldCtFlag   = (idRegisterValue >> 10) & 0x00000003;
             idRegisterFieldVersion  = (idRegisterValue >>  5) & 0x0000001f;
-            idRegisterFieldVersion  = (idRegisterValue >>  0) & 0x0000001f;
+            idRegisterFieldIrq      = (idRegisterValue >>  0) & 0x0000001f;
 
             /* Have we found the end of the table? */
             if (idRegisterFieldVendorId == 0x00)
@@ -365,13 +363,13 @@ grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress o
 }
 
 
-sint32 grGetSystemClockFrequencyValue()
+int32_t  grGetSystemClockFrequencyValue()
 {
    return grSystemFrequencyValueInHz;
 }
 
 
-void grSetSystemClockFrequencyValue(sint32 systemFrequencyInHz)
+void grSetSystemClockFrequencyValue(int32_t  systemFrequencyInHz)
 {
    grSystemFrequencyValueInHz = systemFrequencyInHz;
 }
@@ -379,8 +377,7 @@ void grSetSystemClockFrequencyValue(sint32 systemFrequencyInHz)
 
 void grEnableProcessorCaches()
 {
-   __asm__ (
-         "flush\n\t"
+   asm ( "flush\n\t"
          "set 0x81000f, %%g1\n\t"
          "sta %%g1, [%%g0] 2\n\t"
          : /* no output registers */ : /* no input registers */ : "%g1" /* clobbered registers */ );
@@ -389,7 +386,7 @@ void grEnableProcessorCaches()
 
 void grGetCPUConfig(grCpuConfigType *config)
 {
-   uint32 cpuConfig;
+   uint32_t cpuConfig;
 
    __asm__(
          "rd %%asr17,%0\n "
@@ -410,7 +407,7 @@ void grGetCPUConfig(grCpuConfigType *config)
 
 void grGetICacheConfig(grCacheConfigType *config)
 {
-   uint32 instructionCacheConfig;
+   uint32_t instructionCacheConfig;
 
    __asm__(
          "mov 0x08,%%g1\n\t"
@@ -443,7 +440,7 @@ void grGetICacheConfig(grCacheConfigType *config)
 
 void grGetDCacheConfig(grCacheConfigType *config)
 {
-   uint32 dataCacheConfig;
+   uint32_t dataCacheConfig;
 
    __asm__(
          "mov 0x0c,%%g1\n\t"

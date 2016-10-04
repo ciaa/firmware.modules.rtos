@@ -142,8 +142,8 @@ void SaveContext(TaskType runningTask)
 
 void CallTask(TaskType currentTask, TaskType newTask)
 {
-   sparcOldContextPtr = &TasksConst[(currentTask)].TaskContext;
-   sparcNewContextPtr = &TasksConst[(newTask)].TaskContext;
+   sparcOldContextPtr = TasksConst[(currentTask)].TaskContext;
+   sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
 
    sparcSystemServiceTriggerReplaceTaskContext();
 }
@@ -151,11 +151,11 @@ void CallTask(TaskType currentTask, TaskType newTask)
 
 void JmpTask(TaskType newTask)
 {
-   sparcNewContextPtr = &TasksConst[(newTask)].TaskContext;
+   sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
 
    if(WaitingTask != INVALID_TASK)
    {
-      sparcOldContextPtr = &TasksConst[(WaitingTask)].TaskContext;
+      sparcOldContextPtr = TasksConst[(WaitingTask)].TaskContext;
       WaitingTask = INVALID_TASK;
 
       sparcSystemServiceTriggerReplaceTaskContext();

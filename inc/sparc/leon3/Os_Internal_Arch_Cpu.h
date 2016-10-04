@@ -89,6 +89,8 @@ void sparcEnableISR2Interrupts(void);
 
 void sparcDisableISR2Interrupts(void);
 
+void sparcSetupSystemTimer(void);
+
 void StartOs_Arch_Cpu(void);
 
 void sparcOsekPause();
