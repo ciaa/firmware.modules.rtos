@@ -140,7 +140,7 @@ traps_are_already_enabled:
 
 sparcSystemServiceDisableTraps:
 
-   mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
+   mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
    ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    retl

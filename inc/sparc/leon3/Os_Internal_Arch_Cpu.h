@@ -53,7 +53,7 @@
 /*==================[inclusions]=============================================*/
 
 
-#include "Types_Arch.h"
+#include "stdint.h"
 
 
 /*==================[macros]=================================================*/
@@ -62,7 +62,7 @@
 /*==================[typedef]================================================*/
 
 
-typedef uint32 sparcIrqNumber;
+typedef uint32_t sparcIrqNumber;
 
 typedef void (*sparcIrqHandlerRef)();
 

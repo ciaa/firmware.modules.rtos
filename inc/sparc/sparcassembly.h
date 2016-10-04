@@ -52,18 +52,12 @@
 /*==================[macros]=================================================*/
 
 
-/** \brief Typical register window count for SPARC processors. */
 #define SPARC_DEFAULT_REGISTER_WINDOW_COUNT 8
 
-/** \brief Bit mask for the PIL field in the PSR register */
 #define SPARC_PSR_PIL_MASK 0x0f00
-
-
-/** \brief Bit mask for the ET bit in the PSR register */
+#define SPARC_PSR_S_MASK   0x0080
+#define SPARC_PSR_PS_MASK  0x0040
 #define SPARC_PSR_ET_MASK  0x0020
-
-
-/** \brief Bit mask for the CWP field in the PSR register */
 #define SPARC_PSR_CWP_MASK 0x001f
 
 
@@ -92,10 +86,11 @@
 #define SPARC_SET_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER     0x02
 #define SPARC_REPLACE_TASK_CONTEXT_SERVICE_SW_TRAP_NUMBER 0x03
 
-#define SPARC_SYSCALL_ID_DISABLE_TRAPS 0x00
-#define SPARC_SYSCALL_ID_MASK_INTR     0x01
-#define SPARC_SYSCALL_ID_UNMASK_INTR   0x02
-#define SPARC_SYSCALL_ID_REBOOT_SYSTEM 0x03
+
+#define SPARC_SYSCALL_ID_DISABLE_TRAPS       0x00
+#define SPARC_SYSCALL_ID_MASK_INTERRUPTS     0x01
+#define SPARC_SYSCALL_ID_UNMASK_INTERRUPTS   0x02
+#define SPARC_SYSCALL_ID_REBOOT_SYSTEM       0x03
 
 
 /*==================[typedef]================================================*/

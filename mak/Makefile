@@ -54,6 +54,10 @@ rtos_INC_PATH 	      = $(rtos_PATH)$(DS)inc								\
 rtos_SRC_FILES 	      = $(wildcard $(rtos_SRC_PATH)$(DS)*.c)				\
 						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)*.c)	\
 						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)*.s)	\
+						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)*.S)	\
+						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)*.c)	\
+						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)*.s)	\
+						$(wildcard $(rtos_SRC_PATH)$(DS)$(ARCH)$(DS)$(CPUTYPE)$(DS)*.S)	\
 						$(wildcard $(OUT_DIR)$(DS)gen$(DS)src$(DS)*.c)				\
 						$(wildcard $(OUT_DIR)$(DS)gen$(DS)src$(DS)$(ARCH)$(DS)*.c)
 # include needed makefiles depending on the architecture

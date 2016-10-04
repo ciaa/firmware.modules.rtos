@@ -89,11 +89,11 @@ syscall_trap_handler:
    ! Call the relevant service id handler
    sethi   %hi(assembler_case_selector), %l5
    add     %l4, %l5, %l5
-   jmpl    [%lo(assembler_case_selector) + %l5], %g0
+   jmpl    %lo(assembler_case_selector) + %l5, %g0
    nop
 
 assembler_case_selector:
-   ba,a     disable_traps               ! SYSCALL ID 0x00 = Disable trap
+   ba,a     disable_traps_service       ! SYSCALL ID 0x00 = Disable trap
    ba,a     mask_interrupts_service     ! SYSCALL ID 0x01 = Mask all asynchronous interrupts
    ba,a     unmask_interrupts_service   ! SYSCALL ID 0x02 = Unmask all asynchronous interrupts
    ba,a     reboot_system_service       ! SYSCALL ID 0x03 = Ssytem reboot service id.
@@ -182,7 +182,7 @@ mask_interrupts_service:
 
    !
    ! processing done, proceed to the exit
-   ja      exit_syscall
+   ba      exit_syscall
    nop
 
 
@@ -202,7 +202,7 @@ unmask_interrupts_service:
    nop
 
    ! processing done, proceed to the exit
-   ja      exit_syscall
+   ba      exit_syscall
    nop
 
    ! **************************
@@ -233,21 +233,21 @@ reboot_system_service:
    !   arise with the previous code when used on processors other that LEON 3.
    !
    ! Execute a controlled exit from the trap back to the trapping code.
-   ja      exit_syscall
+   ba      exit_syscall
    nop
 
    ! **************************
    !
    ! INVALID SERVICE ID SERVICE CODE
    !
-invalid_service:
+invalid_service_id:
 
    !
    ! TODO What should be done about this case?
    !
 
    ! done
-   ja,a    exit_syscall
+   ba,a    exit_syscall
 
 exit_syscall:
 

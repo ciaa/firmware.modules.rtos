@@ -50,6 +50,7 @@
 #include "Os_Internal_Arch.h"
 #include "Os_Internal_Arch_Cpu.h"
 #include "Os_Internal_Arch_Cfg.h"
+#include "Os_Internal.h"
 #include "grlib.h"
 #include "sparcsyscalls.h"
 
@@ -68,17 +69,17 @@
 
 grDeviceAddress sparcIRQMPBaseAddress = 0; /* initialized to 0 in order to be able to detect whether or not this value has already been initialized */
 
-uint32 sparcSystemFrequencyHz;
+uint32_t sparcSystemFrequencyHz;
 
 grDeviceAddress sparcGPTIMER0BaseAddress;
 
-uint32 sparcGPTIMER0IRQNumber;
+uint32_t sparcGPTIMER0IRQNumber;
 
-uint32 sparcISR1HandlersMask = 0x00;
+uint32_t sparcISR1HandlersMask = 0x00;
 
-uint32 sparcISR2HandlersMask = 0x00;
+uint32_t sparcISR2HandlersMask = 0x00;
 
-uint32 sparcCurrentInterruptMask = 0x00;
+uint32_t sparcCurrentInterruptMask = 0x00;
 
 /*
  * External Interrupt handlers
@@ -156,12 +157,12 @@ void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
 
 void sparcSetModularTimerConfiguration()
 {
-   uint32 timersInUseMask;
-   uint32 configurationRegisterValue;
-   uint32 timerNReloadRegister;
-   uint32 timerNControlRegister;
-   uint32 numberOfImplementedTimers;
-   uint32 timerIndex;
+   uint32_t timersInUseMask;
+   uint32_t configurationRegisterValue;
+   uint32_t timerNReloadRegister;
+   uint32_t timerNControlRegister;
+   uint32_t numberOfImplementedTimers;
+   uint32_t timerIndex;
 
    /* At this point we can assume that MKPROM/GRMON has already configured the scaler of the
     * first GPTIMER instance on the bus so that the scaler output ticks at 1MHz. We can build
@@ -262,15 +263,15 @@ void sparcSetModularTimerConfiguration()
 void sparcAutodetectSystemClockFrequency()
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
-   sint32 retCode;
-   uint32 scalerRegisterValue;
+   int32_t retCode;
+   uint32_t scalerRegisterValue;
 
    /* Both MKPROM and GRMON automatically configure the first system timer's
     * prescaler so that it generates 100 ticks every seconds. This is
     * used here to detect the system clock frequency. */
 
    /* Detect the hardware address and irq information of the GPTIMER core */
-   retCode = grWalkPlugAndPlayAHBDeviceTable(
+   retCode = grWalkPlugAndPlayAPBDeviceTable(
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_GPTIMER,
          &apbDeviceInfo,
@@ -279,7 +280,7 @@ void sparcAutodetectSystemClockFrequency()
    /* At least one GPTIMER is required for this to work. */
    sparcAssert(retCode >= 0, "Failed to detect hardware GPTIMER0!");
 
-   scalerRegisterValue = grRegisterRead(apbDeviceInfo->address, GRLIB_GPTIMER_SCALER_RELOAD_VALUE);
+   scalerRegisterValue = grRegisterRead(apbDeviceInfo.address, GRLIB_GPTIMER_SCALER_RELOAD_VALUE);
 
    /* GRMON/MKPROM seem to preconfigure the first GPTIMER module so that it generates a 1Mhz tick signal
     * at the output of the scaler. I haven't been able to find where this is documented, but
@@ -299,14 +300,14 @@ void sparcAutodetectProcesorRegisterWindowsSetSize()
    /* Read the CPU configuration */
    grGetCPUConfig(&cpuConfig);
 
-   detected_sparc_register_windows = cpuConfig->registersWindows;
+   detected_sparc_register_windows = cpuConfig.registersWindows;
 }
 
 
 void sparcAutodetectInterruptControllerAddress()
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
-   sint32 retCode;
+   int32_t retCode;
 
    /* Read the address of the interrupt controller from the APB PnP device
     * configuration tables */
@@ -318,7 +319,7 @@ void sparcAutodetectInterruptControllerAddress()
 
    sparcAssert(retCode >= 0, "Could not find the interrupt controller!");
 
-   sparcIRQMPBaseAddress = apbDeviceInfo->address;
+   sparcIRQMPBaseAddress = apbDeviceInfo.address;
 }
 
 
@@ -342,14 +343,14 @@ void sparcAutodetectMemoryHierachyConfiguration()
 void sparcSetupSystemTimer(void)
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
-   sint32 retCode;
+   int32_t retCode;
 
    /*
     * Configurate the hardware timer and set the ISR for HardwareCounter
     * */
 
    /* Detect the hardware address and irq information of the timer module */
-   retCode = grWalkPlugAndPlayAHBDeviceTable(
+   retCode = grWalkPlugAndPlayAPBDeviceTable(
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_GPTIMER,
          &apbDeviceInfo,
@@ -357,11 +358,11 @@ void sparcSetupSystemTimer(void)
 
    sparcAssert(retCode >= 0, "Failed to detect hardware GPTIMER0!");
 
-   sparcGPTIMER0BaseAddress = apbDeviceInfo->address;
-   sparcGPTIMER0IRQNumber   = apbDeviceInfo->irq;
+   sparcGPTIMER0BaseAddress = apbDeviceInfo.address;
+   sparcGPTIMER0IRQNumber   = apbDeviceInfo.irq;
 
    /* Register the interrupt service routine */
-   sparcRegisterISR2Handler(OSEK_COUNTER_GPTIMER0_IRQHandler, apbDeviceInfo->irq);
+   sparcRegisterISR2Handler(OSEK_COUNTER_GPTIMER0_IRQHandler, apbDeviceInfo.irq);
 
    /* Configure the timer module */
    sparcSetModularTimerConfiguration();
@@ -380,13 +381,13 @@ void sparcOsekPause()
     * In this power-down mode, the processor halts the pipeline, freezing
     * code execution and cache changes until the next interrupt comes along.
     * */
-   asm("wrasr %g0, %asr19");
+   asm("wr %g0, %asr19");
 }
 
 
 void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 {
-   uint32 newInterruptMask;
+   uint32_t newInterruptMask;
 
    newInterruptMask = (1 << irq);
 
@@ -402,7 +403,7 @@ void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
 void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 {
-   uint32 newInterruptMask;
+   uint32_t newInterruptMask;
 
    newInterruptMask = (1 << irq);
 
@@ -417,7 +418,7 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 
 void sparcClearInterrupt(sparcIrqNumber irq)
 {
-   uint32 interruptBitMask;
+   uint32_t interruptBitMask;
 
    interruptBitMask = (1 << irq);
 
@@ -427,7 +428,7 @@ void sparcClearInterrupt(sparcIrqNumber irq)
 
 void sparcForceInterrupt(sparcIrqNumber irq)
 {
-   uint32 interruptBitMask;
+   uint32_t interruptBitMask;
 
    interruptBitMask = (1 << irq);
 
@@ -509,9 +510,9 @@ void StartOs_Arch_Cpu(void)
 
 void sparcCheckPendingTimerInterrupts()
 {
-   uint32 timersInUseMask;
-   uint32 timerNControlRegister;
-   uint32 timerIndex;
+   uint32_t timersInUseMask;
+   uint32_t timerNControlRegister;
+   uint32_t timerIndex;
 
    timersInUseMask = sparcGetTimersInUseMask();
 

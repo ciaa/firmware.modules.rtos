@@ -125,7 +125,7 @@ sparcTaskContextAwareTrapHandler:
 
    ! Test whether the old value was zero
    tst     %l5
-   bnz     nested_interrupt_handler
+   bnz     nested_trap_handler
 
    ! Update the value of the flag in memory (this happens in the delay slot of the branch,
    ! whatever the result of the test turns out to be)
@@ -412,7 +412,7 @@ exit_dump_frame_loop:
 outermost_set_interrupt_handler_caller_address:
 
    sethi   %hi(sparcInterruptHandlerCaller), %l4
-   jmpl    [%lo(sparcInterruptHandlerCaller) + %l4], %o7
+   jmpl    %lo(sparcInterruptHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -422,7 +422,7 @@ outermost_set_interrupt_handler_caller_address:
 outermost_set_task_context_replacement_handler_address:
 
    sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
-   jmpl    [%lo(sparcTaskContextReplacementHandlerCaller) + %l4], %o7
+   jmpl    %lo(sparcTaskContextReplacementHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -433,7 +433,7 @@ outermost_jump_to_caller:
    ! Disable traps
    !
 
-   mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
+   mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
    ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    ! ****************************************************
@@ -687,7 +687,7 @@ no_overflow_yet:
 nested_set_interrupt_handler_caller_address:
 
    sethi   %hi(sparcInterruptHandlerCaller), %l4
-   jmpl    [%lo(sparcInterruptHandlerCaller) + %l4], %o7
+   jmpl    %lo(sparcInterruptHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -697,7 +697,7 @@ nested_set_interrupt_handler_caller_address:
 nested_set_task_context_replacement_handler_address:
 
    sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
-   jmpl    [%lo(sparcTaskContextReplacementHandlerCaller) + %l4], %o7
+   jmpl    %lo(sparcTaskContextReplacementHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -708,7 +708,7 @@ nested_jump_to_caller:
    ! Disable traps
    !
 
-   mov     SPARC_SYSCALL_ID_ENABLE_TRAPS, %g1
+   mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
    ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    ! ****************************************************
