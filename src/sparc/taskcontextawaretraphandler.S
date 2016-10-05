@@ -373,21 +373,10 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Re-enable traps
-   !
-
-   mov     %l0, %l4
-   or      %l4, SPARC_PSR_ET_MASK, %l4 ! Set the ET bit
-   mov     %l4, %psr
-   ! delay cycles
-   nop
-   nop
-   nop
-
-   ! ****************************************************
-   !
-   ! Call the IRQ handler caller function, or
+   ! Reenable traps and call the IRQ handler caller function or
    ! the task context replacement function caller function.
+   ! For external interrupts, also raise the Processor
+   ! Interrupt Level (PIL) value
    !
 
    ! The prototype of these functions is
@@ -411,6 +400,29 @@ exit_dump_frame_loop:
 
 outermost_set_interrupt_handler_caller_address:
 
+   !
+   ! Raise the PIL value
+   andn    %l0, SPARC_PSR_PIL_MASK, %l4
+   and     %l3, 0x0f, %l5
+   sll     %l5, 0x08, %l5
+   or      %l4, %l5, %l4
+   mov     %l4, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
+   ! Re-enable the traps
+   or      %l4, SPARC_PSR_ET_MASK, %l4
+   mov     %l4, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
+   ! Call the handler
    sethi   %hi(sparcInterruptHandlerCaller), %l4
    jmpl    %lo(sparcInterruptHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
@@ -421,6 +433,17 @@ outermost_set_interrupt_handler_caller_address:
 
 outermost_set_task_context_replacement_handler_address:
 
+   !
+   ! Re-enable the traps
+   or      %l0, SPARC_PSR_ET_MASK, %l4
+   mov     %l4, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
+   ! Call the handler
    sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
    jmpl    %lo(sparcTaskContextReplacementHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
@@ -430,11 +453,19 @@ outermost_jump_to_caller:
 
    ! ****************************************************
    !
-   ! Disable traps
+   ! Disable traps and restore the PIL value
    !
 
    mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
    ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
+
+   ! Once ET = 0, we can rewrite PIL to its original value
+   ! just by restoring the PSR register value
+   mov     %l0, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
 
    ! ****************************************************
    !
@@ -661,8 +692,10 @@ no_overflow_yet:
 
    ! ****************************************************
    !
-   ! Call the IRQ handler caller function, or
+   ! Reenable traps and call the IRQ handler caller function or
    ! the task context replacement function caller function.
+   ! For external interrupts, also raise the Processor
+   ! Interrupt Level (PIL) value
    !
 
    ! The prototype of these functions is
@@ -686,6 +719,29 @@ no_overflow_yet:
 
 nested_set_interrupt_handler_caller_address:
 
+   !
+   ! Raise the PIL value
+   andn    %l0, SPARC_PSR_PIL_MASK, %l4
+   and     %l3, 0x0f, %l5
+   sll     %l5, 0x08, %l5
+   or      %l4, %l5, %l4
+   mov     %l4, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
+   ! Re-enable the traps
+   or      %l4, SPARC_PSR_ET_MASK, %l4
+   mov     %l4, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
+   ! Call the handler
    sethi   %hi(sparcInterruptHandlerCaller), %l4
    jmpl    %lo(sparcInterruptHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
@@ -696,6 +752,17 @@ nested_set_interrupt_handler_caller_address:
 
 nested_set_task_context_replacement_handler_address:
 
+   !
+   ! Re-enable the traps
+   or      %l0, SPARC_PSR_ET_MASK, %l4
+   mov     %l4, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
+   ! Call the handler
    sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
    jmpl    %lo(sparcTaskContextReplacementHandlerCaller) + %l4, %o7
    ! Use the delay slot to store the only argument
@@ -705,11 +772,19 @@ nested_jump_to_caller:
 
    ! ****************************************************
    !
-   ! Disable traps
+   ! Disable traps and restore the PIL value
    !
 
    mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
    ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
+
+   ! Once ET = 0, we can rewrite PIL to its original value
+   ! just by restoring the PSR register value
+   mov     %l0, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
 
    ! ****************************************************
    !
