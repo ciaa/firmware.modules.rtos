@@ -80,12 +80,7 @@ extern uint32 sparc_system_trap_table;
 void sparcSetupReplaceTrapTable()
 {
    /* Replace the current trap base register value with the address of our new
-    * system trap table. Disable trap while you are at it. Notice that calling
-    * functions with traps disabled is usually a very bad idea, but in this case
-    * both functions are leaf functions and therefore they can't cause any window
-    * overflow or underflow traps. */
-
-   sparcSystemServiceDisableTraps();
+    * system trap table. */
 
    __asm__ (
          "sethi %%hi(sparc_system_trap_table), %%l1\n\t"
@@ -96,7 +91,6 @@ void sparcSetupReplaceTrapTable()
          "nop\n\t"
          : /* no output registers */ : /* no input registers */ : "%l1" /* clobbered registers */ );
 
-   sparcSystemServiceEnableTraps();
 }
 
 
