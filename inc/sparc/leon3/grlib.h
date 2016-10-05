@@ -265,7 +265,8 @@ void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceR
 grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset);
 
 
-int32_t grWalkPlugAndPlayAHBDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t ahbDeviceIndex);
+int32_t grWalkPlugAndPlayAHBMastersDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t ahbDeviceIndex);
+int32_t grWalkPlugAndPlayAHBSlavesDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t ahbDeviceIndex);
 int32_t grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, int32_t apbDeviceIndex);
 
 

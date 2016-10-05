@@ -54,7 +54,8 @@
 /*==================[macros and definitions]=================================*/
 
 
-#define GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS 0xFFFFF000
+#define GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS_MASTERS 0xFFFFF000
+#define GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS_SLAVES  0xFFFFF800
 
 
 /*==================[internal data declaration]==============================*/
@@ -78,7 +79,7 @@ int32_t  grSystemFrequencyValueInHz = -1;
 /*==================[external functions definition]==========================*/
 
 
-int32_t  grWalkPlugAndPlayAHBDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t  ahbDeviceIndex)
+int32_t  grWalkPlugAndPlayAHBMastersDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t  ahbDeviceIndex)
 {
    uint32_t *deviceTablePtr;
 
@@ -102,7 +103,118 @@ int32_t  grWalkPlugAndPlayAHBDeviceTable(uint32_t requestedVendorId, uint32_t re
    returnValue = -1;
 
    /* starting address of the PnP AHB device table */
-   deviceTablePtr = (uint32_t *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS;
+   deviceTablePtr = (uint32_t *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS_MASTERS;
+
+   deviceTableIndex = 0;
+   deviceFound = 0;
+
+   /* for each entry on the PNP AHB device table, decode the id register
+    * and verify if the vendor/device pair matches the filter values
+    * provided as arguments to the function. */
+   for (deviceTableIndex = 0; deviceTableIndex < 64; deviceTableIndex++)
+   {
+      idRegisterValue = *(deviceTablePtr + 0);
+      barTablePtr = deviceTablePtr + 4;
+
+      /* extract the id register fields */
+      idRegisterFieldVendorId = (idRegisterValue >> 24) & 0x000000ff;
+      idRegisterFieldDeviceId = (idRegisterValue >> 12) & 0x00000fff;
+      idRegisterFieldVersion  = (idRegisterValue >>  5) & 0x0000001f;
+      idRegisterFieldIrq      = (idRegisterValue >>  0) & 0x0000001f;
+
+      /* Have we found the end of the table? */
+      if (idRegisterFieldVendorId == 0x00)
+      {
+         break;
+      }
+
+      /* Does it match the filter we were given? */
+      if (((requestedVendorId == GRLIB_PNP_VENDOR_ID_ANY) || (requestedVendorId == idRegisterFieldVendorId))
+            && ((requestedDeviceId == GRLIB_PNP_DEVICE_ID_ANY) || (requestedDeviceId == idRegisterFieldDeviceId)))
+      {
+         /* Is this the n-th match of the filter? */
+         ahbDeviceIndex--;
+
+         if (ahbDeviceIndex < 0)
+         {
+            deviceFound = 1;
+            break;
+         }
+      }
+
+      /* move the pointer to the next entry on the table */
+      deviceTablePtr = deviceTablePtr + 8;
+   }
+
+   if (deviceFound != 0)
+   {
+      ahbDeviceInfo->vendorId = idRegisterFieldVendorId;
+      ahbDeviceInfo->deviceId = idRegisterFieldDeviceId;
+      ahbDeviceInfo->version  = idRegisterFieldVersion;
+      ahbDeviceInfo->irq      = idRegisterFieldIrq;
+
+      for (barEntryIndex = 0; barEntryIndex < 4; barEntryIndex++)
+      {
+         barEntryValue = barTablePtr[barEntryIndex];
+
+         ahbDeviceInfo->bankAddressRegisters[barEntryIndex].address          = (barEntryValue >> 20) & 0x00000fff;
+         ahbDeviceInfo->bankAddressRegisters[barEntryIndex].prefetchableFlag = (barEntryValue >> 17) & 0x00000001;
+         ahbDeviceInfo->bankAddressRegisters[barEntryIndex].cacheableFlag    = (barEntryValue >> 16) & 0x00000001;
+         ahbDeviceInfo->bankAddressRegisters[barEntryIndex].mask             = (barEntryValue >>  4) & 0x00000fff;
+         ahbDeviceInfo->bankAddressRegisters[barEntryIndex].type             = (barEntryValue >>  0) & 0x0000000f;
+
+         /* Only entries with MASK != 0 contain actual data */
+         ahbDeviceInfo->bankAddressRegisters[barEntryIndex].validEntry       = (ahbDeviceInfo->bankAddressRegisters[barEntryIndex].mask != 0)?1:0;
+
+         /* the interpretation of the address and mask fields changes depending on the value of the type field */
+         switch (ahbDeviceInfo->bankAddressRegisters[barEntryIndex].type ) {
+         case GRLIB_PNP_BAR_ENTRY_TYPE_AHBMEMORYSPACE :
+            ahbDeviceInfo->bankAddressRegisters[barEntryIndex].address = ahbDeviceInfo->bankAddressRegisters[barEntryIndex].address << 20;
+            ahbDeviceInfo->bankAddressRegisters[barEntryIndex].mask    = ahbDeviceInfo->bankAddressRegisters[barEntryIndex].mask << 20;
+            break;
+         case GRLIB_PNP_BAR_ENTRY_TYPE_AHBIOSPACE :
+            ahbDeviceInfo->bankAddressRegisters[barEntryIndex].address = (ahbDeviceInfo->bankAddressRegisters[barEntryIndex].address << 8) | 0xfff00000;
+            ahbDeviceInfo->bankAddressRegisters[barEntryIndex].mask    = (ahbDeviceInfo->bankAddressRegisters[barEntryIndex].mask << 8) | 0xfff00000;
+            break;
+         case GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE :
+            /* this type of entry should not appear on the AHB table... */
+            sparcAssert(0, "Impossible BAR table entry type!");
+            break;
+         }
+      }
+
+      returnValue = 0;
+   }
+
+   return returnValue;
+}
+
+
+int32_t  grWalkPlugAndPlayAHBSlavesDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t  ahbDeviceIndex)
+{
+   uint32_t *deviceTablePtr;
+
+   uint32_t deviceTableIndex;
+   uint32_t barEntryIndex;
+
+   uint32_t *barTablePtr;
+
+   uint32_t idRegisterValue;
+   uint32_t barEntryValue;
+
+   uint32_t idRegisterFieldVendorId;
+   uint32_t idRegisterFieldDeviceId;
+   uint32_t idRegisterFieldVersion;
+   uint32_t idRegisterFieldIrq;
+
+   uint32_t deviceFound;
+   int32_t  returnValue;
+
+   /* default to "device not found" */
+   returnValue = -1;
+
+   /* starting address of the PnP AHB device table */
+   deviceTablePtr = (uint32_t *)GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS_SLAVES;
 
    deviceTableIndex = 0;
    deviceFound = 0;
@@ -188,6 +300,7 @@ int32_t  grWalkPlugAndPlayAHBDeviceTable(uint32_t requestedVendorId, uint32_t re
    return returnValue;
 }
 
+
 int32_t  grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, int32_t  apbDeviceIndex)
 {
    grPlugAndPlayAHBDeviceTableEntryType apbCtrlDeviceConfiguration;
@@ -221,7 +334,7 @@ int32_t  grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t re
 
    deviceTableIndex = 0;
 
-   while(grWalkPlugAndPlayAHBDeviceTable(
+   while(grWalkPlugAndPlayAHBSlavesDeviceTable(
          GRLIB_PNP_VENDOR_ID_GAISLER_RESEARCH,
          GRLIB_PNP_DEVICE_ID_APBCTRL,
          &apbCtrlDeviceConfiguration,
@@ -327,8 +440,8 @@ int32_t  grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t re
          sparcAssert(0, "Impossible APB device type!");
          break;
       case GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE :
-         apbDeviceInfo->address = ahbRangeAddress | (apbDeviceInfo->address << 10);
-         apbDeviceInfo->mask    = ahbRangeMask | (apbDeviceInfo->mask << 10);
+         apbDeviceInfo->address = ahbRangeAddress | (apbDeviceInfo->address << 8);
+         apbDeviceInfo->mask    = ahbRangeMask | (apbDeviceInfo->mask << 8);
          break;
       }
 

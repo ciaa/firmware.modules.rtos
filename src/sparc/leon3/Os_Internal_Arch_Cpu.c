@@ -176,7 +176,7 @@ void sparcSetModularTimerConfiguration()
    /* Determine the number of implemented timers within the GPTIMER core */
    configurationRegisterValue = grRegisterRead(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONFIGURATION_REGISTER);
 
-   numberOfImplementedTimers = configurationRegisterValue & 0x03;
+   numberOfImplementedTimers = configurationRegisterValue & 0x07;
 
    /* Make sure that the system configuration is not using more timers than those that
     * are present in GPTIMER0 */
