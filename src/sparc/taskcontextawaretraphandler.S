@@ -516,7 +516,24 @@ outermost_jump_to_caller:
    ! ****************************************************
 
    ! Load the PSR register
-   ld      [%sp], %l0
+   ld      [%sp], %l4
+
+   ! Not all the fields of the stored context must be restored;
+   ! keep the values of the bits that are set in the following
+   ! mask:
+   ! impl  ver  icc    rsv EC EF  PIL S PS ET   CWP
+   ! 1111 1111 1111 111111  0  0 0000 0  0  1 11111
+   !    f    f    f    f       c    0         3   f
+   !
+   sethi   %hi(SPARC_NON_RESTORABLE_BITS_IN_PSR), %l5
+   or      %l5, %lo(SPARC_NON_RESTORABLE_BITS_IN_PSR), %l5
+   and     %l0, %l5, %l0
+   andn    %l4, %l5, %l4
+   or      %l0, %l4, %l0
+   ! %l0 not contains the value of the %psr that must be restore just before
+   ! leaving the interrupt and restoring the task execution context.
+   ! Notice that now this %l0 value differs from the current %psr
+   ! value.
 
    ! Restore the values of the Global registers %g1 to %g7
    ld      [%sp + 4], %g1
@@ -832,8 +849,62 @@ return_from_trap:
 
    ! ****************************************************
    !
+   ! Force a window underflow
+   !
+   ! Before returning we must force a pop a stack frame
+   ! from the stack and into the register windows or else
+   ! the rett instruction will throw the processor into
+   ! error mode.
+
+   !
+   ! A very similar version of this code can be found in
+   ! the window underflow trap handler routine, with a more
+   ! in depth explanation of each operation.
+   !
+
+   ! Read the current WIM value and store it locally
+   mov     %wim, %l4
+
+   ! Keep the number of windows minus one in a register, it will be useful later
+   ! when updating the Window Invalid Mask.
+   sethi   %hi(detected_sparc_register_windows), %l5
+   ld      [%lo(detected_sparc_register_windows) + %l5], %l5
+   sub     %l5, 1, %l5
+
+   ! Rotate the old value of WIM one bit to the left, sending the
+   ! rightmost bit to the leftmost position...
+   sll     %l4, 1, %l6
+   srl     %l4, %l5, %l4
+   or      %l4, %l6, %l4
+
+   ! Update the WIM.
+   mov     %l4, %wim
+   ! wrwim delay cycles
+   nop
+   nop
+   nop
+
+   ! Restore once to get into the invalid window
+   restore
+
+   ! Read the register values from the stack
+   ldd     [%sp], %l0
+   ldd     [%sp + 8], %l2
+   ldd     [%sp + 16], %l4
+   ldd     [%sp + 24], %l6
+   ldd     [%sp + 32], %i0
+   ldd     [%sp + 40], %i2
+   ldd     [%sp + 48], %i4
+   ldd     [%sp + 56], %i6
+
+   ! Go back to the trap window
+   save
+
+   ! ****************************************************
+   !
    ! Return from the trap
    !
+
    ! This universal handler may be used for both interrupting and precise traps.
    ! Interrupting traps must reexecute the instruction where the trap was invoked.
    ! All other trap types are assumed to be precise traps
@@ -848,11 +919,27 @@ return_from_trap:
 return_from_an_interrupting_trap:
 
    !
+   ! Restore the value of the PSR register
+   mov     %l0, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
+
+   !
    ! Reexecute the instruction where the trap was invoked
    jmp     %l1
    rett    %l2
 
 return_from_a_precise_trap:
+
+   !
+   ! Restore the value of the PSR register
+   mov     %l0, %psr
+   ! wrpsr delay cycles
+   nop
+   nop
+   nop
 
    !
    ! Go back to the instruction located right after the instruction that trapped.

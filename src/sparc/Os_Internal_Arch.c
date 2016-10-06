@@ -51,6 +51,7 @@
 #include "Os_Internal_Arch.h"
 #include "Os_Internal_Arch_Cfg.h"
 #include "sparcsyscalls.h"
+#include "sparcassembly.h"
 
 
 /*==================[macros and definitions]=================================*/
@@ -326,7 +327,7 @@ void SetEntryPoint(TaskType TaskID)
 
    /*
     * initial value of the task's Processor Status Register */
-   *(stackPointer +  0) = 0x00; /* %psr register */
+   *(stackPointer +  0) = SPARC_INITIAL_PSR_VALUE_IN_TASK_CONTEXT; /* %psr register */
 
    /*
     * Save the initial task context pointer */
