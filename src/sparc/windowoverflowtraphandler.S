@@ -74,11 +74,10 @@ sparcWindowOverflowTrapHandler:
    mov     %wim, %l0
 
    !
-   ! Determine the WIM field bit mask from the number of register windows
+   ! Keep the number of windows minus one in a register, it will be useful later
+   ! when updating the Window Invalid Mask.
    sethi   %hi(detected_sparc_register_windows), %l4
    ld      [%lo(detected_sparc_register_windows) + %l4], %l4
-   ! The number of implemented register windows is always a power of 2, therefore the following
-   ! sentence determines the implemented windows bit mask.
    sub     %l4, 1, %l4
 
    !
@@ -115,13 +114,11 @@ sparcWindowOverflowTrapHandler:
    ! Rotate the old value of WIM (in %lo) one bit to the right, sending the
    ! rightmost bit to the leftmost position...
    srl     %l0, 1, %l5
-   sll     %l0, %l4, %l0   ! Notice here that the mask stored in %l4 is also NWINDOWS-1... beautiful.
+   sll     %l0, %l4, %l0
    or      %l0, %l5, %g1
-   ! This final masking of the bits was not in the original code example, and is probably not really
-   ! needed since the definition of the register in the architecture requires any implementation to
-   ! ignore 1's written in the positions of unimplemented windows, but for the sake of clarity and
-   ! correctness...
-   and     %g1, %l4, %g1
+   ! It is unnecessary to mask out any extra bits (those beyond the NWINDOWS'th bit) of %g1
+   ! because the WIM register ignores any value written to a bit other than those of
+   ! the implemented register windows.
 
    !
    ! Now the new WIM value is stored in %g1, but we can't update the WIM register yet. We

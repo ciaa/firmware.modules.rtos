@@ -181,11 +181,10 @@ outermost_trap_handler:
    mov     %g7, %l7
 
    !
-   ! Determine the WIM field bit mask from the number of register windows
+   ! Keep the number of windows minus one in a register, it will become handy more
+   ! than once afterwards
    sethi   %hi(detected_sparc_register_windows), %g7
    ld      [%lo(detected_sparc_register_windows) + %g7], %g7
-   ! The number of implemented register windows is always a power of 2, therefore the following
-   ! sentence calculates the bit mask.
    sub     %g7, 0x1, %g7
 
    !
@@ -194,8 +193,8 @@ outermost_trap_handler:
    and     %l0, SPARC_PSR_CWP_MASK, %g4
    ! This does %g4 = (%g4 + 1) mod detected_sparc_register_windows
    add     %g4, 0x1, %g4
-   and     %g4, %g7, %g4
-   ! Create the bitmask and store it in %g6
+   and     %g4, %g7, %g4 ! notice that NWINDOWS-1 is also the mask that allows us to calculate the modulus
+   ! Create the bitmask of the windows above us and store it in %g6
    mov     0x1, %g6
    sll     %g6, %g4, %g6
 
@@ -223,7 +222,7 @@ outermost_trap_handler:
 
    !
    ! At this point:
-   ! * %g7 = WIM register implemented bits mask = NWINDOWS-1
+   ! * %g7 = NWINDOWS-1
    ! * %g6 = Mask for the most recently used in-use register window.
    ! * %g5 = Initial WIM register value = invalid window mask
    ! * %g4 = Available for scratch.
@@ -259,9 +258,18 @@ dump_frame_loop:
    ! rather not calculate it again.
    !
    srl     %g5, 0x1, %g4
-   sll     %g5, %g7, %g5 ! the WIM bit mask is also NWINDOWS - 1
+   sll     %g5, %g7, %g5
    or      %g4, %g5, %g5
-   and     %g5, %g7, %g5 ! erase any extra bits
+
+  ! Create the a mask of the valid WIM register bits
+   mov     0x02, %g4       ! using 0x02 here makes up for %g7 being not NWINDOWS but NWINDOWS-1
+   sll     %g4, %g7, %g4
+   sub     %g4, 0x01, %g4  ! all bits between 0 and NWINDOWS-1 are left
+
+   ! erase any extra bits above the NWINDOWS'th bit of the rotated
+   ! invalid bit mask using the mask of valid WIM register bits that
+   ! we just built.
+   and     %g5, %g4, %g5
 
    !
    ! Check if the next restore will enter the invalid window
@@ -273,7 +281,7 @@ exit_dump_frame_loop:
 
    !
    ! At this point:
-   ! * %g7 = WIM register implemented bits mask = NWINDOWS-1
+   ! * %g7 = NWINDOWS-1
    ! * %g6 = Mask for the most recently used in-use register window.
    ! * %g5 = Mask for the most recently used in-use register window.
    ! * %g4 = Available for scratch.
@@ -424,7 +432,7 @@ outermost_set_interrupt_handler_caller_address:
    !
    ! Call the handler
    sethi   %hi(sparcInterruptHandlerCaller), %l4
-   jmpl    %lo(sparcInterruptHandlerCaller) + %l4, %o7
+   jmpl    %l4 + %lo(sparcInterruptHandlerCaller), %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -445,7 +453,7 @@ outermost_set_task_context_replacement_handler_address:
    !
    ! Call the handler
    sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
-   jmpl    %lo(sparcTaskContextReplacementHandlerCaller) + %l4, %o7
+   jmpl    %l4 + %lo(sparcTaskContextReplacementHandlerCaller), %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -554,11 +562,10 @@ nested_trap_handler:
    !
 
    !
-   ! Determine the WIM register bit mask from the number of register windows
+   ! Keep the number of windows minus one in a register, it will become handy more
+   ! than once afterwards
    sethi   %hi(detected_sparc_register_windows), %l7
    ld      [%lo(detected_sparc_register_windows) + %l7], %l7
-   ! The number of implemented register windows is always a power of 2, therefore the following
-   ! sentence determines the implemented windows bit mask.
    sub     %l7, 0x1, %l7
 
    ! Isolate the CWP field of the PSR register and use it to determine the mask associated
@@ -586,9 +593,12 @@ solve_overflow_condition:
    ! the invalid window (modulo NWINDOWS). Rotate the WIM value one
    ! bit to the right in order to get the new value for the WIM register.
    srl     %l5, 0x1, %l4
-   sll     %l5, %l7, %l5 ! the WIM bit mask is also NWINDOWS - 1
+   sll     %l5, %l7, %l5
    or      %l4, %l5, %l5
-   and     %l5, %l7, %l5 ! erase any extra bits
+   ! It is unnecessary to mask out any extra bits (those beyond the NWINDOWS'th bit) of %l5
+   ! because the WIM register ignores any value written to a bit other than those of
+   ! the implemented register windows.
+
 
    ! We should not update the WIM register yet, otherwise when we
    ! execute the SAVE instruction below, the processor will be thrown
@@ -743,7 +753,7 @@ nested_set_interrupt_handler_caller_address:
    !
    ! Call the handler
    sethi   %hi(sparcInterruptHandlerCaller), %l4
-   jmpl    %lo(sparcInterruptHandlerCaller) + %l4, %o7
+   jmpl    %l4 + %lo(sparcInterruptHandlerCaller), %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
@@ -764,7 +774,7 @@ nested_set_task_context_replacement_handler_address:
    !
    ! Call the handler
    sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
-   jmpl    %lo(sparcTaskContextReplacementHandlerCaller) + %l4, %o7
+   jmpl    %l4 + %lo(sparcTaskContextReplacementHandlerCaller), %o7
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 

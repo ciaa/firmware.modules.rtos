@@ -74,11 +74,10 @@ sparcWindowUnderflowTrapHandler:
    mov     %wim, %l0
 
    !
-   ! Determine the CWP field bit mask from the number of register windows
+   ! Keep the number of windows minus one in a register, it will be useful later
+   ! when updating the Window Invalid Mask.
    sethi   %hi(detected_sparc_register_windows), %l4
    ld      [%lo(detected_sparc_register_windows) + %l4], %l4
-   ! Register windows numbers are always powers of 2, therefore the following
-   ! sentence determines the bit mask.
    sub     %l4, 1, %l4
 
    !
@@ -105,17 +104,14 @@ sparcWindowUnderflowTrapHandler:
    sll     %l0, 1, %l5
    srl     %l0, %l4, %l0   ! Notice here that the mask stored in %l4 is also NWINDOWS-1... beautiful.
    or      %l0, %l5, %l5
-   ! This final masking of the bits was not in the original code example, and is probably not really
-   ! needed since the definition of the register in the architecture requires any implementation to
-   ! ignore 1's written in the positions of unimplemented windows, but for the sake of clarity and
-   ! correctness...
-   and     %l5, %l4, %l5
+   ! It is unnecessary to mask out any extra bits (those beyond the NWINDOWS'th bit) of %l5
+   ! because the WIM register ignores any value written to a bit other than those of
+   ! the implemented register windows.
 
    ! Update the WIM. This step needs to be performed before entering the invalid window (see below)
    ! so that the RESTORE instruction does not throw the processor into error mode for having caused a
    ! synchronous trap (a nested undeflow trap) while the ET (enable traps) bit is disabled.
    mov     %l5, %wim
-
    ! The behavior of instructions that read or write the WIM register during the
    ! first three cycles after a write operation has been performed on it is
    ! undefined (implementation dependent) so we play safe and burn those cycles away...

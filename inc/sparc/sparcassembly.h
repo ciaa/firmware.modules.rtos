@@ -65,7 +65,7 @@
  *
  * For alignments reasons this number must be a multiple of 8 (double word).
  */
-#define SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE 92
+#define SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE 96
 
 
 /** \brief Amount of bytes to reserve on a thread's stack in order to store its integer context information.
