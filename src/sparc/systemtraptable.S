@@ -303,7 +303,7 @@ trap_type_11:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x00, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x01, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -316,7 +316,7 @@ trap_type_12:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x01, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x02, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -329,7 +329,7 @@ trap_type_13:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x02, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x03, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -342,7 +342,7 @@ trap_type_14:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x03, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x04, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -355,7 +355,7 @@ trap_type_15:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x04, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x05, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -368,7 +368,7 @@ trap_type_16:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x05, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x06, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -381,7 +381,7 @@ trap_type_17:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x06, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x07, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -394,7 +394,7 @@ trap_type_18:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x07, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x08, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -407,7 +407,7 @@ trap_type_19:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x08, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x09, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -420,7 +420,7 @@ trap_type_1a:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x09, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x0a, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -433,7 +433,7 @@ trap_type_1b:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x0a, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x0b, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -446,7 +446,7 @@ trap_type_1c:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x0b, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x0c, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -459,7 +459,7 @@ trap_type_1d:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x0c, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x0d, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -472,7 +472,7 @@ trap_type_1e:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x0d, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x0e, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !
@@ -485,7 +485,7 @@ trap_type_1f:
         mov     %psr, %l0
         sethi   %hi(sparcTaskContextAwareTrapHandler), %l3
         jmpl    %l3 + %lo(sparcTaskContextAwareTrapHandler), %g0
-        mov     0x0e, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
+        mov     0x0f, %l3    ! Task context aware trap handlers table index, with bit 5 set to 0 to indicate this is an external interrupt trap handler.
 
 
         !

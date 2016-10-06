@@ -133,6 +133,8 @@ void sparcInterruptHandlerCaller(uint32_t irqNumber)
 
    irqHandler = sparcIRQHandlersTable[irqNumber - 1];
 
+   sparcAssert(irqHandler != NULL,   "Undefined IRQ handler");
+
    (*irqHandler)();
 
    /* Clear the interrupt flag on the IRQMP
