@@ -381,6 +381,16 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
+   ! Create an interrupt base stack frame
+   !
+   ! We need to make room in the stack for a functions
+   ! stack frame so that we can call functions later.
+   !
+
+   sub     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
+
+   ! ****************************************************
+   !
    ! Reenable traps and call the IRQ handler caller function or
    ! the task context replacement function caller function.
    ! For external interrupts, also raise the Processor
@@ -436,7 +446,7 @@ outermost_set_interrupt_handler_caller_address:
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
-   ba outermost_jump_to_caller
+   ba outermost_re_enable_traps
    nop
 
 outermost_set_task_context_replacement_handler_address:
@@ -457,7 +467,7 @@ outermost_set_task_context_replacement_handler_address:
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
-outermost_jump_to_caller:
+outermost_re_enable_traps:
 
    ! ****************************************************
    !
@@ -474,6 +484,16 @@ outermost_jump_to_caller:
    nop
    nop
    nop
+
+   ! ****************************************************
+   !
+   ! Destroy the interrupt base stack frame
+   !
+   ! We need to make room in the stack for a functions
+   ! stack frame so that we can call functions later.
+   !
+
+   add     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
    ! ****************************************************
    !
@@ -518,13 +538,7 @@ outermost_jump_to_caller:
    ! Load the PSR register
    ld      [%sp], %l4
 
-   ! Not all the fields of the stored context must be restored;
-   ! keep the values of the bits that are set in the following
-   ! mask:
-   ! impl  ver  icc    rsv EC EF  PIL S PS ET   CWP
-   ! 1111 1111 1111 111111  0  0 0000 0  0  1 11111
-   !    f    f    f    f       c    0         3   f
-   !
+   ! Not all the fields of the stored context must be restored
    sethi   %hi(SPARC_NON_RESTORABLE_BITS_IN_PSR), %l5
    or      %l5, %lo(SPARC_NON_RESTORABLE_BITS_IN_PSR), %l5
    and     %l0, %l5, %l0
@@ -774,7 +788,7 @@ nested_set_interrupt_handler_caller_address:
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
-   ba nested_jump_to_caller
+   ba nested_re_enable_traps
    nop
 
 nested_set_task_context_replacement_handler_address:
@@ -795,7 +809,7 @@ nested_set_task_context_replacement_handler_address:
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
-nested_jump_to_caller:
+nested_re_enable_traps:
 
    ! ****************************************************
    !
