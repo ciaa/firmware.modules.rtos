@@ -489,9 +489,6 @@ outermost_re_enable_traps:
    !
    ! Destroy the interrupt base stack frame
    !
-   ! We need to make room in the stack for a functions
-   ! stack frame so that we can call functions later.
-   !
 
    add     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
@@ -720,16 +717,13 @@ no_overflow_yet:
 
    ! ****************************************************
    !
-   ! Re-enable traps.
+   ! Create an interrupt base stack frame
+   !
+   ! We need to make room in the stack for a functions
+   ! stack frame so that we can call functions later.
    !
 
-   mov     %l0, %l4
-   or      %l4, SPARC_PSR_ET_MASK, %l4 ! Set the ET bit
-   mov     %l4, %psr
-   ! delay cycles
-   nop
-   nop
-   nop
+   sub     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
    ! ****************************************************
    !
@@ -829,6 +823,13 @@ nested_re_enable_traps:
 
    ! ****************************************************
    !
+   ! Destroy the interrupt base stack frame
+   !
+
+   add     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
+
+   ! ****************************************************
+   !
    ! Recovers the interrupted trap service routine's context from the stack.
    !
 
@@ -925,6 +926,8 @@ return_from_trap:
    !
    ! The sixth bit of the %l3 register is set if this code is handling
    ! a software trap handler request (precise trap).
+
+return_from_trap_2:
 
    andcc   %l3, 0x20, %g0
    bnz     return_from_a_precise_trap
