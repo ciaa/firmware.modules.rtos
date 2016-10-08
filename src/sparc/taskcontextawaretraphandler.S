@@ -441,12 +441,11 @@ outermost_set_interrupt_handler_caller_address:
 
    !
    ! Call the handler
-   sethi   %hi(sparcInterruptHandlerCaller), %l4
-   jmpl    %l4 + %lo(sparcInterruptHandlerCaller), %o7
-   ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
+   call    sparcInterruptHandlerCaller
+   nop
 
-   ba outermost_re_enable_traps
+   ba outermost_disable_traps
    nop
 
 outermost_set_task_context_replacement_handler_address:
@@ -462,12 +461,11 @@ outermost_set_task_context_replacement_handler_address:
 
    !
    ! Call the handler
-   sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
-   jmpl    %l4 + %lo(sparcTaskContextReplacementHandlerCaller), %o7
-   ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
+   call sparcTaskContextReplacementHandlerCaller
+   nop
 
-outermost_re_enable_traps:
+outermost_disable_traps:
 
    ! ****************************************************
    !
@@ -782,7 +780,7 @@ nested_set_interrupt_handler_caller_address:
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
-   ba nested_re_enable_traps
+   ba nested_disable_traps
    nop
 
 nested_set_task_context_replacement_handler_address:
@@ -803,7 +801,7 @@ nested_set_task_context_replacement_handler_address:
    ! Use the delay slot to store the only argument
    and     %l3, 0x1f, %o0
 
-nested_re_enable_traps:
+nested_disable_traps:
 
    ! ****************************************************
    !
