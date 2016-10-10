@@ -564,14 +564,51 @@ outermost_disable_traps:
    ld      [%sp + 68], %l1
    ld      [%sp + 72], %l2
 
-   ! The thread's stack pointer was recovered along with the
-   ! rest of the input registers, no need to derive it from
-   ! %fp.
+   !
+   ! Force a window underflow
+   !
+   ! Before returning we must force a pop a stack frame
+   ! from the stack and into the register windows or else
+   ! the rett instruction will throw the processor into
+   ! error mode.
 
-   ! ****************************************************
-   !
-   ! Return to the interrupted thread
-   !
+   ! Read the current WIM value and store it locally
+   mov     %wim, %l4
+
+   ! Keep the number of windows minus one in a register, it will be useful later
+   ! when updating the Window Invalid Mask.
+   sethi   %hi(detected_sparc_register_windows), %l5
+   ld      [%lo(detected_sparc_register_windows) + %l5], %l5
+   sub     %l5, 1, %l5
+
+   ! Rotate the old value of WIM one bit to the left, sending the
+   ! rightmost bit to the leftmost position...
+   sll     %l4, 1, %l6
+   srl     %l4, %l5, %l4
+   or      %l4, %l6, %l4
+
+   ! Update the WIM.
+   mov     %l4, %wim
+   ! wrwim delay cycles
+   nop
+   nop
+   nop
+
+   ! Restore once to get into the invalid window
+   restore
+
+   ! Read the register values from the stack
+   ldd     [%sp], %l0
+   ldd     [%sp + 8], %l2
+   ldd     [%sp + 16], %l4
+   ldd     [%sp + 24], %l6
+   ldd     [%sp + 32], %i0
+   ldd     [%sp + 40], %i2
+   ldd     [%sp + 48], %i4
+   ldd     [%sp + 56], %i6
+
+   ! Go back to the trap window
+   save
 
    ba return_from_trap
    nop
@@ -854,64 +891,7 @@ nested_disable_traps:
    ld      [%sp + 68], %l1
    ld      [%sp + 72], %l2
 
-   ! The interrupted trap's stack pointer was recovered along with the
-   ! rest of the input registers, no need to derive it from
-   ! %fp.
-
 return_from_trap:
-
-   ! ****************************************************
-   !
-   ! Force a window underflow
-   !
-   ! Before returning we must force a pop a stack frame
-   ! from the stack and into the register windows or else
-   ! the rett instruction will throw the processor into
-   ! error mode.
-
-   !
-   ! A very similar version of this code can be found in
-   ! the window underflow trap handler routine, with a more
-   ! in depth explanation of each operation.
-   !
-
-   ! Read the current WIM value and store it locally
-   mov     %wim, %l4
-
-   ! Keep the number of windows minus one in a register, it will be useful later
-   ! when updating the Window Invalid Mask.
-   sethi   %hi(detected_sparc_register_windows), %l5
-   ld      [%lo(detected_sparc_register_windows) + %l5], %l5
-   sub     %l5, 1, %l5
-
-   ! Rotate the old value of WIM one bit to the left, sending the
-   ! rightmost bit to the leftmost position...
-   sll     %l4, 1, %l6
-   srl     %l4, %l5, %l4
-   or      %l4, %l6, %l4
-
-   ! Update the WIM.
-   mov     %l4, %wim
-   ! wrwim delay cycles
-   nop
-   nop
-   nop
-
-   ! Restore once to get into the invalid window
-   restore
-
-   ! Read the register values from the stack
-   ldd     [%sp], %l0
-   ldd     [%sp + 8], %l2
-   ldd     [%sp + 16], %l4
-   ldd     [%sp + 24], %l6
-   ldd     [%sp + 32], %i0
-   ldd     [%sp + 40], %i2
-   ldd     [%sp + 48], %i4
-   ldd     [%sp + 56], %i6
-
-   ! Go back to the trap window
-   save
 
    ! ****************************************************
    !
