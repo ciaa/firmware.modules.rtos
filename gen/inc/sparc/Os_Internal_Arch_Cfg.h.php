@@ -57,13 +57,18 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "sparcassembly.h"
+
+
 /*==================[typedef]================================================*/
 
 
 /** \brief Task Context Type */
 typedef struct {
    
-   uint32 * stackBottomPtr;
+   /* The following data field nees to be aligned on a 8-byte boundary, so that I can use ldd and std
+      instructions when loading/storing it from the context handling code. */
+   uint32 TaskContextData[(SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE + SPARC_STACK_FP_CONTEXT_RESERVATION_SIZE) / 4] __attribute__ ((aligned (8))); /* TODO Ask mariano about this attribute, he won't be happy like this... */
    
 } TaskContextType;
 

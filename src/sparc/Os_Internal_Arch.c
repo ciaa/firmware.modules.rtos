@@ -73,13 +73,15 @@ TaskType WaitingTask = INVALID_TASK;
 
 TaskContextType *sparcNewContextPtr;
 
-TaskContextType *sparcOldContextPtr;
+/* This is where the context data for the program's main function is
+ * stored before schedule finds the first task to switch to. */
+TaskContextType sparcTaskZeroContexData;
 
 
 /*==================[external data definition]===============================*/
 
 
-uint32 *active_thread_context_stack_pointer;
+uint32 *active_thread_context_stack_pointer = &sparcTaskZeroContexData;
 
 uint32 system_in_interrupt_context = 0;
 
@@ -112,7 +114,7 @@ void sparcSetTaskContextSWTrapHandler()
     * task has been terminated).
     *
     * */
-   active_thread_context_stack_pointer = sparcNewContextPtr->stackBottomPtr;
+   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
 }
 
 
@@ -124,8 +126,7 @@ void sparcReplaceTaskContextSWTrapHandler()
     * Basically this replaces the current context stack pointer with a new one, after
     * having saved the previously active task's context information for future retrieval.     *
     * */
-   sparcOldContextPtr->stackBottomPtr = active_thread_context_stack_pointer;
-   active_thread_context_stack_pointer = sparcNewContextPtr->stackBottomPtr;
+   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;;
 }
 
 
@@ -143,20 +144,21 @@ void SaveContext(TaskType runningTask)
 
 void CallTask(TaskType currentTask, TaskType newTask)
 {
-   sparcOldContextPtr = TasksConst[(currentTask)].TaskContext;
+   /* TODO this should be atomic */
    sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
 
    sparcSystemServiceTriggerReplaceTaskContext();
+   /* TODO end of atomic section */
 }
 
 
 void JmpTask(TaskType newTask)
 {
+   /* TODO this should be atomic */
    sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
 
    if(WaitingTask != INVALID_TASK)
    {
-      sparcOldContextPtr = TasksConst[(WaitingTask)].TaskContext;
       WaitingTask = INVALID_TASK;
 
       sparcSystemServiceTriggerReplaceTaskContext();
@@ -165,15 +167,18 @@ void JmpTask(TaskType newTask)
    {
       sparcSystemServiceTriggerSetTaskContext();
    }
+   /* TODO end of atomic section */
 }
 
 
 void SetEntryPoint(TaskType TaskID)
 {
    uint32 *stackStartPointer;
+   uint32 effectiveStackTop;
    uint32 *stackPointer;
    uint32 *framePointer;
-   uint32 effectiveStackTop;
+   uint32 *contextDataPtr;
+
 
    stackStartPointer = (uint32 *)TasksConst[TaskID].StackPtr;
 
@@ -266,72 +271,78 @@ void SetEntryPoint(TaskType TaskID)
     * INITIAL TASK CONTEXT DATA
     * -------------------------------
     *
-    * [sp - 4C] to [sp - 4F] Padding needed to make the context size a double-word multiple size.
-    * [sp - 48] to [sp - 4B] nPC
-    * [sp - 44] to [sp - 47] PC
-    * [sp - 40] to [sp - 43] %y register
-    * [sp - 3C] to [sp - 3F] %i7 register
-    * [sp - 38] to [sp - 3B] %i6 register = frame pointer
-    * [sp - 34] to [sp - 37] %i5 register
-    * [sp - 30] to [sp - 33] %i4 register
-    * [sp - 2C] to [sp - 2F] %i3 register
-    * [sp - 28] to [sp - 2B] %i2 register
-    * [sp - 24] to [sp - 27] %i1 register
-    * [sp - 20] to [sp - 23] %i0 register
-    * [sp - 1C] to [sp - 1F] %g7 register
-    * [sp - 18] to [sp - 1B] %g6 register
-    * [sp - 14] to [sp - 17] %g5 register
-    * [sp - 10] to [sp - 13] %g4 register
-    * [sp - 0C] to [sp - 0F] %g3 register
-    * [sp - 08] to [sp - 0B] %g2 register
-    * [sp - 04] to [sp - 07] %g1 register
-    * [sp - 00] to [sp - 03] %psr register
+    * [contextBase - 4C] to [contextBase - 4F] Padding needed to make the context size a double-word multiple size.
+    * [contextBase - 48] to [contextBase - 4B] nPC
+    * [contextBase - 44] to [contextBase - 47] PC
+    * [contextBase - 40] to [contextBase - 43] %y register
+    * [contextBase - 3C] to [contextBase - 3F] %i7 register
+    * [contextBase - 38] to [contextBase - 3B] %i6 register = frame pointer
+    * [contextBase - 34] to [contextBase - 37] %i5 register
+    * [contextBase - 30] to [contextBase - 33] %i4 register
+    * [contextBase - 2C] to [contextBase - 2F] %i3 register
+    * [contextBase - 28] to [contextBase - 2B] %i2 register
+    * [contextBase - 24] to [contextBase - 27] %i1 register
+    * [contextBase - 20] to [contextBase - 23] %i0 register
+    * [contextBase - 1C] to [contextBase - 1F] %g7 register
+    * [contextBase - 18] to [contextBase - 1B] %g6 register
+    * [contextBase - 14] to [contextBase - 17] %g5 register
+    * [contextBase - 10] to [contextBase - 13] %g4 register
+    * [contextBase - 0C] to [contextBase - 0F] %g3 register
+    * [contextBase - 08] to [contextBase - 0B] %g2 register
+    * [contextBase - 04] to [contextBase - 07] %g1 register
+    * [contextBase - 00] to [contextBase - 03] %psr register
     */
 
-   framePointer = stackPointer;
-   stackPointer = framePointer - SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE / 4;
+   /* The task context data needs to be aligned on an 8 byte boundary,
+    * for the time being that is being sorted out by using __attribute__
+    * on the type definition of TaskContextType, which unlike the stack space
+    * structure does fall within the scope of the port and has a perfectly
+    * defined constant size. */
+   contextDataPtr = TasksConst[TaskID].TaskContext->TaskContextData;
 
    /*
-    * padding required to ensure that the stack pointer is always a multiples of size of a double-word */
-   *(stackPointer + 19) = 0x00; /* Padding */
+    *
+    * Floating point initial context should be initialized here, if used.
+    *
+    * */
+
+   /*
+    * padding required to ensure that the stack pointer is always a multiple of size of a double-word */
+   *(contextDataPtr + 19) = 0x00; /* Padding */
 
    /*
     * Start address of the task function */
-   *(stackPointer + 18) = (uint32) TasksConst[TaskID].EntryPoint + 0x04; /* nPC, task function second instruction */
-   *(stackPointer + 17) = (uint32) TasksConst[TaskID].EntryPoint + 0x00; /* PC, task function first instruction */
+   *(contextDataPtr + 18) = (uint32) TasksConst[TaskID].EntryPoint + 0x04; /* nPC, task function second instruction */
+   *(contextDataPtr + 17) = (uint32) TasksConst[TaskID].EntryPoint + 0x00; /* PC, task function first instruction */
 
    /*
     * Y register */
-   *(stackPointer + 16) = 0x00; /* %y register */
+   *(contextDataPtr + 16) = 0x00; /* %y register */
 
    /*
     * trap input registers = initial value of the task's function output registers */
-   *(stackPointer + 15) = (uint32) taskReturnSafetyNet; /* %i7 register, return address of the task function */
-   *(stackPointer + 14) = (uint32) framePointer; /* %i6 register, trap frame pointer */
-   *(stackPointer + 13) = 0x00; /* %i5 register */
-   *(stackPointer + 12) = 0x00; /* %i4 register */
-   *(stackPointer + 11) = 0x00; /* %i3 register */
-   *(stackPointer + 10) = 0x00; /* %i2 register */
-   *(stackPointer +  9) = 0x00; /* %i1 register */
-   *(stackPointer +  8) = 0x00; /* %i0 register */
+   *(contextDataPtr + 15) = (uint32) taskReturnSafetyNet; /* %i7 register, return address of the task function */
+   *(contextDataPtr + 14) = (uint32) stackPointer; /* %i6 register, trap frame pointer */
+   *(contextDataPtr + 13) = 0x00; /* %i5 register */
+   *(contextDataPtr + 12) = 0x00; /* %i4 register */
+   *(contextDataPtr + 11) = 0x00; /* %i3 register */
+   *(contextDataPtr + 10) = 0x00; /* %i2 register */
+   *(contextDataPtr +  9) = 0x00; /* %i1 register */
+   *(contextDataPtr +  8) = 0x00; /* %i0 register */
 
    /*
     * initial value of the task's global registers*/
-   *(stackPointer +  7) = 0x00; /* %g7 register */
-   *(stackPointer +  6) = 0x00; /* %g6 register */
-   *(stackPointer +  5) = 0x00; /* %g5 register */
-   *(stackPointer +  4) = 0x00; /* %g4 register */
-   *(stackPointer +  3) = 0x00; /* %g3 register */
-   *(stackPointer +  2) = 0x00; /* %g2 register */
-   *(stackPointer +  1) = 0x00; /* %g1 register */
+   *(contextDataPtr +  7) = 0x00; /* %g7 register */
+   *(contextDataPtr +  6) = 0x00; /* %g6 register */
+   *(contextDataPtr +  5) = 0x00; /* %g5 register */
+   *(contextDataPtr +  4) = 0x00; /* %g4 register */
+   *(contextDataPtr +  3) = 0x00; /* %g3 register */
+   *(contextDataPtr +  2) = 0x00; /* %g2 register */
+   *(contextDataPtr +  1) = 0x00; /* %g1 register */
 
    /*
     * initial value of the task's Processor Status Register */
-   *(stackPointer +  0) = SPARC_INITIAL_PSR_VALUE_IN_TASK_CONTEXT; /* %psr register */
-
-   /*
-    * Save the initial task context pointer */
-   TasksConst[TaskID].TaskContext->stackBottomPtr = stackPointer;
+   *(contextDataPtr +  0) = SPARC_INITIAL_PSR_VALUE_IN_TASK_CONTEXT; /* %psr register */
 }
 
 
