@@ -287,6 +287,8 @@ exit_dump_frame_loop:
    ! * %g4 = Available for scratch.
    ! * %g3 = PSR value.
 
+   ! CHECK maybe the next two operations should be done in another order
+
    !
    ! Reconfigure the WIM register in order to invalidate the window right above the
    ! trap window.
@@ -317,31 +319,31 @@ exit_dump_frame_loop:
    ! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
    ! in the SPARC V8 Architecture Manual).
 
-   sethi   %hi(active_thread_context_stack_pointer), %l4
-   ld      [%lo(active_thread_context_stack_pointer) + %l4], %l4
+   sethi   %hi(active_thread_context_stack_pointer), %g4
+   ld      [%lo(active_thread_context_stack_pointer) + %g4], %g4
 
    ! Save the PSR register
-   st      %l0, [%l4]
+   st      %l0, [%g4]
 
    ! Save the Global registers %g1 to %g7
-   st      %g1, [%l4 + 4]
-   std     %g2, [%l4 + 8]
-   std     %l4, [%l4 + 16] ! ATTENTION HERE: %g4 and %g5 were relocated to %l4 and %l5
-   std     %l6, [%l4 + 24] ! ATTENTION HERE: %g6 and %g7 were relocated to %l6 and %l7
+   st      %g1, [%g4 + 4]
+   std     %g2, [%g4 + 8]
+   std     %l4, [%g4 + 16] ! ATTENTION HERE: %g4 and %g5 had been relocated to %l4 and %l5
+   std     %l6, [%g4 + 24] ! ATTENTION HERE: %g6 and %g7 had been relocated to %l6 and %l7
 
    ! Save the In registers %i0 to %i7
-   std     %i0, [%l4 + 32]
-   std     %i2, [%l4 + 40]
-   std     %i4, [%l4 + 48]
-   std     %i6, [%l4 + 56]
+   std     %i0, [%g4 + 32]
+   std     %i2, [%g4 + 40]
+   std     %i4, [%g4 + 48]
+   std     %i6, [%g4 + 56]
 
    ! Read the Y register, and save it
    mov     %y, %l5
-   st      %l5, [%l4 + 64]
+   st      %l5, [%g4 + 64]
 
    ! Finally save the PC and nPC that indicate the address where the thread was interrupted.
-   st      %l1, [%l4 + 68]
-   st      %l2, [%l4 + 72]
+   st      %l1, [%g4 + 68]
+   st      %l2, [%g4 + 72]
 
    ! ****************************************************
    !
@@ -372,8 +374,9 @@ exit_dump_frame_loop:
    !
    ! Create an interrupt base stack frame
    !
-   ! We need to make room in the stack for a functions
-   ! stack frame so that we can call functions later.
+   ! We need to make room in the stack for a function call
+   ! stack frame so that we can call standard ABI-compliant
+   ! functions later.
    !
 
    sub     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
@@ -528,7 +531,7 @@ outermost_disable_traps:
    and     %l0, %l5, %l0
    andn    %l4, %l5, %l4
    or      %l0, %l4, %l0
-   ! %l0 not contains the value of the %psr that must be restore just before
+   ! %l0 not contains the value of the %psr that must be restored just before
    ! leaving the interrupt and restoring the task execution context.
    ! Notice that now this %l0 value differs from the current %psr
    ! value.
@@ -707,7 +710,7 @@ no_overflow_yet:
    ! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
    ! in the SPARC V8 Architecture Manual).
 
-   ! Make some room on the stack for the thread context, keeping %sp double word aligned.
+   ! Make some room on the stack for the interrupted trap context, keeping %sp double word aligned.
    sub     %fp, SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE, %sp
 
    ! Save the PSR register
