@@ -309,40 +309,39 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Store the interrupted thread's context to the thread's stack
+   ! Store the context of the currently active task
    !
-
    ! Notice that the usage of STD below requires %sp to be double word aligned, but since
    ! that is a requirement of the SPARC architecture, the compiler always complies with that alignment
    ! restriction. That is also the reason why I save 80 bytes for the thread's context, instead
    ! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
    ! in the SPARC V8 Architecture Manual).
 
-   ! Make some room on the stack for the thread context, keeping %sp double word aligned.
-   sub     %fp, SPARC_STACK_BASE_CONTEXT_RESERVATION_SIZE, %sp
+   sethi   %hi(active_thread_context_stack_pointer), %l4
+   ld      [%lo(active_thread_context_stack_pointer) + %l4], %l4
 
    ! Save the PSR register
-   st      %l0, [%sp]
+   st      %l0, [%l4]
 
    ! Save the Global registers %g1 to %g7
-   st      %g1, [%sp + 4]
-   std     %g2, [%sp + 8]
-   std     %l4, [%sp + 16] ! ATTENTION HERE: %g4 and %g5 were relocated to %l4 and %l5
-   std     %l6, [%sp + 24] ! ATTENTION HERE: %g6 and %g7 were relocated to %l6 and %l7
+   st      %g1, [%l4 + 4]
+   std     %g2, [%l4 + 8]
+   std     %l4, [%l4 + 16] ! ATTENTION HERE: %g4 and %g5 were relocated to %l4 and %l5
+   std     %l6, [%l4 + 24] ! ATTENTION HERE: %g6 and %g7 were relocated to %l6 and %l7
 
    ! Save the In registers %i0 to %i7
-   std     %i0, [%sp + 32]
-   std     %i2, [%sp + 40]
-   std     %i4, [%sp + 48]
-   std     %i6, [%sp + 56]
+   std     %i0, [%l4 + 32]
+   std     %i2, [%l4 + 40]
+   std     %i4, [%l4 + 48]
+   std     %i6, [%l4 + 56]
 
    ! Read the Y register, and save it
    mov     %y, %l5
-   st      %l5, [%sp + 64]
+   st      %l5, [%l4 + 64]
 
    ! Finally save the PC and nPC that indicate the address where the thread was interrupted.
-   st      %l1, [%sp + 68]
-   st      %l2, [%sp + 72]
+   st      %l1, [%l4 + 68]
+   st      %l2, [%l4 + 72]
 
    ! ****************************************************
    !
@@ -358,16 +357,6 @@ exit_dump_frame_loop:
    ! 3) Save the FSR register too.
    !
    ! ****************************************************
-
-   ! ****************************************************
-   !
-   ! The stack pointer is now the key to all of the interrupted thread's
-   ! context information. Store it in a global variable so that schedule()
-   ! can work with it if it is called from within the trap service routine.
-   !
-
-   sethi   %hi(active_thread_context_stack_pointer), %l4
-   st      %sp, [%lo(active_thread_context_stack_pointer) + %l4]
 
    ! ****************************************************
    !
@@ -500,7 +489,7 @@ outermost_disable_traps:
 
    ! ****************************************************
    !
-   ! Recover the currently active task stack pointer
+   ! Recover the context of the currently active task
    !
    ! If there was a task context switch during the execution of the trap service
    ! routine, we will be recovering the state of the recently activated task
