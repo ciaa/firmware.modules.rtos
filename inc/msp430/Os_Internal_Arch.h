@@ -298,7 +298,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 1 is finished
  **/
-#define PostIsr1_Arch(isr) ClearPendingIRQ_Arch(isr)
+#define PostIsr1_Arch(isr) GetPendingIRQ_Arch(isr)
 
 /** \brief Pre ISR Macro
  **
@@ -310,7 +310,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) ClearPendingIRQ_Arch(isr)
+#define PostIsr2_Arch(isr) GetPendingIRQ_Arch(isr)
 
 /** \brief ShutdownOs Arch service
  **
@@ -325,7 +325,7 @@ extern TaskType TerminatingTask;
 
 /*==================[external functions declaration]=========================*/
 void InitStack_Arch(uint8 TaskID);
-void ClearPendingIRQ_Arch(unsigned short irQ_number);
+uint16_t GetPendingIRQ_Arch( uint16_t irQ_number );
 void MSP430_EnableIRQ(unsigned char irQ_number);
 void MSP430_DisableIRQ(unsigned char irQ_number);
 

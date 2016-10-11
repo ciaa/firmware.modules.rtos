@@ -85,7 +85,6 @@ extern StatusType Schedule
    /* \req OSEK_SYS_3.4.4 Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
 
-
    TaskType nextTask;
    TaskType actualTask;
 
@@ -251,3 +250,4 @@ extern StatusType Schedule
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+

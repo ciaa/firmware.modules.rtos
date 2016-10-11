@@ -155,7 +155,6 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    if($src_found == 0)
    {
       #for an undefined ISR witihn the OIL file, we defiene a DUMMY handler.
-      #print "__attribute__( (__interrupt_vec($intList[$i]_VECTOR),naked)) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */\n";
       print "interrupt_vec($intList[$i]_VECTOR) __attribute__((naked)) \n";
       print "void OSEK_ISR_$intList[$i]_VECTOR(void) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */ \n";
       print "{\n";
@@ -167,7 +166,6 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
       if( $intcat == 1 )
       {
          #for an ISR type 1 witihn the OIL file, we defiene a ISR wrapper that calls the ISR defined by the user somewhere.
-         #print "__attribute__( (__interrupt_vec($intList[$i]_VECTOR),naked)) \n";
          print "interrupt_vec($intList[$i]_VECTOR) __attribute__((naked))\n";
          print "void OSEK_ISR_$intList[$i]_VECTOR_WRAPPER(void) /*Wrapper function for ISR $intList[$i]_VECTOR (IRQ $i). User should define ISR($intList[$i]_VECTOR) somewhere */ \n";
          print "{\n";

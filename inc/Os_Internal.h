@@ -282,3 +282,4 @@ extern CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncre
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_H_ */
+

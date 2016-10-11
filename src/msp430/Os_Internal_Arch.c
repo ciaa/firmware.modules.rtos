@@ -856,12 +856,16 @@ void MSP430_DisableIRQ(unsigned char irQ_number)
 
 /*
 for a given irq_number it clear the flag that made the handler to be called.
-*/
-void ClearPendingIRQ_Arch(unsigned short irQ_number)
-{
-   volatile unsigned char dummy;   //ignore compiling warning
+it returns the irq flag, based on the irQ_number
+the returned value depends on which peripheral irQ_number belongs.
 
-   switch(irQ_number)
+For PORTx: the returned value is the port pin (0-7)   (not the PxIV register value)
+*/
+uint16_t GetPendingIRQ_Arch( uint16_t irQ_number )
+{
+   volatile uint16_t dummy;   //ignore compiling warning
+
+   switch( irQ_number )
    {
 #if( MSP430_ENABLE_RTC_HANDLER== 1)
 #error TODO: NOT IMPLEMENTED
@@ -873,11 +877,11 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
       case 1 : //=> "PORT2",
          dummy = P2IV;
          /* There is no need to clear the flag manually: From MSP430f5529 User manually
-
          " Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
          another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
-
          */
+
+         dummy= (dummy-2)/2; /* with the P2IV we calculate the bit corresponding the source of interrupt.*/
          break;
 #endif
 
@@ -915,8 +919,9 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
 
          " Any access (read or write) of the P1IV register automatically resets the highest pending interrupt flag. If
          another interrupt flag is set, another interrupt is immediately generated after servicing the initial interrupt "
-
          */
+
+         dummy= (dummy-2)/2; /* with the P2IV we calculate the bit corresponding the source of interrupt.*/
          break;
 #endif
 
@@ -971,7 +976,7 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
 
 #if( MSP430_ENABLE_USCI_B0_HANDLER==1 )
       case 14: // => "USCI_B0",
-
+         dummy = UCB0IV;
          break;
 #endif
 
@@ -1029,6 +1034,8 @@ void ClearPendingIRQ_Arch(unsigned short irQ_number)
          break;
 #endif
    }
+
+   return dummy;
 }
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

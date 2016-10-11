@@ -7,6 +7,7 @@
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
  * Copyright 2016 Franco Bucafusco
+ *
  * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
@@ -79,6 +80,7 @@ $this->loadHelper("modules/rtos/gen/ginc/Platform.php");
 
 /* Definitions of Tasks : Tasks that will be executed within the local core */
 /* TODO: validate that tasks has different names */
+
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 $remote_tasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
 $os = $this->config->getList("/OSEK","OS");
@@ -123,9 +125,8 @@ $matriz    = array(); /* it stores the events' name for each task */
 $matrix_n  = array();  /* it stores the events' assigned number for each task */
 
 $events = $this->config->getList("/OSEK","EVENT");
-//$nro_evs= max(array_keys($events))+1;
+
 $nro_evs= count($events);
-#print("cantidad de eventos: $nro_evs \n");
 
 /* task/events matrix creation, and various validations */
 foreach( $tasks as $task_index => $task )
@@ -225,7 +226,7 @@ foreach( $tasks as $task_index=> $task )
 
    foreach( $matriz[$task_index] as $ev )
    {
-      if($flags_exc_event>$max_amount_events )
+      if( $flags_exc_event>$max_amount_events )
       {
          throw new Exception("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n");
          /* stops execution */
@@ -445,6 +446,8 @@ foreach ($tasks as $count=>$task)
 }
 
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
+
+//print_r($intnames);
 
 foreach ($intnames as $count=>$int)
 {

@@ -7,6 +7,7 @@
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
  * Copyright 2016 Franco Bucafusco
+ *
  * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
@@ -122,6 +123,7 @@ $alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 foreach ($counters as $counter)
 {
    $countalarms = 0;
+
    foreach ($alarms as $alarm)
    {
       if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
@@ -129,7 +131,10 @@ foreach ($counters as $counter)
          $countalarms++;
       }
    }
-   print "const AlarmType OSEK_ALARMLIST_" . $counter . "[" . $countalarms . "] = {\n";
+
+   print "\nconst AlarmType OSEK_ALARMLIST_" . $counter . "[" . $countalarms . "] = \n";
+   print "{\n";
+
    foreach ($alarms as $alarm)
    {
       if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
@@ -137,6 +142,7 @@ foreach ($counters as $counter)
          print "   $alarm, /* this alarm has to be incremented with this counter */\n";
       }
    }
+
    print "};\n\n";
 }
 ?>
@@ -313,7 +319,7 @@ foreach ($appmodes as $count=>$appmode)
       }
    }
    print "      " . count($tasksinmode) .", /* Total Auto Start Tasks in this Application Mode */\n";
-   if (count($tasksinmode)>0)
+   if( count($tasksinmode)>0 )
    {
       print "      (TaskRefType)TasksAppMode" . $appmode . " /* Pointer to the list of Auto Start Stacks on this Application Mode */\n";
    }
@@ -554,13 +560,16 @@ foreach ($intnames as $int)
    $inttype = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
    $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
+ //print $inttype ." ".$intcat ." ". $intList[$i] ." ".$int  ."\n";
+
    print("/* Wrapper ISR handler for $int */\n");
 
    if ($intcat == 2)
    {
       if($this->definitions["ARCH"] == "msp430")
       {
-         print "interrupt_vec($int) \n";
+         print "interrupt_vec(".$inttype."_VECTOR)  \n";
+         //print "interrupt_vec($int) \n";
       }
 ?>
 void OSEK_ISR2_<?php print $int?>(void)
