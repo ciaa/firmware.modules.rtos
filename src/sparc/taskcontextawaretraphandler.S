@@ -293,6 +293,9 @@ exit_dump_frame_loop:
    ! Reconfigure the WIM register in order to invalidate the window right above the
    ! trap window.
    mov     %g6, %wim
+   nop
+   nop
+   nop
 
    !
    ! Move back to the trap window
@@ -600,7 +603,7 @@ outermost_disable_traps:
    ldd     [%sp + 56], %i6
 
    ! Go back to the trap window
-   save
+   save %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
    ba return_from_trap
    nop
