@@ -113,6 +113,36 @@
 sparcTaskContextAwareTrapHandler:
 
    !
+   !
+   !
+   ! ****************************************************
+   ! ***            COMMON ENTRY CODE                 ***
+   ! ****************************************************
+   !
+   !
+   !
+
+   !
+   ! Once we have treated executed this trap, we'll have two posibilities for the
+   ! return address of this routine:
+   ! - PC and nextPC (%l1 and %l2) if this was an external interrupt trap.
+   ! - nextPC and nextPC+0x4 if this was a software trap (precise trap).
+   ! In order to simplify some issues that arise because of this when there are
+   ! context changes involved, the following code unifies both cases by making
+   ! setting %l1 and %l2 to the addresses of the first and and the second
+   ! instructions that must be executed upon trap return, regardless of the
+   ! origin of the trap invocation.
+
+   andcc   %l3, 0x20, %g0
+   bz      common_interrupting_trap
+   nop
+
+   mov     %l2, %l1
+   add     %l1, 0x04, %l2
+
+common_interrupting_trap:
+
+   !
    ! Check whether we are already in interrupt/trap context (i.e. in a nested trap) or whether
    ! this is the outermost interrupt/trap.
 
@@ -130,6 +160,16 @@ sparcTaskContextAwareTrapHandler:
    ! Update the value of the flag in memory (this happens in the delay slot of the branch,
    ! whatever the result of the test turns out to be)
    st      %l6, [%lo(system_in_interrupt_context) + %l4]
+
+   !
+   !
+   !
+   ! ****************************************************
+   ! ***           OUTERMOST TRAP CASE                ***
+   ! ****************************************************
+   !
+   !
+   !
 
 outermost_trap_handler:
 
@@ -228,7 +268,7 @@ outermost_trap_handler:
    ! * %g4 = Available for scratch.
    ! * %g3 = Initial PSR value.
 
-dump_frame_loop:
+outermost_dump_windows_loop:
 
    !
    ! Move one register window up and save its contents to the stack using
@@ -274,10 +314,10 @@ dump_frame_loop:
    !
    ! Check if the next restore will enter the invalid window
    subcc   %g5, %g6, %g0
-   bne     dump_frame_loop
+   bne     outermost_dump_windows_loop
    nop
 
-exit_dump_frame_loop:
+outermost_dump_done:
 
    !
    ! At this point:
@@ -375,7 +415,8 @@ exit_dump_frame_loop:
 
    ! ****************************************************
    !
-   ! Create an interrupt base stack frame
+   ! Create an auxiliar stack frame so that we can call a
+   ! C function to do the higher level work.
    !
    ! We need to make room in the stack for a function call
    ! stack frame so that we can call standard ABI-compliant
@@ -436,9 +477,9 @@ outermost_set_interrupt_handler_caller_address:
 
    !
    ! Call the handler
-   and     %l3, 0x1f, %o0
    call    sparcInterruptHandlerCaller
-   nop
+   ! delay slot
+   and     %l3, 0x1f, %o0
 
    ba outermost_disable_traps
    nop
@@ -456,9 +497,9 @@ outermost_set_task_context_replacement_handler_address:
 
    !
    ! Call the handler
-   and     %l3, 0x1f, %o0
    call sparcTaskContextReplacementHandlerCaller
-   nop
+   ! delay slot
+   and     %l3, 0x1f, %o0
 
 outermost_disable_traps:
 
@@ -488,7 +529,8 @@ outermost_disable_traps:
 
    ! ****************************************************
    !
-   ! Destroy the interrupt base stack frame
+   ! Release the stack space that was allocated for
+   ! the handling routine caller functions.
    !
 
    add     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
@@ -567,6 +609,7 @@ outermost_disable_traps:
    ld      [%sp + 68], %l1
    ld      [%sp + 72], %l2
 
+   ! ****************************************************
    !
    ! Force a window underflow
    !
@@ -613,12 +656,18 @@ outermost_disable_traps:
    ! Go back to the trap window
    save %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
-   ba return_from_trap
+   ba common_return_from_trap
    nop
 
+   !
+   !
+   !
    ! ****************************************************
+   ! ***              NESTED TRAP CASE                ***
    ! ****************************************************
-   ! ****************************************************
+   !
+   !
+   !
 
 nested_trap_handler:
 
@@ -645,10 +694,10 @@ nested_trap_handler:
 
    ! Check if the trap window overlaps the invalid window
    subcc   %l5, %l6, %g0
-   bne     no_overflow_yet
+   bne     nested_no_window_overflow
    nop
 
-solve_overflow_condition:
+nested_window_overflow:
 
    ! There's no room left for another trap in the register window set, so
    ! we are already in a window overflow situation. We need to vacate
@@ -706,7 +755,7 @@ solve_overflow_condition:
    ! Restore the value of the global register that we used
    mov     %l7, %g5
 
-no_overflow_yet:
+nested_no_window_overflow:
 
    ! done releasing a window
 
@@ -750,15 +799,18 @@ no_overflow_yet:
    !
    ! Notice that there are no provisions for storing the floating point
    ! context here. That is because I assume that under no circunstances a
-   ! trap (external or internal) should perform floating point operations.
+   ! trap (external or internal) will be allowed to perform floating point
+   ! operations.
    !
 
    ! ****************************************************
    !
-   ! Create an interrupt base stack frame
+   ! Create an auxiliar stack frame so that we can call a
+   ! C function to do the higher level work.
    !
-   ! We need to make room in the stack for a functions
-   ! stack frame so that we can call functions later.
+   ! We need to make room in the stack for a function call
+   ! stack frame so that we can call standard ABI-compliant
+   ! functions later.
    !
 
    sub     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
@@ -788,7 +840,7 @@ no_overflow_yet:
    ! replacement handler function (check bit 6).
    andcc    %l3, 0x20, %g0
    bnz      nested_set_task_context_replacement_handler_address
-   ! There is no need to put something in this delay slot
+   ! There is no need to put anything in this delay slot
 
 nested_set_interrupt_handler_caller_address:
 
@@ -815,9 +867,8 @@ nested_set_interrupt_handler_caller_address:
 
    !
    ! Call the handler
-   sethi   %hi(sparcInterruptHandlerCaller), %l4
-   jmpl    %l4 + %lo(sparcInterruptHandlerCaller), %o7
-   ! Use the delay slot to store the only argument
+   call sparcInterruptHandlerCaller
+   ! delay slot
    and     %l3, 0x1f, %o0
 
    ba nested_disable_traps
@@ -836,9 +887,8 @@ nested_set_task_context_replacement_handler_address:
 
    !
    ! Call the handler
-   sethi   %hi(sparcTaskContextReplacementHandlerCaller), %l4
-   jmpl    %l4 + %lo(sparcTaskContextReplacementHandlerCaller), %o7
-   ! Use the delay slot to store the only argument
+   call    sparcTaskContextReplacementHandlerCaller
+   ! delay slot
    and     %l3, 0x1f, %o0
 
 nested_disable_traps:
@@ -848,8 +898,16 @@ nested_disable_traps:
    ! Disable traps and restore the PIL value
    !
 
-   mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
-   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
+   !
+   ! WARNING CHECK TODO
+   ! Using a software trap to disable interrupts, using the syscall service that I wrote, seems
+   ! to cause some really odd behavior when executed in real time on actual hardware (tsim seems
+   ! to do just fine).
+   ! For the time being, letting the following instruction to both disable interrupts and restore PIL
+   ! works ok.
+   !
+   !mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
+   !ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    ! Once ET = 0, we can rewrite PIL to its original value
    ! just by restoring the PSR register value
@@ -861,14 +919,16 @@ nested_disable_traps:
 
    ! ****************************************************
    !
-   ! Destroy the interrupt base stack frame
+   ! Release the stack space that was allocated for
+   ! the handling routine caller functions.
    !
 
    add     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
    ! ****************************************************
    !
-   ! Recovers the interrupted trap service routine's context from the stack.
+   ! Recover the context of the trap that this nested trap
+   ! interrupted.
    !
 
    ! Load the PSR register
@@ -894,52 +954,37 @@ nested_disable_traps:
    ld      [%sp + 68], %l1
    ld      [%sp + 72], %l2
 
-return_from_trap:
+   !
+   !
+   !
+   ! ****************************************************
+   ! ***             COMMON EXIT CODE                 ***
+   ! ****************************************************
+   !
+   !
+   !
+
+common_return_from_trap:
 
    ! ****************************************************
    !
    ! Return from the trap
    !
 
-   ! This universal handler may be used for both interrupting and precise traps.
-   ! Interrupting traps must reexecute the instruction where the trap was invoked.
-   ! All other trap types are assumed to be precise traps
-   !
-   ! The sixth bit of the %l3 register is set if this code is handling
-   ! a software trap handler request (precise trap).
-
-return_from_trap_2:
-
-   andcc   %l3, 0x20, %g0
-   bnz     return_from_a_precise_trap
-   nop
-
-return_from_an_interrupting_trap:
-
-   !
-   ! Restore the value of the PSR register
+   ! Restore the state of the PSR register
    mov     %l0, %psr
    ! wrpsr delay cycles
    nop
    nop
    nop
 
-   !
-   ! Reexecute the instruction where the trap was invoked
+   ! At the very start of this code we made sure that %l1
+   ! and %l2 contain the addresses of the first and the
+   ! second instruction that must be executed after returning
+   ! from the trap, regardless of whether this was trap
+   ! was invoked by a TA instruction (precise trap) or an
+   ! external interrupt (interrupting trap).
+
    jmp     %l1
    rett    %l2
 
-return_from_a_precise_trap:
-
-   !
-   ! Restore the value of the PSR register
-   mov     %l0, %psr
-   ! wrpsr delay cycles
-   nop
-   nop
-   nop
-
-   !
-   ! Go back to the instruction located right after the instruction that trapped.
-   jmp     %l2
-   rett    %l2 + 0x04
