@@ -382,7 +382,7 @@ exit_dump_frame_loop:
    ! functions later.
    !
 
-   sub     %sp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
+   sub     %fp, SPARC_STACK_BARE_MINIMUM_STACK_FRAME_RESERVATION_SIZE, %sp
 
    ! ****************************************************
    !
