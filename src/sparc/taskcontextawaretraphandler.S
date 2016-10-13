@@ -467,8 +467,16 @@ outermost_disable_traps:
    ! Disable traps and restore the PIL value
    !
 
-   mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
-   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
+   !
+   ! WARNING CHECK TODO
+   ! Using a software trap to disable interrupts, using the syscall service that I wrote, seems
+   ! to cause some really odd behavior when executed in real time on actual hardware (tsim seems
+   ! to do just fine).
+   ! For the time being, letting the following instruction to both disable interrupts and restore PIL
+   ! works ok.
+   !
+   !mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
+   !ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
 
    ! Once ET = 0, we can rewrite PIL to its original value
    ! just by restoring the PSR register value
