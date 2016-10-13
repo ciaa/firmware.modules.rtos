@@ -147,6 +147,10 @@ disable_traps_service:
 go_back_to_user_mode:
 
    mov     %l0, %psr
+   ! three delay cycles are needed after modifying the PSR
+   nop
+   nop
+   nop
 
    ! We'll be releasing the trap window before going back, so
    ! we need to save the return address now. %g1 is the
