@@ -1,12 +1,30 @@
+#
+# Attach the debugger to the remote host (tsim or grmon)
 target remote localhost:2222
+#
+# Apply a power-on reset to the target
 monitor reset
+#
+# Load and execute the test case
 load
 break ConfTestFinish
 continue
+#
+# Invert the order of the bytes in SequenceCounter and SequenceCounterOk to account for 
+# differences on the endianness between the sparc processor and the x86 host that checks
+# the results
+set SequenceCounter = (((((uint32)SequenceCounter) & 0x0000ffff) << 16) | ((((uint32)SequenceCounter) & 0xffff0000) >> 16))
+set SequenceCounter = (((((uint32)SequenceCounter) & 0x00ff00ff) <<  8) | ((((uint32)SequenceCounter) & 0xff00ff00) >>  8))
+set SequenceCounterOk = (((((uint32)SequenceCounterOk) & 0x0000ffff) << 16) | ((((uint32)SequenceCounterOk) & 0xffff0000) >> 16))
+set SequenceCounterOk = (((((uint32)SequenceCounterOk) & 0x00ff00ff) <<  8) | ((((uint32)SequenceCounterOk) & 0xff00ff00) >>  8))
+#
+# Dump the varibles that hold the results of the test case execution
 dump value out/rtos/TestResults.bin TestResults
 dump value out/rtos/TestResultsOk.bin TestResultsOk
 dump value out/rtos/SequenceCounter.bin SequenceCounter
 dump value out/rtos/SequenceCounterOk.bin SequenceCounterOk
 dump value out/rtos/ConfTestResult.bin ConfTestResult
+#
+# Done executing the test case
 kill
 quit
