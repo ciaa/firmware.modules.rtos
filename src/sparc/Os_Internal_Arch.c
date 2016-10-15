@@ -75,13 +75,13 @@ TaskContextType *sparcNewContextPtr;
 
 /* This is where the context data for the program's main function is
  * stored before schedule finds the first task to switch to. */
-TaskContextType sparcTaskZeroContexData;
+TaskContextType sparcNullTaskContextData;
 
 
 /*==================[external data definition]===============================*/
 
 
-uint32 *active_thread_context_stack_pointer = &sparcTaskZeroContexData;
+uint32 *active_thread_context_stack_pointer = (uint32 *)&sparcNullTaskContextData;
 
 uint32 system_in_interrupt_context = 0;
 
@@ -105,28 +105,27 @@ void taskReturnSafetyNet(void)
 
 void sparcSetTaskContextSWTrapHandler()
 {
-   /* This routine implements the software trap handler that performs the JmpTask()
-    * system call function.
-    *
-    * This replaces the current context stack pointer with a new one without
-    * saving the previous one, which is supposed to be disposable (because there
-    * is not a currently active running task, or because the currently running
-    * task has been terminated).
-    *
-    * */
+   DisableAllInterrupts();
+
    active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
+
+   /* unset the frozen-context flag */
+   *(active_thread_context_stack_pointer + 19) = 0x00000000;
+
+   EnableAllInterrupts();
 }
 
 
 void sparcReplaceTaskContextSWTrapHandler()
 {
-   /* This routine implements the software trap handler that performs the CallTask()
-    * system call function.
-    *
-    * Basically this replaces the current context stack pointer with a new one, after
-    * having saved the previously active task's context information for future retrieval.     *
-    * */
-   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;;
+   DisableAllInterrupts();
+
+   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
+
+   /* unset the frozen-context flag */
+   *(active_thread_context_stack_pointer + 19) = 0x00000000;
+
+   EnableAllInterrupts();
 }
 
 
@@ -179,6 +178,7 @@ void SetEntryPoint(TaskType TaskID)
    uint32 *framePointer;
    uint32 *contextDataPtr;
 
+   DisableAllInterrupts();
 
    stackStartPointer = (uint32 *)TasksConst[TaskID].StackPtr;
 
@@ -247,7 +247,7 @@ void SetEntryPoint(TaskType TaskID)
 
    /*
     * initial value of the task's function input registers */
-   *(stackPointer + 15) = 0x00000000; /* %i7 register = return address */
+   *(stackPointer + 15) = (uint32) TasksConst[TaskID].EntryPoint; /* %i7 register = return address */
    *(stackPointer + 14) = (uint32) framePointer; /* i6 register = frame pointer */
    *(stackPointer + 13) = 0x00; /* %i5 register */
    *(stackPointer + 12) = 0x00; /* %i4 register */
@@ -307,8 +307,9 @@ void SetEntryPoint(TaskType TaskID)
     * */
 
    /*
-    * padding required to ensure that the stack pointer is always a multiple of size of a double-word */
-   *(contextDataPtr + 19) = 0x00; /* Padding */
+    * Flag that tells sparcTaskContextAwareTrapHandler not to overwrite this
+    * this information the next time the handler is invoked. */
+   *(contextDataPtr + 19) = 0xffffffff; /* read-not-write context flag */
 
    /*
     * Start address of the task function */
@@ -343,6 +344,8 @@ void SetEntryPoint(TaskType TaskID)
    /*
     * initial value of the task's Processor Status Register */
    *(contextDataPtr +  0) = SPARC_INITIAL_PSR_VALUE_IN_TASK_CONTEXT; /* %psr register */
+
+   EnableAllInterrupts();
 }
 
 

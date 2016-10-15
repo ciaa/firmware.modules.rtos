@@ -110,6 +110,8 @@
    .extern sparcInterruptHandlerCaller
    .extern sparcTaskContextReplacementHandlerCaller
 
+   .extern sparcNullTaskContextData
+
 sparcTaskContextAwareTrapHandler:
 
    !
@@ -362,8 +364,36 @@ outermost_dump_done:
    ! of only 76 bytes (the actual occupied stack space). See appendix D "Software considerations"
    ! in the SPARC V8 Architecture Manual).
 
+outermost_save_context:
+
    sethi   %hi(active_thread_context_stack_pointer), %g4
    ld      [%lo(active_thread_context_stack_pointer) + %g4], %g4
+
+   ! Check if the frozen-context flag is set on the task context data.
+   ld      [%g4 + 76], %g5
+   tst     %g5
+   bz      outermost_regular_context
+   nop
+
+outermost_null_task_context:
+
+   ! The context stored in the buffer currently pointed by active_thread_context_stack_pointer
+   ! is frozen, probably because the task that it belongs to was terminated and its context data
+   ! rebuilt with SetEntryPoint().
+   !
+   ! Don't overwrite that buffer. Instead switch to the null-context internal buffer, and store the
+   ! current software context there, in case we must go back to the same point where the trap was
+   ! invoked. This would be the case if a task is terminated and an interrupt trap is received while
+   ! schedule() is waiting for a new task to get ready for execution.
+   sethi   %hi(sparcNullTaskContextData), %g5
+   or      %g5, %lo(sparcNullTaskContextData), %g5
+
+   sethi   %hi(active_thread_context_stack_pointer), %g4
+   st      %g5, [%lo(active_thread_context_stack_pointer) + %g4]
+
+   mov     %g5, %g4
+
+outermost_regular_context:
 
    ! Save the PSR register
    st      %l0, [%g4]
