@@ -18,7 +18,7 @@ TASK Task1 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 
@@ -29,7 +29,7 @@ TASK Task2 {
 		APPMODE = AppMode1;
 	};
 	ACTIVATION = 1;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = EXTENDED;
 	EVENT = Event1;
 	EVENT = Event2;
@@ -41,7 +41,7 @@ TASK Task3 {
 	SCHEDULE = CT_SCHEDULING_TASK3;
    AUTOSTART = FALSE;
 	ACTIVATION = 1;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 }
 

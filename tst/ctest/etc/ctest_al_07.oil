@@ -18,7 +18,7 @@ TASK Task1 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 
@@ -29,7 +29,7 @@ TASK Task2 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 256;
+	STACK = 1024;
 	TYPE = EXTENDED;
 	EVENT = Event2;
 };
@@ -39,7 +39,7 @@ TASK Task3 {
    SCHEDULE = FULL;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 
@@ -48,7 +48,7 @@ TASK Task4 {
    SCHEDULE = FULL;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 
@@ -57,7 +57,7 @@ TASK Task5 {
    SCHEDULE = CT_SCHEDULING;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 

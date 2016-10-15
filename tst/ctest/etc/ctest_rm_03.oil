@@ -18,7 +18,7 @@ TASK Task1 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 	RESOURCE = Resource1;
 };
@@ -28,7 +28,7 @@ TASK Task2 {
    SCHEDULE = FULL;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 	RESOURCE = Resource1;
 };
@@ -38,7 +38,7 @@ TASK Task3 {
    SCHEDULE = NON;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 
@@ -47,7 +47,7 @@ TASK Task4 {
    SCHEDULE = CT_SCHEDULING;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 256;
+	STACK = 1024;
 	TYPE = BASIC;
 };
 

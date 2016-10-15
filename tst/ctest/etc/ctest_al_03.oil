@@ -18,7 +18,7 @@ TASK Task1 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 256;
+	STACK = 2048;
 	TYPE = BASIC;
 };
 
@@ -29,7 +29,7 @@ TASK Task2 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 256;
+	STACK = 2048;
 	TYPE = EXTENDED;
 	EVENT Event2;
 };
