@@ -543,6 +543,11 @@ if ("cortexM0" eq $ARCH)
    $ISR1 = "UART1";
    $ISR2 = "UART0";
 }
+if ("sparc" eq $ARCH)
+{
+   $ISR1 = "IRQ13";
+   $ISR2 = "IRQ14";
+}
 
 mkpath(dirname($logfile));
 open LOGFILE, "> $logfile" or die "can not open $logfile for append: $!";

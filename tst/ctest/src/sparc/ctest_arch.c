@@ -1,4 +1,4 @@
-/* Copyright 2015, Mariano Cerdeiro
+/* Copyright 2016, Gerardo Puga
  * All rights reserved.
  *
  * This file is part of CIAA Firmware.
@@ -48,7 +48,6 @@
 
 #include "ciaaPlatforms.h"
 #include "ctest_arch.h"
-#include "grlib.h"
 
 
 /*==================[macros and definitions]=================================*/

@@ -1,4 +1,5 @@
 target remote localhost:2222
+monitor reset
 load
 break ConfTestFinish
 continue

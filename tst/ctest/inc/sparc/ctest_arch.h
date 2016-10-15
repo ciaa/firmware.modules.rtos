@@ -50,7 +50,7 @@
 
 
 #include "ciaaPlatforms.h"
-#include "grlib.h"
+#include "Os_Internal_Arch_Cpu.h"
 
 
 /*==================[macros]=================================================*/
@@ -58,12 +58,12 @@
 
 #define TriggerISR1_Arch()                                                 \
       do {                                                                 \
-         TBD;                                                              \
+         sparcForceInterrupt(13);                                          \
       } while(0)
 
 #define TriggerISR2_Arch()                                                 \
       do {                                                                 \
-         TBD;                                                              \
+         sparcForceInterrupt(14);                                          \
       } while(0)
 
 
