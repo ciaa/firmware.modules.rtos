@@ -548,9 +548,11 @@ void sparcCheckPendingTimerInterrupts()
 
             grRegisterWrite(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex), timerNControlRegister);
 
+#if (ALARMS_COUNT != 0)
             IntSecure_Start();
             IncrementCounter(timerIndex, 1 /* this argument is in doubt, see Cortex port... FIXME */ );
             IntSecure_End();
+#endif
          }
       }
    }
