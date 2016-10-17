@@ -984,6 +984,74 @@ nested_disable_traps:
    ld      [%sp + 68], %l1
    ld      [%sp + 72], %l2
 
+
+   ! ****************************************************
+   !
+   ! Make sure that there is at least one valid window
+   ! above the trap window, or otherwise the RETT will
+   ! throw the processor into error mode.
+   !
+
+   ! Keep the number of windows minus one in a register
+   sethi   %hi(detected_sparc_register_windows), %l5
+   ld      [%lo(detected_sparc_register_windows) + %l5], %l5
+   sub     %l5, 1, %l5
+
+   ! Isolate the CWP field of the PSR register
+   and     %l0, SPARC_PSR_CWP_MASK, %l7
+   ! Determine the window index of the window above
+   ! the trap window
+   add     %l7, 1, %l7
+   and     %l7, %l5, %l7
+   ! Calculate the bit mask of the window above the trap
+   ! window
+   mov     0x1, %l6
+   sll     %l6, %l7, %l6
+
+   ! Read the WIM register to determine the position of the invalid window
+   mov     %wim, %l4
+
+   ! Check if the window above the trap window is the invalid window
+   subcc   %l4, %l6, %g0
+   bne     nested_skip_restoring_invalid_window
+   nop
+
+nested_restore_invalid_window:
+
+   ! Rotate the old value of WIM one bit to the left, sending the
+   ! rightmost bit to the leftmost position...
+   sll     %l4, 1, %l6
+   srl     %l4, %l5, %l4
+   or      %l4, %l6, %l4
+
+   ! Update the WIM.
+   mov     %l4, %wim
+   ! wrwim delay cycles
+   nop
+   nop
+   nop
+
+   ! Restore once to get into the invalid window
+   restore
+
+   ! Read the register values from the stack
+   ldd     [%sp], %l0
+   ldd     [%sp + 8], %l2
+   ldd     [%sp + 16], %l4
+   ldd     [%sp + 24], %l6
+   ldd     [%sp + 32], %i0
+   ldd     [%sp + 40], %i2
+   ldd     [%sp + 48], %i4
+   ldd     [%sp + 56], %i6
+
+   ! Go back to the trap window
+   save
+
+nested_skip_restoring_invalid_window:
+
+   ! done releasing a window
+
+
    !
    !
    !
