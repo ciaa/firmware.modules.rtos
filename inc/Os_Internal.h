@@ -201,6 +201,7 @@
                                      ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  ) \
                                  {                                                            \
                                      Schedule_WOChecks();                                     \
+                                     AfterIsr2_Schedule_Arch();                               \
                                  }
 #else
 #define AfterIsr2_Schedule()
@@ -282,4 +283,3 @@ extern CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncre
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_H_ */
-

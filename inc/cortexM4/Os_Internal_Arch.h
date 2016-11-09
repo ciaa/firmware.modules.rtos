@@ -247,7 +247,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) Schedule_WOChecks()
+#define PostIsr2_Arch(isr)  
 
 /** \brief ShutdownOs Arch service
  **
@@ -282,4 +282,3 @@ void InitStack_Arch(uint8 TaskID);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
-

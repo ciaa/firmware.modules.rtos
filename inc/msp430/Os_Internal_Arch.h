@@ -60,7 +60,7 @@
  ** Enable GIE in SR so that the WDT never stops when we go to user task
  ** Enable SCG0 for 25MHZ CPU execution
  **/
-#define DEFAULT_SR ((uint16)0x0048)
+#define DEFAULT_SR ((uint16)0x00000048)
 
 /** \brief Extra size reserved for each stack
  **
@@ -101,18 +101,20 @@ extern TaskType TerminatingTask;
  ** This macro will be used internaly by the OS in any part of code that
  ** has to be executed atomic.
  **/
-#define IntSecure_Start() SR_BACK___ = _get_SR_register(); \
-                                     _disable_interrupts() ; \
-                                     __asm__ __volatile__ ("nop");
+
+#define IntSecure_Start() SR_BACK___ = _get_SR_register();            \
+                                       _disable_interrupts() ;        \
+                                       __asm__ __volatile__ ("nop");  \
 
 /** \brief Interrupt Secure End Macro
  **
  ** This macro is the countra part of IntSecure_Start()
  **/
-#define IntSecure_End() if( SR_BACK___ & GIE )      \
-                        {                           \
-                           _enable_interrupts() ;   \
-                        }                           \
+#define IntSecure_End() if( SR_BACK___ & GIE )           \
+                        {                                \
+                           __asm__ __volatile__ ("nop"); \
+                           _enable_interrupts() ;         \
+                        }                                \
 
 /** \brief osekpause
  **
@@ -128,7 +130,7 @@ extern TaskType TerminatingTask;
  **
  **/
 
-#define osekpause() asm volatile("nop")	//TODO revisar los low power modes
+#define osekpause()     asm volatile("nop")	//TODO revisar los low power modes
 
 /** \brief SAVE_CONTEXT
  **
@@ -169,7 +171,18 @@ extern TaskType TerminatingTask;
  **
  ** This macro sholud be inserted before a naked interrupt handler ends.
 */
-#define RETURN_FROM_NAKED_ISR()  asm volatile ("reti    \n\t");
+#define RETURN_FROM_NAKED_ISR() asm volatile ("reti    \n\t");
+
+/** \brief Some architectures could need an extra processing before calling Schedule from an ISR
+ **
+ ** For MSP430 it checks if the SWI was set during the last Schedule call.
+    If pending, ISR context and chain with the SWI handler directly (in order to optimice latencies).
+ **/
+#define AfterIsr2_Schedule_Arch()   if( HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) & (CCIFG|CCIE) ) \
+                                    {                                                                               \
+                                       /* the irq handler falls through OSEK_ISR_CHANGE_CONTEXT */                  \
+                                       asm volatile(   "       br #OSEK_ISR_CHANGE_CONTEXT               \n\t" );   \
+                                    }                                                                               \
 
 /** \brief Call to an other Task
  **

@@ -68,7 +68,7 @@
 **
 ** This macro shall resume (enable) all interrupts.
 **/
-#define ResumeAllInterrupts_Arch()    _enable_interrupts() ;
+#define ResumeAllInterrupts_Arch()    _enable_interrupts(); __asm__ __volatile__ ("nop");
 
 
 /** \brief Suspend All Interrupts Arch

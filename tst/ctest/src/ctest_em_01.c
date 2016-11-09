@@ -1,8 +1,11 @@
 /* Copyright 2008, 2009 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  * Copyright 2016, Franco Bucafusco
+ *
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *

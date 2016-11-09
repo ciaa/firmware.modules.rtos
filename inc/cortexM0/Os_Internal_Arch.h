@@ -249,7 +249,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) Schedule_WOChecks()
+#define PostIsr2_Arch(isr) 
 
 /** \brief ShutdownOs Arch service
  **
