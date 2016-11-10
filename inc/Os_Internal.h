@@ -201,7 +201,6 @@
                                      ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  ) \
                                  {                                                            \
                                      Schedule_WOChecks();                                     \
-                                     AfterIsr2_Schedule_Arch();                               \
                                  }
 #else
 #define AfterIsr2_Schedule()

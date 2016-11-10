@@ -110,11 +110,11 @@ extern TaskType TerminatingTask;
  **
  ** This macro is the countra part of IntSecure_Start()
  **/
-#define IntSecure_End() if( SR_BACK___ & GIE )           \
-                        {                                \
-                           __asm__ __volatile__ ("nop"); \
+#define IntSecure_End() if( SR_BACK___ & GIE )            \
+                        {                                 \
+                           __asm__ __volatile__ ("nop");  \
                            _enable_interrupts() ;         \
-                        }                                \
+                        }                                 \
 
 /** \brief osekpause
  **
@@ -129,8 +129,7 @@ extern TaskType TerminatingTask;
  ** occurs, like for example an interrupt.
  **
  **/
-
-#define osekpause()     asm volatile("nop")	//TODO revisar los low power modes
+#define osekpause()      __bis_SR_register(LPM3_bits) ;
 
 /** \brief SAVE_CONTEXT
  **
@@ -173,16 +172,7 @@ extern TaskType TerminatingTask;
 */
 #define RETURN_FROM_NAKED_ISR() asm volatile ("reti    \n\t");
 
-/** \brief Some architectures could need an extra processing before calling Schedule from an ISR
- **
- ** For MSP430 it checks if the SWI was set during the last Schedule call.
-    If pending, ISR context and chain with the SWI handler directly (in order to optimice latencies).
- **/
-#define AfterIsr2_Schedule_Arch()   if( HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) & (CCIFG|CCIE) ) \
-                                    {                                                                               \
-                                       /* the irq handler falls through OSEK_ISR_CHANGE_CONTEXT */                  \
-                                       asm volatile(   "       br #OSEK_ISR_CHANGE_CONTEXT               \n\t" );   \
-                                    }                                                                               \
+                                                                            \
 
 /** \brief Call to an other Task
  **
@@ -216,7 +206,6 @@ extern TaskType TerminatingTask;
    /* next action will trigger assigned IRQ for the SWI */                      \
    HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) |= (CCIFG|CCIE);  \
 }
-
 
 
 /** \brief Save context */

@@ -60,6 +60,7 @@ void * Osek_OldTaskPtr_Arch;
 TaskType TerminatingTask   = INVALID_TASK;
 TaskType WaitingTask       = INVALID_TASK;
 
+
 /*==================[external data definition]===============================*/
 
 /*==================[internal functions definition]==========================*/
@@ -87,12 +88,12 @@ void CheckTerminatingTask_Arch(void)
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
-   uint16 * taskStack     = (uint16 *)TasksConst[TaskID].StackPtr;  /* stack bottom */
+   uint16 * taskStack     = (uint16 *)TasksConst[TaskID].StackPtr;              /* stack bottom */
 
-   int taskStackSizeWords = TasksConst[TaskID].StackSize/2;            /* calculation of the size of the stack in words units (16bits) */
+   int taskStackSizeWords = TasksConst[TaskID].StackSize/2;                     /* calculation of the size of the stack in words units (16bits) */
 
    taskStack[taskStackSizeWords-1] = (uint16) TasksConst[TaskID].EntryPoint;    /*PC*/
-   taskStack[taskStackSizeWords-2] = DEFAULT_SR;                             /*SP*/
+   taskStack[taskStackSizeWords-2] = DEFAULT_SR;                                /*SP*/
 
    /* la ubicacion, reservando 13 registro para el cambio de contexto
    */
@@ -100,10 +101,54 @@ void InitStack_Arch(uint8 TaskID)
 }
 
 
-void TickProcess()
+/* this function does the context change.
+   */
+interrupt_vec() __attribute__((naked))
+void OSEK_ISR_CHANGE_CONTEXT()
 {
-   /* TODO this could be improved by accesing directly to the registers. remember that this handlers should be as fast as possible.*/
-   Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_0);
+   /* Clear the IRQ flag*/
+   HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) &= ~(CCIE|CCIFG);
+
+   /* reinicio el stack de la tarea que termino */
+   CheckTerminatingTask_Arch();
+
+   /* exchange stack pointers */
+   if( NULL != Osek_OldTaskPtr_Arch )
+   {
+      asm volatile ( "mov &Osek_OldTaskPtr_Arch,  r6 \n\t"  );//I copy the address of Osek_OldTaskPtr_Arch into r6
+      asm volatile ( "mov SP,  @r6 \n\t"  );                  //I save the stack pointer.
+   }
+
+   asm volatile ( "mov &Osek_NewTaskPtr_Arch,  r6 \n\t"  );
+   asm volatile ( "mov @r6, SP \n\t"  );
+
+   asm volatile(   "       bic.b	#3,	&0X223                       \n\t" ); //P4OUT &= ~(0x01|0x02); //   DEBUG LP
+
+   __bic_SR_register_on_exit(LPM3_bits);
+
+   asm volatile ( "popm	#12,	r15 \n\t"  );   //simulo unstacking que hicieron los popm de los handlers...
+   asm volatile ( "reti \n\t"  );
+}
+
+
+/**
+OSEK periodic interrupt is implemented using TimerA_2 timer module.
+*/
+interrupt_vec(TIMER2_A0_VECTOR) //__attribute__((naked))
+void OSEK_ISR_TIMER2_A0_VECTOR(void)
+{
+   /*
+   It's not necessary to disable global irqs.
+   It is done automatically when the SP is cleared.
+   */
+
+   asm volatile(    "       bis.b	#4,	&0x0223                      \n\t"   //P4OUT |= 0x04; // DEBUG LP
+                    "       bis.b	#1,	&0x0223                      \n\t"   //P4OUT |= 0x01; // DEBUG LP
+                    /*"       pushm	#12,	r15	;16-bit words          \n\t"*/   //context save
+               );
+
+   /* Clear the IRQ flag*/
+   HWREG16( TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_0 ) &= ~CCIFG;
 
    /* store the calling context in a variable */
    ContextType actualContext = GetCallingContext();
@@ -113,8 +158,8 @@ void TickProcess()
 
 #if (ALARMS_COUNT != 0)
    /* counter increment */
-   static CounterIncrementType CounterIncrement = 1;
-   (void)CounterIncrement; /* TODO remove me */
+    CounterIncrementType CounterIncrement = 1;
+   //(void)CounterIncrement; /* TODO remove me */
 
 #if 0
    /* increment the disable interrupt conter to avoid enable the interrupts.
@@ -122,8 +167,10 @@ void TickProcess()
    IntSecure_Start();
 #endif
 
+asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OUT xor 0x04; // DEBUG LP
+
    /* call counter interrupt handler */
-   CounterIncrement = IncrementCounter(0, TIC_PERIOD );
+   CounterIncrement = IncrementCounter(0, 1  /* CounterIncrement */ ); //FIXME
 
 #if 0
    /* set the disable interrupt counter back.
@@ -136,31 +183,16 @@ void TickProcess()
    /* reset context */
    SetActualContext(actualContext);
 
+   asm volatile( "  bic.b	#1,	&0X223                       \n\t" ); //P4OUT &= ~0x01; // DEBUG LP
+
    AfterIsr2_Schedule();
-}
 
-/**
-OSEK periodic interrupt is implemented using TimerA_2 timer module.
-*/
-interrupt_vec(TIMER2_A0_VECTOR) __attribute__((naked))
-void OSEK_ISR_TIMER2_A0_VECTOR(void)
-{
-   /*
-   It's not necessary to disable global irqs.
-   It is done automatically when the SP is cleared.
-   */
-   /*  This handler service the periodic interrupt.
-   */
-   /* Clear the IRQ flag*/
-   TickProcess();
 
-   /*
-   This handler calls TickProcess because it is defined as naked, and therefore the compiler do not save regiters.
-   The same happens with the RETI instruction that is inserted in the last macro.
-   Calling the function, the compiler saves the neede registers.
-   */
+   __bic_SR_register_on_exit(LPM3_bits);
 
-   RETURN_FROM_NAKED_ISR(); /*return from Tick ISR */
+   /* AfterIsr2_Schedule is a conditional execution that*/
+/*   asm volatile ( "popm	#12,	r15 \n\t"  );   //simulo unstacking que hicieron los popm de los hanlders...
+   asm volatile ( "reti \n\t"  );*/
 }
 
 /**   OSEK_ISR_TIMER2_A1_VECTOR
@@ -170,48 +202,25 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
  **   Note 1: It's not necessary to disable global irqs.
  **           It is done automatically when the SP is cleared by HW
 **/
-interrupt_vec(TIMER2_A1_VECTOR) __attribute__((naked))
+interrupt_vec(TIMER2_A1_VECTOR)  __attribute__((naked))
 void OSEK_ISR_TIMER2_A1_VECTOR(void)
 {
-   register unsigned short local_taiv = TA2IV;
+    asm volatile(    "       add     &TA2IV, PC                        \n\t"
+                     "       reti                                      \n\t"
+                     "       jmp     OSEK_ISR_TIMER2_A1_VECTOR_REG1    \n\t"
+                     "       reti                                      \n\t"
+                     "OSEK_ISR_TIMER2_A1_VECTOR_REG1:                  \n\t"
+                     "       bis.b	#2,	&0X223                       \n\t"  //P4OUT |= 0x02; // DEBUG LP
+                     "       pushm	#12,	r15	;16-bit words          \n\t"   //context save
+                     "       br #OSEK_ISR_CHANGE_CONTEXT               \n\t"  // the irq handler falls through OSEK_ISR_CHANGE_CONTEXT
+                   );
 
-   if( local_taiv & TA2IV_TACCR1)  //
-   {
-      /* Clear the IRQ flag*/
-      /* TODO this could be improved by accesing directly to the registers. remember that this handlers should be as fast as possible.*/
-      Timer_A_disableCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1 );
-      Timer_A_clearCaptureCompareInterrupt( TIMER_A2_BASE , TIMER_A_CAPTURECOMPARE_REGISTER_1);
-
-      /* reinicio el stack de la tarea que termino */
-      CheckTerminatingTask_Arch();
-
-      /* Context save r4 to r15
-         r0 = PC  automatically saved by HW when handler is serviced
-       r1 = SP
-       r2 = SR  automatically saved by HW when handler is serviced
-       r3 = CG  doesn't care
-      */
-      SAVE_CONTEXT();
-
-      /* exchange stack pointers */
-      if( NULL != Osek_OldTaskPtr_Arch )
-      {
-         asm volatile ( "mov &Osek_OldTaskPtr_Arch,  r6 \n\t"  );
-         asm volatile ( "mov SP,  @r6 \n\t"  );
-      }
-      asm volatile ( "mov &Osek_NewTaskPtr_Arch,  r6 \n\t"  );
-      asm volatile ( "mov @r6, SP \n\t"  );
-
-      /*
-      Context restore r4 to r15
-      It does not Include the reti instruction.
-      */
-      RESTORE_CONTEXT()
-   }
-
-   RETURN_FROM_NAKED_ISR(); /*return from ISR*/
+   /*
+   TI MSP430 EABI says that the Irq Handlers should save ALL the regiters after an IRQ call.
+   GCC inserts automatically 1 pushm (or many push) to save from r15 to r4.
+   THAT behavior is used as context save action.
+   */
 }
-
 
 /*
 MSP430 hasn't a way of dissabling "all the vector" at once, without touching the

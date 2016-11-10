@@ -209,6 +209,7 @@ AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Incremen
    AlarmIncrementType AlarmCount;
    CounterIncrementType CounterIncrement;
 
+
    /* init arlarms count */
    AlarmCount = 0;
 
@@ -227,7 +228,7 @@ AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Incremen
          expire one or more times */
 
       /* check if new alarm time has to be set */
-      if(AlarmsVar[AlarmID].AlarmCycleTime == 0)
+      if( AlarmsVar[AlarmID].AlarmCycleTime == 0 )
       {
          /* in case of a non cyclic alarm */
 
@@ -278,12 +279,13 @@ AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Incremen
          for ( ;AlarmCount > 0; AlarmCount--)
          {
             /* check alarm actions differents to INCREMENT */
-            switch(AlarmsConst[AlarmID].AlarmAction)
+            switch( AlarmsConst[AlarmID].AlarmAction )
             {
                case ACTIVATETASK:
                   /* activate task */
                   ActivateTask(AlarmsConst[AlarmID].AlarmActionInfo.TaskID);
                   break;
+
                case ALARMCALLBACK:
                   /* callback */
                   if(AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction != NULL)
@@ -319,7 +321,7 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
    AlarmIncrementType TmpCount;
 
    /* increment counter */
-   CountersVar[CounterID].Time+=Increment;
+   CountersVar[CounterID].Time += Increment;
 
    /* check if the timer has an overvlow */
    while ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
@@ -327,6 +329,8 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
       /* reset counter */
       CountersVar[CounterID].Time -= CountersConst[CounterID].MaxAllowedValue;
    }
+
+asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OUT xor 0x04; // DEBUG LP
 
    /* for alarms on this counter */
    for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
@@ -348,9 +352,9 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
          }
       }
    }
-
+asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OUT xor 0x04; // DEBUG LP
    /* return the minimal increment */
-   return (CounterIncrementType)MinimalCount;
+   return (CounterIncrementType) MinimalCount;
 }
 #endif /* #if (ALARMS_COUNT != 0) */
 
