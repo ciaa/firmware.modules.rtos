@@ -122,7 +122,6 @@ void OSEK_ISR_CHANGE_CONTEXT()
    asm volatile ( "mov &Osek_NewTaskPtr_Arch,  r6 \n\t"  );
    asm volatile ( "mov @r6, SP \n\t"  );
 
-   asm volatile(   "       bic.b	#3,	&0X223                       \n\t" ); //P4OUT &= ~(0x01|0x02); //   DEBUG LP
 
    __bic_SR_register_on_exit(LPM3_bits);
 
@@ -141,11 +140,10 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
    It's not necessary to disable global irqs.
    It is done automatically when the SP is cleared.
    */
-
-   asm volatile(    "       bis.b	#4,	&0x0223                      \n\t"   //P4OUT |= 0x04; // DEBUG LP
-                    "       bis.b	#1,	&0x0223                      \n\t"   //P4OUT |= 0x01; // DEBUG LP
-                    /*"       pushm	#12,	r15	;16-bit words          \n\t"*/   //context save
-               );
+/*
+   asm volatile(
+                    "       pushm	#12,	r15	;16-bit words          \n\t"   //context save
+               );*/
 
    /* Clear the IRQ flag*/
    HWREG16( TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_0 ) &= ~CCIFG;
@@ -167,8 +165,6 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
    IntSecure_Start();
 #endif
 
-asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OUT xor 0x04; // DEBUG LP
-
    /* call counter interrupt handler */
    CounterIncrement = IncrementCounter(0, 1  /* CounterIncrement */ ); //FIXME
 
@@ -183,16 +179,15 @@ asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OU
    /* reset context */
    SetActualContext(actualContext);
 
-   asm volatile( "  bic.b	#1,	&0X223                       \n\t" ); //P4OUT &= ~0x01; // DEBUG LP
+    AfterIsr2_Schedule();
 
-   AfterIsr2_Schedule();
-
-
-   __bic_SR_register_on_exit(LPM3_bits);
-
-   /* AfterIsr2_Schedule is a conditional execution that*/
-/*   asm volatile ( "popm	#12,	r15 \n\t"  );   //simulo unstacking que hicieron los popm de los hanlders...
-   asm volatile ( "reti \n\t"  );*/
+   /* if during alarms update status, any alarm triggered its action, ActivateTask or SetEvent could have called to Schedule
+      so, in that case, we need to unlock the CPU in the return of the handler, by exiting the LPM. */
+   /*if( ( CONTEXT_TASK == actualContext ) &&
+       ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  )
+   {
+      AfterIsr2_Schedule_Arch();
+   }*/
 }
 
 /**   OSEK_ISR_TIMER2_A1_VECTOR
@@ -210,7 +205,6 @@ void OSEK_ISR_TIMER2_A1_VECTOR(void)
                      "       jmp     OSEK_ISR_TIMER2_A1_VECTOR_REG1    \n\t"
                      "       reti                                      \n\t"
                      "OSEK_ISR_TIMER2_A1_VECTOR_REG1:                  \n\t"
-                     "       bis.b	#2,	&0X223                       \n\t"  //P4OUT |= 0x02; // DEBUG LP
                      "       pushm	#12,	r15	;16-bit words          \n\t"   //context save
                      "       br #OSEK_ISR_CHANGE_CONTEXT               \n\t"  // the irq handler falls through OSEK_ISR_CHANGE_CONTEXT
                    );

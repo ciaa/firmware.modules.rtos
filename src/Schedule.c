@@ -183,7 +183,6 @@ extern StatusType Schedule
           ** the priority of the calling task is ready */
          if ( TasksConst[nextTask].StaticPriority > TasksVar[actualTask].ActualPriority )
          {
-
 #if (HOOK_POSTTASKHOOK == OSEK_ENABLE)
             PostTaskHook();
 #endif /* #if (HOOK_POSTTASKHOOK == OSEK_ENABLE) */
@@ -250,4 +249,3 @@ extern StatusType Schedule
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

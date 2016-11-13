@@ -104,7 +104,8 @@ extern TaskType TerminatingTask;
 
 #define IntSecure_Start() SR_BACK___ = _get_SR_register();            \
                                        _disable_interrupts() ;        \
-                                       __asm__ __volatile__ ("nop");  \
+                                       __asm__ __volatile__ ("nop");
+
 
 /** \brief Interrupt Secure End Macro
  **
@@ -115,6 +116,16 @@ extern TaskType TerminatingTask;
                            __asm__ __volatile__ ("nop");  \
                            _enable_interrupts() ;         \
                         }                                 \
+
+
+/*
+** \brief AfterIsr2_Schedule_Arch
+ **
+ ** Some architectures need to execute a forced action when returning from ISR handler.
+ **
+*/
+#define AfterIsr2_Schedule_Arch()   __bic_SR_register_on_exit( LPM3_bits );
+
 
 /** \brief osekpause
  **
@@ -172,7 +183,7 @@ extern TaskType TerminatingTask;
 */
 #define RETURN_FROM_NAKED_ISR() asm volatile ("reti    \n\t");
 
-                                                                            \
+
 
 /** \brief Call to an other Task
  **

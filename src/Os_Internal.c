@@ -330,7 +330,7 @@ CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementTyp
       CountersVar[CounterID].Time -= CountersConst[CounterID].MaxAllowedValue;
    }
 
-asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OUT xor 0x04; // DEBUG LP
+
 
    /* for alarms on this counter */
    for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
@@ -352,7 +352,7 @@ asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OU
          }
       }
    }
-asm volatile(    "       xor.b	#4,	&0x0223                      \n\t");   //P4OUT xor 0x04; // DEBUG LP
+
    /* return the minimal increment */
    return (CounterIncrementType) MinimalCount;
 }

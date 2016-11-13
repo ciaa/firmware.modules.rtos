@@ -95,6 +95,14 @@ extern TaskType TerminatingTask;
  **/
 #define IntSecure_End() ResumeAllInterrupts()
 
+/*
+** \brief AfterIsr2_Schedule_Arch
+ **
+ ** Some architectures need to execute a forced action when returning from ISR handler.
+ **
+*/
+#define AfterIsr2_Schedule_Arch()  
+
 /** \brief osekpause
  **
  ** This macro is called by the scheduler when not task has to be executed.
@@ -271,3 +279,4 @@ void InitStack_Arch(uint8 TaskID);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
+

@@ -155,10 +155,10 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
    if($src_found == 0)
    {
       #for an undefined ISR witihn the OIL file, we defiene a DUMMY handler.
-      print "interrupt_vec($intList[$i]_VECTOR) /*__attribute__((naked))*/ \n";
+      print "interrupt_vec($intList[$i]_VECTOR)  __attribute__((naked))  \n";
       print "void OSEK_ISR_$intList[$i]_VECTOR(void) /*No Handler set for ISR $intList[$i]_VECTOR (IRQ $i) */ \n";
       print "{\n";
-      print "  /* RETURN_FROM_NAKED_ISR();*/ /*return from ISR*/\n"; #this includes the RETI intruction. Is inserted here becase the naked attribute removes it when compile
+      print "   RETURN_FROM_NAKED_ISR();  /*return from ISR*/\n"; #this includes the RETI intruction. Is inserted here becase the naked attribute removes it when compile
       print "}\n\n";
    }
    else

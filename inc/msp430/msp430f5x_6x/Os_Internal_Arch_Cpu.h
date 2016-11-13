@@ -48,8 +48,6 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-
-
 /*==================[cpu macros]=============================================*/
 
 #define WORKING_FREQUENCY_MHZ       14.7456f// 7.3728 //                         // in MHZ
