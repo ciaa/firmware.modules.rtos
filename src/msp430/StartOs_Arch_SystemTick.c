@@ -108,8 +108,6 @@ MCLK = SMCLK = 14.7456Mhz
 */
 void StartOs_Arch_System()
 {
-
-
    UCS_turnOffXT1();
 
    XT1_XT2_PORT_SEL |= XT1_ENABLE + XT2_ENABLE;    // Setup XT1 and XT2
@@ -123,10 +121,8 @@ void StartOs_Arch_System()
    UCS_initFLLSettle( WORKING_FREQUENCY_KHZ,  ( WORKING_FREQUENCY_HZ/REF_FREQUENCY_HZ )  );
 
    /*
-   ESTA LINEAS SON PARA ESTABLECER LA CONFIGURACION DEL MODULO PMM PARA QUE ESTE EN FULL PERFORMACN Y FAST WAKE UP MODE.
-   SI NO ESTA CONFIGURADO ASI, AL DESPERTARSE DE UN LPM, EL ARRANQUE DEL DCO NO ES AGIL Y PARA EL CASO DE LA RECEPCION DE LA
-   UART Y SE PIERDE EL PRIMER uint8_t DE DATOS.
-   ESTO ES, PORQUE EL TIEMPO DE ENCENDIDO ES MAYOR QUE UN BIT DE LA COMUNICACION.
+   These lines set PMM module in FULL PERFORMANCE and FASTWAKE UP.
+   In case this is not set, DCO statup is slower than an UART Start bit, and when receiving in LPM , the 1st byte will fail.
    */
    PMM_enableSvsLInLPMFastWake();   // SVSL_ENABLED_IN_LPM_FAST_WAKE();
    PMM_enableSvsHInLPMFullPerf();   // SVSH_ENABLED_IN_LPM_FULL_PERF() ;
@@ -136,7 +132,7 @@ void StartOs_Arch_System()
 
    SVMH_FULL_PERF();
 
-   PMM_disableSvsL();//  DISABLE_SVSL() ;
+   PMM_disableSvsL();               //  DISABLE_SVSL() ;
 }
 
 void StartOs_Arch_SystemTick(void)

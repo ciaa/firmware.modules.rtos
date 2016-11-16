@@ -95,21 +95,21 @@ void InitStack_Arch(uint8 TaskID)
    taskStack[taskStackSizeWords-1] = (uint16) TasksConst[TaskID].EntryPoint;    /*PC*/
    taskStack[taskStackSizeWords-2] = DEFAULT_SR;                                /*SP*/
 
-   /* la ubicacion, reservando 13 registro para el cambio de contexto
+   /*
+   reserve space for context change.
    */
    *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 14]);
 }
 
 
-/* this function does the context change.
-   */
-interrupt_vec() __attribute__((naked))
+/* this function does the context change  */
+interrupt_vec() __attribute__((naked)) //this line cheats the compiler to think that this is an actual ISR, in order to use __bic_SR_register_on_exit intrinsic
 void OSEK_ISR_CHANGE_CONTEXT()
 {
    /* Clear the IRQ flag*/
    HWREG16(TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_1) &= ~(CCIE|CCIFG);
 
-   /* reinicio el stack de la tarea que termino */
+   /* restart the stack for the terminating task */
    CheckTerminatingTask_Arch();
 
    /* exchange stack pointers */
@@ -125,7 +125,7 @@ void OSEK_ISR_CHANGE_CONTEXT()
 
    __bic_SR_register_on_exit(LPM3_bits);
 
-   asm volatile ( "popm	#12,	r15 \n\t"  );   //simulo unstacking que hicieron los popm de los handlers...
+   asm volatile ( "popm	#12,	r15 \n\t"  );   //restore context
    asm volatile ( "reti \n\t"  );
 }
 
@@ -134,18 +134,14 @@ void OSEK_ISR_CHANGE_CONTEXT()
 OSEK periodic interrupt is implemented using TimerA_2 timer module.
 */
 interrupt_vec(TIMER2_A0_VECTOR) //__attribute__((naked))
-void OSEK_ISR_TIMER2_A0_VECTOR(void)
+void OSEK_ISR_TICK_HANDLER(void)
 {
    /*
    It's not necessary to disable global irqs.
    It is done automatically when the SP is cleared.
    */
-/*
-   asm volatile(
-                    "       pushm	#12,	r15	;16-bit words          \n\t"   //context save
-               );*/
 
-   /* Clear the IRQ flag*/
+   /* Clear the IRQ flag */
    HWREG16( TIMER_A2_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_0 ) &= ~CCIFG;
 
    /* store the calling context in a variable */
@@ -162,6 +158,9 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 #if 0
    /* increment the disable interrupt conter to avoid enable the interrupts.
       Disabled because MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS */
+   /*
+      OSEK is prepared to nest ISR. That is not implemented for MSP430. If implemented in the future, this commented block needs to be active.
+   */
    IntSecure_Start();
 #endif
 
@@ -171,6 +170,9 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
 #if 0
    /* set the disable interrupt counter back.
       Disabled because MSP430 AUTOMATICALLY DISABLES GLOBAL IRQ AT IRQ HANDLERS */
+   /*
+      OSEK is prepared to nest ISR. That is not implemented for MSP430. If implemented in the future, this commented block needs to be active.
+   */
    IntSecure_End();
 #endif
 
@@ -179,15 +181,7 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
    /* reset context */
    SetActualContext(actualContext);
 
-    AfterIsr2_Schedule();
-
-   /* if during alarms update status, any alarm triggered its action, ActivateTask or SetEvent could have called to Schedule
-      so, in that case, we need to unlock the CPU in the return of the handler, by exiting the LPM. */
-   /*if( ( CONTEXT_TASK == actualContext ) &&
-       ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  )
-   {
-      AfterIsr2_Schedule_Arch();
-   }*/
+   AfterIsr2_Schedule();
 }
 
 /**   OSEK_ISR_TIMER2_A1_VECTOR
@@ -198,22 +192,16 @@ void OSEK_ISR_TIMER2_A0_VECTOR(void)
  **           It is done automatically when the SP is cleared by HW
 **/
 interrupt_vec(TIMER2_A1_VECTOR)  __attribute__((naked))
-void OSEK_ISR_TIMER2_A1_VECTOR(void)
+void OSEK_ISR_CC_HANDLER(void)
 {
     asm volatile(    "       add     &TA2IV, PC                        \n\t"
                      "       reti                                      \n\t"
-                     "       jmp     OSEK_ISR_TIMER2_A1_VECTOR_REG1    \n\t"
+                     "       jmp     CC_Interrupt_REG1                 \n\t"
                      "       reti                                      \n\t"
-                     "OSEK_ISR_TIMER2_A1_VECTOR_REG1:                  \n\t"
-                     "       pushm	#12,	r15	;16-bit words          \n\t"   //context save
+                     "CC_Interrupt_REG1:                               \n\t"
+                     "       pushm	#12,	r15	;16-bit words          \n\t"  //context save
                      "       br #OSEK_ISR_CHANGE_CONTEXT               \n\t"  // the irq handler falls through OSEK_ISR_CHANGE_CONTEXT
                    );
-
-   /*
-   TI MSP430 EABI says that the Irq Handlers should save ALL the regiters after an IRQ call.
-   GCC inserts automatically 1 pushm (or many push) to save from r15 to r4.
-   THAT behavior is used as context save action.
-   */
 }
 
 /*
@@ -222,14 +210,14 @@ individual sub IE flags.
 So, when dissable the IRQ handler the system must backup the current available IRQ flags, from
 all the possible regiters, to be restored later in the EnableIRQ.
 */
-#if( MSP430_ENABLE_RTC_HANDLER== 1)
-unsigned char rtcctl0_bck     = 0;
-unsigned char rtcps0ctl_bck      = 0;  //the RTCPS0CTL is 16bit wide, but the IRQ flags are in the lower byte
+#if( MSP430_ENABLE_RTC_HANDLER == 1)
+unsigned char rtcctl0_bck        = 0;
+unsigned char rtcps0ctl_bck      = 0;     //the RTCPS0CTL is 16bit wide, but the IRQ flags are in the lower byte
 unsigned char rtcps1ctl_bck      = 0;     //the RTCPS1CTL is 16bit wide, but the IRQ flags are in the lower byte
 #endif
 
 #if( MSP430_ENABLE_PORT2_HANDLER== 1)
-unsigned char p2ie_bck        = 0;
+unsigned char p2ie_bck           = 0;
 #endif
 
 #if( MSP430_ENABLE_PORT1_HANDLER==1 )
