@@ -56,7 +56,7 @@
 
 /*==================[macros and definitions]=================================*/
 
-#define SVMH_FULL_PERF()  PMMCTL0_H = 0xA5; SVSMLCTL |= (SVMLFP); PMMCTL0_H = 0x00;
+#define SVMH_FULL_PERF()            PMMCTL0_H = 0xA5; SVSMLCTL |= (SVMLFP); PMMCTL0_H = 0x00;
 
 #define WORKING_FREQUENCY_KHZ       (unsigned long)(WORKING_FREQUENCY_MHZ*1e3)  // en KHZ
 #define WORKING_FREQUENCY_HZ        (unsigned long)(WORKING_FREQUENCY_MHZ*1e6)  // en Hz
@@ -110,11 +110,15 @@ void StartOs_Arch_System()
 {
    UCS_turnOffXT1();
 
-   XT1_XT2_PORT_SEL |= XT1_ENABLE + XT2_ENABLE;    // Setup XT1 and XT2
+   XT1_XT2_PORT_SEL |= XT1_ENABLE ; //+ XT2_ENABLE;         // Setup XT1 and XT2 /* enable xt2 for usb operation*/
 
-   PMM_setVCore( 3 );                              // Set Vcore to accomodate for max. allowed system speed
+   PMM_setVCore( PMM_CORE_LEVEL_3 );                        // Set Vcore to accomodate for max. allowed system speed
 
-   UCS_turnOnLFXT1( UCS_XT1_DRIVE_0 ,   UCS_XCAP_1  );   // Use 32.768kHz XTAL as reference
+   UCS_initClockSignal( UCS_ACLK ,  UCS_XT1CLK_SELECT ,   UCS_CLOCK_DIVIDER_1  );   /* ACLK FROM 32768HZ */
+   UCS_turnOnLFXT1( UCS_XT1_DRIVE_0 ,   UCS_XCAP_0  );                              /* Use 32.768kHz XTAL as reference */
+
+   UCS_initClockSignal( UCS_MCLK ,  UCS_DCOCLK_SELECT ,   UCS_CLOCK_DIVIDER_1  );   /* ACLK FROM 32768HZ */
+   UCS_initClockSignal( UCS_SMCLK ,  UCS_DCOCLK_SELECT ,   UCS_CLOCK_DIVIDER_1  );   /* ACLK FROM 32768HZ */
 
    UCS_initClockSignal( UCS_FLLREF ,  UCS_XT1CLK_SELECT ,   UCS_CLOCK_DIVIDER_1  );
 
@@ -125,15 +129,22 @@ void StartOs_Arch_System()
    In case this is not set, DCO statup is slower than an UART Start bit, and when receiving in LPM , the 1st byte will fail.
    */
    PMM_enableSvsLInLPMFastWake();   // SVSL_ENABLED_IN_LPM_FAST_WAKE();
-   PMM_enableSvsHInLPMFullPerf();   // SVSH_ENABLED_IN_LPM_FULL_PERF() ;
+   PMM_enableSvsHInLPMFullPerf();   // SVSH_ENABLED_IN_LPM_FULL_PERF();
 
-   PMM_optimizeSvsLInLPMFastWake(); //   SVSL_OPTIMIZED_IN_LPM_FAST_WAKE();
-   PMM_optimizeSvsHInLPMFullPerf(); //   SVSH_OPTIMIZED_IN_LPM_FULL_PERF();
+   PMM_optimizeSvsLInLPMFastWake(); // SVSL_OPTIMIZED_IN_LPM_FAST_WAKE();
+   PMM_optimizeSvsHInLPMFullPerf(); // SVSH_OPTIMIZED_IN_LPM_FULL_PERF();
 
    SVMH_FULL_PERF();
 
-   PMM_disableSvsL();               //  DISABLE_SVSL() ;
+   PMM_disableSvsL();               // DISABLE_SVSL() ;
+
+   //DEBUG LP
+   /*P7DIR|=0X80; //mclk
+   P7SEL|=0X80; //mclk
+   P2DIR|=0X04; //smclk //tecla s2!
+   P2SEL|=0X04; //smclk //tecla s2!*/
 }
+
 
 void StartOs_Arch_SystemTick(void)
 {

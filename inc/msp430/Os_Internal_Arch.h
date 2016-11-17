@@ -58,9 +58,8 @@
 /** \brief Default Value for Status Register
  **
  ** Enable GIE in SR so that the WDT never stops when we go to user task
- ** Enable SCG0 for 25MHZ CPU execution
  **/
-#define DEFAULT_SR ((uint16)0x00000048)
+#define DEFAULT_SR ((uint16) 0x00000008)
 
 /** \brief Extra size reserved for each stack
  **

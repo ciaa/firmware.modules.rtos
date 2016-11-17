@@ -50,7 +50,7 @@
 
 /*==================[cpu macros]=============================================*/
 
-#define WORKING_FREQUENCY_MHZ       14.7456f// 7.3728 //                         // in MHZ
+#define WORKING_FREQUENCY_MHZ       25.0f// 7.3728 //                         // in MHZ
 #define REF_FREQUENCY_HZ            32768                                       // in Hz
 #define TIC_PERIOD                  5                                           // in ms
 
