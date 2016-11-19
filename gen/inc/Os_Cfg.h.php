@@ -6,6 +6,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016 Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -69,34 +72,31 @@
 #define DeclareTask(name) void OSEK_TASK_ ## name (void)
 
 #define OSEK_OS_INTERRUPT_MASK ((InterruptFlagsType)0xFFFFFFFFU)
-
 <?php
-
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
-
-/* Definitions of Tasks */
+/* Definitions of Tasks : Tasks that will be executed within the local core */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 $remote_tasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
 $os = $this->config->getList("/OSEK","OS");
 
-$count = 0;
-foreach ($tasks as $task)
+foreach ($tasks as $task_idx => $task)
 {
-   print "/** \brief Task Definition */\n";
-   print "#define $task $count\n";
-   $count++;
+   print "\n/** \brief Task Definition */\n";
+   print "#define $task $task_idx\n";
 }
-print "\n";
 
-if (count($remote_tasks) > 0)
+   print "\n";
+
+$count = count( $tasks );
+/* Definitions of Tasks : Tasks that will be executed within the remote core*/
+if( count($remote_tasks) > 0)
 {
    foreach ($remote_tasks as $task)
    {
-      print "/** \brief Remote Task Definition */\n";
+      print "\n/** \brief Remote Task Definition */\n";
       print "#define $task $count\n";
       $count++;
    }
-   print "\n";
 }
 
 /* Define the Applications Modes */
@@ -110,16 +110,171 @@ foreach ($appmodes as $count=>$appmode)
 print "\n";
 
 /* Define the Events */
+
+/* the max ammount of events is defined by the bit width of EventMaskType type */
+$max_amount_events  = 32; /* this will be change later for other platforms */
+
+$flags_shared_event = $max_amount_events; /* it stores the number of bit for flags that are shared across tasks */
+
+$nibbles_count      = $max_amount_events/4;
+
+$matriz    = array();   /* it stores the events' name for each task */
+$matrix_n  = array();   /* it stores the events' assigned number for each task */
+
+/* get all global defined events */
 $events = $this->config->getList("/OSEK","EVENT");
 
-foreach ($events as $count=>$event)
+$nro_evs= count($events);
+
+/* task/events matrix creation, and various validations */
+foreach( $tasks as $task_index => $task )
 {
-   print "/** \brief Definition of the Event $event */\n";
-   print "#define " . $event . " 0x" . sprintf ("%xU", (1<<$count)) . "\n";
+   /* declare an empty array */
+   $empty_array = array();
+
+   /* get the events list for the current task $task */
+   $temp_array  = $this->config->getList("/OSEK/". $task , "EVENT"  );
+
+   /*for each task we get the defined events. Fill both matrixes with the events array */
+   array_push( $matriz , $temp_array );
+   array_push( $matrix_n , $empty_array );
+
+   /* count the events for the current task */
+   $nro_ev_task = count($matriz[$task_index]);
+
+   /* Task Type validation: validates that this task is extended */
+   $extended = $this->config->getValue("/OSEK/" . $task, "TYPE");
+
+   if ($extended != "EXTENDED" && $nro_ev_task>0 )
+   {
+      $this->log->error("===== OIL ERROR: The task $task should be TYPE: EXTENDED =====\n\n");
+   }
+   else
+   {
+      if ($nro_ev_task == 0 && $extended != "BASIC")
+      {
+      	 $this->log->warning("===== OIL WARNING: The task $task could be TYPE: BASIC =====\n\n");
+      }
+   }
+
+   /* Task Event Validation: validates that the defined event within the task is globally defined */
+   foreach( $matriz[$task_index] as $evi )
+   {
+      /* search the task event in the global event array */
+      $key = array_search( $events , $matriz[$task_index] );
+      if( $key !== false )
+      {
+         $this->log->error("===== OIL ERROR: The event $evi for task $task is not globally defined =====\n");
+         /* stops execution */
+      }
+      else
+      {
+      }
+   }
 }
+
+/* generation of the shared events between tasks */
+print "\n/* ************* EVENTS:  Shared across tasks  *************  */\n";
+
+/* for each event globally defined */
+$ev_index   = 0;
+foreach( $events as $ev )
+{
+   $count = 0;                /* this variable stores the amount of tasks that share the current event */
+
+   /* count the amount of tasks that share the current event*/
+   foreach( $tasks as $task_index => $task )
+   {
+      $key = array_search( $ev, $matriz[$task_index] );
+
+      if( $key !== false ) //busco el evento en el array de eventos de la tarea.
+      {
+         /* lo encontro */
+         $count++;
+      }
+   }
+
+   /*  if there is more that one task with the current event */
+   if( $count>1 )
+   {
+      $flags_shared_event--;
+
+      if( $flags_shared_event<0 )
+      {
+         $this->log->error("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n");
+         /* stops execution */
+      }
+
+      print "\n/** \brief Definition of the Event: $ev */\n";
+      print "#define " . $ev . " 0x" . sprintf ("%0".$nibbles_count."xU", (1<<$flags_shared_event)) . "\n";
+
+      /* this shared's event number is stored in matrix_n (for each task)*/
+      foreach( $tasks as $task_index => $task )
+      {
+         $key = array_search( $ev, $matriz[$task_index] );
+
+         if( $key !== false )
+         {
+            unset($matriz[$task_index][$key]);                          /* remove the event from the matrix*/
+            array_push( $matrix_n[$task_index] , $flags_shared_event ); /* we add the evento to matrix_n*/
+         }
+      }
+   }
+
+   if( $count==0 )
+   {
+       $this->log->warning("===== OIL WARNING: The event $ev could be removed =====\n\n");
+   }
+
+   $ev_index++;
+}
+
+print "\n/* ************* EVENTS: Exclusive for each task  *************  */\n";
+foreach( $tasks as $task_index=> $task )
+{
+   $flags_exc_event = 0;  /* it stores the number of bit for flags that are exclusively for one task */
+
+   foreach( $matriz[$task_index] as $ev )
+   {
+      if( $flags_exc_event>$max_amount_events )
+      {
+      	 $this->log->error("===== OIL ERROR: There are more than $max_amount_events events defined.  =====\n");
+         /* stops execution */
+      }
+
+      print "\n/** \brief Definition of the Event: $ev for task: $task*/\n";
+      print "#define " . $ev . " 0x" . sprintf("%0".$nibbles_count."xU", (1<<$flags_exc_event)) . "\n";
+
+      $temp = $flags_exc_event;
+      array_push( $matrix_n[$task_index] , $temp );
+
+      $flags_exc_event++;
+   }
+}
+
 print "\n";
 
-/* Define the Resources */
+/* Last validation: check if events repeats  */
+$task_index       = 0;
+foreach ($matrix_n as $array)
+{
+   $count_values = array_count_values($matrix_n[$task_index]) ;  /* it counts the times that repeats an event number, all of them should be 1*/
+   #print_r($count_values);
+   foreach ($count_values as $key => $value)
+   {
+      if($value>1)
+      {
+         $this->log->error("===== OIL ERROR: There are more events that the task can handle.  =====\n");
+         /* stops execution */
+      }
+   }
+   $task_index ++;
+}
+
+
+/* ************* Define the Resources  ************* */
+print "\n/* ************* RESOURCES *************  */\n\n";
+
 $resources = $this->config->getList("/OSEK","RESOURCE");
 
 foreach ($resources as $count=>$resource)
@@ -127,9 +282,11 @@ foreach ($resources as $count=>$resource)
    print "/** \brief Definition of the resource $resource */\n";
    print "#define " . $resource . " ((ResourceType)" . $count . ")\n";
 }
+
 print "\n";
 
 /* Define the Alarms */
+print "\n/* ************* ALARMS *************  */\n\n";
 $alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 
 foreach ($alarms as $count=>$alarm)
@@ -140,6 +297,7 @@ foreach ($alarms as $count=>$alarm)
 print "\n";
 
 /* Define the Counters */
+print "\n/* ************* COUNTERS *************  */\n\n";
 $counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
 
 foreach ($counters as $count=>$counter)
@@ -173,7 +331,7 @@ if ($errorhook == "TRUE")
 }
 
 $memmap = $this->config->getValue("/OSEK/" . $os[0],"MEMMAP");
-print "/** \brief OSEK_MEMMAP macro (OSEK_DISABLE not MemMap is used for FreeOSEK, OSEK_ENABLE\n ** MemMap is used for FreeOSEK) */\n";
+print "\n/** \brief OSEK_MEMMAP macro (OSEK_DISABLE not MemMap is used for FreeOSEK, OSEK_ENABLE\n ** MemMap is used for FreeOSEK) */\n";
 if ($memmap == "TRUE")
 {
    print "#define OSEK_MEMMAP OSEK_ENABLE\n";
@@ -267,51 +425,49 @@ extern unsigned int Osek_ErrorRet;
 $pretaskhook=$this->config->getValue("/OSEK/" . $os[0],"PRETASKHOOK");
 if ($pretaskhook == "TRUE")
 {
-   print "/** \brief Pre Task Hook */\n";
-   print "extern void PreTaskHook(void);\n\n";
+   print "\n/** \brief Pre Task Hook */\n";
+   print "extern void PreTaskHook(void);\n";
 }
 $posttaskhook=$this->config->getValue("/OSEK/" . $os[0],"POSTTASKHOOK");
 if ($posttaskhook == "TRUE")
 {
-   print "/** \brief Post Task Hook */\n";
-   print "extern void PostTaskHook(void);\n\n";
+   print "\n/** \brief Post Task Hook */\n";
+   print "extern void PostTaskHook(void);\n";
 }
 $shutdownhook=$this->config->getValue("/OSEK/" . $os[0],"SHUTDOWNHOOK");
 if ($shutdownhook == "TRUE")
 {
-   print "/** \brief Shutdown Hook */\n";
-   print "extern void ShutdownHook(void);\n\n";
+   print "\n/** \brief Shutdown Hook */\n";
+   print "extern void ShutdownHook(void);\n";
 }
 $startuphook=$this->config->getValue("/OSEK/" . $os[0],"STARTUPHOOK");
 if ($startuphook == "TRUE")
 {
-   print "/** \brief Startup Hook */\n";
-   print "extern void StartupHook(void);\n\n";
+   print "\n/** \brief Startup Hook */\n";
+   print "extern void StartupHook(void);\n";
 }
 $errorhook=$this->config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
 if ($errorhook == "TRUE")
 {
-   print "/** \brief Error Hook */\n";
-   print "extern void ErrorHook(void);\n\n";
+   print "\n/** \brief Error Hook */\n";
+   print "extern void ErrorHook(void);\n";
 }
 
 /* Declare Tasks */
 
 foreach ($tasks as $count=>$task)
 {
-   print "/** \brief Task Declaration of Task $task */\n";
+   print "\n/** \brief Task Declaration of Task $task */\n";
    print "DeclareTask($task);\n";
 }
-print "\n";
 
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 
 foreach ($intnames as $count=>$int)
 {
-   print "/** \brief ISR Declaration */\n";
+   print "\n/** \brief ISR Declaration */\n";
    print "extern void OSEK_ISR_$int(void); /* Interrupt Handler $int */\n";
 }
-print "\n";
 
 $alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 
@@ -320,13 +476,13 @@ foreach ($alarms as $count=>$alarm)
    $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
    if ($action == "ALARMCALLBACK")
    {
-      print "/** \brief Alarm Callback declaration */\n";
+      print "\n/** \brief Alarm Callback declaration */\n";
       print "extern void OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . "(void);\n";
    }
 }
-print "\n";
 
 $osattr = $this->config->getValue("/OSEK/" . $os[0],"STATUS"); ?>
+ 
 /** \brief Schedule this Task if higher priority Task are Active
  **
  ** This API shall Schedule the calling Task if a higher priority Task
@@ -359,4 +515,3 @@ extern StatusType Schedule(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_CFG_H_ */
-

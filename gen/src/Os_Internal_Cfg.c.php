@@ -6,6 +6,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016 Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -217,19 +220,28 @@ print "\n";
 ?>
 };
 
-/** \brief RemoteTaskCore Array */
-const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {<?php
+<?php
 $rtasks = $this->helper->multicore->getRemoteList("/OSEK", "TASK");
-for($i=0; $i<count($rtasks); $i++)
+$rtasks_count = count($rtasks);
+
+if( $rtasks_count>0 )
 {
-   print $this->config->getValue("/OSEK/$rtasks[$i]", "CORE");
-   if ($i < (count($rtasks)-1))
+   print("\n/** \brief RemoteTaskCore Array */\n");
+   print("const TaskCoreType RemoteTasksCore[REMOTE_TASKS_COUNT] = {\n");
+
+   for($i=0; $i<$rtasks_count; $i++)
    {
-      print ", ";
+      print $this->config->getValue("/OSEK/$rtasks[$i]", "CORE");
+      if ($i < (count($rtasks)-1))
+      {
+         print ", ";
+      }
    }
+
+   print("};\n");
 }
 ?>
-};
+
 
 /** \brief TaskVar Array */
 TaskVariableType TasksVar[TASKS_COUNT];
@@ -327,6 +339,10 @@ print "ReadyVarType ReadyVar[" . count($priority) . "];\n";
 <?php
 /* Resources Priorities */
 $resources = $this->config->getList("/OSEK","RESOURCE");
+$resources_count = count($resources);
+
+if( $resources_count>0 )
+{
 print "/** \brief Resources Priorities */\n";
 print "const TaskPriorityType ResourcesPriority[" . count($resources) . "]  = {\n";
 $c = 0;
@@ -352,116 +368,138 @@ foreach ($resources as $resource)
 
 }
 print "\n};\n";
+}
 
 $alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
-print "/** TODO replace next line with: \n";
-print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
-print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
+$alarms_count = count($alarms);
+$alarms_autostart = 0;
 
-print "const AlarmConstType AlarmsConst[" . count($alarms) . "]  = {\n";
-
-foreach ($alarms as $count=>$alarm)
+if( $alarms_count> 0 )
 {
-   if ($count != 0)
-   {
-      print ",\n";
-   }
-   print "   {\n";
-   print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-   $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
-   print "      " . $action . ", /* Alarm action */\n";
-   print "      {\n";
-   switch ($action)
-   {
-   case "INCREMENT":
-      print "         NULL, /* no callback */\n";
-      print "         0, /* no task id */\n";
-      print "         0, /* no event */\n";
-      print "         OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
-      break;
-   case "ACTIVATETASK":
-      print "         NULL, /* no callback */\n";
-      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
-      print "         0, /* no event */\n";
-      print "         0 /* no counter */\n";
-      break;
-   case "SETEVENT":
-      print "         NULL, /* no callback */\n";
-      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
-      print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
-      print "         0 /* no counter */\n";
-      break;
-   case "ALARMCALLBACK":
-      print "         OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
-      print "         0, /* no taskid */\n";
-      print "         0, /* no event */\n";
-      print "         0 /* no counter */\n";
-      break;
-   default:
-     $this->log->error("Alarm $alarm has an invalid action: $action");
-      break;
-   }
-   print "      },\n";
-   print "   }";
+   print "/** TODO replace next line with: \n";
+   print " ** AlarmVarType AlarmsVar[" . count($alarms) . "]; */\n";
+   print "AlarmVarType AlarmsVar[" . count($alarms) . "];\n\n";
 
-}
-print "\n};\n\n";
+   print "const AlarmConstType AlarmsConst[" . count($alarms) . "]  = {\n";
 
-print "const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT] = {\n";
-$first = true;
-foreach ($alarms as $count=>$alarm)
-{
-   if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+   foreach ($alarms as $count=>$alarm)
    {
-      if ($first == false)
+      if ($count != 0)
       {
          print ",\n";
-      } else {
-         $first = false;
       }
-      print "  {\n";
+      
+      if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+      {
+         $alarms_autostart++;
+      }
+      
+      print "   {\n";
+      print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+      $action = $this->config->getValue("/OSEK/" . $alarm, "ACTION");
+      print "      " . $action . ", /* Alarm action */\n";
+      print "      {\n";
+      switch ($action)
+      {
+      case "INCREMENT":
+         print "         NULL, /* no callback */\n";
+         print "         0, /* no task id */\n";
+         print "         0, /* no event */\n";
+         print "         OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm . "/INCREMENT","COUNTER") . " /* counter */\n";
+         break;
+      case "ACTIVATETASK":
+         print "         NULL, /* no callback */\n";
+         print "         " . $this->config->getValue("/OSEK/" . $alarm . "/ACTIVATETASK","TASK") . ", /* TaskID */\n";
+         print "         0, /* no event */\n";
+         print "         0 /* no counter */\n";
+         break;
+      case "SETEVENT":
+         print "         NULL, /* no callback */\n";
+         print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","TASK") . ", /* TaskID */\n";
+         print "         " . $this->config->getValue("/OSEK/" . $alarm . "/SETEVENT","EVENT") . ", /* no event */\n";
+         print "         0 /* no counter */\n";
+         break;
+      case "ALARMCALLBACK":
+         print "         OSEK_CALLBACK_" . $this->config->getValue("/OSEK/" . $alarm . "/ALARMCALLBACK", "ALARMCALLBACKNAME") . ", /* callback */\n";
+         print "         0, /* no taskid */\n";
+         print "         0, /* no event */\n";
+         print "         0 /* no counter */\n";
+         break;
+      default:
+        $this->log->error("Alarm $alarm has an invalid action: $action");
+         break;
+      }
+      print "      },\n";
+      print "   }";
 
-      print "      " . $this->config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
-      // print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
-      print "      $alarm, /* Alarms */\n";
-      print "      " . $this->config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
-      print "      " . $this->config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+   }
+   print "\n};\n\n";
+
+   #print("#if( ALARM_AUTOSTART_COUNT>0 )\n");
+   if($alarms_autostart>0)
+   {
+      print "const AutoStartAlarmType AutoStartAlarm[ALARM_AUTOSTART_COUNT] = {\n";
+      $first = true;
+      foreach ($alarms as $count=>$alarm)
+      {
+         if ($this->config->getValue("/OSEK/" . $alarm, "AUTOSTART") == "TRUE")
+         {
+            if ($first == false)
+            {
+               print ",\n";
+            }
+            else
+            {
+               $first = false;
+            }
+            print "  {\n";
+
+            print "      " . $this->config->getValue("/OSEK/" . $alarm, "APPMODE") . ", /* Application Mode */\n";
+            // print "      OSEK_COUNTER_" . $this->config->getValue("/OSEK/" . $alarm, "COUNTER") . ", /* Counter */\n";
+            print "      $alarm, /* Alarms */\n";
+            print "      " . $this->config->getValue("/OSEK/" . $alarm, "ALARMTIME") . ", /* Alarm Time */\n";
+            print "      " . $this->config->getValue("/OSEK/" . $alarm, "CYCLETIME") . " /* Alarm Time */\n";
+            print "   }";
+         }
+      }
+      print "\n};\n\n";
+   }
+   else
+   {
+      print "\n/* OIL FILE: THERE ARE NO AUTOSTART ALARMS DEFINED IN THE SYSTEM */\n\n";
+   }
+
+   $counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
+
+   print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
+
+   $alarms = $this->config->getList("/OSEK","ALARM");
+
+   print "const CounterConstType CountersConst[" . count($counters) . "] = {\n";
+   foreach ($counters as $count=>$counter)
+   {
+      if ($count!=0)
+      {
+         print ",\n";
+      }
+      print "   {\n";
+      $countalarms = 0;
+      foreach ($alarms as $alarm)
+      {
+      if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
+         {
+            $countalarms++;
+         }
+      }
+      print "      $countalarms, /* quantity of alarms for this counter */\n";
+      print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
+      print "      " . $this->config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
       print "   }";
    }
+   print "\n};\n\n";
 }
-print "\n};\n\n";
-
-$counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
-
-print "CounterVarType CountersVar[" . count($counters) . "];\n\n";
-
-$alarms = $this->config->getList("/OSEK","ALARM");
-
-print "const CounterConstType CountersConst[" . count($counters) . "] = {\n";
-foreach ($counters as $count=>$counter)
-{
-   if ($count!=0)
-   {
-      print ",\n";
-   }
-   print "   {\n";
-   $countalarms = 0;
-   foreach ($alarms as $alarm)
-   {
-      if ($counter == $this->config->getValue("/OSEK/" . $alarm,"COUNTER"))
-      {
-         $countalarms++;
-      }
-   }
-   print "      $countalarms, /* quantity of alarms for this counter */\n";
-   print "      (AlarmType*)OSEK_ALARMLIST_" . $counter . ", /* alarms list */\n";
-   print "      " . $this->config->getValue("/OSEK/" . $counter,"MAXALLOWEDVALUE") . ", /* max allowed value */\n";
-   print "      " . $this->config->getValue("/OSEK/" . $counter,"MINCYCLE") . ", /* min cycle */\n";
-   print "      " . $this->config->getValue("/OSEK/" . $counter,"TICKSPERBASE") . " /* ticks per base */\n";
-   print "   }";
-}
-print "\n};\n\n";
-
 ?>
 
 /** TODO replace the next line with
