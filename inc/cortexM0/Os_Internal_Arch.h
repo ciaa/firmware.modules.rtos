@@ -68,11 +68,19 @@
  ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
  ** remove the macro and this comment.
  **/
-#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+#define OSEK_INCLUDE_INTERNAL_ARCH_CPU
 
 extern void * Osek_OldTaskPtr_Arch;
 extern void * Osek_NewTaskPtr_Arch;
 extern TaskType TerminatingTask;
+
+
+/** \brief Define common objects for using IntSecure_Start and IntSecure_End-
+ **
+ ** This macro will be used internaly by the OS in any part of code that
+ ** has to be executed atomic. It should be placed before IntSecure_Start or IntSecure_End is called
+ **/
+#define IntSecure_Common()
 
 /** \brief Interrupt Secure Start Macro
  **
@@ -86,6 +94,14 @@ extern TaskType TerminatingTask;
  ** This macro is the countra part of IntSecure_Start()
  **/
 #define IntSecure_End() ResumeAllInterrupts()
+
+/*
+** \brief AfterIsr2_Schedule_Arch
+ **
+ ** Some architectures need to execute a forced action when returning from ISR handler.
+ **
+*/
+#define AfterIsr2_Schedule_Arch()  
 
 /** \brief osekpause
  **
@@ -241,7 +257,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) Schedule_WOChecks()
+#define PostIsr2_Arch(isr) 
 
 /** \brief ShutdownOs Arch service
  **
@@ -263,3 +279,4 @@ void InitStack_Arch(uint8 TaskID);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
+

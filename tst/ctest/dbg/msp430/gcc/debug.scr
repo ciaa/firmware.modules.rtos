@@ -1,0 +1,9 @@
+prog filename
+reset
+setbreak ConfTestFinish
+run
+save_raw TestResults 35 out/rtos/TestResults.bin
+save_raw TestResultsOk 35 out/rtos/TestResultsOk.bin
+save_raw SequenceCounter 4 out/rtos/SequenceCounter.bin
+save_raw SequenceCounterOk 4 out/rtos/SequenceCounterOk.bin
+save_raw ConfTestResult 1 out/rtos/ConfTestResult.bin

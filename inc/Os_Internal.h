@@ -2,6 +2,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -53,12 +56,14 @@
 /*==================[inclusions]=============================================*/
 #include "os.h"
 #include "Os_Internal_Arch.h"
-#ifdef OSEK_INLCUDE_INTERNAL_ARCH_CPU
+
+#ifdef OSEK_INCLUDE_INTERNAL_ARCH_CPU
 /** Os_Internal_Arch_Cpu.h is only included if the macro
  ** OSEK_INCLUDE_INTERNAL_ARCH_CPU is defined on
  ** Os_Internal_Arch.h **/
 #include "Os_Internal_Arch_Cpu.h"
-#endif /* #ifdef OSEK_INLCUDE_INTERNAL_ARCH_CPU */
+#endif /* OSEK_INCLUDE_INTERNAL_ARCH_CPU */
+
 #include "Os_Internal_Arch_Cfg.h"
 #include "Os_Internal_Cfg.h"
 #include "ciaaPlatforms.h"
@@ -182,8 +187,25 @@
 #elif (ERROR_CHECKING_TYPE == ERROR_CHECKING_STANDARD)
 /* if standard error checking is used, the scheduler does not perform any check
  * and cann be called irectly */
-#define Schedule_WOChecks() Schedule()
+#define Schedule_WOChecks()     Schedule()
 #endif
+
+
+/** \brief AfterIsr2_Schedule
+ **
+ ** This macro conditionally calls the schedule if there is any task with "Full Schedule" attribute.
+ **
+ **/
+#if ( NON_PREEMPTIVE == OSEK_DISABLE )
+#define AfterIsr2_Schedule()     if( ( CONTEXT_TASK == actualContext                     ) && \
+                                     ( TasksConst[GetRunningTask()].ConstFlags.Preemtive )  ) \
+                                 {                                                            \
+                                     Schedule_WOChecks();                                     \
+                                 }                                                            \
+                                 AfterIsr2_Schedule_Arch();
+#else
+#define AfterIsr2_Schedule()     AfterIsr2_Schedule_Arch();
+#endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
 
 /*==================[typedef]================================================*/
 /** \brief ContextType
@@ -261,4 +283,3 @@ extern CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncre
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_H_ */
-

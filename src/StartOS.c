@@ -2,6 +2,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -76,6 +79,8 @@ void StartOS
     ** system */
    uint8f loopi;
 
+   IntSecure_Common();
+
    IntSecure_Start();
 
 #if (OSEK_MULTICORE == OSEK_ENABLE)
@@ -112,6 +117,7 @@ void StartOS
       ActivateTask(AutoStart[Mode].TasksRef[loopi]);
    }
 
+#if( ALARM_AUTOSTART_COUNT>0 )
    for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
    {
       if (AutoStartAlarm[loopi].Mode == Mode)
@@ -119,6 +125,7 @@ void StartOS
          (void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[loopi].AlarmCycleTime);
       }
    }
+#endif
 
 #if (HOOK_STARTUPHOOK == OSEK_ENABLE)
    StartupHook();

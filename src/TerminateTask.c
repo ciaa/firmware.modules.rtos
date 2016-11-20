@@ -2,6 +2,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -73,6 +76,8 @@ StatusType TerminateTask
     ** shall be defined. */
 
    StatusType ret = E_OK;
+
+   IntSecure_Common();
 
    /* \req OSEK_SYS_3.2.4 If the version with extended status is used, the
     ** service returns in case of error, and provides a status which can be
@@ -179,3 +184,4 @@ StatusType TerminateTask
 /** @} doxygen endVar group definition */
 /** @} doxygen endVar group definition */
 /*==================[end of file]============================================*/
+

@@ -2,6 +2,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -73,6 +75,8 @@ int main
    void
 )
 {
+   EnableISR2();
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 
@@ -207,7 +211,7 @@ TASK(Task2)
    TerminateTask();
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    StatusType ret;
    TaskType TaskID;
@@ -248,7 +252,7 @@ ISR(ISR2)
 }
 
 #if ( ISR_CATEGORY_3 == OSEK_ENABLE )
-ISR(ISR3)
+ISR(VN_ISR3)
 {
    StatusType ret;
 

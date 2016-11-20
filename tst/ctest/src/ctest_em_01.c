@@ -1,7 +1,11 @@
 /* Copyright 2008, 2009 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
+ * Copyright 2016, Franco Bucafusco
+ *
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -73,6 +77,8 @@ int main
    void
 )
 {
+   EnableISR2();
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 
@@ -198,7 +204,7 @@ TASK(Task2)
    ConfTestFinish();
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    StatusType ret;
 
@@ -220,7 +226,7 @@ ISR(ISR2)
 }
 
 #if ( ISR_CATEGORY_3 == OSEK_ENABLE )
-ISR(ISR3)
+ISR(VN_ISR3)
 {
    StatusType ret;
 
@@ -238,4 +244,3 @@ ISR(ISR3)
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

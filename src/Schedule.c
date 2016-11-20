@@ -2,6 +2,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -81,11 +84,15 @@ extern StatusType Schedule
 
    /* \req OSEK_SYS_3.4.4 Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
+
    TaskType nextTask;
    TaskType actualTask;
+
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    ContextType actualContext;
 #endif
+
+   IntSecure_Common();
 
    IntSecure_Start();
 
@@ -133,8 +140,8 @@ extern StatusType Schedule
       nextTask = GetNextTask();
 
       /* while until one or boths are not more invalid tasks */
-      while ( ( actualTask == INVALID_TASK ) &&
-            ( nextTask == INVALID_TASK) )
+      while ( ( INVALID_TASK == actualTask ) &&
+            ( INVALID_TASK == nextTask ) )
       {
          IntSecure_End();
 
@@ -148,7 +155,7 @@ extern StatusType Schedule
       };
 
       /* if the actual task is invalid */
-      if ( actualTask == INVALID_TASK )
+      if ( INVALID_TASK == actualTask )
       {
          /* set task state to running */
          TasksVar[nextTask].Flags.State = TASK_ST_RUNNING;
@@ -176,7 +183,6 @@ extern StatusType Schedule
           ** the priority of the calling task is ready */
          if ( TasksConst[nextTask].StaticPriority > TasksVar[actualTask].ActualPriority )
          {
-
 #if (HOOK_POSTTASKHOOK == OSEK_ENABLE)
             PostTaskHook();
 #endif /* #if (HOOK_POSTTASKHOOK == OSEK_ENABLE) */
@@ -243,4 +249,3 @@ extern StatusType Schedule
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-

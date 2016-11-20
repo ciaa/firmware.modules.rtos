@@ -3,6 +3,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -74,6 +76,9 @@ int main
    void
 )
 {
+   EnableISR1();
+   EnableISR2();
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 
@@ -147,7 +152,7 @@ TASK(Task1)
    ConfTestFinish();
 }
 
-ISR(ISR1)
+ISR(VN_ISR1)
 {
    static uint8 ISR1_Trigger_Number = 0;
 
@@ -170,7 +175,7 @@ ISR(ISR1)
    }
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    static uint8 ISR2_Trigger_Number = 0;
 

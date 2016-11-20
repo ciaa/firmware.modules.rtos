@@ -76,6 +76,16 @@
 /** \brief ia64 cputype definition */
 #define ia64        2
 
+
+/** \brief Define common objects for using IntSecure_Start and IntSecure_End-
+ **
+ ** This macro will be used internaly by the OS in any part of code that
+ ** has to be executed atomic. It should be placed before IntSecure_Start or IntSecure_End is called
+ **/
+#define IntSecure_Common()
+
+
+
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro shall be used to disable the interrupts
@@ -408,4 +418,3 @@ extern void OSEK_ISR_HWTimer1(void);
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
 #endif /* #ifndef _OS_INTERNAL_ARCH_H_ */
-

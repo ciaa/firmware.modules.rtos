@@ -2,6 +2,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -76,6 +78,8 @@ StatusType SetEvent
 
    /* \req OSEK_SYS_3.15.2: Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
+
+   IntSecure_Common();
 
 #if (OSEK_MULTICORE == OSEK_ENABLE)
    if ((TaskID - TASKS_COUNT) < REMOTE_TASKS_COUNT)

@@ -1,4 +1,6 @@
 /* Copyright 2014 Mariano Cerdeiro
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -70,6 +72,8 @@ int main
    void
 )
 {
+   EnableISR2();
+
    /* start OS in AppMode 1 */
    StartOS(AppMode1);
 
@@ -103,7 +107,7 @@ TASK(Task1)
    ConfTestFinish();
 }
 
-ISR(ISR2)
+ISR(VN_ISR2)
 {
    StatusType ret;
 

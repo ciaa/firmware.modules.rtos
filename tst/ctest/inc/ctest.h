@@ -3,6 +3,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -235,14 +237,28 @@
  ** This macro shall implement a mechanismus to trigger the ISR1 interruption
  **/
 #define TriggerISR1()   \
-   TriggerISR1_Arch()
+      TriggerISR1_Arch()
 
 /** \brief ISR2 Trigger Macro
  **
  ** This macro shall implement a mechanismus to trigger the ISR2 interruption
  **/
 #define TriggerISR2()   \
-   TriggerISR2_Arch()
+      TriggerISR2_Arch()
+
+/** \brief ISR1 Enable Macro
+ **
+ ** This macro shall implement a mechanism to enable the ISR1 interruption
+ **/
+#define EnableISR1()    \
+      EnableISR1_Arch()
+
+/** \brief ISR2 Enable Macro
+ **
+ ** This macro shall implement a mechanism to enable the ISR2 interruption
+ **/
+#define EnableISR2()    \
+      EnableISR2_Arch()
 
 /** \brief Initialise Alarm Counter Macro
  **
@@ -387,7 +403,7 @@ void ConfTestEvaluation
    }                                                                                   \
 }
 #endif
-#if ((cortexM4 == ARCH) || (cortexM0 == ARCH))
+#if ((cortexM4 == ARCH) || (cortexM0 == ARCH) || (msp430 == ARCH) )
 #define ASSERT(tc,cond) \
 {                                                                                      \
    if (cond)                                                                           \
@@ -404,6 +420,8 @@ void ConfTestEvaluation
    }                                                                                   \
 }
 #endif
+
+
 
 extern void Sequence
 (

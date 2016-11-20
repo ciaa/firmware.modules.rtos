@@ -2,6 +2,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -77,6 +79,8 @@ StatusType WaitEvent
 
    /* \req OSEK_SYS_3.18.3 Possible return values in Standard mode is E_OK */
    StatusType ret = E_OK;
+
+   IntSecure_Common();
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    if ( GetCallingContext() != CONTEXT_TASK )

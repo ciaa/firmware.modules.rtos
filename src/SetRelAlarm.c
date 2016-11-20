@@ -2,6 +2,9 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016, Franco Bucafusco
+ *
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -78,6 +81,8 @@ StatusType SetRelAlarm
    /* \req OSEK_SYS_3.21.3-1/2 Possible return values in Standard mode are
     ** E_OK, E_OS_STATE */
    StatusType ret = E_OK;
+
+   IntSecure_Common();
 
 #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
    /* check if the alarm id is in range */

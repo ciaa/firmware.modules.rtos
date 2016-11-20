@@ -57,7 +57,7 @@
  ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
  ** remove the macro and this comment.
  **/
-#define OSEK_INLCUDE_INTERNAL_ARCH_CPU
+#define OSEK_INCLUDE_INTERNAL_ARCH_CPU
 
 /** \brief Interrupt Secure Start Macro
  **
@@ -71,6 +71,15 @@
  ** This macro is the countra part of IntSecure_Start()
  **/
 #define IntSecure_End() ResumeAllInterrupts()
+
+
+/*
+** \brief AfterIsr2_Schedule_Arch
+ **
+ ** Some architectures need to execute a forced action when returning from ISR handler.
+ **
+*/
+#define AfterIsr2_Schedule_Arch() 
 
 /** \brief osekpause
  **
