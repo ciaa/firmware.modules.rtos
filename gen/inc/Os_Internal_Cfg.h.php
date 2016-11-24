@@ -6,6 +6,8 @@
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * Copyright 2016 Franco Bucafusco
+ * All Rights Reserved
  *
  * This file is part of CIAA Firmware.
  *
@@ -130,14 +132,19 @@ print "#define REMOTE_TASKS_COUNT $remotetaskscount" . "U\n\n";
 
 /* Define the Resources */
 $resources = $this->config->getList("/OSEK","RESOURCE");
-if(count($resources)>31)
+$resources_count = count($resources);
+
+if( $resources_count>31 )
 {
    $this->log->error("more than 31 resources were defined");
 }
 else
 {
-   print "/** \brief Count of resources */\n";
-   print "#define RESOURCES_COUNT " . count($resources) . "\n\n";
+   if( $resources_count > 0)
+   {
+      print "/** \brief Count of resources */\n";
+      print "#define RESOURCES_COUNT " . $resources_count . "\n\n";
+   }
 }
 
 $os = $this->config->getList("/OSEK","OS");
@@ -288,7 +295,11 @@ if ($multicore == "TRUE")
    }
 
 <?php
+
+/* alarms processing */
 $alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
+$alarms_count = count($alarms);
+
 $count = 0;
 foreach ($alarms as $alarm)
 {
@@ -298,8 +309,8 @@ foreach ($alarms as $alarm)
    }
 }
 ?>
-#define ALARM_AUTOSTART_COUNT <?php echo $count ?>
 
+#define ALARM_AUTOSTART_COUNT <?php print( $count ."\n");  ?>
 
 <?php
 $counters = $this->helper->multicore->getLocalList("/OSEK", "COUNTER");
@@ -311,7 +322,7 @@ foreach ($counters as $count => $counter)
 
 $alarms = $this->helper->multicore->getLocalList("/OSEK", "ALARM");
 print "/** \brief ALARMS_COUNT define */\n";
-print "#define ALARMS_COUNT " . count($alarms) . "\n\n";
+print "#define ALARMS_COUNT " . $alarms_count . "\n\n";
 
 $preemptive = false;
 foreach($tasks as $task)
@@ -596,14 +607,21 @@ foreach ($appmodes as $appmode)
    }
 }
 
+print("\n");
+
 $appmodes = $this->config->getList("/OSEK","APPMODE");
 print "/** \brief AutoStart Array */\n";
 print "extern const AutoStartType AutoStart[" . count($appmodes) . "];\n\n";
 
 /* Resources Priorities */
 $resources = $this->config->getList("/OSEK","RESOURCE");
-print "/** \brief Resources Priorities */\n";
-print "extern const TaskPriorityType ResourcesPriority[" . count($resources) . "];\n\n";
+$resources_count = count($resources);
+
+if( $resources_count > 0)
+{
+   print "/** \brief Resources Priorities */\n";
+   print "extern const TaskPriorityType ResourcesPriority[" . $resources_count . "];\n\n";
+}
 
 print "/** \brief Ready Const List */\n";
 print "extern const ReadyConstType ReadyConst[" . count($priority) .  "];\n\n";
