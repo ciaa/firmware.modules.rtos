@@ -87,7 +87,10 @@ void OSEK_COUNTER_GPTIMER0_IRQHandler(void);
 
 void sparcSetupUserISRs(void);
 
-uint32 sparcGetTimersInUseMask(void);
+uint32 sparcGetHardwareTimersInUseMask(void);
+
+uint32 sparcGetHardwareTimerID(uint32 hwTimerIndex);
+
 
 
 /** @} doxygen end group definition */

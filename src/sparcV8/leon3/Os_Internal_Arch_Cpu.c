@@ -173,7 +173,7 @@ void sparcSetModularTimerConfiguration()
 
    /* Find out which of the timers are actually being used
     * in the system */
-   timersInUseMask = sparcGetTimersInUseMask();
+   timersInUseMask = sparcGetHardwareTimersInUseMask();
 
    /* Determine the number of implemented timers within the GPTIMER core */
    configurationRegisterValue = grRegisterRead(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_CONFIGURATION_REGISTER);
@@ -541,7 +541,7 @@ void sparcCheckPendingTimerInterrupts()
    uint32_t timerNControlRegister;
    uint32_t timerIndex;
 
-   timersInUseMask = sparcGetTimersInUseMask();
+   timersInUseMask = sparcGetHardwareTimersInUseMask();
 
    /* Configure each individual timer. */
    for (timerIndex = 0; timerIndex < 8; timerIndex++)
@@ -575,7 +575,7 @@ void sparcCheckPendingTimerInterrupts()
 
 #if (ALARMS_COUNT != 0)
             IntSecure_Start();
-            IncrementCounter(timerIndex, 1 /* this argument is in doubt, see Cortex port... FIXME */ );
+            IncrementCounter(sparcGetHardwareTimerID(timerIndex), 1 /* this argument is in doubt, see Cortex port... FIXME */ );
             IntSecure_End();
 #endif
          }

@@ -123,7 +123,7 @@ $hardware_counters_names_list = array (
 		7 => "HWCOUNTER7" 
 );
 
-$HARDWARE_COUNTERS_NAMES_LIST_LENGTH = max ( array_keys ( $hardware_counters_names_list ) );
+$HARDWARE_COUNTERS_NAMES_LIST_LENGTH = max ( array_keys ( $hardware_counters_names_list ) ) + 1;
 
 ?>
 
@@ -199,7 +199,7 @@ for($i = 1; $i < $INTERRUPT_NAMES_LIST_LENGTH; $i ++) {
 }
 
 
-uint32 sparcGetTimersInUseMask(void)
+uint32 sparcGetHardwareTimersInUseMask(void)
 {
    uint32 timersInUseMask;
 
@@ -226,6 +226,38 @@ for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i ++) {
 ?>
 
    return timersInUseMask;
+}
+
+uint32 sparcGetHardwareTimerID(uint32 hwTimerIndex)
+{
+   const uint32 hwTimersIds[] = {<?php
+$counters_list = $this->helper->multicore->getLocalList ( "/OSEK", "COUNTER" );
+
+for($i = 0; $i < $HARDWARE_COUNTERS_NAMES_LIST_LENGTH; $i++) {
+	$counter_index = -1;
+	$o = 0;
+	
+	foreach ( $counters_list as $counter_name ) {
+		$counter_type = $this->config->getValue ( "/OSEK/" . $counter_name, "TYPE" );
+		$counter_id = $this->config->getValue ( "/OSEK/" . $counter_name, "COUNTER" );
+		
+		if ($counter_type == "HARDWARE") {
+			if ($hardware_counters_names_list [$i] == $counter_id) {
+				$counter_index = $o;
+			}
+		}
+		
+		$o++;
+	}
+	
+	if ($i > 0) {
+		print ", ";
+	}
+	print "$counter_index";
+}
+?>};
+   
+   return hwTimersIds[hwTimerIndex];
 }
 
 
