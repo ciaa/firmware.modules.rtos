@@ -220,3 +220,56 @@ sparcSystemServiceCallDebugger:
    retl
    nop
 
+
+
+   ! **************************************************
+   !
+   ! uint32 sparcSystemSetProcessorInterruptLevel(uint32 pil);
+   !
+   ! Sets a new processor interrupt level. Returns the old value
+   ! of the PIL field.
+   ! ***
+
+   .global sparcSystemSetProcessorInterruptLevel
+   .type   sparcSystemSetProcessorInterruptLevel, #function
+
+sparcSystemSetProcessorInterruptLevel:
+
+   !
+   ! Disable processor traps to ensure atomicity
+   mov     SPARC_SYSCALL_ID_DISABLE_TRAPS, %g1
+   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
+
+   !
+   ! Get the value of the PSR register
+   mov     %psr, %g1
+
+   !
+   ! Save the old PIL value
+   and     %g1, SPARC_PSR_PIL_MASK, %o1
+   srl     %o1, 0x08, %o1
+
+   !
+   ! set the new PIL value
+   andn    %g1, SPARC_PSR_PIL_MASK, %g1
+   sll     %o0, 0x08, %o0
+   and     %o0, SPARC_PSR_PIL_MASK, %o0
+   or      %g1, %o0, %g1
+
+   !
+   ! Return the value of the old value
+   mov     %o1, %o0
+
+   !
+   ! Re-enable traps
+   or     %g1, SPARC_PSR_ET_MASK, %g1
+   mov    %g1, %psr
+   ! Three delay cycles needed after writing on the PSR register
+   nop
+   nop
+   nop
+
+   ! Done, go back.
+   retl
+   nop
+

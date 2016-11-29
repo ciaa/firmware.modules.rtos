@@ -418,6 +418,7 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
    sparcIRQHandlersTable[irq - 1] = newHandler;
 }
 
+
 void sparcClearInterrupt(sparcIrqNumber irq)
 {
    uint32_t interruptBitMask;
@@ -440,16 +441,26 @@ void sparcForceInterrupt(sparcIrqNumber irq)
 
 void sparcEnableAllInterrupts(void)
 {
+   uint32_t previousProcessorInterruptLevel;
+
    sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
+
+   /* Start of atomic code section */
+   previousProcessorInterruptLevel = sparcSystemSetProcessorInterruptLevel(SPARC_NO_INTERRUPTS_PIL_LEVEL);
 
    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR1HandlersMask | sparcISR2HandlersMask);
 
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+
+   /* End of atomic code section */
+   sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
 
 void sparcDisableAllInterrupts(void)
 {
+   uint32_t previousProcessorInterruptLevel;
+
    if (sparcIRQMPBaseAddress == 0)
    {
       /* the base address of the IRQMP controller has not yet been initialized. This happens when
@@ -460,29 +471,51 @@ void sparcDisableAllInterrupts(void)
 
    sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
 
+   /* Start of atomic code section */
+   previousProcessorInterruptLevel = sparcSystemSetProcessorInterruptLevel(SPARC_NO_INTERRUPTS_PIL_LEVEL);
+
    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR1HandlersMask | sparcISR2HandlersMask));
 
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+
+   /* End of atomic code section */
+   sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
 
 void sparcEnableISR2Interrupts(void)
 {
+   uint32_t previousProcessorInterruptLevel;
+
    sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
+
+   /* Start of atomic code section */
+   previousProcessorInterruptLevel = sparcSystemSetProcessorInterruptLevel(SPARC_NO_INTERRUPTS_PIL_LEVEL);
 
    sparcCurrentInterruptMask = sparcCurrentInterruptMask | (sparcISR2HandlersMask);
 
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+
+   /* End of atomic code section */
+   sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
 
 void sparcDisableISR2Interrupts(void)
 {
+   uint32_t previousProcessorInterruptLevel;
+
    sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
+
+   /* Start of atomic code section */
+   previousProcessorInterruptLevel = sparcSystemSetProcessorInterruptLevel(SPARC_NO_INTERRUPTS_PIL_LEVEL);
 
    sparcCurrentInterruptMask = sparcCurrentInterruptMask & (~(sparcISR2HandlersMask));
 
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_MP_INTERRUPT_MASK_REGISTER(0), sparcCurrentInterruptMask);
+
+   /* End of atomic code section */
+   sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
 

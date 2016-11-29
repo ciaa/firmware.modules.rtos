@@ -60,6 +60,7 @@
 
 #define sparcAssert(assertion, errorString) { if(!(assertion)) { SPARC_CALL_DEBUGGER; } }
 
+#define SPARC_NO_INTERRUPTS_PIL_LEVEL 15
 
 /*==================[typedef]================================================*/
 
@@ -89,6 +90,8 @@ void sparcSystemServiceCallDebugger();
 void sparcSystemServiceTriggerReplaceTaskContext();
 
 void sparcSystemServiceTriggerSetTaskContext();
+
+uint32 sparcSystemSetProcessorInterruptLevel(uint32 newPilValue);
 
 
 /** @} doxygen end group definition */
