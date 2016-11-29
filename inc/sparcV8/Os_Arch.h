@@ -81,7 +81,7 @@
  **
  ** This macro shall suspend (disable) all interrupts.
  **/
-#define SuspendAllInterrupts_Arch() { sparcDisableAllInterrupts(); }
+#define SuspendAllInterrupts_Arch() { StartOs_Arch(); sparcDisableAllInterrupts(); }
 
 
 /** \brief Resume OS Interrupts Arch

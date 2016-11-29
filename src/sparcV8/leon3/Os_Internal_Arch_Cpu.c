@@ -67,7 +67,7 @@
 /*==================[internal data definition]===============================*/
 
 
-grDeviceAddress sparcIRQMPBaseAddress = 0; /* initialized to 0 in order to be able to detect whether or not this value has already been initialized */
+grDeviceAddress sparcIRQMPBaseAddress;
 
 uint32_t sparcSystemFrequencyHz;
 
@@ -460,14 +460,6 @@ void sparcEnableAllInterrupts(void)
 void sparcDisableAllInterrupts(void)
 {
    uint32_t previousProcessorInterruptLevel;
-
-   if (sparcIRQMPBaseAddress == 0)
-   {
-      /* the base address of the IRQMP controller has not yet been initialized. This happens when
-       * the interrupts are disabled in StartOs() because the cpu initialization routine have not yet
-       * been called and therefore hardware autodetection has not been performed yet. */
-      sparcAutodetectInterruptControllerAddress();
-   }
 
    sparcAssert(sparcIRQMPBaseAddress != 0, "The IRQMP base address has not been initialized!");
 
