@@ -65,8 +65,8 @@ ALARM IncrementSWCounter {
    };
    AUTOSTART = TRUE {
       APPMODE = AppMode1;
-      ALARMTIME = 1;
-      CYCLETIME = 1;
+      ALARMTIME = 10;
+      CYCLETIME = 10;
    };
 };
 
