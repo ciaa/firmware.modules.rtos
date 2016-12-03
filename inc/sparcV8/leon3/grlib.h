@@ -92,6 +92,7 @@
 #define GRLIB_PNP_DEVICE_ID_IRQMP                        0x0d
 #define GRLIB_PNP_DEVICE_ID_APBUART                      0x0c
 #define GRLIB_PNP_DEVICE_ID_GPTIMER                      0x11
+#define GRLIB_PNP_DEVICE_ID_APBVGA                       0x61
 
 #define GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE              0x01
 #define GRLIB_PNP_BAR_ENTRY_TYPE_AHBMEMORYSPACE          0x02
@@ -130,6 +131,11 @@
 #define GRLIB_APBUART_CONTROL_REGISTER                   (0x08)
 #define GRLIB_APBUART_SCALER_REGISTER                    (0x0c)
 #define GRLIB_APBUART_FIFO_DEBUG_REGISTER                (0x10)
+
+
+#define GRLIB_APBVGA_DATA_REGISTER                       (0x00)
+#define GRLIB_APBVGA_BACKGROUND_COLOR_REGISTER           (0x04)
+#define GRLIB_APBVGA_FOREGROUND_COLOR_REGISTER           (0x08)
 
 
 /*
@@ -178,6 +184,24 @@
 #define GRLIB_FLAG_MASK_APBUART_CONTROL_REGISTER_RI                         (GRLIB_FLAG_MASK( 2))
 #define GRLIB_FLAG_MASK_APBUART_CONTROL_REGISTER_TE                         (GRLIB_FLAG_MASK( 1))
 #define GRLIB_FLAG_MASK_APBUART_CONTROL_REGISTER_RE                         (GRLIB_FLAG_MASK( 0))
+
+
+/*
+ *
+ * APBVGA REGISTER CONTENT DEFINITIONS
+ *
+ * */
+
+#define GRLIB_SHIFT_FIELD_APBVGA_DATA_REGISTER_DATA(fieldValue)                    (GRLIB_SHIFT_FIELD(fieldValue,  8,  0))
+#define GRLIB_SHIFT_FIELD_APBVGA_DATA_REGISTER_ADDRESS(fieldValue)                 (GRLIB_SHIFT_FIELD(fieldValue,  8,  8))
+
+#define GRLIB_SHIFT_FIELD_APBVGA_BACKGROUND_COLOR_REGISTER_BLUE(fieldValue)        (GRLIB_SHIFT_FIELD(fieldValue,  8,  0))
+#define GRLIB_SHIFT_FIELD_APBVGA_BACKGROUND_COLOR_REGISTER_GREEN(fieldValue)       (GRLIB_SHIFT_FIELD(fieldValue,  8,  8))
+#define GRLIB_SHIFT_FIELD_APBVGA_BACKGROUND_COLOR_REGISTER_RED(fieldValue)         (GRLIB_SHIFT_FIELD(fieldValue,  8,  16))
+
+#define GRLIB_SHIFT_FIELD_APBVGA_FOREGROUND_COLOR_REGISTER_BLUE(fieldValue)        (GRLIB_SHIFT_FIELD(fieldValue,  8,  0))
+#define GRLIB_SHIFT_FIELD_APBVGA_FOREGROUND_COLOR_REGISTER_GREEN(fieldValue)       (GRLIB_SHIFT_FIELD(fieldValue,  8,  8))
+#define GRLIB_SHIFT_FIELD_APBVGA_FOREGROUND_COLOR_REGISTER_RED(fieldValue)         (GRLIB_SHIFT_FIELD(fieldValue,  8,  16))
 
 
 /*==================[typedef]================================================*/
