@@ -193,7 +193,7 @@
  * */
 
 #define GRLIB_SHIFT_FIELD_APBVGA_DATA_REGISTER_DATA(fieldValue)                    (GRLIB_SHIFT_FIELD(fieldValue,  8,  0))
-#define GRLIB_SHIFT_FIELD_APBVGA_DATA_REGISTER_ADDRESS(fieldValue)                 (GRLIB_SHIFT_FIELD(fieldValue,  8,  8))
+#define GRLIB_SHIFT_FIELD_APBVGA_DATA_REGISTER_ADDRESS(fieldValue)                 (GRLIB_SHIFT_FIELD(fieldValue, 16,  8))
 
 #define GRLIB_SHIFT_FIELD_APBVGA_BACKGROUND_COLOR_REGISTER_BLUE(fieldValue)        (GRLIB_SHIFT_FIELD(fieldValue,  8,  0))
 #define GRLIB_SHIFT_FIELD_APBVGA_BACKGROUND_COLOR_REGISTER_GREEN(fieldValue)       (GRLIB_SHIFT_FIELD(fieldValue,  8,  8))
