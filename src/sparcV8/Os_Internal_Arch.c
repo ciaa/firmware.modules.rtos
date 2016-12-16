@@ -33,8 +33,8 @@
 
 /** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file sparc/Os_Internal_Arch.c
- ** \arch sparc
+ ** \file sparcV8/Os_Internal_Arch.c
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK
@@ -66,31 +66,80 @@
 /*==================[internal data definition]===============================*/
 
 
+/**
+ * \brief FIXME This variable is not used on the SPARC V8 implementation. Delete it in a future revision. */
 TaskType TerminatingTask = INVALID_TASK;
 
+/**
+ * \brief FIXME This variable is not used on the SPARC V8 implementation. Delete it in a future revision. */
 TaskType WaitingTask = INVALID_TASK;
 
-
+/**
+ * \brief Communication variable between user and trap versions of CallTask and JmpTask.
+ *
+ * There is potential for race conditions when updating this variable, because the modification and the triggering
+ * do not execute as a single atomic operation. */
 TaskContextType *sparcNewContextPtr;
 
-/* This is where the context data for the program's main function is
- * stored before schedule finds the first task to switch to. */
+/**
+ * \brief Auxiliar context data block.
+ *
+ * This the is an auxiliar data block that is used to store the running context information when context management code needs
+ * to store the context status of a non-task-related code fragment.
+ *
+ * Examples of this is whenever the system enters interrupt mode while there are no ready tasks on the system, and any interrupt
+ * service routine executed before the first task of the system is activated.
+ */
 TaskContextType sparcNullTaskContextData;
 
 
 /*==================[external data definition]===============================*/
 
 
+/**
+ * \brief Pointer to the currently active task context data block.
+ *
+ * The block pointed by this pointer is where the context information is saved upon interrupt mode entry, and
+ * from where context data is restored when exiting the outermost interrupt handler.
+ */
 uint32 *active_thread_context_stack_pointer = (uint32 *)&sparcNullTaskContextData;
 
+/** \brief Flag that indicates the low-level context aware trap entry and exit code if the interrupt
+ * service request is nested within another interrupt service routine already in execution, or not.
+ *
+ * This is used to determine whether the context aware trap entry/exit code must save/restore the
+ * context information of a userland task (in a context data block) or that of another another interrupt
+ * service routine (on the stack).
+ */
 uint32 system_in_interrupt_context = 0;
 
+/**
+ * \brief Number of implemented register windows on the processor.
+ *
+ * This parameter is detected by the initialization code, and used by the window
+ * overflow/underflow and context aware trap entry/exit codes.
+ */
 uint32 detected_sparc_register_windows = SPARC_DEFAULT_REGISTER_WINDOW_COUNT;
 
 
 /*==================[internal functions definition]==========================*/
 
 
+/**
+ * \brief Low level function return catcher.
+ *
+ * Every task's stack is initialized in such a way that if the main body function of the
+ * task returns without having called TerminateTask() o ChainTask(), the return address
+ * points to the start of this function.
+ *
+ * This restricts the possible failure modes caused by the runaway task and facilitates
+ * debugging.
+ *
+ * TODO Currently this function does nothing. Alternatives would be:
+ * * To reboot the application whenever a task falls here.
+ * * To call ErrorHook() somehow.
+ * * To trap to the debugger (only useful during the debugging phase.)
+ */
 void taskReturnSafetyNet(void)
 {
    /* Tasks shouldn't return here, but if they do this should act
@@ -102,7 +151,11 @@ void taskReturnSafetyNet(void)
    }
 }
 
-
+/**
+ * \brief Trap level context handler routine, do not call directly. Use JmpTask() and CallTask() instead.
+ *
+ * FIXME Fuse with sparcChangeContextSWTrapHandler(), both functions do the same.
+ */
 void sparcSetTaskContextSWTrapHandler()
 {
    DisableAllInterrupts();
@@ -116,6 +169,11 @@ void sparcSetTaskContextSWTrapHandler()
 }
 
 
+/**
+ * \brief Trap level context handler routine, do not call directly. Use JmpTask() and CallTask() instead.
+ *
+ * FIXME Fuse with sparcSetContextSWTrapHandler(), both functions do the same.
+ */
 void sparcReplaceTaskContextSWTrapHandler()
 {
    DisableAllInterrupts();
@@ -132,6 +190,14 @@ void sparcReplaceTaskContextSWTrapHandler()
 /*==================[external functions definition]==========================*/
 
 
+/**
+ * \brief SPARC implementation of the OSEK low-level interface routine SaveContext().
+ *
+ * The context saving/restoring code of the SPARC port does not need to use this function, so
+ * it is declared here only a place holder.
+ *
+ * @param runningTask TaskId of the task whose context must be saved.
+ */
 void SaveContext(TaskType runningTask)
 {
    if(TasksVar[runningTask].Flags.State == TASK_ST_WAITING)
@@ -140,20 +206,30 @@ void SaveContext(TaskType runningTask)
    }
 }
 
-
+/**
+ * \brief SPARC implementation of the OSEK low-level interface routine CallTask().
+ *
+ * @param currentTask Currently running task's id, whose context needs to be retired from the cpu.
+ * @param newTask TaskId of the task whose context needs to be installed on the cpu.
+ */
 void CallTask(TaskType currentTask, TaskType newTask)
 {
-   /* TODO this should be atomic */
+   /* FIXEME this should be atomic */
    sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
 
    sparcSystemServiceTriggerReplaceTaskContext();
-   /* TODO end of atomic section */
+   /* FIXME end of atomic section */
 }
 
 
+/**
+ * \brief SPARC implementation of the OSEK low-level interface routine JmpTask().
+ *
+ * @param newTask TaskId of the task whose context needs to be installed on the cpu.
+ */
 void JmpTask(TaskType newTask)
 {
-   /* TODO this should be atomic */
+   /* FIXME this should be atomic */
    sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
 
    if(WaitingTask != INVALID_TASK)
@@ -166,10 +242,18 @@ void JmpTask(TaskType newTask)
    {
       sparcSystemServiceTriggerSetTaskContext();
    }
-   /* TODO end of atomic section */
+   /* FIXME end of atomic section */
 }
 
-
+/**
+ * \brief Task state initialization routine.
+ *
+ * This function initializes the state of a user task, including both the context data block and the task's stack.
+ *
+ * In SPARC this routine also sets the read-not-write-context flag on the tasks context data.
+ *
+ * @param TaskID TaskId of the task whose state information must be initialized.
+ */
 void SetEntryPoint(TaskType TaskID)
 {
    uint32 *stackStartPointer;
