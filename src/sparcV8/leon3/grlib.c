@@ -33,8 +33,8 @@
 
 /** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file sparc/grlib.c
- ** \arch sparc
+ ** \file sparcV8/grlib.c
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK
@@ -53,8 +53,14 @@
 
 /*==================[macros and definitions]=================================*/
 
-
+/**
+ * \brief AMBA AHB Master devices Plug&Play table base address.
+ */
 #define GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS_MASTERS 0xFFFFF000
+
+/**
+ * \brief AMBA AHB Slave devices Plug&Play table base address.
+ */
 #define GAISLER_PNP_AHB_DEVICE_TABLE_ADDRESS_SLAVES  0xFFFFF800
 
 
@@ -67,6 +73,13 @@
 /*==================[internal data definition]===============================*/
 
 
+/**
+ * \brief Shadow variable with the value of the system frequency.
+ *
+ * This is handled internally. It is set by the operating system after having autodetected
+ * the system frequency during OS initialization, and is later accessed (through external module
+ * services).
+ */
 int32_t  grSystemFrequencyValueInHz = -1;
 
 
@@ -79,6 +92,19 @@ int32_t  grSystemFrequencyValueInHz = -1;
 /*==================[external functions definition]==========================*/
 
 
+/**
+ * \brief Read AMBA AHB Master information on the Plug&Play device information
+ * table on the system.
+ *
+ * The user provides a set of filters, and the function returns the data of a device
+ * that matches the provided data filters (vendor, device id, repetition order, etc.)
+ *
+ * @param requestedVendorId A GRLIB device vendor ID or GRLIB_PNP_VENDOR_ID_ANY to match with any vendor.
+ * @param requestedDeviceId A GRLIB device ID or GRLIB_PNP_DEVICE_ID_ANY if ID to match with any device id.
+ * @param ahbDeviceInfo Pointer to a AHB device information data block, where the device information will be returned (if a matching device was found).
+ * @param ahbDeviceIndex Number of device repetition to return. If index=0, the first device matching the filters will be returned, if index=1 the second, if index=2 the third...
+ * @return 0 if a matching device was found, -1 otherwise.
+ */
 int32_t  grWalkPlugAndPlayAHBMastersDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t  ahbDeviceIndex)
 {
    uint32_t *deviceTablePtr;
@@ -190,6 +216,19 @@ int32_t  grWalkPlugAndPlayAHBMastersDeviceTable(uint32_t requestedVendorId, uint
 }
 
 
+/**
+ * \brief Read AMBA AHB Slaves information on the Plug&Play device information
+ * table on the system.
+ *
+ * The user provides a set of filters, and the function returns the data of a device
+ * that matches the provided data filters (vendor, device id, repetition order, etc.)
+ *
+ * @param requestedVendorId A GRLIB device vendor ID or GRLIB_PNP_VENDOR_ID_ANY to match with any vendor.
+ * @param requestedDeviceId A GRLIB device ID or GRLIB_PNP_DEVICE_ID_ANY if ID to match with any device id.
+ * @param ahbDeviceInfo Pointer to a AHB device information data block, where the device information will be returned (if a matching device was found).
+ * @param ahbDeviceIndex Number of device repetition to return. If index=0, the first device matching the filters will be returned, if index=1 the second, if index=2 the third...
+ * @return 0 if a matching device was found, -1 otherwise.
+ */
 int32_t  grWalkPlugAndPlayAHBSlavesDeviceTable(uint32_t requestedVendorId, uint32_t requestedDeviceId, grPlugAndPlayAHBDeviceTableEntryType *ahbDeviceInfo, int32_t  ahbDeviceIndex)
 {
    uint32_t *deviceTablePtr;
@@ -300,7 +339,21 @@ int32_t  grWalkPlugAndPlayAHBSlavesDeviceTable(uint32_t requestedVendorId, uint3
    return returnValue;
 }
 
-
+/**
+ * \brief Read AMBA APB device information from any and all APB master devices on the system.
+ *
+ * The user provides a set of filters, and the function returns the data of a device
+ * that matches the provided data filters (vendor, device id, repetition order, etc.)
+ *
+ * The routine sequentially searches through all of the APB device tables on the system, on the same
+ * order in which their masters are found on the AHB Slave device information table on the main AHB bus.
+ *
+ * @param requestedVendorId A GRLIB device vendor ID or GRLIB_PNP_VENDOR_ID_ANY to match with any vendor.
+ * @param requestedDeviceId A GRLIB device ID or GRLIB_PNP_DEVICE_ID_ANY if ID to match with any device id.
+ * @param apbDeviceInfo Pointer to a AHB device information data block, where the device information will be returned (if a matching device was found).
+ * @param apbDeviceIndex Number of device repetition to return. If index=0, the first device matching the filters will be returned, if index=1 the second, if index=2 the third...
+ * @return 0 if a matching device was found, -1 otherwise.
+ */
 int32_t  grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t requesteDeviceId, grPlugAndPlayAPBDeviceTableEntryType *apbDeviceInfo, int32_t  apbDeviceIndex)
 {
    grPlugAndPlayAHBDeviceTableEntryType apbCtrlDeviceConfiguration;
@@ -452,6 +505,13 @@ int32_t  grWalkPlugAndPlayAPBDeviceTable(uint32_t requestedVendorId, uint32_t re
 }
 
 
+/**
+ * \brief Accesses a memory-mapped device register for writing.
+ *
+ * @param baseAddr Base address of the memory-mapped device.
+ * @param offset   Relative offset of the register to access.
+ * @param newValue Value that is to be written on the memory-mapped register.
+ */
 void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceRegisterValue newValue)
 {
    grDeviceRegisterValue *registerPtr;
@@ -463,7 +523,13 @@ void grRegisterWrite(grDeviceAddress baseAddr, grDeviceAddress offset, grDeviceR
    *registerPtr = newValue;
 }
 
-
+/**
+ * \brief Accesses a memory-mapped device register for reading.
+ *
+ * @param baseAddr Base address of the memory-mapped device.
+ * @param offset   Relative offset of the register to access.
+ * return          The value read from the memory-mapped register.
+ */
 grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress offset)
 {
    grDeviceRegisterValue *registerPtr;
@@ -476,18 +542,44 @@ grDeviceRegisterValue grRegisterRead(grDeviceAddress baseAddr, grDeviceAddress o
 }
 
 
+/**
+ * \brief Returns internally stored system frequency information.
+ *
+ * TODO this is an ugly hack to allow the drivers modules to determine the system frequency without having to
+ * duplicate the autodetection code there that is already performed by the operating system, but this solution
+ * is not really elegant and should probably be replaced with some other method of communication between
+ * rtos and drivers.
+ *
+ * @return  The frequency value, in hertz.
+ */
 int32_t  grGetSystemClockFrequencyValue()
 {
    return grSystemFrequencyValueInHz;
 }
 
-
+/**
+ * \brief Sets the internally stored information about the system clock frequency.
+ *
+ * This must be called by the operating system during system initialization.
+ *
+ * TODO this is an ugly hack to allow the drivers modules to determine the system frequency without having to
+ * duplicate the autodetection code there that is already performed by the operating system, but this solution
+ * is not really elegant and should probably be replaced with some other method of communication between
+ * rtos and drivers.
+ *
+ * @return  The frequency value, in hertz.
+ */
 void grSetSystemClockFrequencyValue(int32_t  systemFrequencyInHz)
 {
    grSystemFrequencyValueInHz = systemFrequencyInHz;
 }
 
-
+/**
+ * \brief Enables LEON3 data and instruction caches.
+ *
+ * This is something that needs to be done during system boot, because by default both caches are disabled
+ * after power-on.
+ */
 void grEnableProcessorCaches()
 {
    asm ( "flush\n\t"
@@ -496,7 +588,11 @@ void grEnableProcessorCaches()
          : /* no output registers */ : /* no input registers */ : "%g1" /* clobbered registers */ );
 }
 
-
+/**
+ * \brief Read the LEON3 CPU synthesis time configuration from a hidden system register.
+ *
+ * @param Pointer to the grCpuConfigType data struct where the configuration data will be returned.
+ */
 void grGetCPUConfig(grCpuConfigType *config)
 {
    uint32_t cpuConfig;
@@ -518,6 +614,11 @@ void grGetCPUConfig(grCpuConfigType *config)
 }
 
 
+/**
+ * \brief Read the LEON3 instruction cache synthesis time configuration from a hidden system register.
+ *
+ * @param Pointer to the grCacheConfigType data struct where the configuration data will be returned.
+ */
 void grGetICacheConfig(grCacheConfigType *config)
 {
    uint32_t instructionCacheConfig;
@@ -550,7 +651,11 @@ void grGetICacheConfig(grCacheConfigType *config)
    }
 }
 
-
+/**
+ * \brief Read the LEON3 data cache synthesis time configuration from a hidden system register.
+ *
+ * @param Pointer to the grCacheConfigType data struct where the configuration data will be returned.
+ */
 void grGetDCacheConfig(grCacheConfigType *config)
 {
    uint32_t dataCacheConfig;
