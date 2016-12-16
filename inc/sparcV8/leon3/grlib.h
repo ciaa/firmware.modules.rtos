@@ -37,8 +37,8 @@
 
 /** \brief FreeOSEK Internal Architecture CPU Auxiliar Header File
  **
- ** \file sparc/leon3/grlib.h
- ** \arch sparc/leon3
+ ** \file sparcV8/leon3/grlib.h
+ ** \arch sparcV8/leon3
  **/
 
 /** \addtogroup FreeOSEK
