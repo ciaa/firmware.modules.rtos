@@ -33,8 +33,8 @@
 
 /** \brief FreeOSEK Os Arch Implementation File
  **
- ** \file sparc/Os_Arch.c
- ** \arch sparc
+ ** \file sparcV8/Os_Arch.c
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK
