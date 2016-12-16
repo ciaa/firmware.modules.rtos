@@ -35,8 +35,8 @@
 
 /** \brief SPARC Architecture Support Header File
  **
- ** \file sparc/sparcsyscalls.h
- ** \arch sparc
+ ** \file sparcV8/sparcsyscalls.h
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK

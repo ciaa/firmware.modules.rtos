@@ -36,8 +36,8 @@
 
 /** \brief FreeOSEK Internal Architecture Dependent Header File
  **
- ** \file sparc/Os_Internal_Arch.h
- ** \arch sparc
+ ** \file sparcV8/Os_Internal_Arch.h
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK
@@ -76,6 +76,9 @@
  ** Osek_Internal_Arch_Cpu file which is not standard for all architectures.
  ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is needed
  ** remove the macro and this comment.
+ **
+ ** The typo must be preserved because this is how the macro is called on the
+ ** FreeOSEK source code.
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
 
@@ -119,7 +122,7 @@
 /** \brief Disable OS Interruptions
  **
  ** Disable OS configured interrupts (ISR1 and ISR2). This macro is currently never
- ** called from anyhwere in the code.
+ ** called from anywhere in the code.
  **
  **/
 #define DisableOSInterrupts() { sparcEnableAllInterrupts(); }
@@ -128,7 +131,7 @@
 /** \brief Disable Interruptions
  **
  ** Disable not OS configured interrupts (ISR1 and ISR2). This macro is currently never
- ** called from anyhwere in the code.
+ ** called from anywhere in the code.
  **
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use DisableOSInterrupts.
@@ -196,25 +199,16 @@ extern uint32 detected_sparc_register_windows;
 /*==================[external functions declaration]=========================*/
 
 
-/** \brief Save context of task that has just gone into Waiting state.
- *
- * This is only used in WaitEvent when the task needs to sleep to wait for the event.
- **/
+
 void SaveContext(TaskType task);
 
 
-/** \brief Replace the currently running task context for a new one.
- **/
 void CallTask(TaskType actualtask, TaskType nexttask);
 
 
-/** \brief Set the currently active task context
- **/
 void JmpTask(TaskType task);
 
 
-/** \brief Set the entry point for a task
- **/
 void SetEntryPoint(TaskType task);
 
 
