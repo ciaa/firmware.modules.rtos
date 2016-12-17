@@ -67,14 +67,6 @@
 
 
 /**
- * \brief FIXME This variable is not used on the SPARC V8 implementation. Delete it in a future revision. */
-TaskType TerminatingTask = INVALID_TASK;
-
-/**
- * \brief FIXME This variable is not used on the SPARC V8 implementation. Delete it in a future revision. */
-TaskType WaitingTask = INVALID_TASK;
-
-/**
  * \brief Communication variable between user and trap versions of CallTask and JmpTask.
  *
  * There is potential for race conditions when updating this variable, because the modification and the triggering
@@ -151,43 +143,32 @@ void taskReturnSafetyNet(void)
    }
 }
 
-/**
- * \brief Trap level context handler routine, do not call directly. Use JmpTask() and CallTask() instead.
- *
- * FIXME Fuse with sparcChangeContextSWTrapHandler(), both functions do the same.
- */
-void sparcSetTaskContextSWTrapHandler()
-{
-   IntSecure_Start();
-
-   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
-
-   /* unset the frozen-context flag */
-   *(active_thread_context_stack_pointer + 19) = 0x00000000;
-
-   IntSecure_End();
-}
-
-
-/**
- * \brief Trap level context handler routine, do not call directly. Use JmpTask() and CallTask() instead.
- *
- * FIXME Fuse with sparcSetContextSWTrapHandler(), both functions do the same.
- */
-void sparcReplaceTaskContextSWTrapHandler()
-{
-   IntSecure_Start();
-
-   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
-
-   /* unset the frozen-context flag */
-   *(active_thread_context_stack_pointer + 19) = 0x00000000;
-
-   IntSecure_End();
-}
-
 
 /*==================[external functions definition]==========================*/
+
+
+/*
+ * TODO Eliminate this function. This functionality should be incorporated within contextAwareTrapHandler()
+ * */
+void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
+{
+   sparcAssert(serviceId >= 0, "Invalid index");
+   sparcAssert(serviceId <= 1, "Invalid index");
+
+   /* It used to be the case that there were two services, one for JmpTask() and
+    * another for CallTask(), but not anymore. */
+
+   IntSecure_Start();
+
+   sparcNewContextPtr = TasksConst[RunningTask].TaskContext;
+
+   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
+
+   /* unset the frozen-context flag */
+   *(active_thread_context_stack_pointer + 19) = 0x00000000;
+
+   IntSecure_End();
+}
 
 
 /**
@@ -200,10 +181,7 @@ void sparcReplaceTaskContextSWTrapHandler()
  */
 void SaveContext(TaskType runningTask)
 {
-   if(TasksVar[runningTask].Flags.State == TASK_ST_WAITING)
-   {
-      WaitingTask = runningTask;
-   }
+   /* nop */
 }
 
 /**
@@ -214,11 +192,7 @@ void SaveContext(TaskType runningTask)
  */
 void CallTask(TaskType currentTask, TaskType newTask)
 {
-   /* FIXEME this should be atomic */
-   sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
-
    sparcSystemServiceTriggerReplaceTaskContext();
-   /* FIXME end of atomic section */
 }
 
 
@@ -229,20 +203,7 @@ void CallTask(TaskType currentTask, TaskType newTask)
  */
 void JmpTask(TaskType newTask)
 {
-   /* FIXME this should be atomic */
-   sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
-
-   if(WaitingTask != INVALID_TASK)
-   {
-      WaitingTask = INVALID_TASK;
-
-      sparcSystemServiceTriggerReplaceTaskContext();
-   }
-   else
-   {
-      sparcSystemServiceTriggerSetTaskContext();
-   }
-   /* FIXME end of atomic section */
+   sparcSystemServiceTriggerReplaceTaskContext();
 }
 
 /**
