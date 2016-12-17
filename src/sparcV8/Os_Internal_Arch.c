@@ -105,27 +105,27 @@ void taskReturnSafetyNet(void)
 
 void sparcSetTaskContextSWTrapHandler()
 {
-   DisableAllInterrupts();
+   IntSecure_Start();
 
    active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
 
    /* unset the frozen-context flag */
    *(active_thread_context_stack_pointer + 19) = 0x00000000;
 
-   EnableAllInterrupts();
+   IntSecure_End();
 }
 
 
 void sparcReplaceTaskContextSWTrapHandler()
 {
-   DisableAllInterrupts();
+   IntSecure_Start();
 
    active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
 
    /* unset the frozen-context flag */
    *(active_thread_context_stack_pointer + 19) = 0x00000000;
 
-   EnableAllInterrupts();
+   IntSecure_End();
 }
 
 
