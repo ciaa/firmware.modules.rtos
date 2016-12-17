@@ -36,8 +36,8 @@
 
 /** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
  **
- ** \file sparc/leon3/Os_Internal_Arch_Cpu.h
- ** \arch sparc/leon3
+ ** \file sparcV8/leon3/Os_Internal_Arch_Cpu.h
+ ** \arch sparcV8/leon3
  **/
 
 /** \addtogroup FreeOSEK

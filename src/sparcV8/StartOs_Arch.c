@@ -35,8 +35,8 @@
  **
  ** This file implements the StartOs Arch API
  **
- ** \file sparc/StartOs_Arch.c
- ** \arch sparc
+ ** \file sparcV8/StartOs_Arch.c
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK
@@ -59,6 +59,8 @@
 /*==================[internal data declaration]==============================*/
 
 
+/**
+ * \brief Internal flag that is used not to execute the code within StartOs_Arch twice. See StartOs_Arch() for further comments. */
 int32_t sparcArchitectureAlreadyInitialized = 0;
 
 
@@ -79,12 +81,10 @@ extern uint32 sparc_system_trap_table;
 
 /*==================[internal functions definition]==========================*/
 
-
+/**
+ * \brief Sets the TBR processor register so that it points to our own internal system trap table. */
 void sparcSetupReplaceTrapTable()
 {
-   /* Replace the current trap base register value with the address of our new
-    * system trap table. */
-
    __asm__ (
          "sethi %%hi(sparc_system_trap_table), %%l1\n\t"
          "or %%l1, %%lo(sparc_system_trap_table), %%l1\n\t"
@@ -93,7 +93,6 @@ void sparcSetupReplaceTrapTable()
          "nop\n\t"
          "nop\n\t"
          : /* no output registers */ : /* no input registers */ : "%l1" /* clobbered registers */ );
-
 }
 
 
@@ -104,10 +103,10 @@ void StartOs_Arch(void)
 {
    /* This initialization code is called from StartOs(), but that is only pro-forma.
     *
-    * In true, it is called before when StartOs calls IntSecure_Start(). That is so because
-    * in order to execute SuspendAllInterrupts the architecture needs to be already
-    * initialized (IRQMP address needs to be known, the trap table must already have
-    * been initialized).
+    * In actual code execution order it is called when StartOs calls IntSecure_Start().
+    * That is so because in order to execute SuspendAllInterrupts from StartOs() the
+    * architecture needs to be already initialized (IRQMP address needs to be known,
+    * the trap table must already have been initialized).
     *
     * To avoid executing the initialization code multiple times a flag is set after
     * the first run.

@@ -33,8 +33,8 @@
 
 /** \brief FreeOSEK Os Internal Arch Implementation File
  **
- ** \file sparc/Os_Internal_Arch.c
- ** \arch sparc
+ ** \file sparcV8/Os_Internal_Arch.c
+ ** \arch sparcV8
  **/
 
 /** \addtogroup FreeOSEK
@@ -67,22 +67,54 @@
 /*==================[internal data definition]===============================*/
 
 
+/**
+ * \brief Base address of the MPIRQ interrupt controller of the system.
+ *
+ * This value is automatically detected during initialization.
+ */
 grDeviceAddress sparcIRQMPBaseAddress;
 
+/**
+ * \brief System clock frequency.
+ *
+ * This value is automatically detected during initialization.
+ */
 uint32_t sparcSystemFrequencyHz;
 
+/**
+ * \brief Base address of the system timer.
+ *
+ * This value is automatically detected during initialization.
+ */
 grDeviceAddress sparcGPTIMER0BaseAddress;
 
+/**
+ * \brief IRQ number of the system timer.
+ *
+ * This value is automatically detected during initialization.
+ */
 uint32_t sparcGPTIMER0IRQNumber;
 
+/**
+ * \brief Bit mask of the IRQ numbers with a registered ISR1 interrupt service handler routine. */
 uint32_t sparcISR1HandlersMask = 0x00;
 
+/**
+ * \brief Bit mask of the IRQ numbers with a registered ISR2 interrupt service handler routine. */
 uint32_t sparcISR2HandlersMask = 0x00;
 
+/**
+ * \brief Bit mask of the currently enabled interrupt sources.
+ *
+ * This value shadows the value on the IRQ Enable register on the IRQMP module.
+ */
 uint32_t sparcCurrentInterruptMask = 0x00;
 
-/*
- * External Interrupt handlers
+/**
+ * \brief Registered user interrupt handlers table.
+ *
+ * This table is populated by sparcRegisterISR1Handler() and sparcRegisterISR2Handler() during
+ * system initialization.
  * */
 sparcIrqHandlerRef sparcIRQHandlersTable[15] = {
       0x00, /* Index 00, IRQ 1 */
@@ -103,8 +135,10 @@ sparcIrqHandlerRef sparcIRQHandlersTable[15] = {
 };
 
 
-/*
- * Task context replacement services handler function
+/**
+ * \brief Task context replacement services handler function.
+ *
+ * FIXME Delete this. This functionality should be done within taskContextAwareTrapHandler.
  * */
 const sparcIrqHandlerRef sparcTaskContextReplacementServiceHandlers[2] = {
       sparcSetTaskContextSWTrapHandler, /* Index 15, set task context handler */
@@ -118,6 +152,11 @@ const sparcIrqHandlerRef sparcTaskContextReplacementServiceHandlers[2] = {
 /*==================[internal functions definition]==========================*/
 
 
+/**
+ * \brief Executes the user interrupt handler associated with a given IRQ number.
+ *
+ * @param irqNumber IRQ number of the requested handler.
+ */
 void sparcInterruptHandlerCaller(uint32_t irqNumber)
 {
    sparcIrqHandlerRef irqHandler;
@@ -142,7 +181,9 @@ void sparcInterruptHandlerCaller(uint32_t irqNumber)
    sparcClearInterrupt(irqNumber);
 }
 
-
+/*
+ * FIXME Eliminate this function. This functionality should be incorporated within contextAwareTrapHandler()
+ * */
 void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
 {
    sparcIrqHandlerRef serviceHandler;
@@ -157,6 +198,8 @@ void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
 }
 
 
+/**
+ * \brief Configures the GPTIMER module to generate interrupts once every tick. */
 void sparcSetModularTimerConfiguration()
 {
    uint32_t timersInUseMask;
@@ -261,7 +304,11 @@ void sparcSetModularTimerConfiguration()
    }
 }
 
-
+/**
+ * \brief Determines the processor clock frequency.
+ *
+ * See comments inside for an understanding of HOW the frequency is determined.
+ */
 void sparcAutodetectSystemClockFrequency()
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
@@ -295,6 +342,11 @@ void sparcAutodetectSystemClockFrequency()
 }
 
 
+/**
+ * \brief Reads the CPU configuration data and determines the number of register windows that were implemented in the system.
+ *
+ * The window count information is stored on the global variable detected_sparc_register_windows.
+ */
 void sparcAutodetectProcesorRegisterWindowsSetSize()
 {
    grCpuConfigType cpuConfig;
@@ -306,6 +358,12 @@ void sparcAutodetectProcesorRegisterWindowsSetSize()
 }
 
 
+/**
+ * \brief Detects the base address of the IRQMP interrupt controller.
+ *
+ * The base address information is stored on a global variable for later reference by other functions
+ * within the same module.
+ */
 void sparcAutodetectInterruptControllerAddress()
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
@@ -325,6 +383,10 @@ void sparcAutodetectInterruptControllerAddress()
 }
 
 
+
+/**
+ * \brief Detects data and instruction cache information.
+ */
 void sparcAutodetectMemoryHierachyConfiguration()
 {
    grCacheConfigType instructionCacheConfig;
@@ -342,13 +404,18 @@ void sparcAutodetectMemoryHierachyConfiguration()
 }
 
 
+/**
+ * \brief Detects and configures the system timer.
+ *
+ * Uses the first GPTIMER module on the AMBA bus to generate the system ticks.
+ */
 void sparcSetupSystemTimer(void)
 {
    grPlugAndPlayAPBDeviceTableEntryType apbDeviceInfo;
    int32_t retCode;
 
    /*
-    * Configurate the hardware timer and set the ISR for HardwareCounter
+    * Configure the hardware timer and set the ISR for HardwareCounter
     * */
 
    /* Detect the hardware address and irq information of the timer module */
@@ -373,7 +440,13 @@ void sparcSetupSystemTimer(void)
 
 /*==================[external functions definition]==========================*/
 
-
+/**
+ * \brief Implementation of the OSEK low-level OsekPause() function.
+ *
+ * In SPARC LEON3 this executes an instruction that sets the processor in low-power mode.
+ *
+ * FIXME This function should be inlined or replaced with a macro.
+ */
 void sparcOsekPause()
 {
 
@@ -386,7 +459,14 @@ void sparcOsekPause()
    asm("wr %g0, %asr19");
 }
 
-
+/**
+ * \brief Registers a new ISR1 user interrupt handler.
+ *
+ * This is used only by the initialization code. Uses should never call this.
+ *
+ * @param newHandler Interrupt service routine pointer.
+ * @param irq IRQ number to associate the handler to.
+ */
 void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 {
    uint32_t newInterruptMask;
@@ -402,7 +482,14 @@ void sparcRegisterISR1Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
    sparcIRQHandlersTable[irq - 1] = newHandler;
 }
 
-
+/**
+ * \brief Registers a new ISR2 user interrupt handler.
+ *
+ * This is used only by the initialization code. Uses should never call this.
+ *
+ * @param newHandler Interrupt service routine pointer.
+ * @param irq IRQ number to associate the handler to.
+ */
 void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
 {
    uint32_t newInterruptMask;
@@ -418,7 +505,23 @@ void sparcRegisterISR2Handler(sparcIrqHandlerRef newHandler, sparcIrqNumber irq)
    sparcIRQHandlersTable[irq - 1] = newHandler;
 }
 
-
+/**
+ * \brief Clears an interrupt flag on the interrupt controller.
+ *
+ *  Users should not call this directly unless they are writing
+ *  ISR1 interrupt service handlers.
+ *
+ *  For ISR2 interrupts, this function is called by the boilerplate
+ *  code that is automatically generated during the OSEK-OS
+ *  system generation phase of the build process.
+ *
+ *  FIXME I'm not sure that this function is accessible from user code
+ *  if for use within ISR1 interrupt handler routines. This should
+ *  be declared on the external section of the file and a function
+ *  declaration should be added to the module header file.
+ *
+ * @param irq IRQ number of the interrupt whose flag must be cleared.
+ */
 void sparcClearInterrupt(sparcIrqNumber irq)
 {
    uint32_t interruptBitMask;
@@ -428,7 +531,11 @@ void sparcClearInterrupt(sparcIrqNumber irq)
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_CLEAR_REGISTER, interruptBitMask);
 }
 
-
+/**
+ * \brief Uses the interrupt controller to force an interrupt request on the system.
+ *
+ *  No one should ever call this. This is for exclusive use of the OSEK-OS test harness.
+ */
 void sparcForceInterrupt(sparcIrqNumber irq)
 {
    uint32_t interruptBitMask;
@@ -438,7 +545,11 @@ void sparcForceInterrupt(sparcIrqNumber irq)
    grRegisterWrite(sparcIRQMPBaseAddress, IRQMP_INTERRUPT_FORCE_REGISTER, interruptBitMask);
 }
 
-
+/**
+ * \brief Enables all of the registered interrupts on the system interrupt controller.
+ *
+ * This enables both ISR1 and ISR2 registered system interrupts.
+ */
 void sparcEnableAllInterrupts(void)
 {
    uint32_t previousProcessorInterruptLevel;
@@ -456,7 +567,9 @@ void sparcEnableAllInterrupts(void)
    sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
-
+/**
+ * \brief Disables all interrupts through on the system interrupt controller.
+ */
 void sparcDisableAllInterrupts(void)
 {
    uint32_t previousProcessorInterruptLevel;
@@ -474,7 +587,9 @@ void sparcDisableAllInterrupts(void)
    sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
-
+/**
+ * \brief Enables all registered ISR2 interrupts on the interrupt controller.
+ */
 void sparcEnableISR2Interrupts(void)
 {
    uint32_t previousProcessorInterruptLevel;
@@ -492,7 +607,9 @@ void sparcEnableISR2Interrupts(void)
    sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
-
+/**
+ * \brief Enables all registered ISR1 interrupts on the interrupt controller.
+ */
 void sparcDisableISR2Interrupts(void)
 {
    uint32_t previousProcessorInterruptLevel;
@@ -510,7 +627,9 @@ void sparcDisableISR2Interrupts(void)
    sparcSystemSetProcessorInterruptLevel(previousProcessorInterruptLevel);
 }
 
-
+/**
+ * \brief LEON3 specific initialization code.
+ */
 void StartOs_Arch_Cpu(void)
 {
    /* Enable processor caches.
@@ -534,7 +653,10 @@ void StartOs_Arch_Cpu(void)
    sparcAutodetectInterruptControllerAddress();
 }
 
-
+/**
+ * \brief Checks the interrupt pending bits on the system timer module, and invokes the corresponding OSEK timer
+ * increment routines.
+ */
 void sparcCheckPendingTimerInterrupts()
 {
    uint32_t timersInUseMask;

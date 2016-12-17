@@ -39,8 +39,8 @@
  ** This file is included form os.h and defines macros
  ** and types which depend on the architecture.
  **
- ** \file sparc/Os_Arch.h
- ** \arch sparc
+ ** \file sparcV8/Os_Arch.h
+ ** \arch sparcV8
  **
  **/
 
