@@ -67,14 +67,6 @@
 
 
 /**
- * \brief FIXME This variable is not used on the SPARC V8 implementation. Delete it in a future revision. */
-TaskType TerminatingTask = INVALID_TASK;
-
-/**
- * \brief FIXME This variable is not used on the SPARC V8 implementation. Delete it in a future revision. */
-TaskType WaitingTask = INVALID_TASK;
-
-/**
  * \brief Communication variable between user and trap versions of CallTask and JmpTask.
  *
  * There is potential for race conditions when updating this variable, because the modification and the triggering
@@ -160,6 +152,8 @@ void sparcSetTaskContextSWTrapHandler()
 {
    IntSecure_Start();
 
+   sparcNewContextPtr = TasksConst[RunningTask].TaskContext;
+
    active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
 
    /* unset the frozen-context flag */
@@ -177,6 +171,8 @@ void sparcSetTaskContextSWTrapHandler()
 void sparcReplaceTaskContextSWTrapHandler()
 {
    IntSecure_Start();
+
+   sparcNewContextPtr = TasksConst[RunningTask].TaskContext;
 
    active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
 
@@ -200,10 +196,7 @@ void sparcReplaceTaskContextSWTrapHandler()
  */
 void SaveContext(TaskType runningTask)
 {
-   if(TasksVar[runningTask].Flags.State == TASK_ST_WAITING)
-   {
-      WaitingTask = runningTask;
-   }
+   /* nop */
 }
 
 /**
@@ -214,11 +207,7 @@ void SaveContext(TaskType runningTask)
  */
 void CallTask(TaskType currentTask, TaskType newTask)
 {
-   /* FIXEME this should be atomic */
-   sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
-
    sparcSystemServiceTriggerReplaceTaskContext();
-   /* FIXME end of atomic section */
 }
 
 
@@ -229,20 +218,7 @@ void CallTask(TaskType currentTask, TaskType newTask)
  */
 void JmpTask(TaskType newTask)
 {
-   /* FIXME this should be atomic */
-   sparcNewContextPtr = TasksConst[(newTask)].TaskContext;
-
-   if(WaitingTask != INVALID_TASK)
-   {
-      WaitingTask = INVALID_TASK;
-
-      sparcSystemServiceTriggerReplaceTaskContext();
-   }
-   else
-   {
-      sparcSystemServiceTriggerSetTaskContext();
-   }
-   /* FIXME end of atomic section */
+   sparcSystemServiceTriggerReplaceTaskContext();
 }
 
 /**
