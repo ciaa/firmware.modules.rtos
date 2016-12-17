@@ -135,17 +135,6 @@ sparcIrqHandlerRef sparcIRQHandlersTable[15] = {
 };
 
 
-/**
- * \brief Task context replacement services handler function.
- *
- * FIXME Delete this. This functionality should be done within taskContextAwareTrapHandler.
- * */
-const sparcIrqHandlerRef sparcTaskContextReplacementServiceHandlers[2] = {
-      sparcSetTaskContextSWTrapHandler, /* Index 15, set task context handler */
-      sparcReplaceTaskContextSWTrapHandler /* Index 16, Replace task context handler */
-};
-
-
 /*==================[external data definition]===============================*/
 
 
@@ -179,22 +168,6 @@ void sparcInterruptHandlerCaller(uint32_t irqNumber)
    /* Clear the interrupt flag on the IRQMP
     * controller */
    sparcClearInterrupt(irqNumber);
-}
-
-/*
- * FIXME Eliminate this function. This functionality should be incorporated within contextAwareTrapHandler()
- * */
-void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
-{
-   sparcIrqHandlerRef serviceHandler;
-
-   sparcAssert(serviceId >= 0, "Invalid index");
-   sparcAssert(serviceId <= 1, "Invalid index");
-
-   /* Call the actual service provider function */
-   serviceHandler = sparcTaskContextReplacementServiceHandlers[serviceId];
-
-   (*serviceHandler)();
 }
 
 

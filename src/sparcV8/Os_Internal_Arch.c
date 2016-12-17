@@ -143,47 +143,32 @@ void taskReturnSafetyNet(void)
    }
 }
 
-/**
- * \brief Trap level context handler routine, do not call directly. Use JmpTask() and CallTask() instead.
- *
- * FIXME Fuse with sparcChangeContextSWTrapHandler(), both functions do the same.
- */
-void sparcSetTaskContextSWTrapHandler()
-{
-   IntSecure_Start();
-
-   sparcNewContextPtr = TasksConst[RunningTask].TaskContext;
-
-   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
-
-   /* unset the frozen-context flag */
-   *(active_thread_context_stack_pointer + 19) = 0x00000000;
-
-   IntSecure_End();
-}
-
-
-/**
- * \brief Trap level context handler routine, do not call directly. Use JmpTask() and CallTask() instead.
- *
- * FIXME Fuse with sparcSetContextSWTrapHandler(), both functions do the same.
- */
-void sparcReplaceTaskContextSWTrapHandler()
-{
-   IntSecure_Start();
-
-   sparcNewContextPtr = TasksConst[RunningTask].TaskContext;
-
-   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
-
-   /* unset the frozen-context flag */
-   *(active_thread_context_stack_pointer + 19) = 0x00000000;
-
-   IntSecure_End();
-}
-
 
 /*==================[external functions definition]==========================*/
+
+
+/*
+ * TODO Eliminate this function. This functionality should be incorporated within contextAwareTrapHandler()
+ * */
+void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
+{
+   sparcAssert(serviceId >= 0, "Invalid index");
+   sparcAssert(serviceId <= 1, "Invalid index");
+
+   /* It used to be the case that there were two services, one for JmpTask() and
+    * another for CallTask(), but not anymore. */
+
+   IntSecure_Start();
+
+   sparcNewContextPtr = TasksConst[RunningTask].TaskContext;
+
+   active_thread_context_stack_pointer = sparcNewContextPtr->TaskContextData;
+
+   /* unset the frozen-context flag */
+   *(active_thread_context_stack_pointer + 19) = 0x00000000;
+
+   IntSecure_End();
+}
 
 
 /**
