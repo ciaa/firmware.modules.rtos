@@ -252,14 +252,14 @@ void sparcSetModularTimerConfiguration()
        * The period of each of the timers depends on timer's index number.
        * */
       switch (timerIndex) {
-      case 0 : timerNReloadRegister =    1000 - 1; break; /*    1 ms */
-      case 1 : timerNReloadRegister =    5000 - 1; break; /*    5 ms */
-      case 2 : timerNReloadRegister =   10000 - 1; break; /*   10 ms */
-      case 3 : timerNReloadRegister =   50000 - 1; break; /*   50 ms */
-      case 4 : timerNReloadRegister =  100000 - 1; break; /*  100 ms */
-      case 5 : timerNReloadRegister =  500000 - 1; break; /*  500 ms */
-      case 6 : timerNReloadRegister = 1000000 - 1; break; /* 1000 ms */
-      default: timerNReloadRegister = 5000000 - 1; break; /* 5000 ms */
+      case 0 : timerNReloadRegister =    10000 - 1; break; /*    10 ms */
+      case 1 : timerNReloadRegister =    50000 - 1; break; /*    50 ms */
+      case 2 : timerNReloadRegister =   100000 - 1; break; /*   100 ms */
+      case 3 : timerNReloadRegister =   500000 - 1; break; /*   500 ms */
+      case 4 : timerNReloadRegister =  1000000 - 1; break; /*  1000 ms */
+      case 5 : timerNReloadRegister =  5000000 - 1; break; /*  5000 ms */
+      case 6 : timerNReloadRegister = 10000000 - 1; break; /* 10000 ms */
+      default: timerNReloadRegister = 50000000 - 1; break; /* 50000 ms */
       }
 
       grRegisterWrite(sparcGPTIMER0BaseAddress, GRLIB_GPTIMER_RELOAD_VALUE_REGISTER(timerIndex), timerNReloadRegister);
