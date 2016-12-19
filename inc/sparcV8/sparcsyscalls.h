@@ -79,10 +79,6 @@ void sparcSystemServiceEnableTraps();
 
 void sparcSystemServiceDisableTraps();
 
-void sparcSystemServiceMaskInterrupts();
-
-void sparcSystemServiceUnMaskInterrupts();
-
 void sparcSystemServiceTriggerReplaceTaskContext();
 
 void sparcSystemServiceTriggerSetTaskContext();
