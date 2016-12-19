@@ -173,16 +173,14 @@
 
 /** \brief osekpause
  **
- ** This macro is called by the scheduler when there are no tasks available
- ** for execution. If a background task is configured by the user (a full
- ** preemptive task with lower priority and which never ends) this macro will
- ** never be called. Otherwise this macro will be called any time that the
- ** OS has nothing else to execute. The macro may sleep the cpu for a short time
- ** to avoid over heating and full power consumption, or may halt the processor
- ** until an event wakes it up again (for example, an external interrupt).
- **
- **/
-#define osekpause() { sparcOsekPause(); }
+ ** According to Aeroflex Gaisler LEON 3 documentation, the LEON 3
+ ** implementation of the SPARC Architecture will enter into a power
+ ** down mode by executing a WRASR instruction to the %asr19 register.
+ ** In this power-down mode, the processor halts the pipeline, freezing
+ ** code execution and cache changes until the next interrupt comes along.
+ ** */
+
+#define osekpause() {  asm("wr %g0, %asr19"); }
 
 
 /*==================[typedef]================================================*/
@@ -197,7 +195,6 @@ extern uint32 detected_sparc_register_windows;
 
 
 /*==================[external functions declaration]=========================*/
-
 
 
 void SaveContext(TaskType task);
