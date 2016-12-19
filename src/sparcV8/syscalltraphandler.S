@@ -94,8 +94,8 @@ syscall_trap_handler:
 
 assembler_case_selector:
    ba,a     disable_traps_service       ! SYSCALL ID 0x00 = Disable trap
-   ba,a     mask_interrupts_service     ! SYSCALL ID 0x01 = Mask all asynchronous interrupts
-   ba,a     unmask_interrupts_service   ! SYSCALL ID 0x02 = Unmask all asynchronous interrupts
+   ba,a     invalid_service_id          ! SYSCALL ID 0x01 = Still undefined service id.
+   ba,a     invalid_service_id          ! SYSCALL ID 0x02 = Still undefined service id.
    ba,a     invalid_service_id          ! SYSCALL ID 0x03 = Still undefined service id.
    ba,a     invalid_service_id          ! SYSCALL ID 0x04 = Still undefined service id.
    ba,a     invalid_service_id          ! SYSCALL ID 0x05 = Still undefined service id.
@@ -166,47 +166,6 @@ go_back_to_user_mode:
    ! Do (2) Causes a delayed control transfer to the target address.
    ! Go back to the trapping code without using RETT
    jmp     %g1
-   nop
-
-
-   ! **************************
-   !
-   ! "MASK INTERRUPTS" SERVICE CODE
-   !
-mask_interrupts_service:
-
-   !
-   ! Set the PIL field in the PSR register to 15
-   or      %l0, SPARC_PSR_PIL_MASK, %l0
-   mov     %l0, %psr
-   ! three delay cycles are needed after modifying the PSR
-   nop
-   nop
-   nop
-
-   !
-   ! processing done, proceed to the exit
-   ba      exit_syscall
-   nop
-
-
-   ! **************************
-   !
-   ! "UNMASK INTERRUPTS" SERVICE CODE
-   !
-unmask_interrupts_service:
-
-   !
-   ! Set the PIL field in the PSR register to 0
-   andn    %l0, SPARC_PSR_PIL_MASK, %l0
-   mov     %l0, %psr
-   ! three delay cycles are needed after modifying the PSR
-   nop
-   nop
-   nop
-
-   ! processing done, proceed to the exit
-   ba      exit_syscall
    nop
 
 

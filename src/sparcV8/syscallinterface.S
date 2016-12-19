@@ -151,42 +151,6 @@ sparcSystemServiceDisableTraps:
 
    ! **************************************************
    !
-   ! void sparcSystemServiceMaskInterrupts();
-   !
-   ! ***
-
-   .global sparcSystemServiceMaskInterrupts
-   .type   sparcSystemServiceMaskInterrupts, #function
-
-sparcSystemServiceMaskInterrupts:
-
-   mov     SPARC_SYSCALL_ID_MASK_INTERRUPTS, %g1
-   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
-
-   retl
-   nop
-
-
-   ! **************************************************
-   !
-   ! void sparcSystemServiceUnMaskInterrupts();
-   !
-   ! ***
-
-   .global sparcSystemServiceUnMaskInterrupts
-   .type   sparcSystemServiceUnMaskInterrupts, #function
-
-sparcSystemServiceUnMaskInterrupts:
-
-   mov     SPARC_SYSCALL_ID_UNMASK_INTERRUPTS, %g1
-   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
-
-   retl
-   nop
-
-
-   ! **************************************************
-   !
    ! uint32 sparcSystemSetProcessorInterruptLevel(uint32 pil);
    !
    ! Sets a new processor interrupt level. Returns the old value
