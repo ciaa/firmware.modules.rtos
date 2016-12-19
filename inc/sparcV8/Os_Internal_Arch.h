@@ -207,7 +207,7 @@
  *
  * \param[in] newTask TaskId of the task whose context needs to be installed on the cpu.
  */
-#define JmpTask(newTask) { sparcSystemServiceTriggerReplaceTaskContext(); }
+#define JmpTask(newTask) { sparcSystemServiceTriggerSetTaskContext(); }
 
 
 /*==================[typedef]================================================*/

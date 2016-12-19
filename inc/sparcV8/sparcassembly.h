@@ -101,7 +101,6 @@
 #define SPARC_SYSCALL_ID_DISABLE_TRAPS       0x00
 #define SPARC_SYSCALL_ID_MASK_INTERRUPTS     0x01
 #define SPARC_SYSCALL_ID_UNMASK_INTERRUPTS   0x02
-#define SPARC_SYSCALL_ID_REBOOT_SYSTEM       0x03
 
 
 /*==================[typedef]================================================*/

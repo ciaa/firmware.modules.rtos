@@ -62,7 +62,7 @@
 
    ! **************************************************
    !
-   ! void sparcSystemServiceTriggerCallTask();
+   ! void sparcSystemServiceTriggerReplaceTaskContext();
    !
    ! ***
 
@@ -79,7 +79,7 @@ sparcSystemServiceTriggerReplaceTaskContext:
 
    ! **************************************************
    !
-   ! void sparcSystemServiceTriggerCallTask();
+   ! void sparcSystemServiceTriggerSetTaskContext();
    !
    ! ***
 
@@ -96,6 +96,8 @@ sparcSystemServiceTriggerSetTaskContext:
 
    ! **************************************************
    !
+
+
    ! void sparcSystemServiceEnableTraps();
    !
    ! ***
@@ -181,45 +183,6 @@ sparcSystemServiceUnMaskInterrupts:
 
    retl
    nop
-
-
-   ! **************************************************
-   !
-   ! void sparcSystemServiceRebootSystem();
-   !
-   ! ***
-
-   .global sparcSystemServiceRebootSystem
-   .type   sparcSystemServiceRebootSystem, #function
-
-sparcSystemServiceRebootSystem:
-
-   mov     SPARC_SYSCALL_ID_REBOOT_SYSTEM, %g1
-   ta      SPARC_SYSCALL_SERVICE_SW_TRAP_NUMBER
-
-   retl
-   nop
-
-
-   ! **************************************************
-   !
-   ! void sparcSystemServiceCallDebugger();
-   !
-   ! ***
-
-   .global sparcSystemServiceCallDebugger
-   .type   sparcSystemServiceCallDebugger, #function
-
-sparcSystemServiceCallDebugger:
-
-   !
-   ! Invoke the software trap that is used by GDB/GRMON to indicate the
-   ! presence of a breakpoint.
-   ta      SPARC_CALL_DEBUGGER_SW_TRAP_NUMBER
-
-   retl
-   nop
-
 
 
    ! **************************************************

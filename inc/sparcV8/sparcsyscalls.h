@@ -83,10 +83,6 @@ void sparcSystemServiceMaskInterrupts();
 
 void sparcSystemServiceUnMaskInterrupts();
 
-void sparcSystemServiceRebootSystem();
-
-void sparcSystemServiceCallDebugger();
-
 void sparcSystemServiceTriggerReplaceTaskContext();
 
 void sparcSystemServiceTriggerSetTaskContext();
