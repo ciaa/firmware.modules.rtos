@@ -93,8 +93,6 @@ void sparcSetupSystemTimer(void);
 
 void StartOs_Arch_Cpu(void);
 
-void sparcOsekPause();
-
 void sparcCheckPendingTimerInterrupts();
 
 

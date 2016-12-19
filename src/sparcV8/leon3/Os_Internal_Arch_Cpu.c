@@ -413,24 +413,6 @@ void sparcSetupSystemTimer(void)
 
 /*==================[external functions definition]==========================*/
 
-/**
- * \brief Implementation of the OSEK low-level OsekPause() function.
- *
- * In SPARC LEON3 this executes an instruction that sets the processor in low-power mode.
- *
- * FIXME This function should be inlined or replaced with a macro.
- */
-void sparcOsekPause()
-{
-
-   /* According to aeroflex Gaisler LEON 3 documentation, the LEON 3
-    * implementation of the SPARC Architecture will enter into a power
-    * down mode by executing a WRASR instruction to the %asr19 register.
-    * In this power-down mode, the processor halts the pipeline, freezing
-    * code execution and cache changes until the next interrupt comes along.
-    * */
-   asm("wr %g0, %asr19");
-}
 
 /**
  * \brief Registers a new ISR1 user interrupt handler.
@@ -670,7 +652,7 @@ void sparcCheckPendingTimerInterrupts()
 
 #if (ALARMS_COUNT != 0)
             IntSecure_Start();
-            IncrementCounter(sparcGetHardwareTimerID(timerIndex), 1 /* this argument is in doubt, see Cortex port... FIXME */ );
+            IncrementCounter(sparcGetHardwareTimerID(timerIndex), 1);
             IntSecure_End();
 #endif
          }
