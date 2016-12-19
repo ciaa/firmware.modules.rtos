@@ -50,7 +50,6 @@
 #include "Os_Internal.h"
 #include "Os_Internal_Arch.h"
 #include "Os_Internal_Arch_Cfg.h"
-#include "sparcsyscalls.h"
 #include "sparcassembly.h"
 
 
@@ -170,41 +169,6 @@ void sparcTaskContextReplacementHandlerCaller(uint32_t serviceId)
    IntSecure_End();
 }
 
-
-/**
- * \brief SPARC implementation of the OSEK low-level interface routine SaveContext().
- *
- * The context saving/restoring code of the SPARC port does not need to use this function, so
- * it is declared here only a place holder.
- *
- * @param runningTask TaskId of the task whose context must be saved.
- */
-void SaveContext(TaskType runningTask)
-{
-   /* nop */
-}
-
-/**
- * \brief SPARC implementation of the OSEK low-level interface routine CallTask().
- *
- * @param currentTask Currently running task's id, whose context needs to be retired from the cpu.
- * @param newTask TaskId of the task whose context needs to be installed on the cpu.
- */
-void CallTask(TaskType currentTask, TaskType newTask)
-{
-   sparcSystemServiceTriggerReplaceTaskContext();
-}
-
-
-/**
- * \brief SPARC implementation of the OSEK low-level interface routine JmpTask().
- *
- * @param newTask TaskId of the task whose context needs to be installed on the cpu.
- */
-void JmpTask(TaskType newTask)
-{
-   sparcSystemServiceTriggerReplaceTaskContext();
-}
 
 /**
  * \brief Task state initialization routine.

@@ -53,6 +53,7 @@
 #include "os.h"
 #include "Os_Arch.h"
 #include "Os_Internal_Arch_Cpu.h"
+#include "sparcsyscalls.h"
 
 
 /*==================[macros]=================================================*/
@@ -179,8 +180,34 @@
  ** In this power-down mode, the processor halts the pipeline, freezing
  ** code execution and cache changes until the next interrupt comes along.
  ** */
-
 #define osekpause() {  asm("wr %g0, %asr19"); }
+
+
+/**
+ * \brief SPARC implementation of the OSEK low-level interface routine SaveContext().
+ *
+ * The context saving/restoring code of the SPARC port does not need to use this function, so
+ * it is declared here only a place holder.
+ *
+ * \param[in] runningTask TaskId of the task whose context must be saved.
+ */
+#define SaveContext(runningTask) { /* nop */ }
+
+/**
+ * \brief SPARC implementation of the OSEK low-level interface routine CallTask().
+ *
+ * \param[in] currentTask Currently running task's id, whose context needs to be retired from the cpu.
+ * \param[in] newTask TaskId of the task whose context needs to be installed on the cpu.
+ */
+#define CallTask(currentTask, newTask) { sparcSystemServiceTriggerReplaceTaskContext(); }
+
+
+/**
+ * \brief SPARC implementation of the OSEK low-level interface routine JmpTask().
+ *
+ * \param[in] newTask TaskId of the task whose context needs to be installed on the cpu.
+ */
+#define JmpTask(newTask) { sparcSystemServiceTriggerReplaceTaskContext(); }
 
 
 /*==================[typedef]================================================*/
@@ -195,15 +222,6 @@ extern uint32 detected_sparc_register_windows;
 
 
 /*==================[external functions declaration]=========================*/
-
-
-void SaveContext(TaskType task);
-
-
-void CallTask(TaskType actualtask, TaskType nexttask);
-
-
-void JmpTask(TaskType task);
 
 
 void SetEntryPoint(TaskType task);
