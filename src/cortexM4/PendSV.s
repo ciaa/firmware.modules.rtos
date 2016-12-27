@@ -43,6 +43,7 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+	.thumb_func
 	.syntax unified
 
 /*	.section .after_vectors */

@@ -44,6 +44,7 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+   .thumb_func
    .syntax unified
 
    .global PendSV_Handler
