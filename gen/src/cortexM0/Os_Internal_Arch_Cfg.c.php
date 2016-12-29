@@ -83,6 +83,8 @@ extern void PendSV_Handler(void);
 
 <?php
 
+$this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+
 /* remove soon
  * you can load the helper here with
    $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
