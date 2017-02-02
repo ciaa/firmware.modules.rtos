@@ -44,27 +44,52 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
+
+
+
 #include "Os_Internal.h"
+
+
 
 /*==================[macros and definitions]=================================*/
 
+
+
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
+
+
+
 void* Osek_NewTaskPtr_Arch;
 
 void* Osek_OldTaskPtr_Arch;
 
+
+
 /*==================[internal data definition]===============================*/
 
+
+
 TaskType TerminatingTask = INVALID_TASK;
+
 TaskType WaitingTask = INVALID_TASK;
+
+
 
 /*==================[external data definition]===============================*/
 
+
+
 /*==================[internal functions definition]==========================*/
 
+
+
 /*==================[external functions definition]==========================*/
+
+
 
 void ReturnHook_Arch(void)
 {
@@ -72,6 +97,8 @@ void ReturnHook_Arch(void)
    while(1) osekpause();
 
 }
+
+
 
 void CheckTerminatingTask_Arch(void)
 {
@@ -84,6 +111,8 @@ void CheckTerminatingTask_Arch(void)
    }
    TerminatingTask = INVALID_TASK;
 }
+
+
 
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
@@ -100,6 +129,8 @@ void InitStack_Arch(uint8 TaskID)
    *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
 
 }
+
+
 
 /* Periodic Interrupt Timer, included in all Cortex-M4 processors */
 void SysTick_Handler(void)
@@ -138,6 +169,7 @@ void SysTick_Handler(void)
    }
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
 }
+
 
 
 /** @} doxygen end group definition */
