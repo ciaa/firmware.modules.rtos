@@ -104,9 +104,9 @@ void CheckTerminatingTask_Arch(void)
 {
    if(TerminatingTask != INVALID_TASK)
    {
-//      int i;
-//      for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
-//         ((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
+      //      int i;
+      //      for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
+      //         ((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
       InitStack_Arch(TerminatingTask);
    }
    TerminatingTask = INVALID_TASK;
@@ -162,7 +162,7 @@ void SysTick_Handler(void)
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
    /* check if the actual task is preemptive */
    if ( ( CONTEXT_TASK == actualContext ) &&
-        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
    {
       /* this shall force a call to the scheduler */
       PostIsr2_Arch(isr);
