@@ -116,7 +116,7 @@ extern TaskType TerminatingTask;
       Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;        \
       Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;          \
       __asm__ __volatile__ (                                                     \
-            /* Call PendSV */                                                    \
+            /* Call PendSV */                                                          \
       "push {r0,r1}                                               \n\t"          \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */    \
       "ldr r0,=0xE000ED04                                         \n\t"          \
@@ -225,7 +225,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro returns the actual value of the a counter
  **
- ** \param[in] CounterID id of the counter to be readed
+ ** \param[in] CounterID id of the counter to be read
  ** \return Actual value of the counter
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
