@@ -49,7 +49,7 @@
 
 #include "Os_Internal_Arch_Cpu.h"
 #include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
+#if ((CPU == lpc4337) || (CPU == lpc54102))
 #include "chip.h"
 #endif
 
@@ -85,18 +85,31 @@
 
 void StartOs_Arch_SysTick(void)
 {
-   /* Activate MemFault, UsageFault and BusFault exceptions */
+   /*
+    * Activate MemFault, UsageFault and BusFault exceptions
+    * */
+
    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
 
-   /* Set lowest priority for SysTick and PendSV */
+   /*
+    * Set lowest priority for SysTick and PendSV
+    * */
+
    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
 
-   /* Activate SysTick */
+   /*
+    * Activate SysTick
+    * */
+
    SystemCoreClockUpdate();
+
    SysTick_Config(SystemCoreClock/1000);
 
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+   /*
+    * Update priority set by SysTick_Config
+    * */
+
+   NVIC_SetPriority(SysTick_IRQn, (1 <<__NVIC_PRIO_BITS) - 1);
 }
 
 
