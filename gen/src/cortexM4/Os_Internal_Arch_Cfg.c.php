@@ -50,7 +50,12 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+
 /*==================[inclusions]=============================================*/
+
+
+
 #include "Os_Internal.h"
 #if (CPU == lpc43xx)
 /* THIS IS A DIRTY WORKAROUND :( ciaa/Firmware#309*/
@@ -59,35 +64,67 @@
 #include "chip.h"
 #endif
 
+
+
 /*==================[macros and definitions]=================================*/
+
+
 
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
+
+
 
 /*==================[internal data definition]===============================*/
 
+
+
 /*==================[external data definition]===============================*/
+
+
+
 #if (CPU == mk60fx512vlq15)
-   /* Reset_Handler is defined in startup_MK60F15.S_CPP */
-   void Reset_Handler( void );
 
-   extern uint32_t __StackTop;
+    /* Reset_Handler is defined in startup_MK60F15.S_CPP */
+    void Reset_Handler( void );
+
+    extern uint32_t __StackTop;
+
 #elif (CPU == lpc4337)
-/* ResetISR is defined in cr_startup_lpc43xx.c */
-extern void ResetISR(void);
 
-/** \brief External declaration for the pointer to the stack top from the Linker Script */
-extern void _vStackTop(void);
+    /* ResetISR is defined in cr_startup_lpc43xx.c */
+    extern void ResetISR(void);
+
+    /** \brief External declaration for the pointer to the stack top from the Linker Script */
+    extern void _vStackTop(void);
+
+#elif (CPU == lpc54102)
+
+    /* ResetISR is defined in cr_startup_lpc5410x.c */
+    extern void ResetISR(void);
+
+    /** \brief External declaration for the pointer to the stack top from the Linker Script */
+    extern void _vStackTop(void);
+
 #else
+
 #error Not supported CPU
+
 #endif
 
 /** \brief Handlers used by OSEK */
 extern void SysTick_Handler(void);
 extern void PendSV_Handler(void);
 
+
+
 /*==================[internal functions definition]==========================*/
+
+
+
 /* Default exception handlers. */
 __attribute__ ((section(".after_vectors")))
 void NMI_Handler(void) {
@@ -125,7 +162,12 @@ void DebugMon_Handler(void) {
     }
 }
 
+
+
 /*==================[external functions definition]==========================*/
+
+
+
 <?php
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
 
@@ -354,6 +396,27 @@ void (* const g_pfnVectors[])(void) = {
    0,                              /* Reserved                   */
    PendSV_Handler,                 /* The PendSV handler         */
    SysTick_Handler,                /* The SysTick handler        */
+<?php elseif ($this->definitions["CPU"] == "lpc54102") : ?>
+/** \brief LPC54102 Interrupt vector */
+__attribute__ ((section(".isr_vector")))
+void (* const g_pfnVectors[])(void) = {
+   /* System ISRs */
+   &_vStackTop,                    /* The initial stack pointer  */
+   ResetISR,                       /* The reset handler          */
+   NMI_Handler,                    /* The NMI handler            */
+   HardFault_Handler,              /* The hard fault handler     */
+   MemManage_Handler,              /* The MPU fault handler      */
+   BusFault_Handler,               /* The bus fault handler      */
+   UsageFault_Handler,             /* The usage fault handler    */
+   0,                              /* Reserved                   */
+   0,                              /* Reserved                   */
+   0,                              /* Reserved                   */
+   0,                              /* Reserved                   */
+   SVC_Handler,                    /* SVCall handler             */
+   DebugMon_Handler,               /* Debug monitor handler      */
+   0,                              /* Reserved                   */
+   PendSV_Handler,                 /* The PendSV handler         */
+   SysTick_Handler,                /* The SysTick handler        */
 <?php else :
      $this->log->error("Not supported CPU: " . $this->definitions["CPU"]);
    endif;
@@ -395,6 +458,7 @@ for($i=0; $i < $MAX_INT_COUNT; $i++)
 }
 ?>
 };
+
 
 /** \brief Interrupt enabling and priority setting function */
 void Enable_User_ISRs(void)
@@ -454,6 +518,8 @@ foreach ($intnames as $int)
 }
 ?>
 }
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
