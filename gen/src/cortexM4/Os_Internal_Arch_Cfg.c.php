@@ -175,7 +175,7 @@ switch ($this->definitions["CPU"])
 {
    case "mk60fx512vlq15":
       /* Interrupt sources for MK60F12.
-       * See externals/platforms/cortexM4/k60_120/inc/device/MK60F12/MK60F12.h.
+       * See externals/drivers/cortexM4/k60_120/inc/device/MK60F12/MK60F12.h.
        */
       $intList = array (
          0 => "DMA0_DMA16",
@@ -289,7 +289,7 @@ switch ($this->definitions["CPU"])
 
    case "lpc4337":
       /* Interrupt sources for LPC43xx.
-       * See externals/platforms/cortexM4/lpc43xx/inc/cmsis_43xx.h.
+       * See externals/drivers/cortexM4/lpc43xx/inc/cmsis_43xx.h.
        */
       $intList = array (
          0 => "DAC",
@@ -345,6 +345,59 @@ switch ($this->definitions["CPU"])
          50 => "M0SUB",
          51 => "CAN0",
          52 => "QEI"
+      );
+      break;
+
+case "lpc54102":
+      /* Interrupt sources for LPC5410x.
+       * See externals/drivers/cortexM4/lpc5410x/inc/cmsis_5410x.h.
+       */
+      $intList = array (
+          0 => WDT,            /*!< WWDT                                             */
+          1 => BOD,            /*!< BOD                                              */
+          2 => RESERVED2,      /*!< Reserved Interrupt                               */
+          3 => DMA,            /*!< DMA                                              */
+          4 => GINT0,          /*!< GINT0                                            */
+          5 => PIN_INT0,       /*!< PININT0                                          */
+          6 => PIN_INT1,       /*!< PININT1                                          */
+          7 => PIN_INT2,       /*!< PININT2                                          */
+          8 => PIN_INT3,       /*!< PININT3                                          */
+          9 => UTICK,          /*!< Micro-tick Timer interrupt                       */
+         10 => MRT,            /*!< Multi-rate timer interrupt                       */
+         11 => CT32B0,         /*!< CTMR0                                            */
+         12 => CT32B1,         /*!< CTMR1                                            */
+         13 => CT32B2,         /*!< CTMR2                                            */
+         14 => CT32B3,         /*!< CTMR3                                            */
+         15 => CT32B4,         /*!< CTMR4                                            */
+         16 => SCT0,           /*!< SCT                                              */
+         17 => UART0,          /*!< UART0                                            */
+         18 => UART1,          /*!< UART1                                            */
+         19 => UART2,          /*!< UART2                                            */
+         20 => UART3,          /*!< UART3                                            */
+         21 => I2C0,           /*!< I2C0                                             */
+         22 => I2C1,           /*!< I2C1                                             */
+         23 => I2C2,           /*!< I2C2                                             */
+         24 => SPI0,           /*!< SPI0                                             */
+         25 => SPI1,           /*!< SPI1                                             */
+         26 => ADC_SEQA,       /*!< ADC0 sequence A completion                       */
+         27 => ADC_SEQB,       /*!< ADC0 sequence B completion                       */
+         28 => ADC_THCMP,      /*!< ADC0 threshold compare and error                 */
+         29 => RTC,            /*!< RTC alarm and wake-up interrupts                 */
+         30 => RESERVED30,     /*!< Reserved Interrupt                               */
+         31 => MAILBOX,        /*!< Mailbox                                          */
+         32 => GINT1,          /*!< GINT1                                            */
+         33 => PIN_INT4,       /*!< External Interrupt 4                             */
+         34 => PIN_INT5,       /*!< External Interrupt 5                             */
+         35 => PIN_INT6,       /*!< External Interrupt 6                             */
+         36 => PIN_INT7,       /*!< External Interrupt 7                             */
+         37 => RESERVED37,     /*!< Reserved Interrupt                               */
+         38 => RESERVED38,     /*!< Reserved Interrupt                               */
+         39 => RESERVED39,     /*!< Reserved Interrupt                               */
+         40 => RIT,            /*!< Repetitive Interrupt Timer                       */
+         41 => RESERVED41,     /*!< Reserved Interrupt                               */
+         42 => RESERVED42,     /*!< Reserved Interrupt                               */
+         43 => RESERVED43,     /*!< Reserved Interrupt                               */
+         44 => RESERVED44,     /*!< Reserved Interrupt                               */
       );
       break;
 
