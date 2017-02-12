@@ -533,6 +533,11 @@ readparam($cfgfile);
 # TODO this has to be improved
 $ISR1 = "GPIO1";
 $ISR2 = "GPIO0";
+if ("lpc5410x" eq $CPUTYPE)
+{
+   $ISR1 = "PIN_INT1";
+   $ISR2 = "PIN_INT0";
+}
 if ("k60_120" eq $CPUTYPE)
 {
    $ISR1 = "PORTB";

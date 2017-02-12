@@ -64,6 +64,12 @@
 #include "chip.h"
 #endif
 
+#if (CPUTYPE == lpc5410x)
+#undef INLINE
+#include "chip.h"
+#endif
+
+
 
 
 /*==================[macros and definitions]=================================*/
