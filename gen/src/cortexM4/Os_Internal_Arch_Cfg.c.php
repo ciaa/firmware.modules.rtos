@@ -76,6 +76,14 @@
 
 
 
+#if (CPU == lpc54102)
+
+#define WEAK __attribute__ ((weak))
+
+#endif
+
+
+
 /*==================[internal data declaration]==============================*/
 
 
@@ -108,6 +116,9 @@
     extern void _vStackTop(void);
 
 #elif (CPU == lpc54102)
+
+    /* Valid User Code Checksum, calculated on the linker script. */
+    WEAK extern void __valid_user_code_checksum();
 
     /* ResetISR is defined in cr_startup_lpc5410x.c */
     extern void ResetISR(void);
@@ -460,22 +471,22 @@ void (* const g_pfnVectors[])(void) = {
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) = {
    /* System ISRs */
-   &_vStackTop,                    /* The initial stack pointer  */
-   ResetISR,                       /* The reset handler          */
-   NMI_Handler,                    /* The NMI handler            */
-   HardFault_Handler,              /* The hard fault handler     */
-   MemManage_Handler,              /* The MPU fault handler      */
-   BusFault_Handler,               /* The bus fault handler      */
-   UsageFault_Handler,             /* The usage fault handler    */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   0,                              /* Reserved                   */
-   SVC_Handler,                    /* SVCall handler             */
-   DebugMon_Handler,               /* Debug monitor handler      */
-   0,                              /* Reserved                   */
-   PendSV_Handler,                 /* The PendSV handler         */
-   SysTick_Handler,                /* The SysTick handler        */
+   &_vStackTop,                    /* The initial stack pointer             */
+   ResetISR,                       /* The reset handler                     */
+   NMI_Handler,                    /* The NMI handler                       */
+   HardFault_Handler,              /* The hard fault handler                */
+   MemManage_Handler,              /* The MPU fault handler                 */
+   BusFault_Handler,               /* The bus fault handler                 */
+   UsageFault_Handler,             /* The usage fault handler               */
+   __valid_user_code_checksum,     /* Reserved - Valid User Code Checksum   */
+   0,                              /* Reserved                              */
+   0,                              /* Reserved                              */
+   0,                              /* Reserved                              */
+   SVC_Handler,                    /* SVCall handler                        */
+   DebugMon_Handler,               /* Debug monitor handler                 */
+   0,                              /* Reserved                              */
+   PendSV_Handler,                 /* The PendSV handler                    */
+   SysTick_Handler,                /* The SysTick handler                   */
 <?php else :
      $this->log->error("Not supported CPU: " . $this->definitions["CPU"]);
    endif;
