@@ -721,7 +721,7 @@ foreach $testfn (@tests)
                      $out = $BINDIR . "/" . $test . "-" . $config . ".exe";
                   }
                   info("debug of $test in $out");
-                  $dbgfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
+                  $dbgfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/" . $CPUTYPE . "/gcc/debug.scr";
                   info("$GDB $out -x $dbgfile");
                   if($debug == 0)
                   {
