@@ -7,10 +7,24 @@ target remote localhost:3333
 # program the device flash memory whenever necessary to 
 # load the program binary image.
 load
-# 
-# Set the starting processor state.
-set $pc = ResetISR+1
-set $msp = &_vStackTop
+#
+# Depending on the previous state of the flash memory
+# (during power-on, that is) the memory addresses
+# 0x00000000 to 0x00000200 might be currently mapped
+# to point to the corresponding flash memory sectors,
+# or to a small ROM that is loaded with a fixed vectors
+# table makes sure that the device starts execution
+# at the boot ROM when no valid user program is stored
+# on the flash.
+#
+# If any case, whe must start execution at the reset
+# vector currently mapped to address 0x00000004, so that
+# if the ROM is mapped, the boot ROM will be executed and
+# it will remap the firt 512 bytes so that they map to
+# the application flash memory.
+#
+# Easyest way is just forcing a reset...
+monitor reset halt 
 #
 # Set a breakpoint to detect the finalization of the
 # test program.
