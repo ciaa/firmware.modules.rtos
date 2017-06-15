@@ -137,6 +137,7 @@
    __asm__ __volatile__ ("movq $_next, %%rax; movq %%rax, %0;" : "=g" (TasksConst[(OldTask)].TaskContext->tss_rip) : : "%rax");  \
    /* load new stack pointer */                                                                                                  \
    __asm__ __volatile__ ("movq %0, %%rsp;" : : "g" (TasksConst[(NewTask)].TaskContext->tss_rsp));                                \
+   IntSecure_End();\
    /* load new rbp and jmp to the new task */                                                                                    \
    __asm__ __volatile__ ("movq %0, %%rbx; movq %1, %%rbp; jmp *%%rbx;" : : "g" (TasksConst[(NewTask)].TaskContext->tss_rip), "g" (TasksConst[(NewTask)].TaskContext->tss_rbp));                                                                                                       \
    __asm__ __volatile__ ("_next:");                                                                                              \
