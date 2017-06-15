@@ -159,8 +159,6 @@ extern StatusType Schedule
          /* set actual context task */
          SetActualContext(CONTEXT_TASK);
 
-         IntSecure_End();
-
 #if (HOOK_PRETASKHOOK == OSEK_ENABLE)
          PreTaskHook();
 #endif /* #if (HOOK_PRETASKHOOK == OSEK_ENABLE) */
@@ -196,8 +194,6 @@ extern StatusType Schedule
 
             /* set actual context task */
             SetActualContext(CONTEXT_TASK);
-
-            IntSecure_End();
 
 #if (HOOK_PRETASKHOOK == OSEK_ENABLE)
             PreTaskHook();
