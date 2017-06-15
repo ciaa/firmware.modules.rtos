@@ -120,6 +120,7 @@ extern TaskType TerminatingTask;
       "str r1,[r0]                                                \n\t"   \
       "pop {r0,r1}                                                \n\t"   \
    );                                                                     \
+   IntSecure_End();\
 }
 
 /** \brief Jmp to an other Task
@@ -149,6 +150,7 @@ extern TaskType TerminatingTask;
       "str r1,[r0]                                           \n\t"         \
       "pop {r0,r1}                                           \n\t"         \
    );                                                                      \
+   IntSecure_End();\
 }
 
 /** \brief Save context */
