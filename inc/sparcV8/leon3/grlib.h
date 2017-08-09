@@ -92,6 +92,7 @@
 #define GRLIB_PNP_DEVICE_ID_IRQMP                        0x0d
 #define GRLIB_PNP_DEVICE_ID_APBUART                      0x0c
 #define GRLIB_PNP_DEVICE_ID_GPTIMER                      0x11
+#define GRLIB_PNP_DEVICE_ID_GRGPIO                       0x1A
 #define GRLIB_PNP_DEVICE_ID_APBVGA                       0x61
 
 #define GRLIB_PNP_BAR_ENTRY_TYPE_APBIOSPACE              0x01
@@ -124,6 +125,16 @@
 #define GRLIB_GPTIMER_RELOAD_VALUE_REGISTER(timerIndex)  (0x10 * (timerIndex + 1) + 0x04)
 #define GRLIB_GPTIMER_CONTROL_REGISTER(timerIndex)       (0x10 * (timerIndex + 1) + 0x08)
 #define GRLIB_GPTIMER_LATCH_REGISTER(timerIndex)         (0x10 * (timerIndex + 1) + 0x0c)
+
+
+#define GRLIB_GRGPIO_DATA_REGISTER                       (0x00)
+#define GRLIB_GRGPIO_OUTPUT_REGISTER                     (0x04)
+#define GRLIB_GRGPIO_DIRECTION_REGISTER                  (0x08)
+#define GRLIB_GRGPIO_INTERRUPT_MASK_REGISTER             (0x0c)
+#define GRLIB_GRGPIO_INTERRUPT_POLARITY_REGISTER         (0x10)
+#define GRLIB_GRGPIO_INTERRUPT_EDGE_REGISTER             (0x14)
+#define GRLIB_GRGPIO_BYPASS_REGISTER                     (0x18)
+#define GRLIB_GRGPIO_CAPABILITY_REGISTER                 (0x1c)
 
 
 #define GRLIB_APBUART_DATA_REGISTER                      (0x00)
