@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -63,18 +63,40 @@
 <?php
 
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
+$os = $this->config->getList("/OSEK","OS");
+$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACK");
+if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
+?>
+/* All stacks are 4 bytes larger than configured due to the STACK
+ * configuration paramter which is set to <?= $osstack; ?> */
 
+/** \brief Dummy Array to try to avoid a fatal error if a stack
+ **        overflow (with <100 bytes) occurrs */
+uint8 StackTaskDummyBefore[100];
+<?php
+}
 /* get tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
 foreach ($tasks as $task)
 {
+   $stack_size = $this->config->getValue("/OSEK/" . $task, "STACK");
+   if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
+      $stack_size += 4;
+   }
    print "/** \brief $task stack */\n";
    print "#if ( x86 == ARCH )\n";
-   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
+   print "uint8 StackTask" . $task . "[" . $stack_size ." + TASK_STACK_ADDITIONAL_SIZE];\n";
    print "#else\n";
-   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ."];\n";
+   print "uint8 StackTask" . $task . "[" . $stack_size ."];\n";
    print "#endif\n";
+}
+if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
+?>
+/** \brief Dummy Array to try to avoid a fatal error if a stack
+ **        overflow (with <100 bytes) occurrs */
+uint8 StackTaskDummyAfter[100];
+<?php
 }
 print "\n";
 
@@ -132,7 +154,7 @@ foreach ($counters as $counter)
 /* FreeOSEK to configured priority table
  *
  * This table show the relationship between the user selected
- * priorities and the OpenOSE priorities:
+ * priorities and the FreeOSEK priorities:
  *
  * User P.         Osek P.
 <?php

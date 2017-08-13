@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -75,6 +75,7 @@ void StartOS
    /* \req OSEK_SYS_3.25.1 This system service shall starts the operating
     ** system */
    uint8f loopi;
+   uint32 loopj;
 
    IntSecure_Start();
 
@@ -89,13 +90,34 @@ void StartOS
    /* StartOs_Arch */
    StartOs_Arch();
 
-
    /* init every task */
    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
    {
       /* \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
        ** code is being executed from the first statement. */
       SetEntryPoint(loopi); /* set task entry point */
+
+#if (STACK_CHECK_TYPE != STACK_CHECK_OFF)
+#if (STACK_CHECK_TYPE == STACK_CHECK_OVERFLOW)
+      /* if the stack check for overflow is enable set the first 4 bytes of the
+       * stack to a specific value */
+      for (loopj = 0; loopj < 4; loopj++)
+      {
+         /* set the first 4 bytes to a specific value */
+         TasksConst[loopi].StackPtr[loopj] = STACK_CHECK_PATTERN;
+      }
+#else
+      /* indicate that no bytes have been used of the stack */
+      TasksVar[loopi].StackMaxUsed = 0;
+
+      /* if stack checks for size is enable init the stack to a specific patern (0xA5) */
+      for (loopj = 0; loopj < TasksConst[loopi].StackSize; loopj++)
+      {
+         /* set the complete stack to a specific value */
+         TasksConst[loopi].StackPtr[loopj] = STACK_CHECK_PATTERN;
+      }
+#endif
+#endif
    }
 
    /* set sys context */

@@ -1,7 +1,8 @@
-/* Copyright 2008, 2009, 2015 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2015, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
+ * All rights reserved.
  *
  * This file is part of CIAA Firmware.
  *
@@ -33,8 +34,8 @@
  *
  */
 
-#ifndef _OS_H_
-#define _OS_H_
+#ifndef OS_H
+#define OS_H
 /** \brief FreeOSEK Os Header File
  **
  ** This file shall be included by all files using any FreeOSEK Os API
@@ -284,6 +285,10 @@
 #define OSServiceId_StartOS                     25
 #define OSServiceId_ShutdownOS                  26
 
+/** \brief ErrorHook API ID to indicate an stack overflow, this is not a OSEK
+ **        conform error, but an vendor extenson */
+#define OSServiceId_StackOverflow               0x80
+
 /** \brief Resource Scheduler */
 #define RES_SCHEDULER                           255
 
@@ -373,6 +378,12 @@ typedef AlarmBaseType* AlarmBaseRefType;
 
 /** \brief Interrupt Counter type definition */
 typedef signed char InterruptCounterType;
+
+/** \brief StackSize Type
+ **
+ ** \remarks This is not part of OSEK, is a vendor extension
+ ***/
+typedef uint16 StackSizeType;
 
 /*==================[external data declaration]==============================*/
 /** \brief Suspend OS interrupts counter */
@@ -661,9 +672,39 @@ extern StatusType SetAbsAlarm(AlarmType AlarmID, TickType Start, TickType Cycle)
  **/
 extern StatusType CancelAlarm(AlarmType AlarmID);
 
+#if (STACK_CHECK_TYPE == STACK_CHECK_OVERFLOW_SIZE)
+/** \brief Get Max Used Stack
+ **
+ ** Returns the maximal amount of used size of stack for the indicated
+ ** task.
+ **
+ ** \param[in] TaskID task to get the stack
+ ** \param[out] MaxUsedStack amount of bytes used of the stack
+ ** \return E_OK if no error occurs
+ ** \return E_OS_ID if an invalid TaskID is provided
+ **
+ ** \remarks This is an extension, this API is not part of the OSEK
+ **          specificiation.
+ **/
+StatusType GetMaxUsedStack(TaskType TaskID, StackSizeType* MaxUsedStack);
+
+/** \brief Get Stack Size
+ **
+ ** Returns the size of the task for the indicated task.
+ **
+ ** \param[in] TaskID task to get the stack
+ ** \param[out] StackSize size of the stack in bytes
+ ** \return E_OK if no error occurs
+ ** \return E_OS_ID if an invalid TaskID is provided
+ **
+ ** \remarks This is an extension, this API is not part of the OSEK
+ **          specificiation.
+ **/
+StatusType GetStackSize(TaskType TaskID, StackSizeType* StackSize);
+#endif
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OS_H_ */
+#endif /* #ifndef OS_H */
 

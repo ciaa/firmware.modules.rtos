@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -255,6 +255,28 @@ extern void OSEK_ISR_NoHandler(void);
  ** increment some events may be executed together.
  **/
 extern CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementType Increment);
+
+
+#if (STACK_CHECK_TYPE != STACK_CHECK_OFF)
+/** \brief Checks if the current task had a stack overflow
+ **
+ ** This function is called by the kernel to check if the task
+ ** had a stack overflow, it a stack overflow is detected
+ ** the function calls the ErrorHook.
+ **
+ **/
+void CheckStackOverflow(void);
+
+#if (STACK_CHECK_TYPE == STACK_CHECK_OVERFLOW_SIZE)
+/** \brief This function calculates the used stack
+ **
+ ** This function is called by the kernel to calculate the
+ ** used stack of the current task. The value is stored in
+ ** TasksVar[x].StackMaxUsed.
+ **/
+void CalculateUsedStack(void);
+#endif
+#endif
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
