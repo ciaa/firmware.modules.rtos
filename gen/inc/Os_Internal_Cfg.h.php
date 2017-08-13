@@ -172,7 +172,7 @@ else
 {
    $this->log->error("Wrong OS Status configuration");
 }
-$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACK");
+$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACKCHECK");
 ?>
 /** \brief Stack Checking Type
  **

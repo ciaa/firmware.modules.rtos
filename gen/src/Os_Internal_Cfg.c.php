@@ -64,7 +64,7 @@
 
 $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
 $os = $this->config->getList("/OSEK","OS");
-$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACK");
+$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACKCHECK");
 if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
 ?>
 /* All stacks are 4 bytes larger than configured due to the STACK
@@ -80,7 +80,7 @@ $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
 foreach ($tasks as $task)
 {
-   $stack_size = $this->config->getValue("/OSEK/" . $task, "STACK");
+   $stack_size = $this->config->getValue("/OSEK/" . $task, "STACKCHECK");
    if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
       $stack_size += 4;
    }
