@@ -83,7 +83,7 @@ if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
       $size_of_all_stacks += $this->config->getValue("/OSEK/" . $task, "STACK");
    }
    /* use a /10 of that value as insurnace if a StackOverflow occurrs */
-   $size_of_stack_dummy = $round($size_of_all_stacks/10);
+   $size_of_stack_dummy = round($size_of_all_stacks/10);
 
 ?>
 /* All stacks are 4 bytes larger than configured due to the STACK
