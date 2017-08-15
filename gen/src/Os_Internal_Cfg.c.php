@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -67,14 +67,55 @@ $this->loadHelper("modules/rtos/gen/ginc/Multicore.php");
 /* get tasks */
 $tasks = $this->helper->multicore->getLocalList("/OSEK", "TASK");
 
+$os = $this->config->getList("/OSEK","OS");
+$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACKCHECK");
+
+/* this amount of bytes (10% of all stacks) will be used as an insurance
+ * if a stack overflow occurrs */
+$size_of_stack_dummy = 0;
+
+if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
+
+   /* calculate the size of all stacks */
+   $size_of_all_stacks = 0;
+   foreach ($tasks as $task)
+   {
+      $size_of_all_stacks += $this->config->getValue("/OSEK/" . $task, "STACK");
+   }
+   /* use a /10 of that value as insurnace if a StackOverflow occurrs */
+   $size_of_stack_dummy = round($size_of_all_stacks/10);
+
+?>
+/* All stacks are 4 bytes larger than configured due to the STACK
+ * configuration paramter which is set to <?= $osstack; ?> */
+
+/** \brief Dummy Array to try to avoid a fatal error if a stack
+ **        overflow occurrs. The array will be set to 10% of the size
+ **        of all stacks */
+uint8 StackTaskDummyBefore[<?= $size_of_stack_dummy;?>];
+<?php
+}
+
 foreach ($tasks as $task)
 {
+   $stack_size = $this->config->getValue("/OSEK/" . $task, "STACK");
+   if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
+      $stack_size += 4;
+   }
    print "/** \brief $task stack */\n";
    print "#if ( x86 == ARCH )\n";
-   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ." + TASK_STACK_ADDITIONAL_SIZE];\n";
+   print "uint8 StackTask" . $task . "[" . $stack_size ." + TASK_STACK_ADDITIONAL_SIZE];\n";
    print "#else\n";
-   print "uint8 StackTask" . $task . "[" . $this->config->getValue("/OSEK/" . $task, "STACK") ."];\n";
+   print "uint8 StackTask" . $task . "[" . $stack_size ."];\n";
    print "#endif\n";
+}
+if ( ($osstack == "OVERFLOW") || ($osstack == "OVERFLOW_SIZE")) {
+?>
+/** \brief Dummy Array to try to avoid a fatal error if a stack
+ **        overflow occurrs. The array will be set to 10% of the size
+ **        of all stacks */
+uint8 StackTaskDummyAfter[<?= $size_of_stack_dummy; ?>];
+<?php
 }
 print "\n";
 
@@ -132,7 +173,7 @@ foreach ($counters as $counter)
 /* FreeOSEK to configured priority table
  *
  * This table show the relationship between the user selected
- * priorities and the OpenOSE priorities:
+ * priorities and the FreeOSEK priorities:
  *
  * User P.         Osek P.
 <?php

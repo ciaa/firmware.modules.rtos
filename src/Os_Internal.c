@@ -1,4 +1,4 @@
-/* Copyright 2008, 2009, 2014, 2015 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2014, 2015, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -64,6 +64,54 @@ ContextType ActualContext;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
+#if (STACK_CHECK_TYPE != STACK_CHECK_OFF)
+void CheckStackOverflow(void)
+{
+   TaskType TaskID;
+   GetTaskID(&TaskID);
+
+   /* TODO: Stack Check only works for decressing Stacks */
+   uint32 pattern = (STACK_CHECK_PATTERN << 24) |
+                    (STACK_CHECK_PATTERN << 16) |
+                    (STACK_CHECK_PATTERN << 8) |
+                    (STACK_CHECK_PATTERN);
+   uint32 stack_signature = *(uint32*)TasksConst[TaskID].StackPtr;
+   if ( stack_signature != pattern) {
+      SetError_Api(OSServiceId_StackOverflow);
+      SetError_Param1(TaskID);
+      SetError_Msg("Stack Overflow occurred");
+      SetError_ErrorHook();
+   }
+}
+
+#if (STACK_CHECK_TYPE == STACK_CHECK_OVERFLOW_SIZE)
+void CalculateUsedStack(void)
+{
+   TaskType TaskID;
+   GetTaskID(&TaskID);
+   uint32 loopi;
+   uint32 used_stack;
+
+   /* TODO: Stack Check only works for decressing Stacks */
+   /* TODO: this may be improved for alignment comparations in the future */
+   for (loopi = 4;
+         (loopi < TasksConst[TaskID].StackSize) &&
+         (TasksConst[TaskID].StackPtr[loopi] == STACK_CHECK_PATTERN)
+         ; loopi++)
+   {
+      /* checking how many bytes are still set to the pattern */
+   }
+
+   used_stack = TasksConst[TaskID].StackSize - loopi;
+
+   if (used_stack > TasksVar[TaskID].StackMaxUsed)
+   {
+      TasksVar[TaskID].StackMaxUsed = used_stack;
+   }
+}
+#endif
+#endif
+
 void AddReady(TaskType TaskID)
 {
    TaskPriorityType priority;

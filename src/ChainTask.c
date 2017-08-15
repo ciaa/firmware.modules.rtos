@@ -124,6 +124,13 @@ StatusType ChainTask
       PostTaskHook();
 #endif /* #if (HOOK_POSTTASKHOOK == OSEK_ENABLE) */
 
+#if (STACK_CHECK_TYPE != STACK_CHECK_OFF)
+   CheckStackOverflow();
+#if (STACK_CHECK_TYPE == STACK_CHECK_OVERFLOW_SIZE)
+   CalculateUsedStack();
+#endif
+#endif
+
       IntSecure_Start();
 
       /* release internal resources */
