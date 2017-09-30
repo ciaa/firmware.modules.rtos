@@ -162,7 +162,7 @@ void SysTick_Handler(void)
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
    /* check if the actual task is preemptive */
    if ( ( CONTEXT_TASK == actualContext ) &&
-         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+        ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
    {
       /* this shall force a call to the scheduler */
       PostIsr2_Arch(isr);

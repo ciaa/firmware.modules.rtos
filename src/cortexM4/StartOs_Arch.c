@@ -30,7 +30,7 @@
  *
  */
 
-/** \brief FreeOSEK Os StartOs Architecture Dependant Implementation File
+/** \brief FreeOSEK Os StartOs Architecture Dependent Implementation File
  **
  ** This file implements the StartOs Arch API
  **
