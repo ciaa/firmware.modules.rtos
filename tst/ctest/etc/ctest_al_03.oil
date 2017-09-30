@@ -18,7 +18,7 @@ TASK Task1 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 2048;
+	STACK = 256;
 	TYPE = BASIC;
 };
 
@@ -29,7 +29,7 @@ TASK Task2 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 2048;
+	STACK = 256;
 	TYPE = EXTENDED;
 	EVENT Event2;
 };
@@ -65,8 +65,8 @@ ALARM IncrementSWCounter {
    };
    AUTOSTART = TRUE {
       APPMODE = AppMode1;
-      ALARMTIME = 10;
-      CYCLETIME = 10;
+      ALARMTIME = 1;
+      CYCLETIME = 1;
    };
 };
 

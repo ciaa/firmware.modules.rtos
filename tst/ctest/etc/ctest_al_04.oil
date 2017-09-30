@@ -18,7 +18,7 @@ TASK Task1 {
    AUTOSTART = TRUE {
 		APPMODE = AppMode1;
 	};
-	STACK = 1024;
+	STACK = 256;
 	TYPE = BASIC;
 };
 
@@ -27,7 +27,7 @@ TASK Task2 {
    SCHEDULE = NON;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 1024;
+	STACK = 256;
 	TYPE = BASIC;
 };
 
@@ -36,7 +36,7 @@ TASK Task3 {
    SCHEDULE = CT_SCHEDULING;
    ACTIVATION = 1;
    AUTOSTART = FALSE;
-	STACK = 1024;
+	STACK = 256;
 	TYPE = BASIC;
 };
 
@@ -70,8 +70,8 @@ ALARM IncrementSWCounter {
    };
    AUTOSTART = TRUE {
       APPMODE = AppMode1;
-      ALARMTIME = 10;
-      CYCLETIME = 10;
+      ALARMTIME = 1;
+      CYCLETIME = 1;
    };
 };
 
