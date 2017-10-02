@@ -2,7 +2,7 @@
  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
  ********************************************************/
 
-/* Copyright 2008, 2009 Mariano Cerdeiro
+/* Copyright 2008, 2009, 2017 Mariano Cerdeiro
  * Copyright 2014, ACSE & CADIEEL
  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
  *      CADIEEL: http://www.cadieel.org.ar
@@ -108,6 +108,19 @@ $priority = $this->config->priority2osekPriority($tasks);
 /*==================[inclusions]=============================================*/
 
 /*==================[macros]=================================================*/
+/** \brief Stack checks are off (standard OSEK-OS behaviour) */
+#define STACK_CHECK_OFF             1
+
+/** \brief Stack overflow is checked after each PostTaskHook */
+#define STACK_CHECK_OVERFLOW        2
+
+/** \brief Stack overflow and size is checked after each PostTaskHook */
+#define STACK_CHECK_OVERFLOW_SIZE   3
+
+/** \brief Defines the pattern used to identify a stack overflow or the size of
+ **        the stack */
+#define STACK_CHECK_PATTERN         0xA5
+
 /** \brief ERROR_CHECKING_STANDARD */
 #define ERROR_CHECKING_STANDARD   1
 
@@ -158,6 +171,42 @@ elseif ( $osattr == "STANDARD" )
 else
 {
    $this->log->error("Wrong OS Status configuration");
+}
+$osstack = $this->config->getValue("/OSEK/" . $os[0],"STACKCHECK");
+?>
+/** \brief Stack Checking Type
+ **
+ ** This is an OSEK-OS extension, this configuration is not part of the
+ ** official specification. This value may take one of the following
+ ** 3 values:
+ **  - STACK_CHECK_OFF: stack checks are off (standard OSEK-OS behaviour)
+ **  - STACK_CHECK_OVERFLOW: stack overflow is checked after each PostTaskHook
+ **  - STACK_CHECK_OVERFLOW_SIZE: stack overflow and size is checked after each
+ **                               PostTaskHook
+ **/
+<?php
+if ( ( $osstack === false ) || ( $osstack == "DISABLE" ) )
+{
+   print "#define STACK_CHECK_TYPE STACK_CHECK_OFF\n";
+}
+else {
+   $errorhook=$this->config->getValue("/OSEK/" . $os[0],"ERRORHOOK");
+   if ($errorhook != "TRUE")
+   {
+      $this->log->error("ERRORHOOK shall be enabled if the parameter STACKCHECK is set to any value different from DISABLE");
+   }
+   if ( $osstack == "OVERFLOW" )
+   {
+      print "#define STACK_CHECK_TYPE STACK_CHECK_OVERFLOW\n";
+   }
+   elseif ( $osstack == "OVERFLOW_SIZE" )
+   {
+      print "#define STACK_CHECK_TYPE STACK_CHECK_OVERFLOW_SIZE\n";
+   }
+   else
+   {
+      $this->log->error("Wrong OS Stack configuration");
+   }
 }
 
 /* PRETASKHOOK */
@@ -380,8 +429,6 @@ typedef uint32 TaskResourcesType;
 
 typedef uint8* StackPtrType;
 
-typedef uint16 StackSizeType;
-
 typedef void (* EntryPointType)(void);
 
 typedef void (* CallbackType)(void);
@@ -423,6 +470,9 @@ typedef struct {
  ** \param Resource of this task
  **/
 typedef struct {
+#if (STACK_CHECK_TYPE == STACK_CHECK_OVERFLOW_SIZE)
+   StackSizeType StackMaxUsed;
+#endif
    TaskPriorityType ActualPriority;
    TaskActivationsType Activations;
    TaskFlagsType Flags;
