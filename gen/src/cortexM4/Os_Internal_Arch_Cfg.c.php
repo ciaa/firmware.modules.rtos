@@ -57,7 +57,7 @@
 
 
 #include "Os_Internal.h"
-#if (CPU == lpc43xx)
+#if (CPUTYPE == lpc43xx)
 /* THIS IS A DIRTY WORKAROUND :( ciaa/Firmware#309*/
 #undef FALSE
 #undef TRUE
