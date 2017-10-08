@@ -181,15 +181,15 @@ extern TaskType TerminatingTask;
 }
 
 /** \brief */
-#define ResetStack(task)          \
-{                                 \
-      TerminatingTask = (task);   \
+#define ResetStack(task)       \
+{                              \
+   TerminatingTask = (task);   \
 }
 
 /** \brief Set the entry point for a task */
-#define SetEntryPoint(task)       \
-{                                 \
-      TerminatingTask = (task);   \
+#define SetEntryPoint(task)    \
+{                              \
+   TerminatingTask = (task);   \
 }
 
 /** \brief Enable OS Interruptions
