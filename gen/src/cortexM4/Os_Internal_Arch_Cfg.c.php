@@ -102,29 +102,29 @@
 
 #if (CPU == mk60fx512vlq15)
 
-    /* Reset_Handler is defined in startup_MK60F15.S_CPP */
-    void Reset_Handler( void );
+   /* Reset_Handler is defined in startup_MK60F15.S_CPP */
+   void Reset_Handler( void );
 
-    extern uint32_t __StackTop;
+   extern uint32_t __StackTop;
 
 #elif (CPU == lpc4337)
 
-    /* ResetISR is defined in cr_startup_lpc43xx.c */
-    extern void ResetISR(void);
+   /* ResetISR is defined in cr_startup_lpc43xx.c */
+   extern void ResetISR(void);
 
-    /** \brief External declaration for the pointer to the stack top from the Linker Script */
-    extern void _vStackTop(void);
+   /** \brief External declaration for the pointer to the stack top from the Linker Script */
+   extern void _vStackTop(void);
 
 #elif (CPU == lpc54102)
 
-    /* Valid User Code Checksum, calculated on the linker script. */
-    WEAK extern void __valid_user_code_checksum();
+   /* Valid User Code Checksum, calculated on the linker script. */
+   WEAK extern void __valid_user_code_checksum();
 
-    /* ResetISR is defined in cr_startup_lpc5410x.c */
-    extern void ResetISR(void);
+   /* ResetISR is defined in cr_startup_lpc5410x.c */
+   extern void ResetISR(void);
 
-    /** \brief External declaration for the pointer to the stack top from the Linker Script */
-    extern void _vStackTop(void);
+   /** \brief External declaration for the pointer to the stack top from the Linker Script */
+   extern void _vStackTop(void);
 
 #else
 
