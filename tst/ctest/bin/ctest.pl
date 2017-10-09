@@ -533,6 +533,11 @@ readparam($cfgfile);
 # TODO this has to be improved
 $ISR1 = "GPIO1";
 $ISR2 = "GPIO0";
+if ("lpc5410x" eq $CPUTYPE)
+{
+   $ISR1 = "PIN_INT1";
+   $ISR2 = "PIN_INT0";
+}
 if ("k60_120" eq $CPUTYPE)
 {
    $ISR1 = "PORTB";
@@ -716,7 +721,7 @@ foreach $testfn (@tests)
                      $out = $BINDIR . "/" . $test . "-" . $config . ".exe";
                   }
                   info("debug of $test in $out");
-                  $dbgfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/gcc/debug.scr";
+                  $dbgfile = "modules/rtos/tst/ctest/dbg/" . $ARCH . "/" . $CPUTYPE . "/gcc/debug.scr";
                   info("$GDB $out -x $dbgfile");
                   if($debug == 0)
                   {

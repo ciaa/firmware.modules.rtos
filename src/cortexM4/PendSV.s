@@ -43,78 +43,82 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-	.thumb_func
-	.syntax unified
+   .thumb_func
+   .syntax unified
 
-/*	.section .after_vectors */
+    /* .section .after_vectors */
 
-	.global PendSV_Handler
-	.extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
+   .global PendSV_Handler
+   .extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
 
-/* Pendable Service Call, used for context-switching in all Cortex-M processors */
+   /*
+    * Pendable Service Call, used for context-switching in all Cortex-M processors
+    */
+
 PendSV_Handler:
-	/* disable IRQs */
-	cpsid f
 
-	/* reinicio el stack de la tarea que termino */
+   /* disable IRQs */
+   cpsid f
+
+   /* reinicio el stack de la tarea que termino */
    push {lr}
    bl CheckTerminatingTask_Arch
    pop {lr}
 
-	/* uso el sp correspondiente, segun si vengo de user o kernel */
-	tst lr,4
-	ite eq
-	mrseq r0,msp
-	mrsne r0,psp
+   /* uso el sp correspondiente, segun si vengo de user o kernel */
+   tst lr,4
+   ite eq
+   mrseq r0,msp
+   mrsne r0,psp
 
-	/* FPU context saving */
-	tst lr,0x10
-	it eq
-	vstmdbeq r0!,{s16-s31}
+   /* FPU context saving */
+   tst lr,0x10
+   it eq
+   vstmdbeq r0!,{s16-s31}
 
-	/* Integer context saving */
-	stmdb r0!,{r4-r11,lr}
+   /* Integer context saving */
+   stmdb r0!,{r4-r11,lr}
 
-	/* restituyo MSP, por si existen irqs anidadas */
-	tst lr,4
-	it eq
-	msreq msp,r0
+   /* restituyo MSP, por si existen irqs anidadas */
+   tst lr,4
+   it eq
+   msreq msp,r0
 
-	/* guardo stack actual si corresponde */
-	ldr r1,=Osek_OldTaskPtr_Arch
-	ldr r1,[r1]
-	cmp r1,0
-	it ne
-	strne r0,[r1]
+   /* guardo stack actual si corresponde */
+   ldr r1,=Osek_OldTaskPtr_Arch
+   ldr r1,[r1]
+   cmp r1,0
+   it ne
+   strne r0,[r1]
 
-	/* cargo stack siguiente */
-	ldr r1,=Osek_NewTaskPtr_Arch
-	ldr r1,[r1]
-	ldr r0,[r1]
+   /* cargo stack siguiente */
+   ldr r1,=Osek_NewTaskPtr_Arch
+   ldr r1,[r1]
+   ldr r0,[r1]
 
-	/* recupero contexto actual */
-	ldmia r0!,{r4-r11,lr}
+   /* recupero contexto actual */
+   ldmia r0!,{r4-r11,lr}
 
-	/* recupero contexto FPU si es necesario */
-	tst lr,0x10
-	it eq
-	vldmiaeq r0!,{s16-s31}
+   /* recupero contexto FPU si es necesario */
+   tst lr,0x10
+   it eq
+   vldmiaeq r0!,{s16-s31}
 
-	/* Me fijo si tengo que volver a modo privilegiado.
-	   Actualizo el registro CONTROL */
-	mrs r1,control
-	tst lr,4
-	ittee eq
-	/* modo thread -> privilegiado, usar MSP */
-	biceq r1,3
-	msreq msp,r0
-	/* modo thread -> privilegiado, usar PSP */
-	orrne r1,2
-	msrne psp,r0
+   /* Me fijo si tengo que volver a modo privilegiado.
+      Actualizo el registro CONTROL */
+   mrs r1,control
+   tst lr,4
+   ittee eq
+   /* modo thread -> privilegiado, usar MSP */
+   biceq r1,3
+   msreq msp,r0
+   /* modo thread -> privilegiado, usar PSP */
+   orrne r1,2
+   msrne psp,r0
 
-	msr control,r1
+   msr control,r1
 
-	/* enable IRQs */
-	cpsie f
+   /* enable IRQs */
+   cpsie f
 
-	bx lr
+   bx lr

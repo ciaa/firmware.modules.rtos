@@ -44,25 +44,45 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
+
+
+
 #include "Os_Internal_Arch_Cpu.h"
 #include "ciaaPlatforms.h"
-#if (CPU == lpc4337)
+#if ((CPU == lpc4337) || (CPU == lpc54102))
 #include "chip.h"
 #endif
 
+
+
 /*==================[macros and definitions]=================================*/
+
+
 
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
+
+
 
 /*==================[internal data definition]===============================*/
 
+
+
 /*==================[external data definition]===============================*/
+
+
 
 /*==================[internal functions definition]==========================*/
 
+
+
 /*==================[external functions definition]==========================*/
+
+
+
 void StartOs_Arch_SysTick(void)
 {
    /* Activate MemFault, UsageFault and BusFault exceptions */
@@ -76,9 +96,9 @@ void StartOs_Arch_SysTick(void)
    SysTick_Config(SystemCoreClock/1000);
 
    /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
-
+   NVIC_SetPriority(SysTick_IRQn, (1 <<__NVIC_PRIO_BITS) - 1);
 }
+
 
 
 /** @} doxygen end group definition */

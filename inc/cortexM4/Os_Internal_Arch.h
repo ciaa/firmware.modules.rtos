@@ -46,10 +46,16 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+
 /*==================[inclusions]=============================================*/
-//#include "lpc43xx_cgu.h"
+
+
 
 /*==================[macros]=================================================*/
+
+
+
 /** \brief Extra size reserved for each stack
  **
  ** This macro shall be set to the amount of extra stack needed for each task
@@ -65,7 +71,7 @@
  **
  ** This define makes the Osek_Internal.h file to include the
  ** Osek_Internal_Arch_Cpu file which is not standard for all architectures.
- ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is neede
+ ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is needed
  ** remove the macro and this comment.
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
@@ -76,14 +82,14 @@ extern TaskType TerminatingTask;
 
 /** \brief Interrupt Secure Start Macro
  **
- ** This macro will be used internaly by the OS in any part of code that
+ ** This macro will be used internally by the OS in any part of code that
  ** has to be executed atomic.
  **/
 #define IntSecure_Start() SuspendAllInterrupts()
 
 /** \brief Interrupt Secure End Macro
  **
- ** This macro is the countra part of IntSecure_Start()
+ ** This macro is the counterpart of IntSecure_Start()
  **/
 #define IntSecure_End() ResumeAllInterrupts()
 
@@ -94,8 +100,8 @@ extern TaskType TerminatingTask;
  ** with lower priority and which never ends) this macro will never be called.
  ** In other case the macro will be called any time that the OS has nothing
  ** else to execute. The macro may sleep the cpu for a short time to avoid
- ** overheating and full power consumption or may halt the processor always
- ** that all wakeup reasons are right configured. If nothing is running
+ ** over heating and full power consumption or may halt the processor always
+ ** that all wake-up reasons are right configured. If nothing is running
  ** nothing my activate any task so we will keep sleeping until anything
  ** occurs, like for example an interrupt.
  **
@@ -166,7 +172,7 @@ extern TaskType TerminatingTask;
    SetActualContext(CONTEXT_SYS);                                          \
    /* set running task to invalid */                                       \
    SetRunningTask(INVALID_TASK);                                           \
-   /* finish cirtical code */                                              \
+   /* finish critical code */                                              \
    IntSecure_End();                                                        \
    /* call scheduler */                                                    \
    Schedule();                                                             \
@@ -224,7 +230,7 @@ extern TaskType TerminatingTask;
  **
  ** This macro returns the actual value of the a counter
  **
- ** \param[in] CounterID id of the counter to be readed
+ ** \param[in] CounterID id of the counter to be read
  ** \return Actual value of the counter
  **/
 #define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
@@ -248,25 +254,23 @@ extern TaskType TerminatingTask;
  **/
 #define ShutdownOs_Arch()
 
+
+
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * Please define here all needed types that will be used only internal by
- * the OS and only for this architecture and which will not depend on the
- * configuraiton. Normaly this section shall be empty.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * Please declare here all exported data defined in Osek_Internal_Arch.c
- * that will be visible only internal to the OS for this architectire.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
+
 
 /*==================[external functions declaration]=========================*/
+
+
+
 void InitStack_Arch(uint8 TaskID);
+
 
 
 /** @} doxygen end group definition */

@@ -58,7 +58,7 @@
  * add a new version to this file, add the date, your initials and the main
  * changes, only main changes shall be listed here. A detailed message log
  * is saved in svn log and on the tracker system since every svn login message
- * shalle indicate the related tracker id.
+ * shall indicate the related tracker id.
  *
  * PLEASE REMOVE THIS COMMENT
  *****************************************************************************/

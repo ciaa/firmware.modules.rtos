@@ -1,4 +1,6 @@
-/* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+/* Copyright 2014, ACSE & CADIEEL
+ *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+ *      CADIEEL: http://www.cadieel.org.ar
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,25 +32,27 @@
  *
  */
 
-#ifndef _OS_ARCH_H_
-#define _OS_ARCH_H_
+#ifndef _OS_INTERNAL_ARCH_CPU_H_
+#define _OS_INTERNAL_ARCH_CPU_H_
 
-/** \brief FreeOSEK Os Architecture Dependent Header File
+
+
+/** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
  **
- ** This file is included form os.h and defines macros
- ** and types which depends on the architecture.
- **
- ** \file cortexM4/Os_Arch.h
- ** \arch cortexM4
- **
+ ** \file cortexM4/lpc4000/Os_Internal_Arch_Cpu.h
+ ** \arch cortexM4/lpc4000
  **/
 
 /** \addtogroup FreeOSEK
  ** @{ */
 /** \addtogroup FreeOSEK_Os
  ** @{ */
-/** \addtogroup FreeOSEK_Os_Global
+/** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
+
+
+
+/*==================[cpu macros]=============================================*/
 
 
 
@@ -56,45 +60,7 @@
 
 
 
-#include "Os_Internal_Arch_Cfg.h"
-
-
-
 /*==================[macros]=================================================*/
-
-
-
-/** \brief Enable All Interrupts Arch */
-#define EnableAllInterrupts_Arch() ResumeAllInterrupts_Arch()
-
-/** \brief Disable All Interrupts Arch */
-#define DisableAllInterrupts_Arch() SuspendAllInterrupts_Arch()
-
-/** \brief Resume All Interrupts Arch
- **
- ** This macro shall resume (enable) all interrupts.
- **/
-#define ResumeAllInterrupts_Arch() __asm volatile("cpsie i")
-
-/** \brief Suspend All Interrupts Arch
- **
- ** This macro shall suspend (disable) all interrupts.
- **/
-#define SuspendAllInterrupts_Arch() __asm volatile("cpsid i")
-
-/** \brief Resume OS Interrupts Arch
- **
- ** This macro shall resume (enable) all interrupts configured on the
- ** FreeOSEK OIL configuration file as ISR2.
- **/
-#define ResumeOSInterrupts_Arch() Enable_ISR2_Arch()
-
-/** \brief Suspend OS Interrupts Arch
- **
- ** This macro shall suspend (disable) all interrupts configured on the
- ** FreeOSEK OIL configuration file as ISR2.
- **/
-#define SuspendOSInterrupts_Arch() Disable_ISR2_Arch()
 
 
 
@@ -110,9 +76,14 @@
 
 
 
+void StartOs_Arch_Cpu(void);
+
+
+
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
+
 /*==================[end of file]============================================*/
-#endif /* #ifndef _OS_ARCH_H_ */
+#endif /* #ifndef _OS_INTERNAL_ARCH_CPU_H_ */
 

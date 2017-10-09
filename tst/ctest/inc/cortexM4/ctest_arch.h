@@ -48,40 +48,73 @@
 /** \addtogroup FreeOSEK_Os_CT Conformance Test
  ** @{ */
 
+
 /*==================[inclusions]=============================================*/
+
+
+
 #include "ciaaPlatforms.h"
 
+
+
 /*==================[macros]=================================================*/
+
+
+
 #if (CPUTYPE == lpc43xx)
+
+
 /* Use GPIO0, IRQ32 as interrupt for tests */
 extern void TriggerISR2_Arch(void);
 
 /* Use GPIO1, IRQ33 as interrupt for tests */
 extern void TriggerISR1_Arch(void);
 
+
+#elif (CPUTYPE == lpc5410x)
+
+
+/* Use PIN_INT0, IRQ5 as interrupt for tests */
+extern void TriggerISR2_Arch(void);
+
+/* Use PIN_INT1, IRQ6 as interrupt for tests */
+extern void TriggerISR1_Arch(void);
+
+
 #elif (CPUTYPE == k60_120)
 
+
 /* Use PORTC, IRQ88 as interrupt for tests */
-#define TriggerISR2_Arch()                                                \
+#define TriggerISR2_Arch()                                                 \
 {                                                                          \
    NVIC_SetPendingIRQ(88);                                                 \
 }
 
+
 /* Use PORTB, IRQ87 as interrupt for tests */
-#define TriggerISR1_Arch()                                                \
+#define TriggerISR1_Arch()                                                 \
 {                                                                          \
    NVIC_SetPendingIRQ(87);                                                 \
 }
+
 
 #else
    #error please define CPU variable!
 #endif
 
+
+
 /*==================[typedef]================================================*/
+
+
 
 /*==================[external data declaration]==============================*/
 
+
+
 /*==================[external functions declaration]=========================*/
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

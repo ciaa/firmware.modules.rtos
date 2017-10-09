@@ -44,37 +44,87 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
+
+
+
 #include "ciaaPlatforms.h"
 #include "ctest_arch.h"
+
 #if (CPU == lpc4337)
 #include "chip.h"
 #endif
 
+#if (CPUTYPE == lpc5410x)
+#include "chip.h"
+#endif
+
+
+
 /*==================[macros and definitions]=================================*/
+
+
 
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
+
+
 
 /*==================[internal data definition]===============================*/
 
+
+
 /*==================[external data definition]===============================*/
+
+
+
 #if (CPUTYPE == lpc43xx)
+
+
+/* Use GPIO0, IRQ32 as interrupt for tests */
 extern void TriggerISR2_Arch(void)
 {
    NVIC_SetPendingIRQ(32);
 }
+
 
 /* Use GPIO1, IRQ33 as interrupt for tests */
 extern void TriggerISR1_Arch(void)
 {
    NVIC_SetPendingIRQ(33);
 }
+
+
+#elif (CPUTYPE == lpc5410x)
+
+
+/* Use PIN_INT0, IRQ5 as interrupt for tests */
+extern void TriggerISR2_Arch(void)
+{
+   NVIC_SetPendingIRQ(5);
+}
+
+
+/* Use PIN_INT1, IRQ6 as interrupt for tests */
+extern void TriggerISR1_Arch(void)
+{
+   NVIC_SetPendingIRQ(6);
+}
+
+
 #endif
+
+
 
 /*==================[internal functions definition]==========================*/
 
+
+
 /*==================[external functions definition]==========================*/
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

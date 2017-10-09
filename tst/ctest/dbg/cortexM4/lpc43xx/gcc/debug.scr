@@ -1,0 +1,34 @@
+#
+# Attach the debugger to the device through an open 
+# OpenOCD remote gdb server session.
+target remote localhost:3333
+#
+# Load the program on the device memory. This step will
+# program the device flash memory whenever necessary to 
+# load the program binary image.
+load
+# 
+# Set the starting processor state.
+set $pc = ResetISR+1
+set $msp = &_vStackTop
+#
+# Set a breakpoint to detect the finalization of the
+# test program.
+break ConfTestFinish
+#
+# Run the test. The program will run until hitting the previous
+# breakpoint.
+continue
+#
+# Download the values of the variables that hold the results of 
+# the execution of the test case.
+dump value out/rtos/TestResults.bin TestResults
+dump value out/rtos/TestResultsOk.bin TestResultsOk
+dump value out/rtos/SequenceCounter.bin SequenceCounter
+dump value out/rtos/SequenceCounterOk.bin SequenceCounterOk
+dump value out/rtos/ConfTestResult.bin ConfTestResult
+#
+# Done executing the test case, kill the debugging session 
+# and exit.
+kill
+quit
