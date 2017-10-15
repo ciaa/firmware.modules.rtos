@@ -520,7 +520,6 @@ uint8 ErrorHookRunning = 0;
 /*==================[internal functions definition]==========================*/
 
 /*==================[external functions definition]==========================*/
-
 <?php
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
