@@ -405,7 +405,7 @@ sub CreateTestProject
    `mkdir -p $base/inc/$ARCH`;
    `mkdir -p $base/src/$ARCH`;
    # get configuration file for this project
-   if ($ARCH == "sparcV8")
+   if ($ARCH eq "sparcV8")
    {
       $org = "modules/rtos/tst/ctest/etc/deepstack/" . $test . ".oil";
    } else {
