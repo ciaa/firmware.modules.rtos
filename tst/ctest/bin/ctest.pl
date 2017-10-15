@@ -405,7 +405,12 @@ sub CreateTestProject
    `mkdir -p $base/inc/$ARCH`;
    `mkdir -p $base/src/$ARCH`;
    # get configuration file for this project
-   $org = "modules/rtos/tst/ctest/etc/" . $test . ".oil";
+   if ($ARCH == "sparcV8")
+   {
+      $org = "modules/rtos/tst/ctest/etc/deepstack/" . $test . ".oil";
+   } else {
+      $org = "modules/rtos/tst/ctest/etc/standard/" . $test . ".oil";
+   }
    $dst = "$base/etc/$test-$config.oil";
    copy($org, $dst) or die "file can not be copied from $org to $dst: $!";
    # prepare the configuration for this project
