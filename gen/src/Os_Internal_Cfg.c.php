@@ -525,7 +525,7 @@ uint8 ErrorHookRunning = 0;
 $intnames = $this->helper->multicore->getLocalList("/OSEK", "ISR");
 foreach ($intnames as $int)
 {
-   $counter_type = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
+   $inttype = $this->config->getValue("/OSEK/" . $int,"INTERRUPT");
    $intcat = $this->config->getValue("/OSEK/" . $int,"CATEGORY");
 
    if ($intcat == 2)
