@@ -404,6 +404,24 @@ void ConfTestEvaluation
    }                                                                                   \
 }
 #endif
+#if (sparcV8 == ARCH)
+#define ASSERT(tc,cond) \
+{                                                                                      \
+   if (cond)                                                                           \
+   {                                                                                   \
+      TestResults[(tc)>>2] |= FAILED << ( ( tc & 3 ) * 2 );                            \
+      ConfTestFinish();                                                                \
+   }                                                                                   \
+   else                                                                                \
+   {                                                                                   \
+      if ( ( TestResults[(tc)>>2] >> ( (tc & 3 ) * 2 ) ) != FAILED )                   \
+      {                                                                                \
+         TestResults[(tc)>>2] |= OK << ( ( tc & 3 ) * 2 );                             \
+      }                                                                                \
+   }                                                                                   \
+}
+#endif
+
 
 extern void Sequence
 (
