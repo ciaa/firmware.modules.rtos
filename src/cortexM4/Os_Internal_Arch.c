@@ -118,16 +118,124 @@ void CheckTerminatingTask_Arch(void)
 void InitStack_Arch(uint8 TaskID)
 {
 
-   uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
-   int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
+   uint32_t *taskStackRegionPtr;
+   int32_t taskStackSizeWords;
 
-   taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
-   taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
-   taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
-   taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+   taskStackRegionPtr = (uint32 *)TasksConst[TaskID].StackPtr;
 
-   *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
+   taskStackSizeWords = TasksConst[TaskID].StackSize / 4;
 
+   /*
+    * Build an initial task context block information on the stack such that
+    * the task can be kick-started using a simple task context switch to
+    * activate it.
+    *
+    * The cpu context information (register values) is stored on the top
+    * of the task stack while the task is not being executed on the processor.
+    *
+    * The context data block stored on the OS administrative data structures
+    * is made up of only a single 32 bits pointer to the top of the task stack.
+    *
+    * The CortexM task context block is made of three sections:
+    *
+    *  * Automatically stacked interrupt return context, made up of the registers
+    *    that are automatically stacked by the processor during the PendSV exception
+    *    entry sequence.
+    *
+    *  * Floating point context, made up of floating point registers and status
+    *    registers. This section is OPTIONAL, and is only stored for certain types of
+    *    tasks when the floating point unit is active.
+    *
+    *  * Integer context, made of the rest of the general purpose registers that
+    *    where not included in the first section. The return value of the PendSV
+    *    exception is also stored here, in order to protect from the context change
+    *    the information about the type of stack being used by the task and the state
+    *    of the floating point unit.
+    */
+
+   /* **********************************************
+    *
+    * Manufacture task context information on the
+    * initial stack
+    *
+    * */
+
+   /*
+    * CortexM Task Context map:
+    *
+    * PendSV Interrupt Frame Stack (automatically stacked):
+    *
+    * [ 1: StackTop -  04] xPSR
+    * [ 2: StackTop -  08] PC (R15)
+    * [ 3: StackTop -  12] LR (R13)
+    * [ 4: StackTop -  16] R12
+    * [ 5: StackTop -  20] R3
+    * [ 6: StackTop -  24] R2
+    * [ 7: StackTop -  28] R1
+    * [ 8: StackTop -  32] R0
+    *
+    */
+
+   taskStackRegionPtr[taskStackSizeWords - 1] = (uint32) (1 << 24);                       /* xPSR.T = 1 */
+   taskStackRegionPtr[taskStackSizeWords - 2] = (uint32) TasksConst[TaskID].EntryPoint;   /* initial PC */
+   taskStackRegionPtr[taskStackSizeWords - 3] = (uint32) ReturnHook_Arch;                 /* Stacked LR */
+
+   /*
+    * PendSV Handler Additional Context Data (stacked by the handler):
+    *
+    * [ 9: StackTop -  36] S16 (floating point, optional)
+    * [10: StackTop -  40] S17 (floating point, optional)
+    * [11: StackTop -  44] S18 (floating point, optional)
+    * [12: StackTop -  48] S19 (floating point, optional)
+    * [13: StackTop -  52] S20 (floating point, optional)
+    * [14: StackTop -  56] S21 (floating point, optional)
+    * [15: StackTop -  60] S22 (floating point, optional)
+    * [16: StackTop -  64] S23 (floating point, optional)
+    * [17: StackTop -  68] S24 (floating point, optional)
+    * [18: StackTop -  72] S25 (floating point, optional)
+    * [19: StackTop -  76] S26 (floating point, optional)
+    * [20: StackTop -  80] S27 (floating point, optional)
+    * [21: StackTop -  84] S28 (floating point, optional)
+    * [22: StackTop -  88] S29 (floating point, optional)
+    * [23: StackTop -  92] S30 (floating point, optional)
+    * [24: StackTop -  96] S31 (floating point, optional)
+    *
+    * */
+
+   /*
+    * Currently no task uses the floating point unit
+    * */
+
+   /*
+    * [25: StackTop - 100] Exception Return Value (Contains task CPU Mode/Stack/FPU info)
+    * [26: StackTop - 104] R11 (integer context)
+    * [27: StackTop - 108] R10 (integer context)
+    * [28: StackTop - 112] R9 (integer context)
+    * [29: StackTop - 116] R8 (integer context)
+    * [30: StackTop - 120] R7 (integer context)
+    * [31: StackTop - 124] R6 (integer context)
+    * [32: StackTop - 128] R5 (integer context)
+    * [33: StackTop - 132] R4 (integer context)
+    *
+    */
+
+   taskStackRegionPtr[taskStackSizeWords - 9] = 0xFFFFFFFD; /* Exception return value: return using PSP */
+
+   /* **********************************************
+    *
+    * Initial task context block data
+    *
+    * */
+
+   /*
+    * Initial context block data
+    *
+    * The context block data is made up of a single pointer to the top
+    * of the task stack.
+    *
+    */
+
+   *(TasksConst[TaskID].TaskContext) = &(taskStackRegionPtr[taskStackSizeWords - 17]);
 }
 
 
