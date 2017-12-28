@@ -62,36 +62,36 @@
  ** in the simulation of the rtos in systems like windows/linux. In real
  ** embedded hw this macro shall be set to 0.
  **
- ** TASK_STAC_ADDITIONAL_STACK bytes of extra stack are reserver for each task
+ ** TASK_STACK_ADDITIONAL_SIZE bytes of extra stack are reserver for each task
  ** running on the system.
  **/
 #define TASK_STACK_ADDITIONAL_SIZE      0
+
 
 /** \brief Osek_Internal_Arch_Cpu.h inclusion needed macro
  **
  ** This define makes the Osek_Internal.h file to include the
  ** Osek_Internal_Arch_Cpu file which is not standard for all architectures.
- ** If for the actual architecture no Osek_Internal_Arch_Cpu.h is needed
- ** remove the macro and this comment.
+ **
+ ** If no Osek_Internal_Arch_Cpu.h is needed remove the macro and this comment.
  **/
 #define OSEK_INLCUDE_INTERNAL_ARCH_CPU
 
-extern void * Osek_OldTaskPtr_Arch;
-extern void * Osek_NewTaskPtr_Arch;
-extern TaskType TerminatingTask;
 
 /** \brief Interrupt Secure Start Macro
  **
  ** This macro will be used internally by the OS in any part of code that
  ** has to be executed atomic.
  **/
-#define IntSecure_Start() SuspendAllInterrupts()
+#define IntSecure_Start()                       { SuspendAllInterrupts(); }
+
 
 /** \brief Interrupt Secure End Macro
  **
  ** This macro is the counterpart of IntSecure_Start()
  **/
-#define IntSecure_End() ResumeAllInterrupts()
+#define IntSecure_End()                         { ResumeAllInterrupts(); }
+
 
 /** \brief osekpause
  **
@@ -106,79 +106,83 @@ extern TaskType TerminatingTask;
  ** occurs, like for example an interrupt.
  **
  **/
-#define osekpause() __asm volatile("wfi")
+#define osekpause()                             { __asm volatile("wfi"); }
+
 
 /** \brief Call to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define CallTask(actualtask, nexttask)                                    \
-{                                                                         \
-   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;    \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;      \
-   __asm__ __volatile__ (                                                 \
-      /* Call PendSV */                                                   \
-      "push {r0,r1}                                               \n\t"   \
+#define CallTask(actualtask, nexttask)                                        \
+{                                                                             \
+   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;        \
+   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;          \
+   __asm__ __volatile__ (                                                     \
+      /* Call PendSV */                                                       \
+      "push {r0,r1}                                               \n\t"       \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                         \n\t"   \
-      "ldr r1,[r0]                                                \n\t"   \
-      "orr r1,1<<28                                               \n\t"   \
-      "str r1,[r0]                                                \n\t"   \
-      "pop {r0,r1}                                                \n\t"   \
-   );                                                                     \
+      "ldr r0,=0xE000ED04                                         \n\t"       \
+      "ldr r1,[r0]                                                \n\t"       \
+      "orr r1,1<<28                                               \n\t"       \
+      "str r1,[r0]                                                \n\t"       \
+      "pop {r0,r1}                                                \n\t"       \
+   );                                                                         \
 }
+
 
 /** \brief Jmp to an other Task
  **
  ** This function jmps to the indicated task.
  **/
-#define JmpTask(task)                                                      \
-{                                                                          \
-   extern TaskType WaitingTask;                                            \
-   if(WaitingTask != INVALID_TASK)                                         \
-   {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*)TasksConst[WaitingTask].TaskContext;   \
-      WaitingTask = INVALID_TASK;                                          \
-   }                                                                       \
-   else                                                                    \
-   {                                                                       \
-      Osek_OldTaskPtr_Arch = (void*)0;                                     \
-   }                                                                       \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;           \
-   __asm__ __volatile__ (                                                  \
-      /* Call PendSV */                                                    \
-      "push {r0,r1}                                          \n\t"         \
+#define JmpTask(task)                                                         \
+{                                                                             \
+   extern TaskType WaitingTask;                                               \
+   if(WaitingTask != INVALID_TASK)                                            \
+   {                                                                          \
+      Osek_OldTaskPtr_Arch = (void*)TasksConst[WaitingTask].TaskContext;      \
+      WaitingTask = INVALID_TASK;                                             \
+   }                                                                          \
+   else                                                                       \
+   {                                                                          \
+      Osek_OldTaskPtr_Arch = (void*)0;                                        \
+   }                                                                          \
+   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;              \
+   __asm__ __volatile__ (                                                     \
+      /* Call PendSV */                                                       \
+      "push {r0,r1}                                          \n\t"            \
       /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                    \n\t"         \
-      "ldr r1,[r0]                                           \n\t"         \
-      "orr r1,1<<28                                          \n\t"         \
-      "str r1,[r0]                                           \n\t"         \
-      "pop {r0,r1}                                           \n\t"         \
-   );                                                                      \
+      "ldr r0,=0xE000ED04                                    \n\t"            \
+      "ldr r1,[r0]                                           \n\t"            \
+      "orr r1,1<<28                                          \n\t"            \
+      "str r1,[r0]                                           \n\t"            \
+      "pop {r0,r1}                                           \n\t"            \
+   );                                                                         \
 }
 
+
 /** \brief Save context */
-#define SaveContext(task)                                                  \
-{                                                                          \
-   extern TaskType WaitingTask;                                            \
-   if(TasksVar[GetRunningTask()].Flags.State == TASK_ST_WAITING)           \
-   {                                                                       \
-      WaitingTask = GetRunningTask();                                      \
-   }                                                                       \
-   flag = 0;                                                               \
-   /* remove of the Ready List */                                          \
-   RemoveTask(GetRunningTask());                                           \
-   /* set system context */                                                \
-   SetActualContext(CONTEXT_SYS);                                          \
-   /* set running task to invalid */                                       \
-   SetRunningTask(INVALID_TASK);                                           \
-   /* finish critical code */                                              \
-   IntSecure_End();                                                        \
-   /* call scheduler */                                                    \
-   Schedule();                                                             \
-   /* add this call in order to maintain counter balance when returning */ \
-   IntSecure_Start();                                                      \
+#define SaveContext(task)                                                     \
+{                                                                             \
+   extern TaskType WaitingTask;                                               \
+   if(TasksVar[GetRunningTask()].Flags.State == TASK_ST_WAITING)              \
+   {                                                                          \
+      WaitingTask = GetRunningTask();                                         \
+   }                                                                          \
+   flag = 0;                                                                  \
+   /* remove of the Ready List */                                             \
+   RemoveTask(GetRunningTask());                                              \
+   /* set system context */                                                   \
+   SetActualContext(CONTEXT_SYS);                                             \
+   /* set running task to invalid */                                          \
+   SetRunningTask(INVALID_TASK);                                              \
+   /* finish critical code */                                                 \
+   IntSecure_End();                                                           \
+   /* call scheduler */                                                       \
+   Schedule();                                                                \
+   /* add this call in order to maintain counter balance when returning */    \
+   IntSecure_Start();                                                         \
 }
+
 
 /** \brief */
 #define ResetStack(task)       \
@@ -186,18 +190,21 @@ extern TaskType TerminatingTask;
    TerminatingTask = (task);   \
 }
 
+
 /** \brief Set the entry point for a task */
 #define SetEntryPoint(task)    \
 {                              \
    TerminatingTask = (task);   \
 }
 
+
 /** \brief Enable OS Interruptions
  **
  ** Enable OS configured interrupts (ISR1 and ISR2). This macro
  ** is called only ones in StartUp.c function.
  **/
-#define EnableOSInterrupts() __asm volatile("cpsie i")
+#define EnableOSInterrupts()                    { __asm volatile("cpsie i"); }
+
 
 /** \brief Enable Interruptions
  **
@@ -207,14 +214,15 @@ extern TaskType TerminatingTask;
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use EnableOSInterrupts.
  **/
-#define EnableInterrupts() EnableOSInterrupts()
+#define EnableInterrupts()                      { EnableOSInterrupts(); }
 
 
 /** \brief Disable OS Interruptions
  **
  ** Disable OS configured interrupts (ISR1 and ISR2).
  **/
-#define DisableOSInterrupts() __asm volatile("cpsid i")
+#define DisableOSInterrupts()                   { __asm volatile("cpsid i"); }
+
 
 /** \brief Disable Interruptions
  **
@@ -224,7 +232,8 @@ extern TaskType TerminatingTask;
  ** This macro may be empty. Maybe will be removed on the future,
  ** please use it only if necessary, in other case use DisableOSInterrupts.
  **/
-#define DisableInterrupts() DisableOSInterrupts()
+#define DisableInterrupts()                     { DisableOSInterrupts(); }
+
 
 /** \brief Get Counter Actual Value
  **
@@ -233,7 +242,8 @@ extern TaskType TerminatingTask;
  ** \param[in] CounterID id of the counter to be read
  ** \return Actual value of the counter
  **/
-#define GetCounter_Arch(CounterID) (CountersVar[CounterID].Time)
+#define GetCounter_Arch(CounterID)              (CountersVar[CounterID].Time)
+
 
 /** \brief Pre ISR Macro
  **
@@ -241,11 +251,13 @@ extern TaskType TerminatingTask;
  **/
 #define PreIsr2_Arch(isr)
 
+
 /** \brief Post ISR Macro
  **
  ** This macro is called every time that an ISR Cat 2 is finished
  **/
-#define PostIsr2_Arch(isr) Schedule_WOChecks()
+#define PostIsr2_Arch(isr)                      { Schedule_WOChecks(); }
+
 
 /** \brief ShutdownOs Arch service
  **
@@ -262,6 +274,13 @@ extern TaskType TerminatingTask;
 
 /*==================[external data declaration]==============================*/
 
+
+
+extern void * Osek_OldTaskPtr_Arch;
+
+extern void * Osek_NewTaskPtr_Arch;
+
+extern TaskType TerminatingTask;
 
 
 
