@@ -143,18 +143,18 @@ void InitStack_Arch(uint8 TaskID)
     * the task can be kick-started using a simple task context switch to
     * activate it.
     *
-    *
     * During context switches, the task's context data (made up of the values
     * of all of the cpu registers) is stored/recovered on/from the task's
     * stack.
     *
-    * Once the registers values are stored on the stack, the task context
-    * can be reduced to the pointer to the top of the stack, a single
-    * 32 bits unsigned value that can be stored on the operating system's
-    * administrative data structures.
+    * Once the register values are stored on the stack, the task context
+    * can be reduced to a pointer to the top of the stack, a single
+    * 32 bit word that is stored on the operating system's administrative
+    * data structures.
     *
     * The structure of the context information that is stored on the stack
-    * during a context switch si made up of:
+    * during a context switch is composed of:
+    *
     *  * Integer register values (R0-R15).
     *  * Floating point register values (S0-S31).
     *  * Special registers (xPSR), FP status register.
@@ -163,22 +163,19 @@ void InitStack_Arch(uint8 TaskID)
     *
     * This context information can be divided in four blocks:
     *
-    * * [CONTEXT BLOCK 1, CB1] Automatically stored Floating Point registers.
-    * * [CONTEXT BLOCK 2, CB2] Automatically stored Integer Registers.
-    * * [CONTEXT BLOCK 3, CB3] Manually saved Floating Point Registers.
-    * * [CONTEXT BLOCK 4, CB4] Manually saved Integer Registers.
+    * * [BLOCK 1] Automatically saved Floating Point registers.
+    * * [BLOCK 2] Automatically saved Integer Registers.
+    * * [BLOCK 3] Manually saved Floating Point Registers.
+    * * [BLOCK 4] Manually saved Integer Registers.
     *
+    * The registers in BLOCK 1 and BLOCK 2 are automatically saved/recovered during the PendSV
+    * exception entry/exit sequence, while the ones in BLOCK 3 and BLOCK 4 are manually
+    * saved/recovered by the exception handler's code.
     *
-    * The registers in blocks 1 and 2 are automatically saved/recovered during the PendSV
-    * exception entry/exit sequence, while the ones in blocks 3 and 4 are manually stored
-    * during the execution of the exception handler.
-    *
-    * The floating point registers (blocks 1 and 3) are optional: these registers
-    * are only stored if the system detects that the floating point unit is in use.
+    * The floating point registers (BLOCK 1 and BLOCK 3) are not always used: these
+    * registers are only stored if the system detects that the floating point unit is in use.
     * On the CortexM architecture this detection is performed automatically CPU when
-    * the FPU is enabled by the initialization code.
-    *
-    * The full register context data stored on the stack is the following:
+    * the FPU is enabled by the application's initialization code.
     *
     * */
 
@@ -215,7 +212,7 @@ void InitStack_Arch(uint8 TaskID)
     *
     * [ BLOCK 2 / INDEX 01 / OFFSET -00 ] xPSR
     * [ BLOCK 2 / INDEX 02 / OFFSET -04 ] PC (R15)
-    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R13)
+    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R14)
     * [ BLOCK 2 / INDEX 04 / OFFSET -12 ] R12
     * [ BLOCK 2 / INDEX 05 / OFFSET -16 ] R3
     * [ BLOCK 2 / INDEX 06 / OFFSET -20 ] R2
