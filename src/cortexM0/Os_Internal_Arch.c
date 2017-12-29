@@ -134,16 +134,115 @@ void CheckTerminatingTask_Arch(void)
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
+   uint32_t *taskStackRegionPtr;
+   int32_t taskStackSizeWords;
 
-   uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
-   int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
+   taskStackRegionPtr = (uint32 *)TasksConst[TaskID].StackPtr;
 
-   taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
-   taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
-   taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
-   taskStack[taskStackSizeWords-9] = 0xFFFFFFF9; /* current LR, return using MSP */
+   taskStackSizeWords = TasksConst[TaskID].StackSize / 4;
 
-   *(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
+   /*
+    * Build an initial task context block information on the stack such that
+    * the task can be kick-started using a simple task context switch to
+    * activate it.
+    *
+    *
+    * During context switches, the task's context data (made up of the values
+    * of all of the cpu registers) is stored/recovered on/from the task's
+    * stack.
+    *
+    * Once the registers values are stored on the stack, the task context
+    * can be reduced to the pointer to the top of the stack, a single
+    * 32 bits unsigned value that can be stored on the operating system's
+    * administrative data structures.
+    *
+    * The structure of the context information that is stored on the stack
+    * during a context switch si made up of:
+    *  * Integer register values (R0-R15).
+    *  * Special registers (xPSR).
+    *  * Other task state items: exception return value (Contains task CPU
+    *    Mode/Stack/FPU info).
+    *
+    * This context information can be divided in four blocks:
+    *
+    * * [CONTEXT BLOCK 1, CB1] Automatically stored Integer Registers.
+    * * [CONTEXT BLOCK 2, CB2] Manually saved Integer Registers.
+    *
+    *
+    * The registers in block 1 are automatically saved/recovered during the PendSV
+    * exception entry/exit sequence, while the ones in block 2 are manually stored
+    * during the execution of the exception handler.
+    *
+    * */
+
+   /* **********************************************
+    *
+    * Manufacture task context information on the
+    * initial stack
+    *
+    * */
+
+   /*
+    *  BLOCK 1
+    *  -------
+    *
+    * [ BLOCK 2 / INDEX 01 / OFFSET -00 ] xPSR
+    * [ BLOCK 2 / INDEX 02 / OFFSET -04 ] PC (R15)
+    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R14)
+    * [ BLOCK 2 / INDEX 04 / OFFSET -12 ] R12
+    * [ BLOCK 2 / INDEX 05 / OFFSET -16 ] R3
+    * [ BLOCK 2 / INDEX 06 / OFFSET -20 ] R2
+    * [ BLOCK 2 / INDEX 07 / OFFSET -24 ] R1
+    * [ BLOCK 2 / INDEX 08 / OFFSET -28 ] R0
+    *
+    * */
+
+   taskStackRegionPtr[taskStackSizeWords - 1] = (uint32) (1 << 24);                       /* xPSR.T = 1 */
+   taskStackRegionPtr[taskStackSizeWords - 2] = (uint32) TasksConst[TaskID].EntryPoint;   /* initial PC */
+   taskStackRegionPtr[taskStackSizeWords - 3] = (uint32) ReturnHook_Arch;                 /* Stacked LR */
+
+   /*
+    *  BLOCK 4
+    *  -------
+    *
+    * [ BLOCK 4 / INDEX 01 / OFFSET -00 ] Exception Return Value (Contains task CPU Mode/Stack/FPU info)
+    * [ BLOCK 4 / INDEX 02 / OFFSET -04 ] R11
+    * [ BLOCK 4 / INDEX 03 / OFFSET -08 ] R10
+    * [ BLOCK 4 / INDEX 04 / OFFSET -12 ] R9
+    * [ BLOCK 4 / INDEX 05 / OFFSET -16 ] R8
+    * [ BLOCK 4 / INDEX 06 / OFFSET -20 ] R7
+    * [ BLOCK 4 / INDEX 07 / OFFSET -24 ] R6
+    * [ BLOCK 4 / INDEX 08 / OFFSET -28 ] R5
+    * [ BLOCK 4 / INDEX 08 / OFFSET -28 ] R4
+    *
+    * */
+
+   /*
+    * Exception return value:
+    *
+    *  * Back to thread mode.
+    *  * Return using MSP.
+    *
+    * */
+
+   taskStackRegionPtr[taskStackSizeWords-9] = 0xFFFFFFF9; /* current LR, return using MSP */
+
+
+   /* **********************************************
+    *
+    * Initial task context block data
+    *
+    * */
+
+   /*
+    * Initial context block data
+    *
+    * The context block data is made up of a single pointer to the top
+    * of the task stack.
+    *
+    */
+
+   *(TasksConst[TaskID].TaskContext) = &(taskStackRegionPtr[taskStackSizeWords - 17]);
 
 }
 
