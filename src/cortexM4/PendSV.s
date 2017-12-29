@@ -138,7 +138,7 @@ PendSV_Handler:
    vstmdbeq r0!,{s16-s31}
 
    /*
-    * Save the integer registers in BLOCK 4: R5-R11, and the exception
+    * Save the integer registers in BLOCK 4: R4-R11, and the exception
     * return value currently stored in LR.
     * */
 
@@ -157,12 +157,15 @@ PendSV_Handler:
    /*
     * Store the task stack pointer on the task context block.
     *
-    * If there there was no currently active task, the exiting
-    * task context block pointer may be null. In that case do nothing.
+    * If there was no currently active task, the exiting
+    * task context block pointer may be null. In that
+    * case do nothing.
     *
-    * FIXME In this case we shouldn't even have written the state of the register set on the
-    * stack, because we may be overwriting the initial task state that was built by
-    * CheckTerminatingTask_Arch at the start of the handler. */
+    * FIXME In this case we shouldn't even have written the
+    * state of the register set on the stack, because we
+    * may be overwriting the initial task state that was built by
+    * CheckTerminatingTask_Arch at the start of the handler.
+    */
 
    ldr   r1,=Osek_OldTaskPtr_Arch
    ldr   r1,[r1]
@@ -247,4 +250,5 @@ PendSV_Handler:
    /*
     * Return from the PensSV exception handler.
     */
+
    bx lr
