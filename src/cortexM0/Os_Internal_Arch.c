@@ -44,43 +44,92 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+
 /*==================[inclusions]=============================================*/
+
+
+
 #include "chip.h"
 #include "Os_Internal.h"
 
+
+
+
 /*==================[macros and definitions]=================================*/
+
+
 
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
-void* Osek_NewTaskPtr_Arch;
-void* Osek_OldTaskPtr_Arch;
+
+
+
+void *Osek_NewTaskPtr_Arch;
+void *Osek_OldTaskPtr_Arch;
+
+
 
 /*==================[internal data definition]===============================*/
+
+
+
 TaskType TerminatingTask = INVALID_TASK;
 TaskType WaitingTask = INVALID_TASK;
 
+
+
 /*==================[external data definition]===============================*/
+
+
 
 /*==================[internal functions definition]==========================*/
 
+
+
 /*==================[external functions definition]==========================*/
+
+
 
 void ReturnHook_Arch(void)
 {
-   /* Tasks shouldn't return here... */
-   while(1) osekpause();
+   /*
+    * Tasks shouldn't return here...
+    *
+    * This is a security net for runaway tasks that reach the end of
+    * their main body code without terminating their execution
+    * properly using TerminateTask or something of the kind.
+    *
+    * */
 
+   while(1)
+   {
+      osekpause();
+   }
 }
+
+
 
 void CheckTerminatingTask_Arch(void)
 {
+   /*
+    * If there is task being terminated, destroy its context information and
+    * reset its state so that the next time that the task is activated it
+    * starts its execution on the first instruction of the task body.
+    * */
+
    if(TerminatingTask != INVALID_TASK)
    {
       InitStack_Arch(TerminatingTask);
    }
+
    TerminatingTask = INVALID_TASK;
 }
+
+
 
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
@@ -98,28 +147,39 @@ void InitStack_Arch(uint8 TaskID)
 
 }
 
+
+
 /* Cortex-M0 core of LPC4337 uses RIT Timer for periodic IRQ */
 void RIT_IRQHandler(void)
 {
    if(Chip_RIT_GetIntStatus(LPC_RITIMER) == SET)
    {
-      /* store the calling context in a variable */
+      /* Store the calling context in a variable. */
       ContextType actualContext = GetCallingContext();
-      /* set isr 2 context */
+
+      /* Set ISR2 context. */
       SetActualContext(CONTEXT_ISR2);
 
 #if (ALARMS_COUNT != 0)
-      /* counter increment */
-      static CounterIncrementType CounterIncrement = 1;
-      (void)CounterIncrement; /* TODO remove me */
 
-      /* increment the disable interrupt conter to avoid enable the interrupts */
+      /* Counter increment. */
+      static CounterIncrementType CounterIncrement = 1; /* TODO remove me. */
+
+      (void)CounterIncrement; /* This avoids a compiler warning because the variable is not being used. */
+
+      /*
+       * Enter critical section.
+       * */
       IntSecure_Start();
 
-      /* call counter interrupt handler */
+      /*
+       * The the RTOS counter increment handler.
+       * */
       CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
 
-      /* set the disable interrupt counter back */
+      /*
+       * Exit the critical section.
+       * */
       IntSecure_End();
 
 #endif /* #if (ALARMS_COUNT != 0) */
@@ -128,18 +188,28 @@ void RIT_IRQHandler(void)
       SetActualContext(actualContext);
 
 #if (NON_PREEMPTIVE == OSEK_DISABLE)
-      /* check if the actual task is preemptive */
+
+      /*
+       * Check if the currently active task is preemptive;
+       * if it is, call schedule().
+       * */
+
       if ( ( CONTEXT_TASK == actualContext ) &&
-           ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+            ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
       {
-         /* this shall force a call to the scheduler */
+         /* This shall force a call to the scheduler. */
          PostIsr2_Arch(isr);
       }
+
 #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+
       Chip_RIT_ClearInt(LPC_RITIMER);
+
       NVIC_ClearPendingIRQ(RITIMER_IRQn);
    }
 }
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
