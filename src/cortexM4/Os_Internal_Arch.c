@@ -143,28 +143,44 @@ void InitStack_Arch(uint8 TaskID)
     * the task can be kick-started using a simple task context switch to
     * activate it.
     *
-    * The cpu context information (register values) is stored on the top
-    * of the task stack while the task is not being executed on the processor.
     *
-    * The context data block stored on the OS administrative data structures
-    * is made up of only a single 32 bits pointer to the top of the task stack.
+    * During context switches, the task's context data (made up of the values
+    * of all of the cpu registers) is stored/recovered on/from the task's
+    * stack.
     *
-    * The CortexM task context block is made of three sections:
+    * Once the registers values are stored on the stack, the task context
+    * can be reduced to the pointer to the top of the stack, a single
+    * 32 bits unsigned value that can be stored on the operating system's
+    * administrative data structures.
     *
-    *  * Automatically stacked interrupt return context, made up of the registers
-    *    that are automatically stacked by the processor during the PendSV exception
-    *    entry sequence.
+    * The structure of the context information that is stored on the stack
+    * during a context switch si made up of:
+    *  * Integer register values (R0-R15).
+    *  * Floating point register values (S0-S31).
+    *  * Special registers (xPSR), FP status register.
+    *  * Other task state items: exception return value (Contains task CPU
+    *    Mode/Stack/FPU info).
     *
-    *  * Floating point context, made up of floating point registers and status
-    *    registers. This section is OPTIONAL, and is only stored for certain types of
-    *    tasks when the floating point unit is active.
+    * This context information can be divided in four blocks:
     *
-    *  * Integer context, made of the rest of the general purpose registers that
-    *    where not included in the first section. The return value of the PendSV
-    *    exception is also stored here, in order to protect from the context change
-    *    the information about the type of stack being used by the task and the state
-    *    of the floating point unit.
-    */
+    * * [CONTEXT BLOCK 1, CB1] Automatically stored Floating Point registers.
+    * * [CONTEXT BLOCK 2, CB2] Automatically stored Integer Registers.
+    * * [CONTEXT BLOCK 3, CB3] Manually saved Floating Point Registers.
+    * * [CONTEXT BLOCK 4, CB4] Manually saved Integer Registers.
+    *
+    *
+    * The registers in blocks 1 and 2 are automatically saved/recovered during the PendSV
+    * exception entry/exit sequence, while the ones in blocks 3 and 4 are manually stored
+    * during the execution of the exception handler.
+    *
+    * The floating point registers (blocks 1 and 3) are optional: these registers
+    * are only stored if the system detects that the floating point unit is in use.
+    * On the CortexM architecture this detection is performed automatically CPU when
+    * the FPU is enabled by the initialization code.
+    *
+    * The full register context data stored on the stack is the following:
+    *
+    * */
 
    /* **********************************************
     *
@@ -174,65 +190,90 @@ void InitStack_Arch(uint8 TaskID)
     * */
 
    /*
-    * CortexM Task Context map:
+    *  BLOCK 1
+    *  -------
     *
-    * PendSV Interrupt Frame Stack (automatically stacked):
+    * [ BLOCK 1 / INDEX 01 / OFFSET -00 ] FTSCR
+    * [ BLOCK 1 / INDEX 02 / OFFSET -04 ] S15
+    * [ BLOCK 1 / INDEX 03 / OFFSET -08 ] S14
+    *           ... so on...
+    * [ BLOCK 1 / INDEX 14 / OFFSET -52 ] S2
+    * [ BLOCK 1 / INDEX 15 / OFFSET -56 ] S1
+    * [ BLOCK 1 / INDEX 16 / OFFSET -60 ] S0
     *
-    * [ 1: StackTop -  04] xPSR
-    * [ 2: StackTop -  08] PC (R15)
-    * [ 3: StackTop -  12] LR (R13)
-    * [ 4: StackTop -  16] R12
-    * [ 5: StackTop -  20] R3
-    * [ 6: StackTop -  24] R2
-    * [ 7: StackTop -  28] R1
-    * [ 8: StackTop -  32] R0
+    * */
+
+   /*
+    * ABSENT BLOCK. INITIAL CONTEXT DATA DOES NOT CONTAIN
+    * FLOATING POINT DATA
     *
-    */
+    * */
+
+   /*
+    *  BLOCK 2
+    *  -------
+    *
+    * [ BLOCK 2 / INDEX 01 / OFFSET -00 ] xPSR
+    * [ BLOCK 2 / INDEX 02 / OFFSET -04 ] PC (R15)
+    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R13)
+    * [ BLOCK 2 / INDEX 04 / OFFSET -12 ] R12
+    * [ BLOCK 2 / INDEX 05 / OFFSET -16 ] R3
+    * [ BLOCK 2 / INDEX 06 / OFFSET -20 ] R2
+    * [ BLOCK 2 / INDEX 07 / OFFSET -24 ] R1
+    * [ BLOCK 2 / INDEX 08 / OFFSET -28 ] R0
+    *
+    * */
 
    taskStackRegionPtr[taskStackSizeWords - 1] = (uint32) (1 << 24);                       /* xPSR.T = 1 */
    taskStackRegionPtr[taskStackSizeWords - 2] = (uint32) TasksConst[TaskID].EntryPoint;   /* initial PC */
    taskStackRegionPtr[taskStackSizeWords - 3] = (uint32) ReturnHook_Arch;                 /* Stacked LR */
 
    /*
-    * PendSV Handler Additional Context Data (stacked by the handler):
+    *  BLOCK 3
+    *  -------
     *
-    * [ 9: StackTop -  36] S16 (floating point, optional)
-    * [10: StackTop -  40] S17 (floating point, optional)
-    * [11: StackTop -  44] S18 (floating point, optional)
-    * [12: StackTop -  48] S19 (floating point, optional)
-    * [13: StackTop -  52] S20 (floating point, optional)
-    * [14: StackTop -  56] S21 (floating point, optional)
-    * [15: StackTop -  60] S22 (floating point, optional)
-    * [16: StackTop -  64] S23 (floating point, optional)
-    * [17: StackTop -  68] S24 (floating point, optional)
-    * [18: StackTop -  72] S25 (floating point, optional)
-    * [19: StackTop -  76] S26 (floating point, optional)
-    * [20: StackTop -  80] S27 (floating point, optional)
-    * [21: StackTop -  84] S28 (floating point, optional)
-    * [22: StackTop -  88] S29 (floating point, optional)
-    * [23: StackTop -  92] S30 (floating point, optional)
-    * [24: StackTop -  96] S31 (floating point, optional)
+    * [ BLOCK 3 / INDEX 01 / OFFSET -04 ] S31
+    * [ BLOCK 3 / INDEX 02 / OFFSET -08 ] S30
+    *           ... so on...
+    * [ BLOCK 3 / INDEX 15 / OFFSET -52 ] S17
+    * [ BLOCK 3 / INDEX 16 / OFFSET -56 ] S16
     *
     * */
 
    /*
-    * Currently no task uses the floating point unit
+    * ABSENT BLOCK. INITIAL CONTEXT DATA DOES NOT CONTAIN
+    * FLOATING POINT DATA
+    *
+    * */
+
+
+   /*
+    *  BLOCK 4
+    *  -------
+    *
+    * [ BLOCK 4 / INDEX 01 / OFFSET -00 ] Exception Return Value (Contains task CPU Mode/Stack/FPU info)
+    * [ BLOCK 4 / INDEX 02 / OFFSET -04 ] R11
+    * [ BLOCK 4 / INDEX 03 / OFFSET -08 ] R10
+    * [ BLOCK 4 / INDEX 04 / OFFSET -12 ] R9
+    * [ BLOCK 4 / INDEX 05 / OFFSET -16 ] R8
+    * [ BLOCK 4 / INDEX 06 / OFFSET -20 ] R7
+    * [ BLOCK 4 / INDEX 07 / OFFSET -24 ] R6
+    * [ BLOCK 4 / INDEX 08 / OFFSET -28 ] R5
+    * [ BLOCK 4 / INDEX 08 / OFFSET -28 ] R4
+    *
     * */
 
    /*
-    * [25: StackTop - 100] Exception Return Value (Contains task CPU Mode/Stack/FPU info)
-    * [26: StackTop - 104] R11 (integer context)
-    * [27: StackTop - 108] R10 (integer context)
-    * [28: StackTop - 112] R9 (integer context)
-    * [29: StackTop - 116] R8 (integer context)
-    * [30: StackTop - 120] R7 (integer context)
-    * [31: StackTop - 124] R6 (integer context)
-    * [32: StackTop - 128] R5 (integer context)
-    * [33: StackTop - 132] R4 (integer context)
+    * Exception return value:
     *
-    */
+    *  * Back to thread mode.
+    *  * Return using PSP.
+    *  * Set bit 4 to 1, to indicate that this is base stack frame (no FP data).
+    *
+    * */
 
-   taskStackRegionPtr[taskStackSizeWords - 9] = 0xFFFFFFFD; /* Exception return value: return using PSP */
+   taskStackRegionPtr[taskStackSizeWords - 9] = 0xFFFFFFFD;
+
 
    /* **********************************************
     *
