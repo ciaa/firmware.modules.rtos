@@ -215,7 +215,7 @@ void InitStack_Arch(uint8 TaskID)
     *
     * [ BLOCK 2 / INDEX 01 / OFFSET -00 ] xPSR
     * [ BLOCK 2 / INDEX 02 / OFFSET -04 ] PC (R15)
-    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R13)
+    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R14)
     * [ BLOCK 2 / INDEX 04 / OFFSET -12 ] R12
     * [ BLOCK 2 / INDEX 05 / OFFSET -16 ] R3
     * [ BLOCK 2 / INDEX 06 / OFFSET -20 ] R2
