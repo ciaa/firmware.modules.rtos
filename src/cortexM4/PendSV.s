@@ -66,7 +66,7 @@ PendSV_Handler:
     * task's CPU context has already been stored on the task's stack
     * by the exception entry sequence.
     *
-    * This includes, in stacking order, blocks 1 and 2. as
+    * This includes, in stacking order, BLOCK 1 and BLOCK 2. as
     * described in InitStack_Arch().
     *
     * The CPU will have only stored the registers of BLOCK 1
@@ -74,11 +74,11 @@ PendSV_Handler:
     * Is always saved during the exception entry sequence.
     *
     * Notice that by default the CortexM architecture uses a
-    * lazy strategy for saving the FP regiters on BLOCK 1. In
+    * lazy strategy for saving the FP registers in BLOCK 1. In
     * practice this mean that the processor allocates space on the
-    * stack for the registers on BLOCK 1, but but does not
-    * store their values there. Only if the exception handler
-    * contains a FP instruction does the CPU actually store the
+    * stack for the registers, but does not store their values
+    * there. Only if the exception handler contains a FP
+    * instruction does the CPU actually store the
     * values of the registers in BLOCK 1 (S0 to S15, and FPSCR)
     * to the previously allocated stack space. See "Cortex-M4(F)
     * Lazy Stacking and Context Switching", Application Note 298.
@@ -136,7 +136,6 @@ PendSV_Handler:
    tst   lr,0x10
    it    eq
    vstmdbeq r0!,{s16-s31}
-
 
    /*
     * Save the integer registers in BLOCK 4: R5-R11, and the exception
