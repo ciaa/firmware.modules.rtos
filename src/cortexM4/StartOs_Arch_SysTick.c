@@ -85,11 +85,24 @@
 
 void StartOs_Arch_SysTick(void)
 {
+
+   /* FIXME Check that priorities of interrupts declared in the OIL file
+    * don not occupy priority ranges overlapping PendSV nor SysTick.
+    */
+
+   /*
+    * FIXME This should be moved to StartOs_Arch()
+    * */
+
    /* Activate MemFault, UsageFault and BusFault exceptions */
    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
 
    /* Set lowest priority for SysTick and PendSV */
    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
+
+   /*
+    * End of FIXME comment.
+    */
 
    /* Activate SysTick */
    SystemCoreClockUpdate();

@@ -545,6 +545,7 @@ foreach ($intnames as $int)
    print "   /* Enabling IRQ $source with priority $prio */\n";
    print "   NVIC_EnableIRQ(" . array_search($source, $intList) . ");\n";
    print "   NVIC_SetPriority(" . array_search($source, $intList) . ", $prio);\n\n";
+   
 }
 ?>
 }
