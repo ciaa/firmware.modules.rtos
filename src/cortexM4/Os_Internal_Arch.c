@@ -63,19 +63,13 @@
 
 
 
-void* Osek_NewTaskPtr_Arch;
-
-void* Osek_OldTaskPtr_Arch;
-
-
-
 /*==================[internal data definition]===============================*/
 
 
 
-TaskType TerminatingTask = INVALID_TASK;
+TaskContextType cortexM4NullContext;
 
-TaskType WaitingTask = INVALID_TASK;
+TaskContextRefType *cortexM4ActiveContextPtr = &cortexM4NullContext;
 
 
 
@@ -110,20 +104,9 @@ void ReturnHook_Arch(void)
 
 
 
-void CheckTerminatingTask_Arch(void)
+void updateActiveTaskContextPtr_Arch()
 {
-   /*
-    * If there is task being terminated, destroy its context information and
-    * reset its state so that the next time that the task is activated it
-    * starts its execution on the first instruction of the task body.
-    * */
-
-   if(TerminatingTask != INVALID_TASK)
-   {
-      InitStack_Arch(TerminatingTask);
-   }
-
-   TerminatingTask = INVALID_TASK;
+   cortexM4ActiveContextPtr = TasksConst[RunningTask].TaskContext;
 }
 
 
@@ -131,8 +114,8 @@ void CheckTerminatingTask_Arch(void)
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
-   uint32_t *taskStackRegionPtr;
-   int32_t taskStackSizeWords;
+   uint32 *taskStackRegionPtr;
+   sint32 taskStackSizeWords;
 
    taskStackRegionPtr = (uint32 *)TasksConst[TaskID].StackPtr;
 
@@ -286,7 +269,9 @@ void InitStack_Arch(uint8 TaskID)
     *
     */
 
-   *(TasksConst[TaskID].TaskContext) = &(taskStackRegionPtr[taskStackSizeWords - 17]);
+   TasksConst[TaskID].TaskContext->stackTopPointer   = &(taskStackRegionPtr[taskStackSizeWords - 17]);
+   TasksConst[TaskID].TaskContext->frozenContextFlag = 0;
+
 }
 
 

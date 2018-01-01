@@ -61,13 +61,20 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Types.h"
+
 
 /*==================[typedef]================================================*/
 
 
 
 /** \brief Task Context Type */
-typedef uint32 * TaskContextType;
+typedef struct {
+
+   uint32 *stackTopPointer;
+   uint32 frozenContextFlag;
+
+} TaskContextType;
 
 /** \brief Task Context Type */
 typedef TaskContextType* TaskContextRefType;

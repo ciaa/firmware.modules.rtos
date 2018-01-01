@@ -52,6 +52,10 @@
 
 
 
+#include "Os_Internal.h"
+
+
+
 /*==================[macros]=================================================*/
 
 
@@ -109,44 +113,8 @@
 #define osekpause()                             { __asm volatile("wfi"); }
 
 
-/** \brief Call to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-#define CallTask(actualtask, nexttask)                                        \
+#define InvokePendSV()                                                        \
 {                                                                             \
-   Osek_OldTaskPtr_Arch = (void*)TasksConst[(actualtask)].TaskContext;        \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(nexttask)].TaskContext;          \
-   __asm__ __volatile__ (                                                     \
-      /* Call PendSV */                                                       \
-      "push {r0,r1}                                               \n\t"       \
-      /* Activate bit PENDSVSET in Interrupt Control State Register (ICSR) */ \
-      "ldr r0,=0xE000ED04                                         \n\t"       \
-      "ldr r1,[r0]                                                \n\t"       \
-      "orr r1,1<<28                                               \n\t"       \
-      "str r1,[r0]                                                \n\t"       \
-      "pop {r0,r1}                                                \n\t"       \
-   );                                                                         \
-}
-
-
-/** \brief Jmp to an other Task
- **
- ** This function jmps to the indicated task.
- **/
-#define JmpTask(task)                                                         \
-{                                                                             \
-   extern TaskType WaitingTask;                                               \
-   if(WaitingTask != INVALID_TASK)                                            \
-   {                                                                          \
-      Osek_OldTaskPtr_Arch = (void*)TasksConst[WaitingTask].TaskContext;      \
-      WaitingTask = INVALID_TASK;                                             \
-   }                                                                          \
-   else                                                                       \
-   {                                                                          \
-      Osek_OldTaskPtr_Arch = (void*)0;                                        \
-   }                                                                          \
-   Osek_NewTaskPtr_Arch = (void*)TasksConst[(task)].TaskContext;              \
    __asm__ __volatile__ (                                                     \
       /* Call PendSV */                                                       \
       "push {r0,r1}                                          \n\t"            \
@@ -160,13 +128,23 @@
 }
 
 
+
+/** \brief CortexM4 implementation of the CallTask() OS interface.
+ **/
+#define CallTask(current, nexttask)             { InvokePendSV(); }
+
+
+/** \brief CortexM4 implementation of the JmpTask() OS interface.
+ **/
+#define JmpTask(task)                           { InvokePendSV(); }
+
+
 /** \brief Save context */
 #define SaveContext(task)                                                     \
 {                                                                             \
-   extern TaskType WaitingTask;                                               \
    if(TasksVar[GetRunningTask()].Flags.State == TASK_ST_WAITING)              \
    {                                                                          \
-      WaitingTask = GetRunningTask();                                         \
+      cortexM4ActiveContextPtr = GetRunningTask();                            \
    }                                                                          \
    flag = 0;                                                                  \
    /* remove of the Ready List */                                             \
@@ -184,17 +162,19 @@
 }
 
 
-/** \brief */
-#define ResetStack(task)       \
-{                              \
-   TerminatingTask = (task);   \
-}
+/** \brief CortexM4 implementation of the ResetStack() OS interface.
+ *
+ * Currently this has no use within the CortexM4 HAL implementation.
+ **/
+#define ResetStack(task)                        {   }
 
 
-/** \brief Set the entry point for a task */
+
+/** \brief CortexM4 implementation of the SenEntryPoint() OS interface.
+ **/
 #define SetEntryPoint(task)    \
 {                              \
-   TerminatingTask = (task);   \
+   InitStack_Arch(task);       \
 }
 
 
@@ -276,11 +256,7 @@
 
 
 
-extern void * Osek_OldTaskPtr_Arch;
-
-extern void * Osek_NewTaskPtr_Arch;
-
-extern TaskType TerminatingTask;
+extern TaskContextRefType *cortexM4ActiveContextPtr;
 
 
 

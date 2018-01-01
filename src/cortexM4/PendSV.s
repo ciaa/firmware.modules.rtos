@@ -50,7 +50,7 @@
     /* .section .after_vectors */
 
    .global PendSV_Handler
-   .extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
+   .extern cortexM4ActiveContextPtr,updateActiveTaskContextPtr_Arch
 
    /*
     * Pendable Service Call, used for context-switching in all Cortex-M processors
@@ -92,27 +92,18 @@ PendSV_Handler:
    cpsid f
 
    /*
-    * Check if the currently active task is being removed. If it is,
-    * reset the task's context data block.
-    *
-    * This is done in an external C routine.
-    *
-    * */
-
-   push {lr}
-   bl CheckTerminatingTask_Arch
-   pop {lr}
-
-   /*
     * Determine which stack is in use in the calling context: MSP o PSP.
     *
     * System code, and initialization code (first call to schedule())
     * use the master stack (MSP), while tasks use the alternative
-    * stack (PSP).
+    * stack (PSP). That is done by checking the fourth bit of the
+    * return value of the exception, which can be found on the LR
+    * register.
     *
-    * The information about the stack in use in the calling context
-    * is stored in the exception return value that is stored by
-    * the CPU on the LR registers during the exception entry sequence.
+    * Since the PendSV exception is the lowest level interrupt that
+    * can be invoked, the MSR stack is only used when it is invoked
+    * from the context of the first Schedule() function call, in
+    * StartOS().
     * */
 
    tst   lr,0x04
@@ -145,9 +136,11 @@ PendSV_Handler:
    stmdb r0!,{r4-r11,lr}
 
    /*
-    * Restituyo MSP, por si existen irqs anidadas
+    * If the stack in use is the MSPupdate the register value.
     *
-    * TODO Find out under which scenario this is needed.
+    * FIXME I suspect this is not needed, since all of the possible
+    * use cases for this are proably safe anyway without this
+    * actualization.
     */
 
    tst   lr,0x04
@@ -155,33 +148,48 @@ PendSV_Handler:
    msreq msp,r0
 
    /*
-    * Store the task stack pointer on the task context block.
-    *
-    * If there was no currently active task, the exiting
-    * task context block pointer may be null. In that
-    * case do nothing.
-    *
-    * FIXME In this case we shouldn't even have written the
-    * state of the register set on the stack, because we
-    * may be overwriting the initial task state that was built by
-    * CheckTerminatingTask_Arch at the start of the handler.
-    */
-
-   ldr   r1,=Osek_OldTaskPtr_Arch
-   ldr   r1,[r1]
-   cmp   r1,0
-   it    ne
-   strne r0,[r1]
-
-   /*
-    * Load the stack pointer of the task being activated from that task's
+    * If the currently active task context is not frozen, then
+    * update the pointer to the top of the stack in the task
     * task context block.
     *
-    * This pointer is never null, since this handler is never invoked unless
-    * some task needs to be activated.
+    */
+
+   ldr   r1,=cortexM4ActiveContextPtr
+   ldr   r2,[r1, #0x04]    /* Load the value of the frozen flag         */
+   cmp   r2,0x00           /* Test the value of the flag.               */
+   itt   eq                /* If not zero...                            */
+   ldreq r2,[r1]           /* Load the address of the stack pointer.    */
+   streq r0,[r2]           /* Store the updated value of the stack ptr. */
+
+
+   /* ************************************* */
+   /* ************************************* */
+   /* ************************************* */
+
+
+   /*
+    * Update the pointer to the context data of the
+    * currently active task.
+    *
+    * This is done in an external C routine.
     * */
 
-   ldr   r1,=Osek_NewTaskPtr_Arch
+   push {lr}
+
+   bl updateActiveTaskContextPtr_Arch
+
+   pop {lr}
+
+   /* ************************************* */
+   /* ************************************* */
+   /* ************************************* */
+
+   /*
+    * Load the stack pointer of the task being activated from its
+    * task context block.
+    * */
+
+   ldr   r1,=cortexM4ActiveContextPtr
    ldr   r1,[r1]
    ldr   r0,[r1]
 
@@ -231,18 +239,15 @@ PendSV_Handler:
 
    msr   control,r1
 
-   /* FIXME and ISB instruction is needed here to ensure the full effect of the
-    * modification on the register upon then next few instructions.
+   /*
+    * The Architecture Reference Manual of the CortexM4 recommends to use this
+    * synchronization instruction aftet writing a new value to the CONTROL
+    * register.
     */
+   isb
 
    /*
     * End of the critical section.
-    *
-    * From here on the code interuptible again, even before going back to the task, and those
-    * interrupts might activate this handler again.
-    *
-    * TODO Check if this can result on some unexpected execution path or task context data
-    * corruption.
     */
 
    cpsie f
