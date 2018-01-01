@@ -139,27 +139,11 @@
 #define JmpTask(task)                           { InvokePendSV(); }
 
 
-/** \brief Save context */
-#define SaveContext(task)                                                     \
-{                                                                             \
-   if(TasksVar[GetRunningTask()].Flags.State == TASK_ST_WAITING)              \
-   {                                                                          \
-      cortexM4ActiveContextPtr = GetRunningTask();                            \
-   }                                                                          \
-   flag = 0;                                                                  \
-   /* remove of the Ready List */                                             \
-   RemoveTask(GetRunningTask());                                              \
-   /* set system context */                                                   \
-   SetActualContext(CONTEXT_SYS);                                             \
-   /* set running task to invalid */                                          \
-   SetRunningTask(INVALID_TASK);                                              \
-   /* finish critical code */                                                 \
-   IntSecure_End();                                                           \
-   /* call scheduler */                                                       \
-   Schedule();                                                                \
-   /* add this call in order to maintain counter balance when returning */    \
-   IntSecure_Start();                                                         \
-}
+
+/** \brief CortexM4 implementation of the SaveContext() OS interface.
+ */
+#define SaveContext(task)                       {   }
+
 
 
 /** \brief CortexM4 implementation of the ResetStack() OS interface.
@@ -253,10 +237,6 @@
 
 
 /*==================[external data declaration]==============================*/
-
-
-
-extern TaskContextRefType *cortexM4ActiveContextPtr;
 
 
 
