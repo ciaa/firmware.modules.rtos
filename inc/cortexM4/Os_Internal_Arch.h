@@ -131,12 +131,12 @@
 
 /** \brief CortexM4 implementation of the CallTask() OS interface.
  **/
-#define CallTask(current, nexttask)             { InvokePendSV(); }
+#define CallTask(currentTask, nextTask)         { InvokePendSV(); }
 
 
 /** \brief CortexM4 implementation of the JmpTask() OS interface.
  **/
-#define JmpTask(task)                           { InvokePendSV(); }
+#define JmpTask(nextTask)                       { InvokePendSV(); }
 
 
 
@@ -148,18 +148,18 @@
 
 /** \brief CortexM4 implementation of the ResetStack() OS interface.
  */
-#define ResetStack_Arch(task)                   \
+#define ResetStack_Arch(taskId)                 \
 {                                               \
-   InitStack_Arch(task);                        \
+   cortexM4ResetTaskContext(taskId);            \
 }
 
 
 
 /** \brief CortexM4 implementation of the SenEntryPoint() OS interface.
  **/
-#define SetEntryPoint(task)         \
-{                                   \
-   cortexM4TerminatedTaskID = task; \
+#define SetEntryPoint(taskId)          \
+{                                      \
+   cortexM4TerminatedTaskID = taskId;  \
 }
 
 
@@ -249,7 +249,7 @@ extern TaskType cortexM4TerminatedTaskID;
 
 
 
-void InitStack_Arch(uint8 TaskID);
+void cortexM4ResetTaskContext(uint8 TaskID);
 
 
 

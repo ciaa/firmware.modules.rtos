@@ -86,7 +86,7 @@ TaskContextRefType *cortexM4ActiveContextPtr = &cortexM4NullContext;
 
 
 
-void ReturnHook_Arch(void)
+void cortexM4ReturnHook(void)
 {
    /*
     * Tasks shouldn't return here...
@@ -106,7 +106,7 @@ void ReturnHook_Arch(void)
 
 
 /* Task Stack Initialization */
-void InitStack_Arch(uint8 TaskID)
+void cortexM4ResetTaskContext(uint8 TaskID)
 {
    uint32 *taskStackRegionPtr;
    sint32 taskStackSizeWords;
@@ -200,7 +200,7 @@ void InitStack_Arch(uint8 TaskID)
 
    taskStackRegionPtr[taskStackSizeWords - 1] = (uint32) (1 << 24);                       /* xPSR.T = 1 */
    taskStackRegionPtr[taskStackSizeWords - 2] = (uint32) TasksConst[TaskID].EntryPoint;   /* initial PC */
-   taskStackRegionPtr[taskStackSizeWords - 3] = (uint32) ReturnHook_Arch;                 /* Stacked LR */
+   taskStackRegionPtr[taskStackSizeWords - 3] = (uint32) cortexM4ReturnHook;              /* Stacked LR */
 
    /*
     *  BLOCK 3
@@ -268,11 +268,11 @@ void InitStack_Arch(uint8 TaskID)
 
 
 
-void updateActiveTaskContextPtr_Arch()
+void cortexM4UpdateActiveTaskContextPtr()
 {
    if (cortexM4TerminatedTaskID != INVALID_TASK)
    {
-      InitStack_Arch(cortexM4TerminatedTaskID);
+      cortexM4ResetTaskContext(cortexM4TerminatedTaskID);
 
       cortexM4TerminatedTaskID = INVALID_TASK;
    }

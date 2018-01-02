@@ -50,16 +50,15 @@
     /* .section .after_vectors */
 
    .global PendSV_Handler
-   .extern cortexM4ActiveContextPtr,updateActiveTaskContextPtr_Arch
+   .extern cortexM4ActiveContextPtr,cortexM4UpdateActiveTaskContextPtr
 
    /*
     * Pendable Service Call, used for context-switching in all Cortex-M processors
     */
-
 PendSV_Handler:
 
    /*
-    * Read the comments in InitStack_Arch() to better understand the
+    * Read the comments in cortexM4ResetTaskContext() to better understand the
     * structure of the context data stored on the stack.
     *
     * At the start of the execution of this handler part of the calling
@@ -67,7 +66,7 @@ PendSV_Handler:
     * by the exception entry sequence.
     *
     * This includes, in stacking order, BLOCK 1 and BLOCK 2. as
-    * described in InitStack_Arch().
+    * described in cortexM4ResetTaskContext().
     *
     * The CPU will have only stored the registers of BLOCK 1
     * if the interrupted task has been using the FPU. BLOCK 2
@@ -173,7 +172,7 @@ PendSV_Handler:
 
    push {lr}
 
-   bl updateActiveTaskContextPtr_Arch
+   bl cortexM4UpdateActiveTaskContextPtr
 
    pop {lr}
 
