@@ -72,7 +72,6 @@
 typedef struct {
 
    uint32 *stackTopPointer;
-   uint32 frozenContextFlag;
 
 } TaskContextType;
 

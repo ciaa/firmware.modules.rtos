@@ -147,18 +147,19 @@
 
 
 /** \brief CortexM4 implementation of the ResetStack() OS interface.
- *
- * Currently this has no use within the CortexM4 HAL implementation.
- **/
-#define ResetStack(task)                        {   }
+ */
+#define ResetStack_Arch(task)                   \
+{                                               \
+   InitStack_Arch(task);                        \
+}
 
 
 
 /** \brief CortexM4 implementation of the SenEntryPoint() OS interface.
  **/
-#define SetEntryPoint(task)    \
-{                              \
-   InitStack_Arch(task);       \
+#define SetEntryPoint(task)         \
+{                                   \
+   cortexM4TerminatedTaskID = task; \
 }
 
 
@@ -237,6 +238,10 @@
 
 
 /*==================[external data declaration]==============================*/
+
+
+
+extern TaskType cortexM4TerminatedTaskID;
 
 
 

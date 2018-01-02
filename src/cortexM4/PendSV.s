@@ -155,11 +155,8 @@ PendSV_Handler:
     */
 
    ldr   r1,=cortexM4ActiveContextPtr
-   ldr   r2,[r1, #0x04]    /* Load the value of the frozen flag         */
-   cmp   r2,0x00           /* Test the value of the flag.               */
-   itt   eq                /* If not zero...                            */
-   ldreq r2,[r1]           /* Load the address of the stack pointer.    */
-   streq r0,[r2]           /* Store the updated value of the stack ptr. */
+   ldr   r2,[r1]           /* Load the address of the stack pointer.    */
+   str   r0,[r2]           /* Store the updated value of the stack ptr. */
 
 
    /* ************************************* */

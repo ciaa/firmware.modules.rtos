@@ -66,6 +66,7 @@
 /*==================[internal data definition]===============================*/
 
 
+TaskType cortexM4TerminatedTaskID = INVALID_TASK;
 
 TaskContextType cortexM4NullContext;
 
@@ -100,13 +101,6 @@ void ReturnHook_Arch(void)
    {
       osekpause();
    }
-}
-
-
-
-void updateActiveTaskContextPtr_Arch()
-{
-   cortexM4ActiveContextPtr = TasksConst[RunningTask].TaskContext;
 }
 
 
@@ -270,8 +264,20 @@ void InitStack_Arch(uint8 TaskID)
     */
 
    TasksConst[TaskID].TaskContext->stackTopPointer   = &(taskStackRegionPtr[taskStackSizeWords - 17]);
-   TasksConst[TaskID].TaskContext->frozenContextFlag = 1;
+}
 
+
+
+void updateActiveTaskContextPtr_Arch()
+{
+   if (cortexM4TerminatedTaskID != INVALID_TASK)
+   {
+      InitStack_Arch(cortexM4TerminatedTaskID);
+
+      cortexM4TerminatedTaskID = INVALID_TASK;
+   }
+
+   cortexM4ActiveContextPtr = TasksConst[RunningTask].TaskContext;
 }
 
 

@@ -93,6 +93,17 @@ void StartOs_Arch_Cpu(void)
 
 void StartOs_Arch(void)
 {
+   uint8 loopi;
+
+   /*
+    * Set the the stacks of all the tasks to an initialized
+    * state.
+    * */
+   for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+   {
+      ResetStack_Arch(loopi);
+   }
+
    /*
     * CPU dependent initialization
     * */
