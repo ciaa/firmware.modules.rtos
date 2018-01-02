@@ -270,7 +270,7 @@ void InitStack_Arch(uint8 TaskID)
     */
 
    TasksConst[TaskID].TaskContext->stackTopPointer   = &(taskStackRegionPtr[taskStackSizeWords - 17]);
-   TasksConst[TaskID].TaskContext->frozenContextFlag = 0;
+   TasksConst[TaskID].TaskContext->frozenContextFlag = 1;
 
 }
 
