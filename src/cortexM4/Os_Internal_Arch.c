@@ -66,6 +66,7 @@
 /*==================[internal data definition]===============================*/
 
 
+
 TaskType cortexM4TerminatedTaskID = INVALID_TASK;
 
 TaskContextType cortexM4NullContext;

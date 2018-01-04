@@ -99,6 +99,7 @@ void StartOs_Arch(void)
     * Set the the stacks of all the tasks to an initialized
     * state.
     * */
+
    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
    {
       ResetStack_Arch(loopi);
