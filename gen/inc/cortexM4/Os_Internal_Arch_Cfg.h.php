@@ -3,7 +3,7 @@
  ********************************************************/
 
 /* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
- * Copyright 2017, Gerardo Puga
+ * Copyright 2017, Gerardo Puga (UNLP)
  *
  * All rights reserved.
  *
