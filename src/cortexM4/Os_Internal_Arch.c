@@ -74,7 +74,7 @@ TaskType cortexM4TerminatedTaskID = INVALID_TASK;
 
 TaskContextType cortexM4NullContext;
 
-TaskContextRefType *cortexM4ActiveContextPtr = &cortexM4NullContext;
+TaskContextRefType cortexM4ActiveContextPtr = &cortexM4NullContext;
 
 
 
