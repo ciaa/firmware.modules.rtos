@@ -186,14 +186,14 @@ void InitStack_Arch(uint8 TaskID)
     *  BLOCK 1
     *  -------
     *
-    * [ BLOCK 2 / INDEX 01 / OFFSET -00 ] xPSR
-    * [ BLOCK 2 / INDEX 02 / OFFSET -04 ] PC (R15)
-    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] LR (R14)
-    * [ BLOCK 2 / INDEX 04 / OFFSET -12 ] R12
-    * [ BLOCK 2 / INDEX 05 / OFFSET -16 ] R3
-    * [ BLOCK 2 / INDEX 06 / OFFSET -20 ] R2
-    * [ BLOCK 2 / INDEX 07 / OFFSET -24 ] R1
-    * [ BLOCK 2 / INDEX 08 / OFFSET -28 ] R0
+    * [ BLOCK 1 / INDEX 01 / OFFSET -00 ] xPSR
+    * [ BLOCK 1 / INDEX 02 / OFFSET -04 ] PC (R15)
+    * [ BLOCK 1 / INDEX 03 / OFFSET -08 ] LR (R14)
+    * [ BLOCK 1 / INDEX 04 / OFFSET -12 ] R12
+    * [ BLOCK 1 / INDEX 05 / OFFSET -16 ] R3
+    * [ BLOCK 1 / INDEX 06 / OFFSET -20 ] R2
+    * [ BLOCK 1 / INDEX 07 / OFFSET -24 ] R1
+    * [ BLOCK 1 / INDEX 08 / OFFSET -28 ] R0
     *
     * */
 
@@ -202,18 +202,18 @@ void InitStack_Arch(uint8 TaskID)
    taskStackRegionPtr[taskStackSizeWords - 3] = (uint32) ReturnHook_Arch;                 /* Stacked LR */
 
    /*
-    *  BLOCK 4
+    *  BLOCK 2
     *  -------
     *
-    * [ BLOCK 4 / INDEX 01 / OFFSET -00 ] Exception Return Value (Contains task CPU Mode/Stack/FPU info)
-    * [ BLOCK 4 / INDEX 02 / OFFSET -04 ] R11
-    * [ BLOCK 4 / INDEX 03 / OFFSET -08 ] R10
-    * [ BLOCK 4 / INDEX 04 / OFFSET -12 ] R9
-    * [ BLOCK 4 / INDEX 05 / OFFSET -16 ] R8
-    * [ BLOCK 4 / INDEX 06 / OFFSET -20 ] R7
-    * [ BLOCK 4 / INDEX 07 / OFFSET -24 ] R6
-    * [ BLOCK 4 / INDEX 08 / OFFSET -28 ] R5
-    * [ BLOCK 4 / INDEX 08 / OFFSET -28 ] R4
+    * [ BLOCK 2 / INDEX 01 / OFFSET -00 ] Exception Return Value (Contains task CPU Mode/Stack/FPU info)
+    * [ BLOCK 2 / INDEX 02 / OFFSET -04 ] R11
+    * [ BLOCK 2 / INDEX 03 / OFFSET -08 ] R10
+    * [ BLOCK 2 / INDEX 04 / OFFSET -12 ] R9
+    * [ BLOCK 2 / INDEX 05 / OFFSET -16 ] R8
+    * [ BLOCK 2 / INDEX 06 / OFFSET -20 ] R7
+    * [ BLOCK 2 / INDEX 07 / OFFSET -24 ] R6
+    * [ BLOCK 2 / INDEX 08 / OFFSET -28 ] R5
+    * [ BLOCK 2 / INDEX 08 / OFFSET -28 ] R4
     *
     * */
 

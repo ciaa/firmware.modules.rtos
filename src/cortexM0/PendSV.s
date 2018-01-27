@@ -220,7 +220,7 @@ dont_save_current_context:
    /*
     * End of the critical section.
     *
-    * From here on the code interuptible again, even before going back to the task, and those
+    * From here on the code interruptible again, even before going back to the task, and those
     * interrupts might activate this handler again.
     *
     * TODO Check if this can result on some unexpected execution path or task context data
