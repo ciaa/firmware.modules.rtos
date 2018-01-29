@@ -135,11 +135,11 @@ PendSV_Handler:
    stmdb r0!,{r4-r11,lr}
 
    /*
-    * If the stack in use is the MSPupdate the register value.
+    * If the MSP stack is in use, update the MSP register value.
     *
     * FIXME I suspect this is not needed, since all of the possible
-    * use cases for this are proably safe anyway without this
-    * actualization.
+    * use cases for this are probaly safe anyway without performing
+    * this update.
     */
 
    tst   lr,0x04
@@ -147,8 +147,7 @@ PendSV_Handler:
    msreq msp,r0
 
    /*
-    * If the currently active task context is not frozen, then
-    * update the pointer to the top of the stack in the task
+    * Update the pointer to the top of the stack in the
     * task context block.
     *
     */
