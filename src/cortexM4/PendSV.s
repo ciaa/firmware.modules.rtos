@@ -95,9 +95,11 @@ PendSV_Handler:
     *
     * System code, and initialization code (first call to schedule())
     * use the master stack (MSP), while tasks use the alternative
-    * stack (PSP). That is done by checking the fourth bit of the
-    * return value of the exception, which can be found on the LR
-    * register.
+    * stack (PSP).
+    *
+    * Determining the active stack is done by checking the fourth bit
+    * of the return value of the exception, which can be found on the
+    * LR register.
     *
     * Since the PendSV exception is the lowest level interrupt that
     * can be invoked, the MSR stack is only used when it is invoked
@@ -138,7 +140,7 @@ PendSV_Handler:
     * If the MSP stack is in use, update the MSP register value.
     *
     * FIXME I suspect this is not needed, since all of the possible
-    * use cases for this are probaly safe anyway without performing
+    * use cases for this are probably safe anyway without performing
     * this update.
     */
 
