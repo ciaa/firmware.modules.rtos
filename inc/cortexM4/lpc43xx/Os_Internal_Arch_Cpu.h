@@ -37,8 +37,8 @@
 
 /** \brief FreeOSEK Internal Architecture Cpu Dependent Header File
  **
- ** \file cortexM4/lpc4000/Os_Internal_Arch_Cpu.h
- ** \arch cortexM4/lpc4000
+ ** \file cortexM4/lpc4337/Os_Internal_Arch_Cpu.h
+ ** \arch cortexM4/lpc4337
  **/
 
 /** \addtogroup FreeOSEK
@@ -48,63 +48,35 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
-/*****************************************************************************
- * add your name to the developers and create for you a nick with
- * 3 or 4 letters. Please do not use any given nick.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
-/*****************************************************************************
- * add a new version to this file, add the date, your initials and the main
- * changes, only main changes shall be listed here. A detailed message log
- * is saved in svn log and on the tracker system since every svn login message
- * shall indicate the related tracker id.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 /*==================[cpu macros]=============================================*/
-/*****************************************************************************
- * Please define here all cpu macros available for this cputype. arm7 and
- * cpy family lpc2xxx is given as example, please remove all arm7 and lpc2xxx
- * related macros
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 
 /*==================[inclusions]=============================================*/
-/*****************************************************************************
- * Include the right macros for every cpu. Please remove all arm7 and lpc2xxx
- * related macros.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 
 /*==================[macros]=================================================*/
-/*****************************************************************************
- * use this section to defined any necessary macros for a specific cpu of
- * your family.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 
 /*==================[typedef]================================================*/
-/*****************************************************************************
- * use this section to defined any necessary types for a specific cpu of
- * your family.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 
 /*==================[external data declaration]==============================*/
-/*****************************************************************************
- * use this section to declare any necessary variables for a specific cpu of
- * your family.
- *
- * PLEASE REMOVE THIS COMMENT
- *****************************************************************************/
+
+
 
 /*==================[external functions declaration]=========================*/
+
+
+
 void StartOs_Arch_Cpu(void);
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

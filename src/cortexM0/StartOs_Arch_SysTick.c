@@ -47,25 +47,47 @@
  ** @{ */
 
 /*==================[inclusions]=============================================*/
+
+
+
 #include "Os_Internal_Arch_Cpu.h"
 #include "ciaaPlatforms.h"
+
+
 #if (CPU == lpc4337)
 #include "chip.h"
 #endif
 
+
+
 /*==================[macros and definitions]=================================*/
+
+
 
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
+
+
 
 /*==================[internal data definition]===============================*/
 
+
+
 /*==================[external data definition]===============================*/
+
+
 
 /*==================[internal functions definition]==========================*/
 
+
+
 /*==================[external functions definition]==========================*/
+
+
+
 void StartOs_Arch_SysTick(void)
 {
    /* Set lowest priority for PendSV */
@@ -82,6 +104,9 @@ void StartOs_Arch_SysTick(void)
    /* Set lowest priority for RIT */
    NVIC_SetPriority(RITIMER_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
 }
+
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

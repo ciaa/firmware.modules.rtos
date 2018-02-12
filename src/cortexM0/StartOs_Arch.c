@@ -46,43 +46,69 @@
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
 
+
+
 /*==================[inclusions]=============================================*/
+
+
+
 #include "Os_Internal.h"
 #include "StartOs_Arch_SysTick.h"
 
+
+
 /*==================[macros and definitions]=================================*/
+
+
 
 /*==================[internal data declaration]==============================*/
 
+
+
 /*==================[internal functions declaration]=========================*/
+
+
 
 /*==================[internal data definition]===============================*/
 
+
+
 /*==================[external data definition]===============================*/
+
+
 
 /*==================[internal functions definition]==========================*/
 
+
+
 /*==================[external functions definition]==========================*/
+
+
+
 void StartOs_Arch_Cpu(void)
 {
    StartOs_Arch_SysTick();
    Enable_User_ISRs();
 }
 
+
+
 void StartOs_Arch(void)
 {
    uint8f loopi;
 
-   /* init every task */
+   /* Initialize all the application tasks. */
    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
    {
       InitStack_Arch(loopi);
    }
 
-   /* CPU dependent initialisation */
+   /* CPU dependent initialization. */
    StartOs_Arch_Cpu();
 
 }
+
+
 
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */

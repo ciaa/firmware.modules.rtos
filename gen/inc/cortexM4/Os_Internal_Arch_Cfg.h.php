@@ -3,7 +3,7 @@
  ********************************************************/
 
 /* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
- * Copyright 2017, Gerardo Puga
+ * Copyright 2017, Gerardo Puga (UNLP)
  *
  * All rights reserved.
  *
@@ -61,13 +61,19 @@
 /*==================[inclusions]=============================================*/
 
 
+#include "Types.h"
+
 
 /*==================[typedef]================================================*/
 
 
 
 /** \brief Task Context Type */
-typedef uint32 * TaskContextType;
+typedef struct {
+
+   uint32 *stackTopPointer;
+
+} TaskContextType;
 
 /** \brief Task Context Type */
 typedef TaskContextType* TaskContextRefType;

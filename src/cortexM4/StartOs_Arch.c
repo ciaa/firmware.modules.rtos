@@ -1,4 +1,5 @@
 /* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+ * Copyright 2017, Gerardo Puga (UNLP)
  *
  * This file is part of CIAA Firmware.
  *
@@ -44,6 +45,8 @@
  ** @{ */
 /** \addtogroup FreeOSEK_Os_Internal
  ** @{ */
+
+
 
 /*==================[inclusions]=============================================*/
 
@@ -93,15 +96,22 @@ void StartOs_Arch_Cpu(void)
 
 void StartOs_Arch(void)
 {
-   uint8f loopi;
+   uint8 loopi;
 
-   /* initialize every task */
+   /*
+    * Set the the stacks of all the tasks to an initialized
+    * state.
+    * */
+
    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
    {
-      InitStack_Arch(loopi);
+      ResetStack_Arch(loopi);
    }
 
-   /* CPU dependent initialization */
+   /*
+    * CPU dependent initialization
+    * */
+
    StartOs_Arch_Cpu();
 }
 
